@@ -69,22 +69,19 @@ namespace Bannerlord.ButterLib.CampaignIdentifier
             GetDescriptorByHero(out string _, out _attributes);
         }
 
-        // _baseHero will be null, need to ask
-        /*
         internal CampaignDescriptor(string value, Dictionary<DescriptorAttribute, object> attributes)
         {
             _value = value;
             _attributes = attributes;
-            _baseHero = null;
+            _baseHero = null!; // Won't be needed since we have the attributes already
         }
 
         internal CampaignDescriptor(SerializationInfo info, StreamingContext context)
         {
             _value = info.GetString(nameof(KeyValue));
             _attributes = (Dictionary<DescriptorAttribute, object>) info.GetValue("DecriptorAttributes", typeof(Dictionary<DescriptorAttribute, object>));
-            _baseHero = null;
+            _baseHero = null!; // Serialization will do it's thing.
         }
-        */
 
         //Public methods
         public void GetObjectData(SerializationInfo info, StreamingContext context)
