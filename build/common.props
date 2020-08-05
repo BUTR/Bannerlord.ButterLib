@@ -4,4 +4,26 @@
     <GameFolder>C:\Program Files (x86)\Steam\steamapps\common\Mount &amp; Blade II Bannerlord</GameFolder>
   </PropertyGroup>
 
+  <PropertyGroup Condition="$(Configuration) == 'Stable_Debug' OR $(Configuration) == 'Beta_Debug'">
+    <DefineConstants>$(DefineConstants);DEBUG;TRACE</DefineConstants>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(Configuration) == 'Stable_Release' OR $(Configuration) == 'Beta_Release'">
+    <DefineConstants>$(DefineConstants);RELEASE;TRACE</DefineConstants>
+    <DebugSymbols>false</DebugSymbols>
+    <DebugType>portable</DebugType>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(Configuration) == 'Stable_Debug' OR $(Configuration) == 'Stable_Release'">
+    <DefineConstants>$(DefineConstants);RELEASE;TRACE;STABLE</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(Configuration) == 'Beta_Debug' OR $(Configuration) == 'Beta_Release'">
+    <DefineConstants>$(DefineConstants);RELEASE;TRACE;BETA</DefineConstants>
+  </PropertyGroup>
+
 </Project>

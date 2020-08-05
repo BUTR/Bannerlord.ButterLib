@@ -22,7 +22,12 @@ namespace Bannerlord.ButterLib.CampaignIdentifier.Patches
             {
                 if (Hero.MainHero.Culture != Hero.MainHero.BornSettlement.Culture)
                 {
+#if STABLE
                     Clan.PlayerClan.InitializeHomeSettlement(SettlementHelper.FindRandomSettlement(s => s.Culture == Hero.MainHero.Culture && s.IsTown));
+#elif BETA
+                    // TODO:
+                    Clan.PlayerClan.UpdateHomeSettlement(SettlementHelper.FindRandomSettlement(s => s.Culture == Hero.MainHero.Culture && s.IsTown));
+#endif
                     Hero.MainHero.BornSettlement = Clan.PlayerClan.HomeSettlement;
                 }
             }
