@@ -5,8 +5,6 @@ VisualStudioVersion = 16.0.30225.117
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bannerlord.ButterLib", "Bannerlord.ButterLib\Bannerlord.ButterLib.csproj", "{1339A1C0-C2F0-4491-91BB-D49C00332F68}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Root", "Root", "{95DFCDC6-B5B0-4E0D-A8BA-CB8AF1F8E9AD}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1392C229-D932-4592-9B4C-EF8E29E83D16}"
 	ProjectSection(SolutionItems) = preProject
 		nuget.config = nuget.config
@@ -15,8 +13,17 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{20835E54-40DC-4892-A61A-4A3FBCE97EF1}"
 	ProjectSection(SolutionItems) = preProject
 		..\build\common.props = ..\build\common.props
-		..\build\common.targets = ..\build\common.targets
-		..\build\github-actions.props = ..\build\github-actions.props
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{ADE4D687-B33F-44D5-B27A-E7635AC453A2}"
+	ProjectSection(SolutionItems) = preProject
+		..\.github\workflows\nexusmods-cookies.yml = ..\.github\workflows\nexusmods-cookies.yml
+		..\.github\workflows\publish.yml = ..\.github\workflows\publish.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "root", "root", "{F11F675F-87A9-4959-92FE-6B44D9500F1B}"
+	ProjectSection(SolutionItems) = preProject
+		..\changelog.txt = ..\changelog.txt
 	EndProjectSection
 EndProject
 Global
@@ -35,8 +42,9 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{1339A1C0-C2F0-4491-91BB-D49C00332F68} = {1392C229-D932-4592-9B4C-EF8E29E83D16}
-		{1392C229-D932-4592-9B4C-EF8E29E83D16} = {95DFCDC6-B5B0-4E0D-A8BA-CB8AF1F8E9AD}
-		{20835E54-40DC-4892-A61A-4A3FBCE97EF1} = {95DFCDC6-B5B0-4E0D-A8BA-CB8AF1F8E9AD}
+		{1392C229-D932-4592-9B4C-EF8E29E83D16} = {F11F675F-87A9-4959-92FE-6B44D9500F1B}
+		{20835E54-40DC-4892-A61A-4A3FBCE97EF1} = {F11F675F-87A9-4959-92FE-6B44D9500F1B}
+		{ADE4D687-B33F-44D5-B27A-E7635AC453A2} = {F11F675F-87A9-4959-92FE-6B44D9500F1B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {368BCFA9-8202-4785-AAD4-E8D3D1913736}

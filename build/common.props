@@ -1,10 +1,7 @@
 <Project>
 
   <PropertyGroup>
-    <LangVersion>8.0</LangVersion>
-    <Nullable>enable</Nullable>
     <GameFolder>C:\Program Files (x86)\Steam\steamapps\common\Mount &amp; Blade II Bannerlord</GameFolder>
-    <NoWarn>NU1701</NoWarn>
   </PropertyGroup>
 
 </Project>
