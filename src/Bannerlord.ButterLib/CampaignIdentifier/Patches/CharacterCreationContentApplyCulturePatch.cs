@@ -14,7 +14,7 @@ using TaleWorlds.CampaignSystem;
 namespace Bannerlord.ButterLib.CampaignIdentifier.Patches
 {
     [HarmonyPatch(typeof(CharacterCreationContent), "ApplyCulture")]
-    internal class CharacterCreationContentApplyCulturePatch
+    internal static class CharacterCreationContentApplyCulturePatch
     {
         public static void Postfix()
         {
