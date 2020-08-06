@@ -20,16 +20,13 @@ namespace Bannerlord.ButterLib.CampaignIdentifier.Patches
         {
             try
             {
-                if (Hero.MainHero.Culture != Hero.MainHero.BornSettlement.Culture)
+                //Assign player a random town from chosen culture as a born settlement
+                FieldAccessHelper.ClanHomeSettlementByRef(Clan.PlayerClan) = bornSettlement;
+                foreach (Hero hero in Clan.PlayerClan.Heroes)
                 {
-#if STABLE
-                    Clan.PlayerClan.InitializeHomeSettlement(SettlementHelper.FindRandomSettlement(s => s.Culture == Hero.MainHero.Culture && s.IsTown));
-#elif BETA
-                    // TODO:
-                    Clan.PlayerClan.UpdateHomeSettlement(SettlementHelper.FindRandomSettlement(s => s.Culture == Hero.MainHero.Culture && s.IsTown));
-#endif
-                    Hero.MainHero.BornSettlement = Clan.PlayerClan.HomeSettlement;
+                    hero.UpdateHomeSettlement();
                 }
+                Hero.MainHero.BornSettlement = Clan.PlayerClan.HomeSettlement;
             }
             catch (Exception ex)
             {
