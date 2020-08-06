@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<base xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xsi:schemaLocation="https://www.w3schools.com/xml std_module_strings_xml.xsd" type="string">
+	<tags>
+		<tag language="English" />
+	</tags>
+	<strings>
+		<string id="PZthBmJc9B" text="Campaign Identifier failed to load! See details in the mod log." />
+		<string id="UdgidGXLwg" text="{BASE_DESCRIPTOR_HERO.NAME}{?BASE_DESCRIPTOR_HERO.CLAN} {BASE_DESCRIPTOR_HERO.CLAN_NAME}{?}{\?}{?BASE_DESCRIPTOR_HERO.BIRTHPLACE} from {BASE_DESCRIPTOR_HERO.BIRTHPLACE_NAME}{?}, birthplace unknown{\?}, {BASE_DESCRIPTOR_HERO.AGE}, {?BASE_DESCRIPTOR_HERO_PARENTS}{BASE_DESCRIPTOR_HERO_PARENTS.INFO}{?}parents unknown{\?}.{?BASE_DESCRIPTOR_HERO.CULTURE} {BASE_DESCRIPTOR_HERO.CULTURE_NAME}.{?}{\?}" />
+		<string id="svZkgB1GgB" text="{?BASE_DESCRIPTOR_HERO.GENDER}daughter{?}son{\?} of {BASE_DESCRIPTOR_HERO.PARENTS_BEGIN}{?BASE_DESCRIPTOR_HERO.FULL_FAMILY} and {?}{\?}{BASE_DESCRIPTOR_HERO.PARENTS_END}" />
+		<string id="gRz8MZ0YZ7" text="This game has no ID. It probably was started before installing Campaign Identifier. We have found other ongoing campaigns that have similar initial character background and were already assigned an ID. If this game refers to one of them, please, select corresponding option." />
+		<string id="zed49rdkQR" text="Select '{NEW_ID}' if the loaded save is a separate campaign that has nothing to do with the suggested options and a new ID should be assigned to it." />
+		<string id="4BuIRaILsb" text="Select identified ongoing campaign" />
+		<string id="wF4qRrhmEu" text="Assign new ID" />
+		<string id="25Ts3iQnv6" text="This is a standalone campaign and must be assigned a new ID." />
+	</strings>
+</base>
