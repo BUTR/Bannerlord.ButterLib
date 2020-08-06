@@ -10,7 +10,7 @@ using TaleWorlds.CampaignSystem;
 namespace Bannerlord.ButterLib.CampaignIdentifier.Patches
 {
     [HarmonyPatch(typeof(Clan), "InitializeClan")]
-    internal class ClanInitializeClanPatch
+    internal static class ClanInitializeClanPatch
     {
         public static void Postfix(Clan __instance)
         {
