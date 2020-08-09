@@ -89,8 +89,8 @@ jobs:
 ###########################
 #        NUGET/GPR        #
 ###########################
-  publish-on-nuget:
-    name: Publish on NuGet
+  nuget-pack-stable:
+    name: Pack Stable
     runs-on: ubuntu-latest
     steps:
     - name: Checkout Repository
@@ -136,24 +136,14 @@ jobs:
         desc="${desc//$'\r'/'%0D'}"
         echo "::set-output name=mod_description::$desc"
 
-    - name: Push to NuGet
-      run: dotnet nuget push "./packages/*.nupkg" -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json
-      env:
-        DOTNET_NOLOGO: 1
-        DOTNET_CLI_TELEMETRY_OPTOUT: 1
+    - name: Upload Packages
+      uses: actions/upload-artifact@v2
+      with:
+        name: packages-stable
+        path: ./packages/
 
-    - name: Push to GPR
-      run: |
-           for f in ./packages/*.nupkg
-           do
-             curl -vX PUT -u "vslee:${{secrets.GITHUB_TOKEN}}" -F package=@$f https://nuget.pkg.github.com/BUTR/
-           done
-
-###########################
-#        NUGET/GPR        #
-###########################
-  publish-on-nuget-beta:
-    name: Publish on NuGet
+  nuget-pack-beta:
+    name: Pack Beta
     runs-on: ubuntu-latest
     steps:
     - name: Checkout Repository
@@ -198,6 +188,28 @@ jobs:
         desc="${desc//$'\n'/'%0A'}"
         desc="${desc//$'\r'/'%0D'}"
         echo "::set-output name=mod_description::$desc"
+
+    - name: Upload Packages
+      uses: actions/upload-artifact@v2
+      with:
+        name: packages-beta
+        path: ./packages/
+
+  publish-on-nuget:
+    name: Publish on NuGet
+    runs-on: ubuntu-latest
+    needs: ["nuget-pack-stable", "nuget-pack-beta"]
+    steps:
+
+    - name: Download stable packages
+      uses: actions/download-artifact@v2
+      with:
+        name: packages-stable
+
+    - name: Download beta packages
+      uses: actions/download-artifact@v2
+      with:
+        name: packages-beta
 
     - name: Push to NuGet
       run: dotnet nuget push "./packages/*.nupkg" -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json
