@@ -1,10 +1,10 @@
-﻿using Bannerlord.ButterLib.CampaignIdentifier;
+﻿using System;
+
+using Bannerlord.ButterLib.CampaignIdentifier;
 using Bannerlord.ButterLib.CampaignIdentifier.CampaignBehaviors;
 using Bannerlord.ButterLib.CampaignIdentifier.Helpers;
 
 using HarmonyLib;
-
-using System;
 
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
@@ -24,6 +24,7 @@ namespace Bannerlord.ButterLib
         protected override void OnSubModuleLoad()
         {
             base.OnSubModuleLoad();
+
             try
             {
                 CampaignIdentifierHarmonyInstance ??= new Harmony("Bannerlord.ButterLib.CampaignIdentifier");
@@ -40,6 +41,7 @@ namespace Bannerlord.ButterLib
         protected override void OnBeforeInitialModuleScreenSetAsRoot()
         {
             base.OnBeforeInitialModuleScreenSetAsRoot();
+
             if (!Patched)
             {
                 InformationManager.DisplayMessage(new InformationMessage(new TextObject(SErrorLoading).ToString(), Colors.Red));
@@ -49,6 +51,7 @@ namespace Bannerlord.ButterLib
         protected override void OnGameStart(Game game, IGameStarter gameStarterObject)
         {
             base.OnGameStart(game, gameStarterObject);
+
             if (game.GameType is Campaign)
             {
                 //Events
