@@ -114,13 +114,13 @@ jobs:
         DOTNET_CLI_TELEMETRY_OPTOUT: 1
 
     - name: Pack Bannerlord.ButterLib (Stable_Release)
-      run: dotnet pack src/Bannerlord.ButterLib/Bannerlord.ButterLib.csproj --configuration Stable_Release -o "./packages"
+      run: dotnet pack src/Bannerlord.ButterLib/Bannerlord.ButterLib.csproj --configuration S_Release -o "./packages"
       env:
         DOTNET_NOLOGO: 1
         DOTNET_CLI_TELEMETRY_OPTOUT: 1
 
     - name: Pack Bannerlord.ButterLib (Beta_Release)
-      run: dotnet pack src/Bannerlord.ButterLib/Bannerlord.ButterLib.csproj --configuration Beta_Release -o "./packages"
+      run: dotnet pack src/Bannerlord.ButterLib/Bannerlord.ButterLib.csproj --configuration B_Release -o "./packages"
       env:
         DOTNET_NOLOGO: 1
         DOTNET_CLI_TELEMETRY_OPTOUT: 1
