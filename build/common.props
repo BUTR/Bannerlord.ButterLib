@@ -12,25 +12,25 @@
     <GameFolder>C:\Program Files (x86)\Steam\steamapps\common\Mount &amp; Blade II Bannerlord</GameFolder>
   </PropertyGroup>
 
-  <PropertyGroup Condition="$(Configuration) == 'S_Debug' OR $(Configuration) == 'B_Debug'">
+  <PropertyGroup Condition="$(Configuration) == 'S_D' OR $(Configuration) == 'B_D'">
     <DefineConstants>$(DefineConstants);DEBUG;TRACE</DefineConstants>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
   </PropertyGroup>
 
-  <PropertyGroup Condition="$(Configuration) == 'S_Release' OR $(Configuration) == 'B_Release'">
+  <PropertyGroup Condition="$(Configuration) == 'S_R' OR $(Configuration) == 'B_R'">
     <DefineConstants>$(DefineConstants);RELEASE;TRACE</DefineConstants>
     <DebugSymbols>false</DebugSymbols>
     <DebugType>portable</DebugType>
     <Optimize>true</Optimize>
   </PropertyGroup>
 
-  <PropertyGroup Condition="$(Configuration) == 'S_Debug' OR $(Configuration) == 'S_Release'">
+  <PropertyGroup Condition="$(Configuration) == 'S_D' OR $(Configuration) == 'S_R'">
     <DefineConstants>$(DefineConstants);RELEASE;TRACE;STABLE</DefineConstants>
   </PropertyGroup>
 
-  <PropertyGroup Condition="$(Configuration) == 'B_Debug' OR $(Configuration) == 'B_Release'">
+  <PropertyGroup Condition="$(Configuration) == 'B_D' OR $(Configuration) == 'B_R'">
     <DefineConstants>$(DefineConstants);RELEASE;TRACE;BETA</DefineConstants>
   </PropertyGroup>
 
