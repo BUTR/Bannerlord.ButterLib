@@ -152,7 +152,7 @@ jobs:
 ###########################
 #        NUGET/GPR        #
 ###########################
-  publish-on-nuget:
+  publish-on-nuget-beta:
     name: Publish on NuGet
     runs-on: ubuntu-latest
     steps:
