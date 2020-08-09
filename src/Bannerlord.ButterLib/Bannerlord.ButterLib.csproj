@@ -5,7 +5,7 @@
     <TargetFramework>net472</TargetFramework>
     <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
-    <Configurations>S_D;S_R;B_D;B_R</Configurations>
+    <Configurations>Stable_Debug;Stable_Release;Beta_Debug;Beta_Release</Configurations>
   </PropertyGroup>
 
   <!--Module Creation-->
@@ -15,11 +15,11 @@
   <!--Module Creation-->
 
   <!--NuGet Package-->
-  <PropertyGroup Condition="$(Configuration) == 'S_R'">
+  <PropertyGroup Condition="$(Configuration) == 'Stable_Release'">
     <PackageId>Bannerlord.ButterLib</PackageId>
     <PackageDescription>A library containing common functions for modification development. For game version e$(StableVersion).</PackageDescription>
   </PropertyGroup>
-  <PropertyGroup Condition="$(Configuration) == 'B_R'">
+  <PropertyGroup Condition="$(Configuration) == 'Beta_Release'">
     <PackageId>Bannerlord.ButterLib.Beta</PackageId>
     <PackageDescription>A library containing common functions for modification development. For game version e$(BetaVersion).</PackageDescription>
   </PropertyGroup>
@@ -39,11 +39,11 @@
   <ItemGroup>
     <PackageReference Include="Lib.Harmony" Version="2.0.2" IncludeAssets="compile" />
   </ItemGroup>
-  <ItemGroup Condition="$(Configuration) == 'S_D' OR $(Configuration) == 'S_R'">
+  <ItemGroup Condition="$(Configuration) == 'Stable_Debug' OR $(Configuration) == 'Stable_Release'">
     <PackageReference Include="Bannerlord.ReferenceAssemblies.Core.EarlyAccess" Version="$(StableVersion).*" PrivateAssets="All" />
     <PackageReference Include="Bannerlord.ReferenceAssemblies.StoryMode.EarlyAccess" Version="$(StableVersion).*" PrivateAssets="All" />
   </ItemGroup>
-  <ItemGroup Condition="$(Configuration) == 'B_D' OR $(Configuration) == 'B_R'">
+  <ItemGroup Condition="$(Configuration) == 'Beta_Debug' OR $(Configuration) == 'Beta_Release'">
     <PackageReference Include="Bannerlord.ReferenceAssemblies.Core.EarlyAccess" Version="$(BetaVersion).*" PrivateAssets="All" />
     <PackageReference Include="Bannerlord.ReferenceAssemblies.StoryMode.EarlyAccess" Version="$(BetaVersion).*" PrivateAssets="All" />
   </ItemGroup>
