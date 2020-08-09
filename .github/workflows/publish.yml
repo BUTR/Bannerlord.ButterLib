@@ -115,8 +115,8 @@ jobs:
 
     - name: Pack Bannerlord.ButterLib (Release)
       run: >-
-        dotnet pack src/Bannerlord.ButterLib/MCMBannerlord.ButterLib.csproj --configuration Stable_Release -o "./packages";
-        dotnet pack src/Bannerlord.ButterLib/MCMBannerlord.ButterLib.csproj --configuration Beta_Release -o "./packages"
+        dotnet pack src/Bannerlord.ButterLib/Bannerlord.ButterLib.csproj --configuration Stable_Release -o "./packages";
+        dotnet pack src/Bannerlord.ButterLib/Bannerlord.ButterLib.csproj --configuration Beta_Release -o "./packages"
       env:
         DOTNET_NOLOGO: 1
         DOTNET_CLI_TELEMETRY_OPTOUT: 1
