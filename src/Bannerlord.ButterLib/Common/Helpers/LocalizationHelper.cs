@@ -6,7 +6,7 @@ using TaleWorlds.CampaignSystem;
 using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
 
-namespace Bannerlord.ButterLib.PublicHelpers
+namespace Bannerlord.ButterLib.Common.Helpers
 {
     public static class LocalizationHelper
     {
@@ -77,25 +77,25 @@ namespace Bannerlord.ButterLib.PublicHelpers
             switch (entity)
             {
                 case Hero hero:
-                    SetEntitiyProperties(parentTextObject, tag + "_CLAN", hero.Clan, addLeaderInfo, GetRecursiveCaller(RecursiveCaller.Hero, recursiveCaller));
+                    SetEntityProperties(parentTextObject, tag + "_CLAN", hero.Clan, addLeaderInfo, GetRecursiveCaller(RecursiveCaller.Hero, recursiveCaller));
                     break;
                 case Settlement settlement:
-                    SetEntitiyProperties(parentTextObject, tag + "_CLAN", settlement.OwnerClan, addLeaderInfo, GetRecursiveCaller(RecursiveCaller.Settlement, recursiveCaller));
+                    SetEntityProperties(parentTextObject, tag + "_CLAN", settlement.OwnerClan, addLeaderInfo, GetRecursiveCaller(RecursiveCaller.Settlement, recursiveCaller));
                     break;
                 case Clan clan:
                     if (addLeaderInfo)
                     {
-                        SetEntitiyProperties(parentTextObject, tag + "_LEADER", clan.Leader, false, RecursiveCaller.Clan);
+                        SetEntityProperties(parentTextObject, tag + "_LEADER", clan.Leader, false, RecursiveCaller.Clan);
                     }
                     if (clan.Kingdom != null)
                     {
-                        SetEntitiyProperties(parentTextObject, tag + "_KINGDOM", clan.Kingdom, addLeaderInfo, GetRecursiveCaller(RecursiveCaller.Clan, recursiveCaller));
+                        SetEntityProperties(parentTextObject, tag + "_KINGDOM", clan.Kingdom, addLeaderInfo, GetRecursiveCaller(RecursiveCaller.Clan, recursiveCaller));
                     }
                     break;
                 case Kingdom kingdom:
                     if (addLeaderInfo)
                     {
-                        SetEntitiyProperties(parentTextObject, tag + "_LEADER", kingdom.Leader, false, RecursiveCaller.Kingdom);
+                        SetEntityProperties(parentTextObject, tag + "_LEADER", kingdom.Leader, false, RecursiveCaller.Kingdom);
                     }
                     break;
                 default:
@@ -103,7 +103,7 @@ namespace Bannerlord.ButterLib.PublicHelpers
             }
         }
 
-        public static void SetEntitiyProperties<T>(TextObject? parentTextObject, string tag, T entity, bool addLeaderInfo = false, RecursiveCaller recursiveCaller = RecursiveCaller.None) where T : class
+        public static void SetEntityProperties<T>(TextObject? parentTextObject, string tag, T entity, bool addLeaderInfo = false, RecursiveCaller recursiveCaller = RecursiveCaller.None) where T : class
         {
             if (string.IsNullOrEmpty(tag) || entity is null || recursiveCaller == GetCurrentCaller(entity))
             {
@@ -122,11 +122,11 @@ namespace Bannerlord.ButterLib.PublicHelpers
 
         private static PluralForm GetSlavicPluralFormInternal(int number)
         {
-            int absNumner = Math.Abs(number);
-            int lastDigit = absNumner % 10;
+            int absNumber = Math.Abs(number);
+            int lastDigit = absNumber % 10;
             return
-              SlavicPluralExceptions.Contains(absNumner) || !SlavicSingularNumerics.Contains(lastDigit)
-                ? PluralForm.Plural : !SlavicPluralExceptions.Contains(absNumner) && SlavicSingularNumerics.Contains(lastDigit) && lastDigit != 1
+              SlavicPluralExceptions.Contains(absNumber) || !SlavicSingularNumerics.Contains(lastDigit)
+                ? PluralForm.Plural : !SlavicPluralExceptions.Contains(absNumber) && SlavicSingularNumerics.Contains(lastDigit) && lastDigit != 1
                 ? PluralForm.SpecificSingular : PluralForm.Singular;
         }
 
