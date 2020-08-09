@@ -210,6 +210,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: packages-beta
+        path: ./packages
 
     - name: Push to NuGet
       run: dotnet nuget push "./packages/*.nupkg" -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json
