@@ -91,7 +91,6 @@ jobs:
   publish-on-nuget:
     name: Publish on NuGet
     runs-on: ubuntu-latest
-    needs: test
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v2
@@ -113,7 +112,7 @@ jobs:
         DOTNET_NOLOGO: 1
         DOTNET_CLI_TELEMETRY_OPTOUT: 1
 
-    - name: Pack MCM (Release)
+    - name: Pack Bannerlord.ButterLib (Release)
       run: dotnet pack src/Bannerlord.ButterLib/MCMBannerlord.ButterLib.csproj --configuration Release -o "./packages"
       env:
         DOTNET_NOLOGO: 1
