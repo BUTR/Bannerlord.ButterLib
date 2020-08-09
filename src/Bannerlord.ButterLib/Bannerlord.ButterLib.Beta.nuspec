@@ -2,9 +2,9 @@
 
 <package>
   <metadata>
-    <id>Bannerlord.ButterLib</id>
+    <id>Bannerlord.ButterLib.Beta</id>
     <version>$version$</version>
-    <title>ButterLib</title>
+    <title>ButterLib Beta</title>
     <owners>Aragas</owners>
     <authors>BUTR</authors>
     <description>A library containing common functions for modification development. For game version $gameversion$.</description>

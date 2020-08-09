@@ -13,9 +13,13 @@
     <ModuleName>Bannerlord.ButterLib</ModuleName>
   </PropertyGroup>
 
-  <PropertyGroup>
+  <PropertyGroup Condition="$(Configuration) == 'Stable_Release'">
     <NuspecFile>Bannerlord.ButterLib.nuspec</NuspecFile>
-    <NuspecProperties>version=$(Version);configuration=$(Configuration);targetframework=$(TargetFramework)</NuspecProperties>
+    <NuspecProperties>version=$(Version);configuration=$(Configuration);targetframework=$(TargetFramework);gameversion=e$(StableVersion)</NuspecProperties>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(Configuration) == 'Beta_Release'">
+    <NuspecFile>Bannerlord.ButterLib.Beta.nuspec</NuspecFile>
+    <NuspecProperties>version=$(Version);configuration=$(Configuration);targetframework=$(TargetFramework);gameversion=e$(BetaVersion)</NuspecProperties>
   </PropertyGroup>
 
   <ItemGroup>
