@@ -3,7 +3,7 @@
   <!--Development Variables-->
   <PropertyGroup>
     <!--Module Version-->
-    <Version>0.0.1</Version>
+    <Version>0.0.2</Version>
     <!--Current Bannerlord Stable Version-->
     <StableVersion>1.4.2</StableVersion>
     <!--Current Bannerlord Beta Version-->
