@@ -5,10 +5,16 @@ using System.Text;
 
 namespace Bannerlord.ButterLib.Common.Helpers
 {
+    /// <summary>
+    /// Alphanumeric sort. This sorting algorithm logically handles numbers in strings. It makes sense to humans.
+    /// Highway names like 50F and 100F will be sorted wrongly with ASCII sort.
+    /// It is different from alphabetic, ASCII or numeric sorting. This algorithmic approach is used in file managers.
+    /// </summary>
     public class AlphanumComparatorFast : IComparer<string?>, IComparer
     {
         /// <inheritdoc/>
         public int Compare(object? x, object? y) => Compare(x as string, y as string);
+
         /// <inheritdoc/>
         public int Compare(string? s1, string? s2)
         {

@@ -1,6 +1,14 @@
 <Project>
 
+  <!--Development Variables-->
   <PropertyGroup>
+    <!--Module Version-->
+    <Version>0.0.1</Version>
+    <!--Current Bannerlord Stable Version-->
+    <StableVersion>1.4.2</StableVersion>
+    <!--Current Bannerlord Beta Version-->
+    <BetaVersion>1.4.3</BetaVersion>
+    <!--Bannerlord's Root Folder-->
     <GameFolder>C:\Program Files (x86)\Steam\steamapps\common\Mount &amp; Blade II Bannerlord</GameFolder>
   </PropertyGroup>
 
