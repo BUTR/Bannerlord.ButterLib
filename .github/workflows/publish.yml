@@ -34,9 +34,9 @@ jobs:
         DOTNET_NOLOGO: 1
         DOTNET_CLI_TELEMETRY_OPTOUT: 1
 
-    - name: Build Bannerlord.ButterLib (Release)
+    - name: Build Bannerlord.ButterLib (Stable_Release)
       run: >-
-        dotnet build src/Bannerlord.ButterLib/Bannerlord.ButterLib.csproj --configuration Release -p:GameFolder="$PWD/bannerlord";
+        dotnet build src/Bannerlord.ButterLib/Bannerlord.ButterLib.csproj --configuration Stable_Release -p:GameFolder="$PWD/bannerlord";
       env:
         DOTNET_NOLOGO: 1
         DOTNET_CLI_TELEMETRY_OPTOUT: 1
@@ -48,7 +48,7 @@ jobs:
         path: ./bannerlord/
 
   build-for-nexusmods-beta:
-    name: Build for NexusMods (Stable)
+    name: Build for NexusMods (Beta)
     runs-on: ubuntu-latest
     steps:
     - name: Checkout Repository
@@ -71,9 +71,9 @@ jobs:
         DOTNET_NOLOGO: 1
         DOTNET_CLI_TELEMETRY_OPTOUT: 1
 
-    - name: Build Bannerlord.ButterLib (Release)
+    - name: Build Bannerlord.ButterLib (Beta_Release)
       run: >-
-        dotnet build src/Bannerlord.ButterLib/Bannerlord.ButterLib.csproj --configuration Release -p:GameFolder="$PWD/bannerlord";
+        dotnet build src/Bannerlord.ButterLib/Bannerlord.ButterLib.csproj --configuration Beta_Release -p:GameFolder="$PWD/bannerlord";
       env:
         DOTNET_NOLOGO: 1
         DOTNET_CLI_TELEMETRY_OPTOUT: 1
@@ -86,6 +86,7 @@ jobs:
 
   publish-on-nexusmods:
     name: Publish on NexusMods
+    needs: ["build-for-nexusmods-stable", "build-for-nexusmods-beta"]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout Repository
