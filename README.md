@@ -1,5 +1,10 @@
 # Bannerlord.ButterLib
 <p align="center">
+   <a href="https://www.nuget.org/packages/ Bannerlord.ButterLib" alt="NuGet Bannerlord.ButterLib">
+   <img src="https://img.shields.io/nuget/v/Bannerlord.ButterLib.svg?label=NuGet%20Bannerlord.ButterLib&colorB=blue" /></a>
+   <a href="https://www.nuget.org/packages/Bannerlord.ButterLib.Beta" alt="NuGet Bannerlord.ButterLib.Beta">
+   <img src="https://img.shields.io/nuget/v/Bannerlord.ButterLib.Beta.svg?label=NuGet%20Bannerlord.ButterLib.Beta&colorB=blue" /></a>
+   </br>
         <a href="https://www.nexusmods.com/mountandblade2bannerlord/mods/2018" alt="Nexus ButterLib">
         <img src="https://img.shields.io/badge/Nexus-ButterLib-yellow.svg" /></a>  
         <a href="https://www.nexusmods.com/mountandblade2bannerlord/mods/2018" alt="ButterLib">
