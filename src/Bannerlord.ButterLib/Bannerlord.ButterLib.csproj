@@ -37,4 +37,12 @@
     <PackageReference Include="Bannerlord.ReferenceAssemblies.StoryMode.EarlyAccess" Version="$(BetaVersion).*" />
   </ItemGroup>
 
+  
+  <ItemGroup Condition="'$(GITHUB_ACTIONS)' == 'true' AND '$(DISABLE_GITHUB_ACTIONS)' == '' AND $(TargetFramework) == 'net472' AND '$(OS)' != 'Windows_NT'">
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
 </Project>
