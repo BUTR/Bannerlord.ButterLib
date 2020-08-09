@@ -1,9 +1,6 @@
 <!--EXTERNAL_PROPERTIES: MSBuildThisFileDirectory-->
 <Project>
 
-  <!--https://github.com/dotnet/sdk/issues/8239-->
-  <!--<Import Project="$(MSBuildThisFileDirectory)/../build/*.props" />-->
-  <Import Project="$(MSBuildThisFileDirectory)/../build/common.props" />
-  <Import Project="$(MSBuildThisFileDirectory)/../build/github-actions.props" />
+  <Import Project="$(MSBuildThisFileDirectory)/../build/*.props" />
 
 </Project>
