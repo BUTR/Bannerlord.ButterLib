@@ -2,6 +2,7 @@
 <p align="center">
   <a href="https://github.com/BUTR/Bannerlord.ButterLib" alt="Logo">
   <img src="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/resources/Butter.png?raw=true" /></a>
+  </br>
   <a href="https://www.nuget.org/packages/Bannerlord.ButterLib" alt="NuGet Bannerlord.ButterLib">
   <img src="https://img.shields.io/nuget/v/Bannerlord.ButterLib.svg?label=NuGet%20Bannerlord.ButterLib&colorB=blue" /></a>
   <a href="https://www.nuget.org/packages/Bannerlord.ButterLib.Beta" alt="NuGet Bannerlord.ButterLib.Beta">
