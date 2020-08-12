@@ -7,7 +7,7 @@ namespace Bannerlord.ButterLib.CampaignIdentifier.Helpers
 {
     internal static class LoggingHelper
     {
-        public static readonly string AOLogFile = Path.Combine(BasePath.Name, "Modules", "CampaignIdentifier", "CampaignIdentifier.log");
+        public static readonly string AOLogFile = Path.Combine(BasePath.Name, "Modules", "Bannerlord.ButterLib", "CampaignIdentifier.log");
 
         public static void Log(string message)
         {
