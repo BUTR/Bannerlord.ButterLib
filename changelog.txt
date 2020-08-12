@@ -1,5 +1,7 @@
 ---------------------------------------------------------------------------------------------------
 Version: 0.0.6
 Game Versions: e1.4.2,e1.4.3
-* Added the ability to get a persistent and deterministic Campaign Id
+* Added the ability to get a persistent and deterministic Campaign Id.
+* Added the distance matrixes with default implementation for heroes, settlements, clans and kingdoms.
+* Several helper classes and extensions.
 ---------------------------------------------------------------------------------------------------
