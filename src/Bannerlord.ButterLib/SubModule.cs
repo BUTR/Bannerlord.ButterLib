@@ -17,7 +17,7 @@ namespace Bannerlord.ButterLib
 {
     public class SubModule : MBSubModuleBase
     {
-        private const string SErrorLoading = "{=PZthBmJc9B}Campaign Identifier failed to load! See details in the mod log.";
+        private const string SErrorLoading = "{=PZthBmJc9B}ButterLib Campaign Identifier failed to load! See details in the mod log.";
 
         public Harmony? CampaignIdentifierHarmonyInstance { get; private set; }
         internal bool Patched { get; private set; }

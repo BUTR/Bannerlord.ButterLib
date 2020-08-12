@@ -29,9 +29,14 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// </summary>
         public const string SPECIFIC_PLURAL_FORM_TAG = "SPECIFIC_PLURAL_FORM";
 
-        private static readonly ReadOnlyCollection<int> SlavicPluralExceptions = new ReadOnlyCollection<int>(new List<int>() { 11, 12, 13, 14 });
-        private static readonly ReadOnlyCollection<int> SlavicSingularNumerics = new ReadOnlyCollection<int>(new List<int>() { 1, 2, 3, 4 });
-        private static readonly ReadOnlyCollection<string> SlavicGroupLanguageIDs = new ReadOnlyCollection<string>(new List<string>() { "Russian", "Русский", "Ukrainian", "Українська", "Belarusian", "Беларускі", "Polish", "Polski" });
+        private static readonly ReadOnlyCollection<int> EasternSlavicPluralExceptions = new ReadOnlyCollection<int>(new List<int>() { 11, 12, 13, 14 });
+        private static readonly ReadOnlyCollection<int> EasternSlavicSingularNumerics = new ReadOnlyCollection<int>(new List<int>() { 1, 2, 3, 4 });
+
+        private static readonly ReadOnlyCollection<int> WesternSlavicPluralExceptions = new ReadOnlyCollection<int>(new List<int>() { 12, 13, 14 });
+        private static readonly ReadOnlyCollection<int> WesternSlavicSingularNumerics = new ReadOnlyCollection<int>(new List<int>() { 2, 3, 4 });
+
+        private static readonly ReadOnlyCollection<string> EasternSlavicGroupLanguageIDs = new ReadOnlyCollection<string>(new List<string>() { "Russian", "Русский", "Ukrainian", "Українська", "Belarusian", "Беларускі" });
+        private static readonly ReadOnlyCollection<string> WesternSlavicGroupLanguageIDs = new ReadOnlyCollection<string>(new List<string>() { "Polish", "Polski" });
 
         private static RecursiveCaller GetRecursiveCaller(RecursiveCaller currentCaller, RecursiveCaller receivedCaller)
         {
@@ -146,14 +151,26 @@ namespace Bannerlord.ButterLib.Common.Helpers
             SetRelatedProperties(parentTextObject, tag, entity, addLeaderInfo, recursiveCaller);
         }
 
-        private static PluralForm GetSlavicPluralFormInternal(int number)
+        private static PluralForm GetEasternSlavicPluralFormInternal(int number)
         {
             int absNumber = Math.Abs(number);
             int lastDigit = absNumber % 10;
             return
-              SlavicPluralExceptions.Contains(absNumber) || !SlavicSingularNumerics.Contains(lastDigit)
-                ? PluralForm.Plural : !SlavicPluralExceptions.Contains(absNumber) && SlavicSingularNumerics.Contains(lastDigit) && lastDigit != 1
+              EasternSlavicPluralExceptions.Contains(absNumber % 100) || !EasternSlavicSingularNumerics.Contains(lastDigit)
+                ? PluralForm.Plural 
+                : !EasternSlavicPluralExceptions.Contains(absNumber) && EasternSlavicSingularNumerics.Contains(lastDigit) && lastDigit != 1
                 ? PluralForm.SpecificSingular : PluralForm.Singular;
+        }
+
+        private static PluralForm GetWesternSlavicPluralFormInternal(int number)
+        {
+            int absNumber = Math.Abs(number);
+            int lastDigit = absNumber % 10;
+            return
+              absNumber > 1 && (WesternSlavicPluralExceptions.Contains(absNumber % 100) || !WesternSlavicSingularNumerics.Contains(lastDigit))
+                ? PluralForm.Plural 
+                : !WesternSlavicPluralExceptions.Contains(absNumber) && WesternSlavicSingularNumerics.Contains(lastDigit)
+                ? PluralForm.SpecificPlural : PluralForm.Singular;
         }
 
         /// <summary>Gets which <see cref="PluralForm" /> should be used with the given number according to the grammar rules of the game language.</summary>
@@ -161,9 +178,13 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// <returns>The appropriate <see cref="PluralForm" /> that should be used with the given number in accordance with the grammar rules of the game language.</returns>
         public static PluralForm GetPluralForm(int number)
         {
-            if (SlavicGroupLanguageIDs.Contains(BannerlordConfig.Language))
+            if (EasternSlavicGroupLanguageIDs.Contains(BannerlordConfig.Language))
             {
-                return GetSlavicPluralFormInternal(number);
+                return GetEasternSlavicPluralFormInternal(number);
+            }
+            if (WesternSlavicGroupLanguageIDs.Contains(BannerlordConfig.Language))
+            {
+                return GetWesternSlavicPluralFormInternal(number);
             }
             return number != 1 ? PluralForm.Plural : PluralForm.Singular;
         }
@@ -173,9 +194,9 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// <returns>The appropriate <see cref="PluralForm" /> that should be used with the given number in accordance with the grammar rules of the game language.</returns>
         public static PluralForm GetPluralForm(float number)
         {
-            if (SlavicGroupLanguageIDs.Contains(BannerlordConfig.Language))
+            if (EasternSlavicGroupLanguageIDs.Contains(BannerlordConfig.Language))
             {
-                return GetSlavicPluralFormInternal((int)Math.Floor(number));
+                return GetEasternSlavicPluralFormInternal((int)Math.Floor(number));
             }
             return number != 1 ? PluralForm.Plural : PluralForm.Singular;
         }

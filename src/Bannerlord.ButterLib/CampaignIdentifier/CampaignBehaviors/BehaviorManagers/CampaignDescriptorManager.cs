@@ -17,7 +17,7 @@ namespace Bannerlord.ButterLib.CampaignIdentifier.CampaignBehaviors.BehaviorMana
     internal class CampaignDescriptorManager
     {
         private const string InquiryUpperBody =
-            "{=gRz8MZ0YZ7}This game has no ID. It probably was started before installing Campaign Identifier. We have found other ongoing campaigns that have similar initial character background and were already assigned an ID. If this game refers to one of them, please, select corresponding option.";
+            "{=gRz8MZ0YZ7}This game has no ID. It probably was started before installing ButterLib Campaign Identifier. We have found other ongoing campaigns that have similar initial character background and were already assigned an ID. If this game refers to one of them, please, select corresponding option.";
 
         private const string InquiryLowerBody =
             "{=zed49rdkQR}Select '{NEW_ID}' if the loaded save is a separate campaign that has nothing to do with the suggested options and a new ID should be assigned to it.";
