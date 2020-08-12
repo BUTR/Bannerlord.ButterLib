@@ -3,6 +3,7 @@
 using Bannerlord.ButterLib.CampaignIdentifier;
 using Bannerlord.ButterLib.CampaignIdentifier.CampaignBehaviors;
 using Bannerlord.ButterLib.CampaignIdentifier.Helpers;
+using Bannerlord.ButterLib.DistanceMatrix;
 
 using HarmonyLib;
 
@@ -60,6 +61,7 @@ namespace Bannerlord.ButterLib
                 CampaignGameStarter gameStarter = (CampaignGameStarter) gameStarterObject;
                 //Behaviors
                 gameStarter.AddBehavior(new CampaignIdentifierBehavior());
+                gameStarter.AddBehavior(new GeopoliticsCachingBehavior());
             }
         }
     }

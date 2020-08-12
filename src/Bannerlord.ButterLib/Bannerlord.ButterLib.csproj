@@ -8,10 +8,10 @@
     <Configurations>Stable_Debug;Stable_Release;Beta_Debug;Beta_Release</Configurations>
   </PropertyGroup>
 
-  <PropertyGroup Condition="$(Configuration) == 'Stable_Debug' OR $(Configuration) == 'Stable_Release'" >
+  <PropertyGroup Condition="$(Configuration) == 'Stable_Debug' OR $(Configuration) == 'Stable_Release'">
     <AssemblyName>Bannerlord.ButterLib</AssemblyName>
   </PropertyGroup>
-  <PropertyGroup Condition="$(Configuration) == 'Beta_Debug' OR $(Configuration) == 'Beta_Release'" >
+  <PropertyGroup Condition="$(Configuration) == 'Beta_Debug' OR $(Configuration) == 'Beta_Release'">
     <AssemblyName>Bannerlord.ButterLib.Beta</AssemblyName>
   </PropertyGroup>
 
@@ -22,11 +22,11 @@
   <!--Module Creation-->
 
   <!--NuGet Package-->
-  <PropertyGroup Condition="$(Configuration) == 'Stable_Release'" >
+  <PropertyGroup Condition="$(Configuration) == 'Stable_Release'">
     <PackageId>Bannerlord.ButterLib</PackageId>
     <PackageDescription>A library containing common functions for modification development. For game version e$(StableVersion).</PackageDescription>
   </PropertyGroup>
-  <PropertyGroup Condition="$(Configuration) == 'Beta_Release'" >
+  <PropertyGroup Condition="$(Configuration) == 'Beta_Release'">
     <PackageId>Bannerlord.ButterLib.Beta</PackageId>
     <PackageDescription>A library containing common functions for modification development. For game version e$(BetaVersion).</PackageDescription>
   </PropertyGroup>
@@ -46,11 +46,11 @@
   <ItemGroup>
     <PackageReference Include="Lib.Harmony" Version="2.0.2" IncludeAssets="compile" />
   </ItemGroup>
-  <ItemGroup Condition="$(Configuration) == 'Stable_Debug' OR $(Configuration) == 'Stable_Release'" >
+  <ItemGroup Condition="$(Configuration) == 'Stable_Debug' OR $(Configuration) == 'Stable_Release'">
     <PackageReference Include="Bannerlord.ReferenceAssemblies.Core.EarlyAccess" Version="$(StableVersion).*" PrivateAssets="All" />
     <PackageReference Include="Bannerlord.ReferenceAssemblies.StoryMode.EarlyAccess" Version="$(StableVersion).*" PrivateAssets="All" />
   </ItemGroup>
-  <ItemGroup Condition="$(Configuration) == 'Beta_Debug' OR $(Configuration) == 'Beta_Release'" >
+  <ItemGroup Condition="$(Configuration) == 'Beta_Debug' OR $(Configuration) == 'Beta_Release'">
     <PackageReference Include="Bannerlord.ReferenceAssemblies.Core.EarlyAccess" Version="$(BetaVersion).*" PrivateAssets="All" />
     <PackageReference Include="Bannerlord.ReferenceAssemblies.StoryMode.EarlyAccess" Version="$(BetaVersion).*" PrivateAssets="All" />
   </ItemGroup>

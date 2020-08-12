@@ -10,9 +10,13 @@ using TaleWorlds.Library;
 
 namespace Bannerlord.ButterLib.Common.Helpers
 {
+    /// <summary>Helper class for handling the game version.</summary>
     public static class ApplicationVersionUtils
     {
         private static readonly MethodInfo? GetVersionStrMethod = AccessTools.Method(typeof(Managed), "GetVersionStr");
+
+        /// <summary>Gets the version of the game as string.</summary>
+        /// <returns>A string representation of the game version.</returns>
         public static string GameVersionStr()
         {
             if (GetVersionStrMethod == null)
@@ -26,7 +30,6 @@ namespace Bannerlord.ButterLib.Common.Helpers
 
             return "e1.0.0";
         }
-
 
         private static ConstructorInfo? ApplicationVersionConstructorV1 { get; } = AccessTools.Constructor(typeof(ApplicationVersion), new[]
         {
@@ -53,9 +56,22 @@ namespace Bannerlord.ButterLib.Common.Helpers
         private static PropertyInfo? RevisionProperty { get; } =
             AccessTools.Property(typeof(ApplicationVersion), "Revision");
 
-        public static bool TryParse(string versionAsString, out ApplicationVersion version)
+        /// <summary>
+        /// Converts string representation of the game version to an <see cref="ApplicationVersion" /> struct.
+        /// A return value indicates whether the conversion succeeded.
+        /// </summary>
+        /// <param name="versionAsString">A string containing a version to convert.</param>
+        /// <param name="version">
+        /// When this method returns, contains the <see cref="ApplicationVersion" /> struct equivalent
+        /// of the verion contained in <paramref name="versionAsString" />, if the conversion succeeded
+        /// or <see langword="default" /> if the conversion failed.
+        /// </param>
+        /// <returns><see langword="true" /> if <paramref name="versionAsString" /> was converted successfully; otherwise <see langword="false" />.</returns>
+        public static bool TryParse(string? versionAsString, out ApplicationVersion version)
         {
             version = default;
+            if (versionAsString is null)
+                return false;
 
             var array = versionAsString.Split('.');
             if (array.Length != 3 && array.Length != 4)
@@ -94,6 +110,16 @@ namespace Bannerlord.ButterLib.Common.Helpers
             return (ApplicationVersion) boxedVersion;
         }
 
+        /// <summary>
+        /// Determines whether two source <see cref="ApplicationVersion" /> structs
+        /// are equal up to the revisions.
+        /// </summary>
+        /// <param name="this">An <see cref="ApplicationVersion" /> struct to compare to second.</param>
+        /// <param name="other">An <see cref="ApplicationVersion" /> struct to compare to the first.</param>
+        /// <returns>
+        /// <see langword="true" /> if corresponding elements of two source <see cref="ApplicationVersion" /> structs
+        /// are equal according to the default equality comparer for their type; otherwise, <see langword="false" />.
+        /// </returns>
         public static bool IsSameWithRevision(this ApplicationVersion @this, ApplicationVersion other)
         {
             return @this.ApplicationVersionType == other.ApplicationVersionType &&
@@ -102,6 +128,17 @@ namespace Bannerlord.ButterLib.Common.Helpers
                    @this.Revision == other.Revision;
         }
 
+        /// <summary>
+        /// Determines whether two source <see cref="ApplicationVersion" /> structs
+        /// are equal, disregarding revisions.
+        /// </summary>
+        /// <param name="this">An <see cref="ApplicationVersion" /> struct to compare to second.</param>
+        /// <param name="other">An <see cref="ApplicationVersion" /> struct to compare to the first.</param>
+        /// <returns>
+        /// <see langword="true" /> if corresponding elements of two source <see cref="ApplicationVersion" /> structs
+        /// are equal according to the default equality comparer for their type; otherwise, <see langword="false" />.
+        /// Differences in the revisions between two source <see cref="ApplicationVersion" /> structs do not affect the result.
+        /// </returns>
         public static bool IsSameWithoutRevision(this ApplicationVersion @this, ApplicationVersion other)
         {
             return @this.ApplicationVersionType == other.ApplicationVersionType &&
@@ -109,6 +146,11 @@ namespace Bannerlord.ButterLib.Common.Helpers
                    @this.Minor == other.Minor;
         }
 
-        public static ApplicationVersion? GameVersion() => TryParse(GameVersionStr(), out var v) ? v : (ApplicationVersion?) null;
+        /// <summary>Gets the game version as an <see cref="ApplicationVersion" /> struct.</summary>
+        /// <returns>
+        /// <see cref="ApplicationVersion" /> struct representation of the game version
+        /// if it was successfully  obtained and parsed; otherwise <see langword="null" />.
+        /// </returns>
+        public static ApplicationVersion? GameVersion() => TryParse(GameVersionStr(), out var v) ? v : (ApplicationVersion?)null;
     }
 }

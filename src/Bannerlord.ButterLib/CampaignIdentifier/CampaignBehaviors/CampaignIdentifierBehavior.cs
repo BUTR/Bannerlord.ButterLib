@@ -8,13 +8,18 @@ using TaleWorlds.CampaignSystem;
 
 namespace Bannerlord.ButterLib.CampaignIdentifier.CampaignBehaviors
 {
+    /// <summary>Custom behavior used by CampaignIdentifier.</summary>
     public class CampaignIdentifierBehavior : CampaignBehaviorBase
     {
         private CampaignDescriptorManager _descriptorManager;
 
+        /// <summary>Alphanumeric campaign ID.</summary>
         public string CampaignId => _descriptorManager.CampaignDescriptor.KeyValue;
+
+        /// <summary><see cref = "T:Bannerlord.ButterLib.CampaignIdentifier.CampaignDescriptor" /> object corresponding with the campaign.</summary>
         public CampaignDescriptor CampaignDescriptor => _descriptorManager.CampaignDescriptor;
 
+        /// <summary>Initializes a new instance of the <see cref="CampaignIdentifierBehavior" />.</summary>
         public CampaignIdentifierBehavior()
         {
             _descriptorManager = new CampaignDescriptorManager();
@@ -38,7 +43,7 @@ namespace Bannerlord.ButterLib.CampaignIdentifier.CampaignBehaviors
             _descriptorManager.CheckCampaignDescriptor();
         }
 
-        public void UpdateCampaignDescriptorOnCharacterOrClanModified()
+        internal void UpdateCampaignDescriptorOnCharacterOrClanModified()
         {
             if (Hero.All.FirstOrDefault(h => h.Id.SubId == 1) is { } initialHero && initialHero.Clan == Clan.PlayerClan)
             {

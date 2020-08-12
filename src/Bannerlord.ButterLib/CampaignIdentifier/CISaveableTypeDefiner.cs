@@ -2,13 +2,11 @@
 
 using System.Collections.Generic;
 
-using TaleWorlds.SaveSystem;
-
 namespace Bannerlord.ButterLib.CampaignIdentifier
 {
-    internal class CISaveableTypeDefiner : SaveableTypeDefiner
+    internal class CISaveableTypeDefiner : ButterLibSaveableTypeDefiner
     {
-        public CISaveableTypeDefiner() : base(2011750000) { }
+        internal CISaveableTypeDefiner() : base(0) { }
 
         protected override void DefineClassTypes()
         {

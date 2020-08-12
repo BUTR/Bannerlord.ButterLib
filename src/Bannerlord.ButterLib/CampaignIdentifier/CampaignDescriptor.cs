@@ -15,6 +15,11 @@ using TaleWorlds.SaveSystem;
 
 namespace Bannerlord.ButterLib.CampaignIdentifier
 {
+    /// <summary>Sealed class that is used to assign and hold campaign alphanumeric ID.</summary>
+    /// <remarks>
+    /// Also stores some general description on the campaign, based on a specified hero
+    /// (default is the initial player character in the current campaign).
+    /// </remarks>
     [Serializable]
     [SaveableClass(1)]
     public sealed class CampaignDescriptor : ISerializable
@@ -43,19 +48,36 @@ namespace Bannerlord.ButterLib.CampaignIdentifier
         private readonly Hero _baseHero;
 
         //Properties
+        /// <summary>Alphanumeric campaign ID.</summary>
         public string KeyValue => _value;
 
+        /// <summary>A string key that is used to compare unidentified ongoing campaigns.</summary>
+        /// <remarks>Contains information about gender, birthplace and culture of the initial character.</remarks>
         public string ImmutableKey => Regex.Replace(
             $"GDR_{_attributes[DescriptorAttribute.HeroGender]}-BPL_{_attributes[DescriptorAttribute.BirthplaceName]}-CLR_{_attributes[DescriptorAttribute.HeroCulture]}",
             @"\{[\\?=][^}]*\}", string.Empty);
 
+        /// <summary>
+        /// Name of the <see cref="T:TaleWorlds.CampaignSystem.Hero" />
+        /// that was used when creating this <see cref="T:Bannerlord.ButterLib.CampaignIdentifier.CampaignDescriptor" /> instance.
+        /// </summary>
         public string FullCharacterName => string.Join(" ", _attributes[DescriptorAttribute.HeroName], _attributes[DescriptorAttribute.HeroFamilyName]);
 
+        /// <summary>
+        /// Localizable description of the campaign, based on the <see cref="Hero" /> 
+        /// that was used when creating this <see cref="CampaignDescriptor" /> instance.
+        /// </summary>
         public string Descriptor => GetLocalizableValue();
 
+        /// <summary>
+        /// The <see cref="T:TaleWorlds.Core.CharacterCode" /> of the <see cref="Hero" /> 
+        /// that current <see cref="CampaignDescriptor" /> instance is based on.
+        /// </summary>
         public CharacterCode CharacterCode => CharacterCode.CreateFrom((string) _attributes[DescriptorAttribute.CharacterCode]);
 
         //Constructors
+        /// <summary>Initializes a new instance of the class <see cref="CampaignDescriptor" />.</summary>
+        /// <param name="baseHero">The hero to be used as descriptor base.</param>
         public CampaignDescriptor(Hero baseHero)
         {
             _baseHero = baseHero;
@@ -76,7 +98,7 @@ namespace Bannerlord.ButterLib.CampaignIdentifier
             _baseHero = null!; // Won't be needed since we have the attributes already
         }
 
-        internal CampaignDescriptor(SerializationInfo info, StreamingContext context)
+        private CampaignDescriptor(SerializationInfo info, StreamingContext context)
         {
             _value = info.GetString(nameof(KeyValue));
             _attributes = (Dictionary<DescriptorAttribute, object>) info.GetValue("DecriptorAttributes", typeof(Dictionary<DescriptorAttribute, object>));
@@ -194,7 +216,7 @@ namespace Bannerlord.ButterLib.CampaignIdentifier
             return result.ToString();
         }
 
-        [SaveableEnum(100)]
+        [SaveableEnum(3)]
         internal enum DescriptorAttribute : byte
         {
             HeroName = 0,

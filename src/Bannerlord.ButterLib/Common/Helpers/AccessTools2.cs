@@ -15,7 +15,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
         public static TDelegate? GetDelegate<TDelegate>(Type type, string method) where TDelegate : Delegate
         {
             MethodInfo miOriginal = Method(type, method);
-            return miOriginal != null ? (TDelegate) Delegate.CreateDelegate(typeof(TDelegate), miOriginal) : null;
+            return miOriginal != null ? (TDelegate)Delegate.CreateDelegate(typeof(TDelegate), miOriginal) : null;
         }
 
         /// <summary>Gets the delegate for a method by searching the type and all its super types</summary>
@@ -27,7 +27,6 @@ namespace Bannerlord.ButterLib.Common.Helpers
             return GetDelegate<TDelegate>(instance.GetType(), method);
         }
 
-        
         /// <summary>Gets the delegate for a directly declared method</summary>
         /// <param name="type">The type where the method is declared</param>
         /// <param name="method">The name of the method (case sensitive)</param>
@@ -35,7 +34,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
         public static TDelegate? GetDeclaredDelegate<TDelegate>(Type type, string method) where TDelegate : Delegate
         {
             MethodInfo miOriginal = DeclaredMethod(type, method);
-            return miOriginal != null ? (TDelegate) Delegate.CreateDelegate(typeof(TDelegate), miOriginal) : null;
+            return miOriginal != null ? (TDelegate)Delegate.CreateDelegate(typeof(TDelegate), miOriginal) : null;
         }
 
         /// <summary>Gets the delegate for a directly declared method</summary>

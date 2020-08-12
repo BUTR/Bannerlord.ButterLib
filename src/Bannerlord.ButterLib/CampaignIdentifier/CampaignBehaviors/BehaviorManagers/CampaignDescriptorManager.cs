@@ -13,8 +13,8 @@ using Path = System.IO.Path;
 
 namespace Bannerlord.ButterLib.CampaignIdentifier.CampaignBehaviors.BehaviorManagers
 {
-    [SaveableClass(10)]
-    public class CampaignDescriptorManager
+    [SaveableClass(2)]
+    internal class CampaignDescriptorManager
     {
         private const string InquiryUpperBody =
             "{=gRz8MZ0YZ7}This game has no ID. It probably was started before installing Campaign Identifier. We have found other ongoing campaigns that have similar initial character background and were already assigned an ID. If this game refers to one of them, please, select corresponding option.";
@@ -27,14 +27,14 @@ namespace Bannerlord.ButterLib.CampaignIdentifier.CampaignBehaviors.BehaviorMana
 
         private CampaignDescriptor? _descriptorToBeAssigned;
 
-        public static readonly string ExistingCampaignDescriptorsLogFile = Path.Combine(Utilities.GetConfigsPath(), "CampaignIdentifier", "ExistingCampaignIdentifiers.bin");
+        internal static readonly string ExistingCampaignDescriptorsLogFile = Path.Combine(Utilities.GetConfigsPath(), "ButterLib", "CampaignIdentifier", "ExistingCampaignIdentifiers.bin");
 
         internal CampaignDescriptorManager()
         {
             _campaignDescriptor = null!; // Won't be null when properly accessed.
         }
 
-        public CampaignDescriptor CampaignDescriptor => _campaignDescriptor;
+        internal CampaignDescriptor CampaignDescriptor => _campaignDescriptor;
 
         internal void GenerateNewGameDescriptor()
         {
