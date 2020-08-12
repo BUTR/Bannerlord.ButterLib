@@ -6,11 +6,22 @@ namespace Bannerlord.ButterLib.DistanceMatrix
     /// <summary>Custom behavior used to calculate default distance matrixes.</summary>
     public class GeopoliticsCachingBehavior : CampaignBehaviorBase
     {
-        /// <summary>Distance matrix for all the towns, castles and vilages of the current campaign.</summary>
+        /// <summary>Distances between settlements of the current campaign.</summary>
+        /// <value>Distance matrix for all the towns, castles and vilages of the current campaign.</value>
         public DistanceMatrix<Settlement>? SettlementDistanceMatrix { get; private set; }
-        /// <summary>Distance matrix for all the active clans of the current campaign.</summary>
+
+        /// <summary>Distances between active clans of the current campaign.</summary>
+        /// <value>
+        /// Distance matrix for all the active clans of the current campaign,
+        /// calculated based on the fiefs owned by these clans.
+        /// </value>
         public DistanceMatrix<Clan>? ClanDistanceMatrix { get; private set; }
-        /// <summary>Distance matrix for all the active kingdoms of the current campaign.</summary>
+
+        /// <summary>Distances between active kingdoms of the current campaign.</summary>
+        /// <value>
+        /// Distance matrix for all the active clans of the current campaign,
+        /// calculated based on the fiefs owned by these kingdoms.
+        /// </value>
         public DistanceMatrix<Kingdom>? KingdomDistanceMatrix { get; private set; }
 
         public override void RegisterEvents()
