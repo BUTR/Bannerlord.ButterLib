@@ -1,4 +1,5 @@
-﻿using Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehaviors;
+﻿using Bannerlord.ButterLib.CampaignIdentifier;
+using Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehaviors;
 using Bannerlord.ButterLib.Implementation.CampaignIdentifier.Helpers;
 using Bannerlord.ButterLib.Implementation.DistanceMatrix;
 
@@ -54,9 +55,6 @@ namespace Bannerlord.ButterLib.Implementation
 
             if (game.GameType is Campaign)
             {
-                //Events
-                // TODO:
-                //CampaignIdentifierEvents.Instance = new CampaignIdentifierEvents();
                 //CampaignGameStarter
                 CampaignGameStarter gameStarter = (CampaignGameStarter) gameStarterObject;
                 //Behaviors

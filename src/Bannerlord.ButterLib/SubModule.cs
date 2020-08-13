@@ -1,4 +1,6 @@
-﻿using TaleWorlds.Core;
+﻿using Bannerlord.ButterLib.CampaignIdentifier;
+using TaleWorlds.CampaignSystem;
+using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 
 namespace Bannerlord.ButterLib
@@ -21,6 +23,11 @@ namespace Bannerlord.ButterLib
         {
             base.OnGameStart(game, gameStarterObject);
 
+            if (game.GameType is Campaign)
+            {
+                //Events
+                CampaignIdentifierEvents.Instance = new CampaignIdentifierEvents();
+            }
         }
     }
 }

@@ -41,7 +41,7 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehavio
         internal void GenerateNewGameDescriptor()
         {
             _campaignDescriptor = new CampaignDescriptorImplementation(Hero.MainHero);
-            (CampaignIdentifierEvents.Instance as CampaignIdentifierEventsImplementation)!.OnDescriptorAssigned(_campaignDescriptor);
+            CampaignIdentifierEvents.Instance.OnDescriptorAssigned(_campaignDescriptor);
         }
 
         internal void CheckCampaignDescriptor()
@@ -116,7 +116,7 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehavio
             }
 
             _campaignDescriptor = _descriptorToBeAssigned;
-            (CampaignIdentifierEvents.Instance as CampaignIdentifierEventsImplementation)!.OnDescriptorAssigned(_campaignDescriptor);
+            CampaignIdentifierEvents.Instance.OnDescriptorAssigned(_campaignDescriptor);
         }
 
         private void UpdateSavedDescriptors()
