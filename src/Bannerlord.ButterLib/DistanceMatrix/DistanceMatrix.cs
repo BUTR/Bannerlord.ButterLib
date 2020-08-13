@@ -15,7 +15,7 @@ namespace Bannerlord.ButterLib.DistanceMatrix
     /// and for each pair calculates the distance between the objects that formed it.
     /// </summary>
     /// <typeparam name="T">The type of objects for which the distance matrix should be calculated.</typeparam>
-    /// <remarks><see cref="T:Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix`1" /> implements built-in calculatuion for the <see cref="Hero"/>,
+    /// <remarks><see cref="T:Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix`1" /> implements built-in calculation for the <see cref="Hero"/>,
     /// <see cref="Settlement"/>, <see cref="Clan"/> and <see cref="Kingdom"/> objects.
     /// For any other <see cref="MBObjectBase"/> subtypes custom EntityListGetter and DistanceCalculator methods
     /// should be provided using special constructor <see cref="DistanceMatrix{T}.DistanceMatrix(Func{IEnumerable{T}}, Func{T, T, float})"/> .

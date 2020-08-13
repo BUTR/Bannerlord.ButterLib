@@ -37,7 +37,7 @@ namespace Bannerlord.ButterLib.Common.Extensions
             internal static readonly InvokeDelegate? DeInvoke = AccessTools2.GetDeclaredDelegate<InvokeDelegate>(typeof(MbEvent<T1, T2, T3, T4, T5, T6>), "Invoke");
         }
 
-        /// <summary>Ivokes all the listeners to the specified <see cref="T:TaleWorlds.CampaignSystem.MbEvent`2}" />.</summary>
+        /// <summary>Invokes all the listeners to the specified <see cref="T:TaleWorlds.CampaignSystem.MbEvent`2}" />.</summary>
         /// <typeparam name="T1">The type of the first event argument.</typeparam>
         /// <typeparam name="T2">The type of the second event argument.</typeparam>
         /// <param name="instance">An instance of <see cref="T:TaleWorlds.CampaignSystem.MbEvent`2}" /> to call "Invoke" against.</param>
@@ -52,7 +52,7 @@ namespace Bannerlord.ButterLib.Common.Extensions
             MbEvent2InvokeHandler<T1, T2>.DeInvoke?.Invoke(instance, arg1, arg2);
         }
 
-        /// <summary>Ivokes all the listeners to the specified <see cref="T:TaleWorlds.CampaignSystem.MbEvent`3}" />.</summary>
+        /// <summary>Invokes all the listeners to the specified <see cref="T:TaleWorlds.CampaignSystem.MbEvent`3}" />.</summary>
         /// <typeparam name="T1">The type of the first event argument.</typeparam>
         /// <typeparam name="T2">The type of the second event argument.</typeparam>
         /// <typeparam name="T3">The type of the third event argument.</typeparam>
@@ -69,7 +69,7 @@ namespace Bannerlord.ButterLib.Common.Extensions
             MbEvent3InvokeHandler<T1, T2, T3>.DeInvoke?.Invoke(instance, arg1, arg2, arg3);
         }
 
-        /// <summary>Ivokes all the listeners to the specified <see cref="T:TaleWorlds.CampaignSystem.MbEvent`4}" />.</summary>
+        /// <summary>Invokes all the listeners to the specified <see cref="T:TaleWorlds.CampaignSystem.MbEvent`4}" />.</summary>
         /// <typeparam name="T1">The type of the first event argument.</typeparam>
         /// <typeparam name="T2">The type of the second event argument.</typeparam>
         /// <typeparam name="T3">The type of the third event argument.</typeparam>
@@ -88,7 +88,7 @@ namespace Bannerlord.ButterLib.Common.Extensions
             MbEvent4InvokeHandler<T1, T2, T3, T4>.DeInvoke?.Invoke(instance, arg1, arg2, arg3, arg4);
         }
 
-        /// <summary>Ivokes all the listeners to the specified <see cref="T:TaleWorlds.CampaignSystem.MbEvent`5}" />.</summary>
+        /// <summary>Invokes all the listeners to the specified <see cref="T:TaleWorlds.CampaignSystem.MbEvent`5}" />.</summary>
         /// <typeparam name="T1">The type of the first event argument.</typeparam>
         /// <typeparam name="T2">The type of the second event argument.</typeparam>
         /// <typeparam name="T3">The type of the third event argument.</typeparam>
@@ -109,7 +109,7 @@ namespace Bannerlord.ButterLib.Common.Extensions
             MbEvent5InvokeHandler<T1, T2, T3, T4, T5>.DeInvoke?.Invoke(instance, arg1, arg2, arg3, arg4, arg5);
         }
 
-        /// <summary>Ivokes all the listeners to the specified <see cref="T:TaleWorlds.CampaignSystem.MbEvent`6}" />.</summary>
+        /// <summary>Invokes all the listeners to the specified <see cref="T:TaleWorlds.CampaignSystem.MbEvent`6}" />.</summary>
         /// <typeparam name="T1">The type of the first event argument.</typeparam>
         /// <typeparam name="T2">The type of the second event argument.</typeparam>
         /// <typeparam name="T3">The type of the third event argument.</typeparam>

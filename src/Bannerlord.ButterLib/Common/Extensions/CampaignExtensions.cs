@@ -21,7 +21,7 @@ namespace Bannerlord.ButterLib.Common.Extensions
         /// <returns>Alphanumeric string key for the campaign or null if campaign is not started or not yet identified.</returns>
         public static string? GetCampaignId(this Campaign campaign)
         {
-            return campaign.GameStarted && Campaign.Current.GetCampaignBehavior<CampaignIdentifierBehavior>() is { } identifierBehavior
+            return campaign.GameStarted && campaign.GetCampaignBehavior<CampaignIdentifierBehavior>() is { } identifierBehavior
                 ? identifierBehavior.CampaignId
                 : null;
         }
@@ -34,7 +34,7 @@ namespace Bannerlord.ButterLib.Common.Extensions
         /// </returns>
         public static CampaignDescriptor? GetCampaignDescriptor(this Campaign campaign)
         {
-            return campaign.GameStarted && Campaign.Current.GetCampaignBehavior<CampaignIdentifierBehavior>() is { } identifierBehavior
+            return campaign.GameStarted && campaign.GetCampaignBehavior<CampaignIdentifierBehavior>() is { } identifierBehavior
                 ? identifierBehavior.CampaignDescriptor
                 : null;
         }
@@ -50,7 +50,7 @@ namespace Bannerlord.ButterLib.Common.Extensions
         /// </returns>
         public static DistanceMatrix<Settlement>? GetDefaultSettlementDistanceMatrix(this Campaign campaign)
         {
-            return campaign.GameStarted && Campaign.Current.GetCampaignBehavior<GeopoliticsCachingBehavior>() is { } geopoliticsCachingBehavior
+            return campaign.GameStarted && campaign.GetCampaignBehavior<GeopoliticsCachingBehavior>() is { } geopoliticsCachingBehavior
                 ? geopoliticsCachingBehavior.SettlementDistanceMatrix
                 : null;
         }
@@ -67,7 +67,7 @@ namespace Bannerlord.ButterLib.Common.Extensions
         /// <remarks>Calculation is based on the average distance between clans fiefs weighted by the fief type.</remarks>
         public static DistanceMatrix<Clan>? GetDefaultClanDistanceMatrix(this Campaign campaign)
         {
-            return campaign.GameStarted && Campaign.Current.GetCampaignBehavior<GeopoliticsCachingBehavior>() is { } geopoliticsCachingBehavior
+            return campaign.GameStarted && campaign.GetCampaignBehavior<GeopoliticsCachingBehavior>() is { } geopoliticsCachingBehavior
                 ? geopoliticsCachingBehavior.ClanDistanceMatrix
                 : null;
         }
@@ -84,7 +84,7 @@ namespace Bannerlord.ButterLib.Common.Extensions
         /// <remarks>Calculation is based on the average distance between kingdoms fiefs weighted by the fief type.</remarks>
         public static DistanceMatrix<Kingdom>? GetDefaultKingdomDistanceMatrix(this Campaign campaign)
         {
-            return campaign.GameStarted && Campaign.Current.GetCampaignBehavior<GeopoliticsCachingBehavior>() is { } geopoliticsCachingBehavior
+            return campaign.GameStarted && campaign.GetCampaignBehavior<GeopoliticsCachingBehavior>() is { } geopoliticsCachingBehavior
                 ? geopoliticsCachingBehavior.KingdomDistanceMatrix
                 : null;
         }
