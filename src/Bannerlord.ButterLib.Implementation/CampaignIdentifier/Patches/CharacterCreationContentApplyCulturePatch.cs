@@ -1,13 +1,17 @@
-﻿using Bannerlord.ButterLib.CampaignIdentifier.Helpers;
+﻿using Bannerlord.ButterLib.Implementation.CampaignIdentifier.Helpers;
+
 using HarmonyLib;
+
 using Helpers;
+
 using StoryMode.CharacterCreationSystem;
+
 using System;
 using System.Reflection;
 
 using TaleWorlds.CampaignSystem;
 
-namespace Bannerlord.ButterLib.CampaignIdentifier.Patches
+namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.Patches
 {
     [HarmonyPatch(typeof(CharacterCreationContent), "ApplyCulture")]
     internal static class CharacterCreationContentApplyCulturePatch

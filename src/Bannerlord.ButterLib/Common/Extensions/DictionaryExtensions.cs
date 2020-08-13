@@ -3,7 +3,7 @@
 namespace Bannerlord.ButterLib.Common.Extensions
 {
     /// <summary>Extension class for working with Dictionaries.</summary>
-    public static class IDictionaryExtensions
+    public static class DictionaryExtensions
     {
         /// <summary>
         /// Deconstructs a <see cref="T:System.Collections.Generic.KeyValuePair`2" /> into two variables

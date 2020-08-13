@@ -5,32 +5,12 @@ using TaleWorlds.CampaignSystem;
 
 namespace Bannerlord.ButterLib.Common.Extensions
 {
-    /// <summary>
-    /// Helper extension of the <see cref="Campaign" /> class 
-    /// returning additional information, provided by the ButterLib.
-    /// </summary>
-    /// <remarks>
-    /// Contains easy accessible getters for the current CampaignId and <see cref="CampaignDescriptor" />
-    /// provided by CampaignIdentifier service as well as various geopolitical distance matrixes
-    /// held in <see cref="T:Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix`1" /> objects.
-    /// </remarks>
-    public static class CampaignExtensions
+    internal interface ICampaignExtensions
     {
-        internal static ICampaignExtensions? _instance;
-        internal static ICampaignExtensions Instance
-        {
-            get
-            {
-                if (_instance == null)
-                    DI.TryGetImplementation(out _instance);
-                return _instance!;
-            }
-        }
-
         /// <summary>Gets ID of the <see cref="Campaign" />.</summary>
         /// <param name="campaign">The campaign</param>
         /// <returns>Alphanumeric string key for the campaign or null if campaign is not started or not yet identified.</returns>
-        public static string? GetCampaignId(this Campaign campaign) => Instance.GetCampaignId(campaign);
+        string? GetCampaignId(Campaign campaign);
 
         /// <summary>Gets CampaignDescriptor for the <see cref="Campaign" />.</summary>
         /// <param name="campaign">The campaign</param>
@@ -38,7 +18,7 @@ namespace Bannerlord.ButterLib.Common.Extensions
         /// <see cref="CampaignDescriptor" /> object corresponding with the campaign 
         /// or null if campaign is not started or not yet identified.
         /// </returns>
-        public static CampaignDescriptor? GetCampaignDescriptor(this Campaign campaign) => Instance.GetCampaignDescriptor(campaign);
+        CampaignDescriptor? GetCampaignDescriptor(Campaign campaign);
 
         /// <summary>
         /// Gets the <see cref="T:Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix`1" />
@@ -49,7 +29,7 @@ namespace Bannerlord.ButterLib.Common.Extensions
         /// Distance matrix for all the towns, castles and vilages of the current campaign, 
         /// or null if the campaign has not started yet.
         /// </returns>
-        public static DistanceMatrixBase<Settlement>? GetDefaultSettlementDistanceMatrix(this Campaign campaign) => Instance.GetDefaultSettlementDistanceMatrix(campaign);
+        DistanceMatrixBase<Settlement>? GetDefaultSettlementDistanceMatrix(Campaign campaign);
 
         /// <summary>
         /// Gets the <see cref="T:Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix`1" />
@@ -61,7 +41,7 @@ namespace Bannerlord.ButterLib.Common.Extensions
         /// or null if the campaign has not started yet.
         /// </returns>
         /// <remarks>Calculation is based on the average distance between clans fiefs weighted by the fief type.</remarks>
-        public static DistanceMatrixBase<Clan>? GetDefaultClanDistanceMatrix(this Campaign campaign) => Instance.GetDefaultClanDistanceMatrix(campaign);
+        DistanceMatrixBase<Clan>? GetDefaultClanDistanceMatrix(Campaign campaign);
 
         /// <summary>
         /// Gets the <see cref="T:Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix`1" />
@@ -73,6 +53,6 @@ namespace Bannerlord.ButterLib.Common.Extensions
         /// or null if the campaign has not started yet.
         /// </returns>
         /// <remarks>Calculation is based on the average distance between kingdoms fiefs weighted by the fief type.</remarks>
-        public static DistanceMatrixBase<Kingdom>? GetDefaultKingdomDistanceMatrix(this Campaign campaign) => Instance.GetDefaultKingdomDistanceMatrix(campaign);
+        DistanceMatrixBase<Kingdom>? GetDefaultKingdomDistanceMatrix(Campaign campaign);
     }
 }

@@ -1,10 +1,10 @@
 ﻿using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.Actions;
 
-namespace Bannerlord.ButterLib.DistanceMatrix
+namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
 {
     /// <summary>Custom behavior used to calculate default distance matrices.</summary>
-    public class GeopoliticsCachingBehavior : CampaignBehaviorBase
+    internal class GeopoliticsCachingBehavior : CampaignBehaviorBase
     {
         /// <summary>Distances between settlements of the current campaign.</summary>
         /// <value>Distance matrix for all the towns, castles and villages of the current campaign.</value>

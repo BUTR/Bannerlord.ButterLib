@@ -1,4 +1,5 @@
-﻿using Bannerlord.ButterLib.CampaignIdentifier.CampaignBehaviors.BehaviorManagers;
+﻿using Bannerlord.ButterLib.CampaignIdentifier;
+using Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehaviors.BehaviorManagers;
 
 using StoryMode;
 
@@ -6,10 +7,10 @@ using System.Linq;
 
 using TaleWorlds.CampaignSystem;
 
-namespace Bannerlord.ButterLib.CampaignIdentifier.CampaignBehaviors
+namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehaviors
 {
     /// <summary>Custom behavior used by CampaignIdentifier.</summary>
-    public class CampaignIdentifierBehavior : CampaignBehaviorBase
+    internal class CampaignIdentifierBehavior : CampaignBehaviorBase
     {
         private CampaignDescriptorManager _descriptorManager;
 
@@ -17,7 +18,7 @@ namespace Bannerlord.ButterLib.CampaignIdentifier.CampaignBehaviors
         public string CampaignId => _descriptorManager.CampaignDescriptor.KeyValue;
 
         /// <summary><see cref = "T:Bannerlord.ButterLib.CampaignIdentifier.CampaignDescriptor" /> object corresponding with the campaign.</summary>
-        public CampaignDescriptor CampaignDescriptor => _descriptorManager.CampaignDescriptor;
+        public CampaignDescriptorImplementation CampaignDescriptor => _descriptorManager.CampaignDescriptor;
 
         /// <summary>Initializes a new instance of the <see cref="CampaignIdentifierBehavior" />.</summary>
         public CampaignIdentifierBehavior()

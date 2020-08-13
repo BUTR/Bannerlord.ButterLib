@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace Bannerlord.ButterLib.CampaignIdentifier.Helpers
+namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.Helpers
 {
     internal static class DebugHelper
     {

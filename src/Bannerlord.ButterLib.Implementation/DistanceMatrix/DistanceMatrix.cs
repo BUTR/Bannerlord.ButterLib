@@ -1,4 +1,5 @@
 ﻿using Bannerlord.ButterLib.Common.Helpers;
+using Bannerlord.ButterLib.DistanceMatrix;
 
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Runtime.Serialization;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.ObjectSystem;
 
-namespace Bannerlord.ButterLib.DistanceMatrix
+namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
 {
     /// <summary>
     /// A generic class that pairs given objects of type <typeparamref name="T"/>
@@ -18,10 +19,10 @@ namespace Bannerlord.ButterLib.DistanceMatrix
     /// <remarks><see cref="T:Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix`1" /> implements built-in calculation for the <see cref="Hero"/>,
     /// <see cref="Settlement"/>, <see cref="Clan"/> and <see cref="Kingdom"/> objects.
     /// For any other <see cref="MBObjectBase"/> subtypes custom EntityListGetter and DistanceCalculator methods
-    /// should be provided using special constructor <see cref="DistanceMatrix{T}.DistanceMatrix(Func{IEnumerable{T}}, Func{T, T, float})"/> .
+    /// should be provided using special constructor <see cref="DistanceMatrix{T}"/> .
     /// </remarks>
     [Serializable]
-    public sealed class DistanceMatrix<T> : ISerializable where T : MBObjectBase
+    internal sealed class DistanceMatrix<T> : DistanceMatrixBase<T>, ISerializable where T : MBObjectBase
     {
         //Fields
         private readonly Dictionary<ulong, float> _DistanceMatrix;
@@ -39,14 +40,14 @@ namespace Bannerlord.ButterLib.DistanceMatrix
         /// represented by unique 64-bit unsigned number as key
         /// and floating-point numbers, representing distances between those objects as value.
         /// </value>
-        public Dictionary<ulong, float> AsDictionary => _DistanceMatrix;
+        public override Dictionary<ulong, float> AsDictionary => _DistanceMatrix;
 
         /// <summary>Objectified distance matrix representation</summary>
         /// <value>
         /// A dictionary of paired type <typeparamref name="T"/> objects as key
         /// and floating-point numbers, representing distances between those objects as value.
         /// </value>
-        public Dictionary<(T object1, T object2), float> AsTypedDictionary => _TypedDistanceMatrix;
+        public override Dictionary<(T object1, T object2), float> AsTypedDictionary => _TypedDistanceMatrix;
 
         //Constructors
         /// <summary>
@@ -109,7 +110,7 @@ namespace Bannerlord.ButterLib.DistanceMatrix
         /// A floating-point number representing the distance between two specified <see cref="MBObjectBase"/> objects;
         /// or <see cref="float.NaN" />, if distance was not calculated or it is uncomputable.
         /// </returns>
-        public float GetDistance(T object1, T object2) =>
+        public override float GetDistance(T object1, T object2) =>
             _DistanceMatrix.TryGetValue(object1.Id > object2.Id ? ElegantPairHelper.Pair(object2.Id, object1.Id) : ElegantPairHelper.Pair(object1.Id, object2.Id),
                                         out float distance) ? distance : float.NaN;
 
@@ -120,7 +121,7 @@ namespace Bannerlord.ButterLib.DistanceMatrix
         /// A floating-point number representing the distance between two specified <see cref="Hero"/> objects
         /// or <see cref="float.NaN" /> if distance could not be calculated.
         /// </returns>
-        public static float CalculateDistanceBetweenHeroes(Hero hero1, Hero hero2)
+        protected override float CalculateDistanceBetweenHeroesInternal(Hero hero1, Hero hero2)
         {
             (MobileParty? mobileParty1, Settlement? settlement1) = GetMapPosition(hero1);
             (MobileParty? mobileParty2, Settlement? settlement2) = GetMapPosition(hero2);
@@ -149,7 +150,7 @@ namespace Bannerlord.ButterLib.DistanceMatrix
         /// or <see cref="float.NaN" /> if distance could not be calculated.
         /// </returns>
         /// <remarks>Calculation is based on the average distance between clans fiefs weighted by the fief type.</remarks>
-        public static float CalculateDistanceBetweenClans(Clan clan1, Clan clan2, List<(ulong owners, float distance, float weight)> settlementOwnersPairedList)
+        protected override float CalculateDistanceBetweenClansInternal(Clan clan1, Clan clan2, List<(ulong owners, float distance, float weight)> settlementOwnersPairedList)
         {
             ulong pair = clan1.Id > clan2.Id ? ElegantPairHelper.Pair(clan2.Id, clan1.Id) : ElegantPairHelper.Pair(clan1.Id, clan2.Id);
             List<(float distance, float weight)> settlementDistances = settlementOwnersPairedList.Where(tuple => tuple.owners == pair && !float.IsNaN(tuple.distance))
@@ -166,7 +167,7 @@ namespace Bannerlord.ButterLib.DistanceMatrix
         /// or <see cref="float.NaN" /> if distance could not be calculated.
         /// </returns>
         /// <remarks>Calculation is based on the average distance between kingdoms fiefs weighted by the fief type.</remarks>
-        public static float CalculateDistanceBetweenKingdoms(Kingdom kingdom1, Kingdom kingdom2, DistanceMatrix<Settlement> settlementDistanceMatrix)
+        protected override float CalculateDistanceBetweenKingdomsInternal(Kingdom kingdom1, Kingdom kingdom2, DistanceMatrixBase<Settlement> settlementDistanceMatrix)
         {
             bool predicate(KeyValuePair<(Settlement object1, Settlement object2), float> x) =>
               x.Value != float.NaN && ((x.Key.object1.MapFaction == kingdom1 && x.Key.object2.MapFaction == kingdom2)
@@ -193,7 +194,7 @@ namespace Bannerlord.ButterLib.DistanceMatrix
         /// <see cref="DistanceMatrix{T}.CalculateDistanceBetweenClans(Clan, Clan, List{(ulong owners, float distance, float weight)})"/>
         /// method with required list argument.
         /// </remarks>
-        public static List<(ulong owners, float distance, float weight)> GetSettlementOwnersPairedList(DistanceMatrix<Settlement> settlementDistanceMatrix)
+        protected override List<(ulong owners, float distance, float weight)> GetSettlementOwnersPairedListInternal(DistanceMatrixBase<Settlement> settlementDistanceMatrix)
         {
             static (MBGUID ownerId1, MBGUID ownerId2, float value, float weight) firstSelector(KeyValuePair<(Settlement object1, Settlement object2), float> kvp) =>
               (ownerId1: kvp.Key.object1.OwnerClan.Id, ownerId2: kvp.Key.object2.OwnerClan.Id, value: kvp.Value, weight: GetSettlementWeight(kvp.Key.object1) + GetSettlementWeight(kvp.Key.object2));

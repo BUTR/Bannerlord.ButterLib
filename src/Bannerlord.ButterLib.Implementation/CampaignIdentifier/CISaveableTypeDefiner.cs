@@ -1,8 +1,8 @@
-﻿using Bannerlord.ButterLib.CampaignIdentifier.CampaignBehaviors.BehaviorManagers;
+﻿using Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehaviors.BehaviorManagers;
 
 using System.Collections.Generic;
 
-namespace Bannerlord.ButterLib.CampaignIdentifier
+namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier
 {
     internal class CISaveableTypeDefiner : ButterLibSaveableTypeDefiner
     {
@@ -10,18 +10,18 @@ namespace Bannerlord.ButterLib.CampaignIdentifier
 
         protected override void DefineClassTypes()
         {
-            AddClassDefinition(typeof(CampaignDescriptor), 1);
+            AddClassDefinition(typeof(CampaignDescriptorImplementation), 1);
             AddClassDefinition(typeof(CampaignDescriptorManager), 2);
         }
 
         protected override void DefineEnumTypes()
         {
-            AddEnumDefinition(typeof(CampaignDescriptor.DescriptorAttribute), 3);
+            AddEnumDefinition(typeof(CampaignDescriptorImplementation.DescriptorAttribute), 3);
         }
 
         protected override void DefineContainerDefinitions()
         {
-            ConstructContainerDefinition(typeof(Dictionary<CampaignDescriptor.DescriptorAttribute, object>));
+            ConstructContainerDefinition(typeof(Dictionary<CampaignDescriptorImplementation.DescriptorAttribute, object>));
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Bannerlord.ButterLib.CampaignIdentifier;
+
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -11,7 +13,7 @@ using TaleWorlds.SaveSystem;
 
 using Path = System.IO.Path;
 
-namespace Bannerlord.ButterLib.CampaignIdentifier.CampaignBehaviors.BehaviorManagers
+namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehaviors.BehaviorManagers
 {
     [SaveableClass(2)]
     internal class CampaignDescriptorManager
@@ -23,9 +25,9 @@ namespace Bannerlord.ButterLib.CampaignIdentifier.CampaignBehaviors.BehaviorMana
             "{=zed49rdkQR}Select '{NEW_ID}' if the loaded save is a separate campaign that has nothing to do with the suggested options and a new ID should be assigned to it.";
 
         [SaveableField(1)]
-        private CampaignDescriptor _campaignDescriptor;
+        private CampaignDescriptorImplementation _campaignDescriptor;
 
-        private CampaignDescriptor? _descriptorToBeAssigned;
+        private CampaignDescriptorImplementation? _descriptorToBeAssigned;
 
         internal static readonly string ExistingCampaignDescriptorsLogFile = Path.Combine(Utilities.GetConfigsPath(), "ButterLib", "CampaignIdentifier", "ExistingCampaignIdentifiers.bin");
 
@@ -34,12 +36,12 @@ namespace Bannerlord.ButterLib.CampaignIdentifier.CampaignBehaviors.BehaviorMana
             _campaignDescriptor = null!; // Won't be null when properly accessed.
         }
 
-        internal CampaignDescriptor CampaignDescriptor => _campaignDescriptor;
+        internal CampaignDescriptorImplementation CampaignDescriptor => _campaignDescriptor;
 
         internal void GenerateNewGameDescriptor()
         {
-            _campaignDescriptor = new CampaignDescriptor(Hero.MainHero);
-            CampaignIdentifierEvents.Instance.OnDescriptorAssigned(_campaignDescriptor);
+            _campaignDescriptor = new CampaignDescriptorImplementation(Hero.MainHero);
+            (CampaignIdentifierEvents.Instance as CampaignIdentifierEventsImplementation)!.OnDescriptorAssigned(_campaignDescriptor);
         }
 
         internal void CheckCampaignDescriptor()
@@ -52,13 +54,13 @@ namespace Bannerlord.ButterLib.CampaignIdentifier.CampaignBehaviors.BehaviorMana
 
         internal void UpdateCampaignDescriptor(Hero baseHero)
         {
-            _campaignDescriptor = new CampaignDescriptor(_campaignDescriptor.KeyValue, baseHero);
+            _campaignDescriptor = new CampaignDescriptorImplementation(_campaignDescriptor.KeyValue, baseHero);
         }
 
         private void AddDescriptorToExistingCampaign()
         {
             _descriptorToBeAssigned = Campaign.Current.GameStarted && Hero.All.FirstOrDefault(h => h.Id.SubId == 1) is { } baseHero
-                ? new CampaignDescriptor(baseHero)
+                ? new CampaignDescriptorImplementation(baseHero)
                 : null;
             if (_descriptorToBeAssigned is null)
             {
@@ -98,7 +100,7 @@ namespace Bannerlord.ButterLib.CampaignIdentifier.CampaignBehaviors.BehaviorMana
 
         private void OnDescriptorSelectionOver(List<InquiryElement> element)
         {
-            if (element.Count > 0 && element[0].Identifier is CampaignDescriptor chosenDescriptor)
+            if (element.Count > 0 && element[0].Identifier is CampaignDescriptorImplementation chosenDescriptor)
             {
                 _descriptorToBeAssigned = chosenDescriptor;
             }
@@ -114,7 +116,7 @@ namespace Bannerlord.ButterLib.CampaignIdentifier.CampaignBehaviors.BehaviorMana
             }
 
             _campaignDescriptor = _descriptorToBeAssigned;
-            CampaignIdentifierEvents.Instance.OnDescriptorAssigned(_campaignDescriptor);
+            (CampaignIdentifierEvents.Instance as CampaignIdentifierEventsImplementation)!.OnDescriptorAssigned(_campaignDescriptor);
         }
 
         private void UpdateSavedDescriptors()
@@ -133,17 +135,17 @@ namespace Bannerlord.ButterLib.CampaignIdentifier.CampaignBehaviors.BehaviorMana
             }
         }
 
-        private static List<CampaignDescriptor> LoadExistingDescriptors()
+        private static List<CampaignDescriptorImplementation> LoadExistingDescriptors()
         {
             if (!File.Exists(ExistingCampaignDescriptorsLogFile))
             {
-                return new List<CampaignDescriptor>();
+                return new List<CampaignDescriptorImplementation>();
             }
 
             using (FileStream fileStream = File.OpenRead(ExistingCampaignDescriptorsLogFile))
             {
                 var binaryFormatter = new BinaryFormatter();
-                var existingCampaignDescriptors = (List<CampaignDescriptor>) binaryFormatter.Deserialize(fileStream);
+                var existingCampaignDescriptors = (List<CampaignDescriptorImplementation>) binaryFormatter.Deserialize(fileStream);
                 return existingCampaignDescriptors;
             }
         }

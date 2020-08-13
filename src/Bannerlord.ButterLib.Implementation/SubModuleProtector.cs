@@ -1,4 +1,5 @@
-﻿using Bannerlord.ButterLib.Common.Helpers;
+﻿using Bannerlord.ButterLib.Common.Extensions;
+using Bannerlord.ButterLib.Common.Helpers;
 
 using System.Linq;
 using System.Reflection;
@@ -6,7 +7,7 @@ using System.Reflection;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
 
-namespace Bannerlord.ButterLib
+namespace Bannerlord.ButterLib.Implementation
 {
     /// <summary>
     /// Prevents the game from initializing the library if it was compiled for the wrong version.

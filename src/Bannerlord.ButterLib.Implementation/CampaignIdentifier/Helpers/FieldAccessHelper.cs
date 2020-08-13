@@ -1,8 +1,9 @@
 ﻿using TaleWorlds.CampaignSystem;
 using TaleWorlds.Localization;
+
 using static HarmonyLib.AccessTools;
 
-namespace Bannerlord.ButterLib.CampaignIdentifier.Helpers
+namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.Helpers
 {
     internal static class FieldAccessHelper
     {
