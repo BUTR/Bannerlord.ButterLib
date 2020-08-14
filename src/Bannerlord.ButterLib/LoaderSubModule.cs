@@ -1,4 +1,9 @@
-﻿using HarmonyLib;
+﻿#define Tick
+
+using Bannerlord.ButterLib.Common.Extensions;
+using Bannerlord.ButterLib.Common.Helpers;
+
+using HarmonyLib;
 
 using System;
 using System.Collections.Generic;
@@ -7,6 +12,7 @@ using System.Linq;
 using System.Reflection;
 
 using TaleWorlds.Core;
+using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 
 namespace Bannerlord.ButterLib
@@ -36,7 +42,18 @@ namespace Bannerlord.ButterLib
                 return;
 
             foreach (var match in matches.Where(m => assemblies.All(a => Path.GetFileNameWithoutExtension(a.Location) != Path.GetFileNameWithoutExtension(m.Name))))
-                implementationAssemblies.Add(Assembly.LoadFrom(match.FullName));
+            {
+                var assembly = Assembly.ReflectionOnlyLoadFrom(match.FullName);
+                
+                var gameVersion = ApplicationVersionUtils.TryParse(ApplicationVersionUtils.GameVersionStr(), out var v) ? v : (ApplicationVersion?)null;
+                var metadatas = assembly.GetCustomAttributes<AssemblyMetadataAttribute>();
+                var supportedVersionStr = metadatas.FirstOrDefault(a => a.Key == "GameVersion")?.Value;
+                var supportedVersion = !string.IsNullOrEmpty(supportedVersionStr) && ApplicationVersionUtils.TryParse(supportedVersionStr, out var sv)
+                    ? sv
+                    : (ApplicationVersion?) null;
+                if (gameVersion != null && supportedVersion != null && gameVersion.Value.IsSameWithoutRevision(supportedVersion.Value))
+                    implementationAssemblies.Add(Assembly.LoadFrom(match.FullName));
+            }
 
             var submodules = implementationAssemblies.SelectMany(assembly => assembly.GetTypes().Where(t =>
                 t.FullName != typeof(LoaderSubModule).FullName && typeof(MBSubModuleBase).IsAssignableFrom(t)));

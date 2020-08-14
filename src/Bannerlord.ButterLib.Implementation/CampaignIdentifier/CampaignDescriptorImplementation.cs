@@ -107,7 +107,7 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier
         }
 
         //Public methods
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             info.AddValue(nameof(KeyValue), _value);
             info.AddValue("DecriptorAttributes", _attributes);

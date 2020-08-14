@@ -1,15 +1,9 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-
-using TaleWorlds.Library;
+﻿using TaleWorlds.Library;
 
 namespace Bannerlord.ButterLib.Common.Extensions
 {
     public static class ApplicationVersionExtensions
     {
-        internal static IApplicationVersionExtensions? _instance;
-        internal static IApplicationVersionExtensions Instance =>
-            _instance ??= SubModule.ServiceProvider.GetRequiredService<IApplicationVersionExtensions>();
-
         /// <summary>
         /// Determines whether two source <see cref="ApplicationVersion" /> structs
         /// are equal up to the revisions.
@@ -20,7 +14,13 @@ namespace Bannerlord.ButterLib.Common.Extensions
         /// <see langword="true" /> if corresponding elements of two source <see cref="ApplicationVersion" /> structs
         /// are equal according to the default equality comparer for their type; otherwise, <see langword="false" />.
         /// </returns>
-        public static bool IsSameWithRevision(this ApplicationVersion @this, ApplicationVersion other) => Instance.IsSameWithRevision(@this, other);
+        public static bool IsSameWithRevision(this ApplicationVersion @this, ApplicationVersion other)
+        {
+            return @this.ApplicationVersionType == other.ApplicationVersionType &&
+                   @this.Major == other.Major &&
+                   @this.Minor == other.Minor &&
+                   @this.Revision == other.Revision;
+        }
 
         /// <summary>
         /// Determines whether two source <see cref="ApplicationVersion" /> structs
@@ -33,6 +33,11 @@ namespace Bannerlord.ButterLib.Common.Extensions
         /// are equal according to the default equality comparer for their type; otherwise, <see langword="false" />.
         /// Differences in the revisions between two source <see cref="ApplicationVersion" /> structs do not affect the result.
         /// </returns>
-        public static bool IsSameWithoutRevision(this ApplicationVersion @this, ApplicationVersion other) => Instance.IsSameWithRevision(@this, other);
+        public static bool IsSameWithoutRevision(this ApplicationVersion @this, ApplicationVersion other)
+        {
+            return @this.ApplicationVersionType == other.ApplicationVersionType &&
+                   @this.Major == other.Major &&
+                   @this.Minor == other.Minor;
+        }
     }
 }

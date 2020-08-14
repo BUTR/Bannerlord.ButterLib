@@ -7,8 +7,6 @@
   <MultiplayerModule value="false" />
   <Official value="false"/>
   <DependedModules>
-    <DependedModule Id="Native" />
-    <DependedModule Id="StoryMode" />
     <DependedModule Id="Bannerlord.Harmony" />
   </DependedModules>
   <SubModules>
@@ -16,6 +14,9 @@
       <Name value="Bannerlord.ButterLib" />
       <DLLName value="Bannerlord.ButterLib.dll" />
       <SubModuleClassType value="Bannerlord.ButterLib.SubModule" />
+      <Assemblies>
+        <Assembly></Assembly>
+      </Assemblies>
       <Tags>
         <Tag key="DedicatedServerType" value="none" />
         <Tag key="IsNoRenderModeElement" value="false" />

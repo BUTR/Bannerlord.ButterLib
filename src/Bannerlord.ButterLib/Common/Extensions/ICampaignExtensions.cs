@@ -26,7 +26,7 @@ namespace Bannerlord.ButterLib.Common.Extensions
         /// </summary>
         /// <param name="campaign">The campaign</param>
         /// <returns>
-        /// Distance matrix for all the towns, castles and vilages of the current campaign, 
+        /// Distance matrix for all the towns, castles and villages of the current campaign, 
         /// or null if the campaign has not started yet.
         /// </returns>
         DistanceMatrix<Settlement>? GetDefaultSettlementDistanceMatrix(Campaign campaign);

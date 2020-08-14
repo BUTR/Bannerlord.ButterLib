@@ -15,7 +15,7 @@ namespace Bannerlord.ButterLib.Implementation.Common.Extensions
     /// </summary>
     /// <remarks>
     /// Contains easy accessible getters for the current CampaignId and <see cref="CampaignDescriptorImplementation" />
-    /// provided by CampaignIdentifier service as well as various geopolitical distance matrixes
+    /// provided by CampaignIdentifier service as well as various geopolitical distance matrices
     /// held in <see cref="T:Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix`1" /> objects.
     /// </remarks>
     internal class CampaignExtensionsImplementation : ICampaignExtensions
@@ -49,7 +49,7 @@ namespace Bannerlord.ButterLib.Implementation.Common.Extensions
         /// </summary>
         /// <param name="campaign">The campaign</param>
         /// <returns>
-        /// Distance matrix for all the towns, castles and vilages of the current campaign, 
+        /// Distance matrix for all the towns, castles and villages of the current campaign, 
         /// or null if the campaign has not started yet.
         /// </returns>
         public DistanceMatrix<Settlement>? GetDefaultSettlementDistanceMatrix(Campaign campaign)

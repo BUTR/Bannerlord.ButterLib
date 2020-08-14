@@ -1,7 +1,5 @@
 ﻿using Bannerlord.ButterLib.Common.Extensions;
 
-using System.Runtime.Serialization;
-
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
 
@@ -39,7 +37,5 @@ namespace Bannerlord.ButterLib.CampaignIdentifier
         /// that current <see cref="CampaignDescriptor" /> instance is based on.
         /// </summary>
         public abstract CharacterCode CharacterCode { get; }
-
-        public abstract void GetObjectData(SerializationInfo info, StreamingContext context);
     }
 }

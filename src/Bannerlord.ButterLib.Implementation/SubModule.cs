@@ -1,17 +1,18 @@
 ﻿using Bannerlord.ButterLib.CampaignIdentifier;
+using Bannerlord.ButterLib.Common;
 using Bannerlord.ButterLib.Common.Extensions;
-using Bannerlord.ButterLib.Common.Helpers;
 using Bannerlord.ButterLib.DistanceMatrix;
 using Bannerlord.ButterLib.Implementation.CampaignIdentifier;
 using Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehaviors;
 using Bannerlord.ButterLib.Implementation.CampaignIdentifier.Helpers;
 using Bannerlord.ButterLib.Implementation.Common.Extensions;
-using Bannerlord.ButterLib.Implementation.Common.Helpers;
 using Bannerlord.ButterLib.Implementation.DistanceMatrix;
 
 using HarmonyLib;
 
 using Microsoft.Extensions.DependencyInjection;
+
+using StoryMode;
 
 using System;
 
@@ -37,21 +38,23 @@ namespace Bannerlord.ButterLib.Implementation
             var services = this.GetServices();
             services.AddScoped<CampaignDescriptor, CampaignDescriptorImplementation>();
             services.AddScoped(typeof(DistanceMatrix<>), typeof(DistanceMatrixImplementation<>));
-            services.AddSingleton<IApplicationVersionExtensions, ApplicationVersionExtensionsImplementation>();
             services.AddSingleton<ICampaignExtensions, CampaignExtensionsImplementation>();
-            services.AddSingleton<IApplicationVersionUtils, ApplicationVersionUtilsImplementation>();
 
-            try
+            var delayedLoader = new DelayedSubModuleLoader<StoryModeSubModule>();
+            delayedLoader.OnSubModuleLoad += (s, e) =>
             {
-                CampaignIdentifierHarmonyInstance ??= new Harmony("Bannerlord.ButterLib.CampaignIdentifier");
-                CampaignIdentifierHarmonyInstance.PatchAll();
-                Patched = true;
-            }
-            catch (Exception ex)
-            {
-                Patched = false;
-                DebugHelper.HandleException(ex, "OnSubModuleLoad", "Initialization error - {0}");
-            }
+                try
+                {
+                    CampaignIdentifierHarmonyInstance ??= new Harmony("Bannerlord.ButterLib.CampaignIdentifier");
+                    CampaignIdentifierHarmonyInstance.PatchAll();
+                    Patched = true;
+                }
+                catch (Exception ex)
+                {
+                    Patched = false;
+                    DebugHelper.HandleException(ex, "OnSubModuleLoad", "Initialization error - {0}");
+                }
+            };
         }
 
         protected override void OnBeforeInitialModuleScreenSetAsRoot()
