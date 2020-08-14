@@ -6,6 +6,8 @@
     <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
     <Configurations>Stable_Debug;Stable_Release;Beta_Debug;Beta_Release</Configurations>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
   </PropertyGroup>
 
   <PropertyGroup Condition="$(Configuration) == 'Stable_Debug' OR $(Configuration) == 'Stable_Release'">

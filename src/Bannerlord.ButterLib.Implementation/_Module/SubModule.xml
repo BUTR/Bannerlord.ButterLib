@@ -15,16 +15,7 @@
     <SubModule>
       <Name value="Bannerlord.ButterLib" />
       <DLLName value="Bannerlord.ButterLib.dll" />
-      <SubModuleClassType value="Bannerlord.ButterLib.SubModuleProtector" />
-      <Tags>
-        <Tag key="DedicatedServerType" value="none" />
-        <Tag key="IsNoRenderModeElement" value="false" />
-      </Tags>
-    </SubModule>
-    <SubModule>
-      <Name value="Bannerlord.ButterLib.Beta" />
-      <DLLName value="Bannerlord.ButterLib.Beta.dll" />
-      <SubModuleClassType value="Bannerlord.ButterLib.SubModuleProtector" />
+      <SubModuleClassType value="Bannerlord.ButterLib.SubModule" />
       <Tags>
         <Tag key="DedicatedServerType" value="none" />
         <Tag key="IsNoRenderModeElement" value="false" />

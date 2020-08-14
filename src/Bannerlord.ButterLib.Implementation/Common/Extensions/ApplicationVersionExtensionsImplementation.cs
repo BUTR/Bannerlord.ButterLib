@@ -1,9 +1,10 @@
 ﻿using Bannerlord.ButterLib.Common.Extensions;
+
 using TaleWorlds.Library;
 
 namespace Bannerlord.ButterLib.Implementation.Common.Extensions
 {
-    internal sealed class ApplicationVersionExtensions : IApplicationVersionExtensions
+    internal sealed class ApplicationVersionExtensionsImplementation : IApplicationVersionExtensions
     {
         public bool IsSameWithRevision(ApplicationVersion @this, ApplicationVersion other)
         {

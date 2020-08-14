@@ -18,7 +18,7 @@ namespace Bannerlord.ButterLib.Implementation.Common.Extensions
     /// provided by CampaignIdentifier service as well as various geopolitical distance matrixes
     /// held in <see cref="T:Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix`1" /> objects.
     /// </remarks>
-    internal class CampaignExtensions : ICampaignExtensions
+    internal class CampaignExtensionsImplementation : ICampaignExtensions
     {
         /// <summary>Gets ID of the <see cref="Campaign" />.</summary>
         /// <param name="campaign">The campaign</param>
@@ -52,7 +52,7 @@ namespace Bannerlord.ButterLib.Implementation.Common.Extensions
         /// Distance matrix for all the towns, castles and vilages of the current campaign, 
         /// or null if the campaign has not started yet.
         /// </returns>
-        public DistanceMatrixBase<Settlement>? GetDefaultSettlementDistanceMatrix(Campaign campaign)
+        public DistanceMatrix<Settlement>? GetDefaultSettlementDistanceMatrix(Campaign campaign)
         {
             return campaign.GameStarted && campaign.GetCampaignBehavior<GeopoliticsCachingBehavior>() is { } geopoliticsCachingBehavior
                 ? geopoliticsCachingBehavior.SettlementDistanceMatrix
@@ -69,7 +69,7 @@ namespace Bannerlord.ButterLib.Implementation.Common.Extensions
         /// or null if the campaign has not started yet.
         /// </returns>
         /// <remarks>Calculation is based on the average distance between clans fiefs weighted by the fief type.</remarks>
-        public DistanceMatrixBase<Clan>? GetDefaultClanDistanceMatrix(Campaign campaign)
+        public DistanceMatrix<Clan>? GetDefaultClanDistanceMatrix(Campaign campaign)
         {
             return campaign.GameStarted && campaign.GetCampaignBehavior<GeopoliticsCachingBehavior>() is { } geopoliticsCachingBehavior
                 ? geopoliticsCachingBehavior.ClanDistanceMatrix
@@ -86,7 +86,7 @@ namespace Bannerlord.ButterLib.Implementation.Common.Extensions
         /// or null if the campaign has not started yet.
         /// </returns>
         /// <remarks>Calculation is based on the average distance between kingdoms fiefs weighted by the fief type.</remarks>
-        public DistanceMatrixBase<Kingdom>? GetDefaultKingdomDistanceMatrix(Campaign campaign)
+        public DistanceMatrix<Kingdom>? GetDefaultKingdomDistanceMatrix(Campaign campaign)
         {
             return campaign.GameStarted && campaign.GetCampaignBehavior<GeopoliticsCachingBehavior>() is { } geopoliticsCachingBehavior
                 ? geopoliticsCachingBehavior.KingdomDistanceMatrix

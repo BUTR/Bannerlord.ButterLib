@@ -12,7 +12,7 @@ using TaleWorlds.Library;
 
 namespace Bannerlord.ButterLib.Implementation.Common.Helpers
 {
-    internal sealed class ApplicationVersionUtils : IApplicationVersionUtils
+    internal sealed class ApplicationVersionUtilsImplementation : IApplicationVersionUtils
     {
         public string GameVersionStr()
         {

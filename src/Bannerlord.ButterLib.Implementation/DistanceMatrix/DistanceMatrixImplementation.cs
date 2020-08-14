@@ -19,10 +19,10 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
     /// <remarks><see cref="T:Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix`1" /> implements built-in calculation for the <see cref="Hero"/>,
     /// <see cref="Settlement"/>, <see cref="Clan"/> and <see cref="Kingdom"/> objects.
     /// For any other <see cref="MBObjectBase"/> subtypes custom EntityListGetter and DistanceCalculator methods
-    /// should be provided using special constructor <see cref="DistanceMatrix{T}"/> .
+    /// should be provided using special constructor <see cref="DistanceMatrixImplementation{T}"/> .
     /// </remarks>
     [Serializable]
-    internal sealed class DistanceMatrix<T> : DistanceMatrixBase<T>, ISerializable where T : MBObjectBase
+    internal sealed class DistanceMatrixImplementation<T> : DistanceMatrix<T>, ISerializable where T : MBObjectBase
     {
         //Fields
         private readonly Dictionary<ulong, float> _DistanceMatrix;
@@ -55,7 +55,7 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
         /// with default EntityListGetter and DistanceCalculator methods.
         /// </summary>
         /// <exception cref="T:System.ArgumentException"></exception>
-        public DistanceMatrix()
+        public DistanceMatrixImplementation()
         {
             _EntityListGetter = null;
             _DistanceCalculator = null;
@@ -75,7 +75,7 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
         /// A delegate to the method that will be used to calculate the distance between two given type <typeparamref name="T"/> objects.
         /// </param>
         /// <exception cref="T:System.ArgumentException"></exception>
-        public DistanceMatrix(Func<IEnumerable<T>> customListGetter, Func<T, T, float> customDistanceCalculator)
+        public DistanceMatrixImplementation(Func<IEnumerable<T>> customListGetter, Func<T, T, float> customDistanceCalculator)
         {
             _EntityListGetter = customListGetter;
             _DistanceCalculator = customDistanceCalculator;
@@ -88,7 +88,7 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
         /// using serialized data.
         /// </summary>
         /// <remarks>Used exclusively for deserialization.</remarks>
-        private DistanceMatrix(SerializationInfo info, StreamingContext context)
+        private DistanceMatrixImplementation(SerializationInfo info, StreamingContext context)
         {
             Type type = Type.GetType(info.GetString("ObjectTypeName"));
             _DistanceMatrix = (Dictionary<ulong, float>)info.GetValue(type.Name + "DistanceMatrix", typeof(Dictionary<ulong, float>));
@@ -167,7 +167,7 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
         /// or <see cref="float.NaN" /> if distance could not be calculated.
         /// </returns>
         /// <remarks>Calculation is based on the average distance between kingdoms fiefs weighted by the fief type.</remarks>
-        protected override float CalculateDistanceBetweenKingdomsInternal(Kingdom kingdom1, Kingdom kingdom2, DistanceMatrixBase<Settlement> settlementDistanceMatrix)
+        protected override float CalculateDistanceBetweenKingdomsInternal(Kingdom kingdom1, Kingdom kingdom2, DistanceMatrix<Settlement> settlementDistanceMatrix)
         {
             bool predicate(KeyValuePair<(Settlement object1, Settlement object2), float> x) =>
               x.Value != float.NaN && ((x.Key.object1.MapFaction == kingdom1 && x.Key.object2.MapFaction == kingdom2)
@@ -191,10 +191,10 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
         /// </returns>
         /// <remarks>
         /// This method could be used to supply
-        /// <see cref="DistanceMatrix{T}.CalculateDistanceBetweenClans(Clan, Clan, List{(ulong owners, float distance, float weight)})"/>
+        /// <see cref="DistanceMatrixImplementation{T}.CalculateDistanceBetweenClans(Clan, Clan, List{(ulong owners, float distance, float weight)})"/>
         /// method with required list argument.
         /// </remarks>
-        protected override List<(ulong owners, float distance, float weight)> GetSettlementOwnersPairedListInternal(DistanceMatrixBase<Settlement> settlementDistanceMatrix)
+        protected override List<(ulong owners, float distance, float weight)> GetSettlementOwnersPairedListInternal(DistanceMatrix<Settlement> settlementDistanceMatrix)
         {
             static (MBGUID ownerId1, MBGUID ownerId2, float value, float weight) firstSelector(KeyValuePair<(Settlement object1, Settlement object2), float> kvp) =>
               (ownerId1: kvp.Key.object1.OwnerClan.Id, ownerId2: kvp.Key.object2.OwnerClan.Id, value: kvp.Value, weight: GetSettlementWeight(kvp.Key.object1) + GetSettlementWeight(kvp.Key.object2));
@@ -232,7 +232,7 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
             if (typeof(T).IsAssignableFrom(typeof(Clan)))
             {
                 List<Clan> clans = Clan.All.Where(c => c.IsInitialized && c.Fortifications.Count > 0).ToList();
-                DistanceMatrix<Settlement> settlementDistanceMatrix = Campaign.Current.GetCampaignBehavior<GeopoliticsCachingBehavior>().SettlementDistanceMatrix ?? new DistanceMatrix<Settlement>();
+                DistanceMatrixImplementation<Settlement> settlementDistanceMatrix = Campaign.Current.GetCampaignBehavior<GeopoliticsCachingBehavior>().SettlementDistanceMatrix ?? new DistanceMatrixImplementation<Settlement>();
                 List<(ulong owners, float distance, float weight)> lst = GetSettlementOwnersPairedList(settlementDistanceMatrix);
 
                 return clans.SelectMany(x => clans, (x, y) => (x, y)).Where(tuple => tuple.x.Id < tuple.y.Id)
@@ -241,7 +241,7 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
             if (typeof(T).IsAssignableFrom(typeof(Kingdom)))
             {
                 List<Kingdom> kingdoms = Kingdom.All.Where(k => k.IsInitialized && k.Fiefs.Any()).ToList();
-                DistanceMatrix<Settlement> settlementDistanceMatrix = Campaign.Current.GetCampaignBehavior<GeopoliticsCachingBehavior>().SettlementDistanceMatrix ?? new DistanceMatrix<Settlement>();
+                DistanceMatrixImplementation<Settlement> settlementDistanceMatrix = Campaign.Current.GetCampaignBehavior<GeopoliticsCachingBehavior>().SettlementDistanceMatrix ?? new DistanceMatrixImplementation<Settlement>();
                 return kingdoms.SelectMany(x => kingdoms, (x, y) => (x, y)).Where(tuple => tuple.x.Id < tuple.y.Id)
                                .ToDictionary(key => ElegantPairHelper.Pair(key.x.Id, key.y.Id), value => CalculateDistanceBetweenKingdoms(value.x, value.y, settlementDistanceMatrix));
             }

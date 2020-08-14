@@ -1,6 +1,8 @@
 ﻿using Bannerlord.ButterLib.CampaignIdentifier;
 using Bannerlord.ButterLib.DistanceMatrix;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using TaleWorlds.CampaignSystem;
 
 namespace Bannerlord.ButterLib.Common.Extensions
@@ -17,15 +19,8 @@ namespace Bannerlord.ButterLib.Common.Extensions
     public static class CampaignExtensions
     {
         internal static ICampaignExtensions? _instance;
-        internal static ICampaignExtensions Instance
-        {
-            get
-            {
-                if (_instance == null)
-                    DI.TryGetImplementation(out _instance);
-                return _instance!;
-            }
-        }
+        internal static ICampaignExtensions Instance =>
+            _instance ??= SubModule.ServiceProvider.GetRequiredService<ICampaignExtensions>();
 
         /// <summary>Gets ID of the <see cref="Campaign" />.</summary>
         /// <param name="campaign">The campaign</param>
@@ -49,7 +44,7 @@ namespace Bannerlord.ButterLib.Common.Extensions
         /// Distance matrix for all the towns, castles and vilages of the current campaign, 
         /// or null if the campaign has not started yet.
         /// </returns>
-        public static DistanceMatrixBase<Settlement>? GetDefaultSettlementDistanceMatrix(this Campaign campaign) => Instance.GetDefaultSettlementDistanceMatrix(campaign);
+        public static DistanceMatrix<Settlement>? GetDefaultSettlementDistanceMatrix(this Campaign campaign) => Instance.GetDefaultSettlementDistanceMatrix(campaign);
 
         /// <summary>
         /// Gets the <see cref="T:Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix`1" />
@@ -61,7 +56,7 @@ namespace Bannerlord.ButterLib.Common.Extensions
         /// or null if the campaign has not started yet.
         /// </returns>
         /// <remarks>Calculation is based on the average distance between clans fiefs weighted by the fief type.</remarks>
-        public static DistanceMatrixBase<Clan>? GetDefaultClanDistanceMatrix(this Campaign campaign) => Instance.GetDefaultClanDistanceMatrix(campaign);
+        public static DistanceMatrix<Clan>? GetDefaultClanDistanceMatrix(this Campaign campaign) => Instance.GetDefaultClanDistanceMatrix(campaign);
 
         /// <summary>
         /// Gets the <see cref="T:Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix`1" />
@@ -73,6 +68,6 @@ namespace Bannerlord.ButterLib.Common.Extensions
         /// or null if the campaign has not started yet.
         /// </returns>
         /// <remarks>Calculation is based on the average distance between kingdoms fiefs weighted by the fief type.</remarks>
-        public static DistanceMatrixBase<Kingdom>? GetDefaultKingdomDistanceMatrix(this Campaign campaign) => Instance.GetDefaultKingdomDistanceMatrix(campaign);
+        public static DistanceMatrix<Kingdom>? GetDefaultKingdomDistanceMatrix(this Campaign campaign) => Instance.GetDefaultKingdomDistanceMatrix(campaign);
     }
 }

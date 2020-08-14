@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Bannerlord.ButterLib.Common.Extensions;
+
 using System.Runtime.Serialization;
 
 using TaleWorlds.CampaignSystem;
@@ -8,8 +9,7 @@ namespace Bannerlord.ButterLib.CampaignIdentifier
 {
     public abstract class CampaignDescriptor
     {
-        public static CampaignDescriptor? Create() => 
-            DI.TryCreate<CampaignDescriptor>(Array.Empty<object>(), out var obj) ? obj : null;
+        public static CampaignDescriptor? Create() => SubModule.ServiceProvider.Create<CampaignDescriptor>();
 
 
         /// <summary>Initializes a new instance of the class <see cref="CampaignDescriptor" />.</summary>

@@ -1,5 +1,5 @@
-﻿using Bannerlord.ButterLib.Common.Extensions;
-using Bannerlord.ButterLib.Common.Helpers;
+﻿using Bannerlord.ButterLib.Implementation.Common.Extensions;
+using Bannerlord.ButterLib.Implementation.Common.Helpers;
 
 using System.Linq;
 using System.Reflection;
@@ -18,13 +18,16 @@ namespace Bannerlord.ButterLib.Implementation
         {
             get
             {
-                var gameVersion = ApplicationVersionUtils.GameVersion();
+                // Do not rely on DI at this stage
+                var impl = new ApplicationVersionUtilsImplementation();
+                var ext = new ApplicationVersionExtensionsImplementation();
+                var gameVersion = impl.TryParse(impl.GameVersionStr(), out var v) ? v : (ApplicationVersion?) null;
                 var metadatas = typeof(SubModule).Assembly.GetCustomAttributes<AssemblyMetadataAttribute>();
                 var supportedVersionStr = metadatas.FirstOrDefault(a => a.Key == "GameVersion")?.Value;
-                var supportedVersion = !string.IsNullOrEmpty(supportedVersionStr) && ApplicationVersionUtils.TryParse(supportedVersionStr, out var sv)
+                var supportedVersion = !string.IsNullOrEmpty(supportedVersionStr) && impl.TryParse(supportedVersionStr, out var sv)
                     ? sv
                     : (ApplicationVersion?) null;
-                return gameVersion != null && supportedVersion != null && gameVersion.Value.IsSameWithoutRevision(supportedVersion.Value);
+                return gameVersion != null && supportedVersion != null && ext.IsSameWithoutRevision(gameVersion.Value, supportedVersion.Value);
             }
         }
 

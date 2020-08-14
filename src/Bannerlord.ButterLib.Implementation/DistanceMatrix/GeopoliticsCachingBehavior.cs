@@ -8,21 +8,21 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
     {
         /// <summary>Distances between settlements of the current campaign.</summary>
         /// <value>Distance matrix for all the towns, castles and villages of the current campaign.</value>
-        public DistanceMatrix<Settlement>? SettlementDistanceMatrix { get; private set; }
+        public DistanceMatrixImplementation<Settlement>? SettlementDistanceMatrix { get; private set; }
 
         /// <summary>Distances between active clans of the current campaign.</summary>
         /// <value>
         /// Distance matrix for all the active clans of the current campaign,
         /// calculated based on the fiefs owned by these clans.
         /// </value>
-        public DistanceMatrix<Clan>? ClanDistanceMatrix { get; private set; }
+        public DistanceMatrixImplementation<Clan>? ClanDistanceMatrix { get; private set; }
 
         /// <summary>Distances between active kingdoms of the current campaign.</summary>
         /// <value>
         /// Distance matrix for all the active clans of the current campaign,
         /// calculated based on the fiefs owned by these kingdoms.
         /// </value>
-        public DistanceMatrix<Kingdom>? KingdomDistanceMatrix { get; private set; }
+        public DistanceMatrixImplementation<Kingdom>? KingdomDistanceMatrix { get; private set; }
 
         public override void RegisterEvents()
         {
@@ -32,20 +32,20 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
 
         private void InitializeOnLoad(CampaignGameStarter gameStarterObject)
         {
-            SettlementDistanceMatrix = new DistanceMatrix<Settlement>();
-            ClanDistanceMatrix = new DistanceMatrix<Clan>();
-            KingdomDistanceMatrix = new DistanceMatrix<Kingdom>();
+            SettlementDistanceMatrix = new DistanceMatrixImplementation<Settlement>();
+            ClanDistanceMatrix = new DistanceMatrixImplementation<Clan>();
+            KingdomDistanceMatrix = new DistanceMatrixImplementation<Kingdom>();
         }
 
         private void UpdateOnSettlementOwnerChanged(Settlement settlement, bool openToClaim, Hero newOwner, Hero oldOwner, Hero capturerHero, ChangeOwnerOfSettlementAction.ChangeOwnerOfSettlementDetail detail)
         {
             if ((newOwner.Clan != null || oldOwner.Clan != null) && newOwner.Clan != oldOwner.Clan)
             {
-                ClanDistanceMatrix = new DistanceMatrix<Clan>();
+                ClanDistanceMatrix = new DistanceMatrixImplementation<Clan>();
             }
             if ((newOwner.Clan?.Kingdom != null || oldOwner.Clan?.Kingdom != null) && newOwner.Clan?.Kingdom != oldOwner.Clan?.Kingdom)
             {
-                KingdomDistanceMatrix = new DistanceMatrix<Kingdom>();
+                KingdomDistanceMatrix = new DistanceMatrixImplementation<Kingdom>();
             }
         }
 

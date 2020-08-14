@@ -1,4 +1,6 @@
-﻿using TaleWorlds.Library;
+﻿using Microsoft.Extensions.DependencyInjection;
+
+using TaleWorlds.Library;
 
 namespace Bannerlord.ButterLib.Common.Helpers
 {
@@ -6,15 +8,8 @@ namespace Bannerlord.ButterLib.Common.Helpers
     public static class ApplicationVersionUtils
     {
         internal static IApplicationVersionUtils? _instance;
-        internal static IApplicationVersionUtils Instance
-        {
-            get
-            {
-                if (_instance == null)
-                    DI.TryGetImplementation(out _instance);
-                return _instance!;
-            }
-        }
+        internal static IApplicationVersionUtils Instance =>
+            _instance ??= SubModule.ServiceProvider.GetRequiredService<IApplicationVersionUtils>();
 
 
         /// <summary>Gets the version of the game as string.</summary>

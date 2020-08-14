@@ -1,19 +1,14 @@
-﻿using TaleWorlds.Library;
+﻿using Microsoft.Extensions.DependencyInjection;
+
+using TaleWorlds.Library;
 
 namespace Bannerlord.ButterLib.Common.Extensions
 {
     public static class ApplicationVersionExtensions
     {
         internal static IApplicationVersionExtensions? _instance;
-        internal static IApplicationVersionExtensions Instance
-        {
-            get
-            {
-                if (_instance == null)
-                    DI.TryGetImplementation(out _instance);
-                return _instance!;
-            }
-        }
+        internal static IApplicationVersionExtensions Instance =>
+            _instance ??= SubModule.ServiceProvider.GetRequiredService<IApplicationVersionExtensions>();
 
         /// <summary>
         /// Determines whether two source <see cref="ApplicationVersion" /> structs

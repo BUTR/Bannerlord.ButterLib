@@ -28,7 +28,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "root", "root", "{F11F675F-8
 		..\changelog.txt = ..\changelog.txt
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bannerlord.ButterLib", "Bannerlord.ButterLib\Bannerlord.ButterLib.csproj", "{17BE8506-B22B-4705-A777-C862888DA1F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bannerlord.ButterLib", "Bannerlord.ButterLib\Bannerlord.ButterLib.csproj", "{17BE8506-B22B-4705-A777-C862888DA1F5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

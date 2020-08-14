@@ -1,9 +1,17 @@
 ﻿using Bannerlord.ButterLib.CampaignIdentifier;
+using Bannerlord.ButterLib.Common.Extensions;
+using Bannerlord.ButterLib.Common.Helpers;
+using Bannerlord.ButterLib.DistanceMatrix;
+using Bannerlord.ButterLib.Implementation.CampaignIdentifier;
 using Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehaviors;
 using Bannerlord.ButterLib.Implementation.CampaignIdentifier.Helpers;
+using Bannerlord.ButterLib.Implementation.Common.Extensions;
+using Bannerlord.ButterLib.Implementation.Common.Helpers;
 using Bannerlord.ButterLib.Implementation.DistanceMatrix;
 
 using HarmonyLib;
+
+using Microsoft.Extensions.DependencyInjection;
 
 using System;
 
@@ -26,6 +34,13 @@ namespace Bannerlord.ButterLib.Implementation
         {
             base.OnSubModuleLoad();
 
+            var services = this.GetServices();
+            services.AddScoped<CampaignDescriptor, CampaignDescriptorImplementation>();
+            services.AddScoped(typeof(DistanceMatrix<>), typeof(DistanceMatrixImplementation<>));
+            services.AddSingleton<IApplicationVersionExtensions, ApplicationVersionExtensionsImplementation>();
+            services.AddSingleton<ICampaignExtensions, CampaignExtensionsImplementation>();
+            services.AddSingleton<IApplicationVersionUtils, ApplicationVersionUtilsImplementation>();
+
             try
             {
                 CampaignIdentifierHarmonyInstance ??= new Harmony("Bannerlord.ButterLib.CampaignIdentifier");
@@ -42,6 +57,8 @@ namespace Bannerlord.ButterLib.Implementation
         protected override void OnBeforeInitialModuleScreenSetAsRoot()
         {
             base.OnBeforeInitialModuleScreenSetAsRoot();
+
+            var serviceProvider = this.GetServiceProvider();
 
             if (!Patched)
             {

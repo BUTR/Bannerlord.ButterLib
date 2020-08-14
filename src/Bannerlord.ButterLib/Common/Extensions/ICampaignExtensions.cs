@@ -29,7 +29,7 @@ namespace Bannerlord.ButterLib.Common.Extensions
         /// Distance matrix for all the towns, castles and vilages of the current campaign, 
         /// or null if the campaign has not started yet.
         /// </returns>
-        DistanceMatrixBase<Settlement>? GetDefaultSettlementDistanceMatrix(Campaign campaign);
+        DistanceMatrix<Settlement>? GetDefaultSettlementDistanceMatrix(Campaign campaign);
 
         /// <summary>
         /// Gets the <see cref="T:Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix`1" />
@@ -41,7 +41,7 @@ namespace Bannerlord.ButterLib.Common.Extensions
         /// or null if the campaign has not started yet.
         /// </returns>
         /// <remarks>Calculation is based on the average distance between clans fiefs weighted by the fief type.</remarks>
-        DistanceMatrixBase<Clan>? GetDefaultClanDistanceMatrix(Campaign campaign);
+        DistanceMatrix<Clan>? GetDefaultClanDistanceMatrix(Campaign campaign);
 
         /// <summary>
         /// Gets the <see cref="T:Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix`1" />
@@ -53,6 +53,6 @@ namespace Bannerlord.ButterLib.Common.Extensions
         /// or null if the campaign has not started yet.
         /// </returns>
         /// <remarks>Calculation is based on the average distance between kingdoms fiefs weighted by the fief type.</remarks>
-        DistanceMatrixBase<Kingdom>? GetDefaultKingdomDistanceMatrix(Campaign campaign);
+        DistanceMatrix<Kingdom>? GetDefaultKingdomDistanceMatrix(Campaign campaign);
     }
 }
