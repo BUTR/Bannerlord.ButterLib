@@ -3,7 +3,7 @@
   <!--Development Variables-->
   <PropertyGroup>
     <!--Module Version-->
-    <Version>0.0.8</Version>
+    <Version>0.0.9</Version>
     <!--Current Bannerlord Stable Version-->
     <StableVersion>1.4.2</StableVersion>
     <!--Current Bannerlord Beta Version-->
@@ -13,25 +13,25 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="$(Configuration) == 'Stable_Debug' OR $(Configuration) == 'Beta_Debug'" >
-    <DefineConstants>$(DefineConstants);DEBUG;TRACE;STABLE</DefineConstants>
+    <DefineConstants>$(DefineConstants);DEBUG;TRACE</DefineConstants>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
   </PropertyGroup>
 
   <PropertyGroup Condition="$(Configuration) == 'Stable_Release' OR $(Configuration) == 'Beta_Release'" >
-    <DefineConstants>$(DefineConstants);RELEASE;TRACE;BETA</DefineConstants>
+    <DefineConstants>$(DefineConstants);RELEASE;TRACE</DefineConstants>
     <DebugSymbols>false</DebugSymbols>
     <DebugType>portable</DebugType>
     <Optimize>true</Optimize>
   </PropertyGroup>
 
   <PropertyGroup Condition="$(Configuration) == 'Stable_Debug' OR $(Configuration) == 'Stable_Release'" >
-    <DefineConstants>$(DefineConstants);RELEASE;TRACE;STABLE</DefineConstants>
+    <DefineConstants>$(DefineConstants);STABLE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="$(Configuration) == 'Beta_Debug' OR $(Configuration) == 'Beta_Release'" >
-    <DefineConstants>$(DefineConstants);RELEASE;TRACE;BETA</DefineConstants>
+    <DefineConstants>$(DefineConstants);BETA</DefineConstants>
   </PropertyGroup>
 
 </Project>
