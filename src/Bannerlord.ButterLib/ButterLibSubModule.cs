@@ -13,6 +13,9 @@ using TaleWorlds.MountAndBlade;
 
 namespace Bannerlord.ButterLib
 {
+    /// <summary>
+    /// Main SubModule. Performs initialization of all 3 stages.
+    /// </summary>
     public partial class ButterLibSubModule : MBSubModuleBase
     {
         private ILogger _logger = default!;

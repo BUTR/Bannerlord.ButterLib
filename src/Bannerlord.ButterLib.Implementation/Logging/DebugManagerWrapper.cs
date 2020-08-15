@@ -9,7 +9,8 @@ using TaleWorlds.Library;
 namespace Bannerlord.ButterLib.Implementation.Logging
 {
     /// <summary>
-    /// 
+    /// Wraps a <see cref="IDebugManager"/>. Doubles the logs into out logging system
+    /// but still keeps the original execution flow.
     /// </summary>
     internal class DebugManagerWrapper : IDebugManager
     {

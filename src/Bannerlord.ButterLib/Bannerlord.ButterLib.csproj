@@ -10,6 +10,22 @@
     <ExtensionVersion>2.0.0</ExtensionVersion>
   </PropertyGroup>
 
+  <!--NuGet Package-->
+  <PropertyGroup>
+    <PackageId>Bannerlord.ButterLib</PackageId>
+    <PackageDescription>A library containing common functions for modification development. Built against e$(StableVersion).</PackageDescription>
+    <Title>ButterLib</Title>
+    <Authors>BUTR</Authors>
+    <DevelopmentDependency>true</DevelopmentDependency>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageIcon>Butter.png</PackageIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="../../resources/Butter.png" Pack="true" PackagePath="" />
+  </ItemGroup>
+  <!--NuGet Package-->
+
   <!--NuGet References-->
   <ItemGroup>
     <PackageReference Include="Lib.Harmony" Version="2.0.2" IncludeAssets="compile" />

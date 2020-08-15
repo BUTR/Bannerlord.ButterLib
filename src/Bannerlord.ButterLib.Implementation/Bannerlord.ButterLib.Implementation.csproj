@@ -23,27 +23,6 @@
   </PropertyGroup>
   <!--Module Creation-->
 
-  <!--NuGet Package-->
-  <PropertyGroup Condition="$(Configuration) == 'Stable_Release'">
-    <PackageId>Bannerlord.ButterLib</PackageId>
-    <PackageDescription>A library containing common functions for modification development. For game version e$(StableVersion).</PackageDescription>
-  </PropertyGroup>
-  <PropertyGroup Condition="$(Configuration) == 'Beta_Release'">
-    <PackageId>Bannerlord.ButterLib.Beta</PackageId>
-    <PackageDescription>A library containing common functions for modification development. For game version e$(BetaVersion).</PackageDescription>
-  </PropertyGroup>
-  <PropertyGroup>
-    <Title>ButterLib</Title>
-    <Authors>BUTR</Authors>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageIcon>Butter.png</PackageIcon>
-  </PropertyGroup>
-  <ItemGroup>
-    <None Include="../../resources/Butter.png" Pack="true" PackagePath="" />
-  </ItemGroup>
-  <!--NuGet Package-->
-
   <!--NuGet References-->
   <ItemGroup>
     <PackageReference Include="Lib.Harmony" Version="2.0.2" IncludeAssets="compile" />
