@@ -9,81 +9,132 @@ namespace Bannerlord.ButterLib.Common
     /// <summary>
     /// Instead of depending on a module in SubModule.xml, just execute some code after its execution.
     /// </summary>
-    /// <typeparam name="TSubModule"></typeparam>
-    public class DelayedSubModuleLoader<TSubModule> where TSubModule : MBSubModuleBase
+    public class DelayedSubModuleLoader
     {
-        private static event EventHandler GlobalOnSubModuleLoad;
-        private static event EventHandler GlobalOnSubModuleUnloaded;
-        private static event EventHandler GlobalOnBeforeInitialModuleScreenSetAsRoot;
-        private static event EventHandler GlobalOnGameStart;
-        private static event EventHandler GlobalOnGameEnd;
+        public static event EventHandler<DelayedSubModuleEventArgs>? OnMethod;
 
-        public event EventHandler OnSubModuleLoad { add => GlobalOnSubModuleLoad += value; remove => GlobalOnSubModuleLoad -= value; }
-        public event EventHandler OnSubModuleUnloaded { add => GlobalOnSubModuleUnloaded += value; remove => GlobalOnSubModuleUnloaded -= value; }
-        public event EventHandler OnBeforeInitialModuleScreenSetAsRoot { add => GlobalOnBeforeInitialModuleScreenSetAsRoot += value; remove => GlobalOnBeforeInitialModuleScreenSetAsRoot -= value; }
-        public event EventHandler OnGameStart { add => GlobalOnGameStart += value; remove => GlobalOnGameStart -= value; }
-        public event EventHandler OnGameEnd { add => GlobalOnGameEnd += value; remove => GlobalOnGameEnd -= value; }
-
-        public DelayedSubModuleLoader()
+        static DelayedSubModuleLoader()
         {
-            var harmony = new Harmony($"butterlib.delayedsubmoduleloader.{typeof(TSubModule).Name.ToLowerInvariant()}");
+            var harmony = new Harmony("butterlib.delayedsubmoduleloader.static");
             harmony.Patch(
-                AccessTools.Method(typeof(TSubModule), "OnSubModuleLoad"),
-                postfix: new HarmonyMethod(typeof(DelayedSubModuleLoader<TSubModule>), nameof(SubModuleLoadPostfix)));
+                AccessTools.DeclaredMethod(typeof(MBSubModuleBase), "OnSubModuleLoad"),
+                postfix: new HarmonyMethod(typeof(DelayedSubModuleLoader), nameof(BaseSubModuleLoadPostfix)));
             harmony.Patch(
-                AccessTools.Method(typeof(TSubModule), "OnSubModuleUnloaded"),
-                postfix: new HarmonyMethod(typeof(DelayedSubModuleLoader<TSubModule>), nameof(OnSubModuleUnloadedPostfix)));
+                AccessTools.DeclaredMethod(typeof(MBSubModuleBase), "OnSubModuleUnloaded"),
+                postfix: new HarmonyMethod(typeof(DelayedSubModuleLoader), nameof(BaseOnSubModuleUnloadedPostfix)));
             harmony.Patch(
-                AccessTools.Method(typeof(TSubModule), "OnBeforeInitialModuleScreenSetAsRoot"),
-                postfix: new HarmonyMethod(typeof(DelayedSubModuleLoader<TSubModule>), nameof(OnBeforeInitialModuleScreenSetAsRootPostfix)));
+                AccessTools.DeclaredMethod(typeof(MBSubModuleBase), "OnBeforeInitialModuleScreenSetAsRoot"),
+                postfix: new HarmonyMethod(typeof(DelayedSubModuleLoader), nameof(BaseOnBeforeInitialModuleScreenSetAsRootPostfix)));
             harmony.Patch(
-                AccessTools.Method(typeof(TSubModule), "OnGameStart"),
-                postfix: new HarmonyMethod(typeof(DelayedSubModuleLoader<TSubModule>), nameof(OnGameStartPostfix)));
+                AccessTools.DeclaredMethod(typeof(MBSubModuleBase), "OnGameStart"),
+                postfix: new HarmonyMethod(typeof(DelayedSubModuleLoader), nameof(BaseOnGameStartPostfix)));
             harmony.Patch(
-                AccessTools.Method(typeof(TSubModule), "OnGameEnd"),
-                postfix: new HarmonyMethod(typeof(DelayedSubModuleLoader<TSubModule>), nameof(OnGameEndPostfix)));
-
-            OnSubModuleLoad += GlobalOnSubModuleLoad;
-            OnSubModuleUnloaded += GlobalOnSubModuleUnloaded;
-            OnBeforeInitialModuleScreenSetAsRoot += GlobalOnBeforeInitialModuleScreenSetAsRoot;
-            OnGameStart += GlobalOnGameStart;
-            OnGameEnd += GlobalOnGameEnd;
+                AccessTools.DeclaredMethod(typeof(MBSubModuleBase), "OnGameEnd"),
+                postfix: new HarmonyMethod(typeof(DelayedSubModuleLoader), nameof(BaseOnGameEndPostfix)));
         }
+        private static void BaseSubModuleLoadPostfix(MBSubModuleBase __instance)
+        {
+            OnMethod?.Invoke(null, new DelayedSubModuleEventArgs(__instance.GetType(), true, HarmonyPatchType.Postfix, "OnSubModuleLoad"));
+        }
+        private static void BaseOnSubModuleUnloadedPostfix(MBSubModuleBase __instance)
+        {
+            OnMethod?.Invoke(null, new DelayedSubModuleEventArgs(__instance.GetType(), true, HarmonyPatchType.Postfix, "OnSubModuleUnloaded"));
+        }
+        private static void BaseOnBeforeInitialModuleScreenSetAsRootPostfix(MBSubModuleBase __instance)
+        {
+            OnMethod?.Invoke(null, new DelayedSubModuleEventArgs(__instance.GetType(), true, HarmonyPatchType.Postfix, "OnBeforeInitialModuleScreenSetAsRoot"));
+        }
+        private static void BaseOnGameStartPostfix(MBSubModuleBase __instance)
+        {
+            OnMethod?.Invoke(null, new DelayedSubModuleEventArgs(__instance.GetType(), true, HarmonyPatchType.Postfix, "OnGameStart"));
+        }
+        private static void BaseOnGameEndPostfix(MBSubModuleBase __instance)
+        {
+            OnMethod?.Invoke(null, new DelayedSubModuleEventArgs(__instance.GetType(), true, HarmonyPatchType.Postfix, "OnGameEnd"));
+        }
+        
+        public static void Register<TSubModule>(int priority = -1, string[]? before= null, string[]? after = null) => Register(typeof(TSubModule), priority, before, after);
+        public static void Register(Type subModule, int priority = -1, string[]? before= null, string[]? after = null)
+        {
+            var harmony = new Harmony($"butterlib.delayedsubmoduleloader.{subModule.Name.ToLowerInvariant()}");
+            var onSubModuleLoad = AccessTools.DeclaredMethod(subModule, "OnSubModuleLoad");
+            if (onSubModuleLoad != null)
+                harmony.Patch(
+                    onSubModuleLoad,
+                    prefix: new HarmonyMethod(AccessTools.DeclaredMethod(typeof(DelayedSubModuleLoader), nameof(SubModuleLoadPrefix)), priority, before, after),
+                    postfix: new HarmonyMethod(AccessTools.DeclaredMethod(typeof(DelayedSubModuleLoader), nameof(SubModuleLoadPostfix)), priority, before, after));
 
+            var onSubModuleUnloaded = AccessTools.DeclaredMethod(subModule, "OnSubModuleUnloaded");
+            if (onSubModuleUnloaded != null)
+                harmony.Patch(
+                    AccessTools.DeclaredMethod(subModule, "OnSubModuleUnloaded"),
+                    prefix: new HarmonyMethod(AccessTools.DeclaredMethod(typeof(DelayedSubModuleLoader), nameof(OnSubModuleUnloadedPrefix)), priority, before, after),
+                    postfix: new HarmonyMethod(AccessTools.DeclaredMethod(typeof(DelayedSubModuleLoader), nameof(OnSubModuleUnloadedPostfix)), priority, before, after));
+
+            var onBeforeInitialModuleScreenSetAsRoot = AccessTools.DeclaredMethod(subModule, "OnBeforeInitialModuleScreenSetAsRoot");
+            if (onBeforeInitialModuleScreenSetAsRoot != null)
+                harmony.Patch(
+                    AccessTools.DeclaredMethod(subModule, "OnBeforeInitialModuleScreenSetAsRoot"),
+                    prefix: new HarmonyMethod(AccessTools.DeclaredMethod(typeof(DelayedSubModuleLoader), nameof(OnBeforeInitialModuleScreenSetAsRootPrefix)), priority, before, after),
+                    postfix: new HarmonyMethod(AccessTools.DeclaredMethod(typeof(DelayedSubModuleLoader), nameof(OnBeforeInitialModuleScreenSetAsRootPostfix)), priority, before, after));
+
+            var onGameStart = AccessTools.DeclaredMethod(subModule, "OnGameStart");
+            if (onGameStart != null)
+                harmony.Patch(
+                    AccessTools.DeclaredMethod(subModule, "OnGameStart"),
+                    prefix: new HarmonyMethod(AccessTools.DeclaredMethod(typeof(DelayedSubModuleLoader), nameof(OnGameStartPrefix)), priority, before, after),
+                    postfix: new HarmonyMethod(AccessTools.DeclaredMethod(typeof(DelayedSubModuleLoader), nameof(OnGameStartPostfix)), priority, before, after));
+
+            var onGameEnd = AccessTools.DeclaredMethod(subModule, "OnGameEnd");
+            if (onGameEnd != null)
+                harmony.Patch(
+                    AccessTools.DeclaredMethod(subModule, "OnGameEnd"),
+                    prefix: new HarmonyMethod(AccessTools.DeclaredMethod(typeof(DelayedSubModuleLoader), nameof(OnGameEndPrefix)), priority, before, after),
+                    postfix: new HarmonyMethod(AccessTools.DeclaredMethod(typeof(DelayedSubModuleLoader), nameof(OnGameEndPostfix)), priority, before, after));
+        }
+        private static void SubModuleLoadPrefix(MBSubModuleBase __instance)
+        {
+            OnMethod?.Invoke(null, new DelayedSubModuleEventArgs(__instance.GetType(), false, HarmonyPatchType.Prefix, "OnSubModuleLoad"));
+        }
         private static void SubModuleLoadPostfix(MBSubModuleBase __instance)
         {
-            if (!(__instance is TSubModule))
-                return;
+            OnMethod?.Invoke(null, new DelayedSubModuleEventArgs(__instance.GetType(), false, HarmonyPatchType.Postfix, "OnSubModuleLoad"));
+        }
 
-            GlobalOnSubModuleLoad?.Invoke(null, EventArgs.Empty);
+        private static void OnSubModuleUnloadedPrefix(MBSubModuleBase __instance)
+        {
+            OnMethod?.Invoke(null, new DelayedSubModuleEventArgs(__instance.GetType(), false, HarmonyPatchType.Prefix, "OnSubModuleUnloaded"));
         }
         private static void OnSubModuleUnloadedPostfix(MBSubModuleBase __instance)
         {
-            if (!(__instance is TSubModule))
-                return;
+            OnMethod?.Invoke(null, new DelayedSubModuleEventArgs(__instance.GetType(), false, HarmonyPatchType.Postfix, "OnSubModuleUnloaded"));
+        }
 
-            GlobalOnSubModuleUnloaded?.Invoke(null, EventArgs.Empty);
+        private static void OnBeforeInitialModuleScreenSetAsRootPrefix(MBSubModuleBase __instance)
+        {
+            OnMethod?.Invoke(null, new DelayedSubModuleEventArgs(__instance.GetType(), false, HarmonyPatchType.Prefix, "OnBeforeInitialModuleScreenSetAsRoot"));
         }
         private static void OnBeforeInitialModuleScreenSetAsRootPostfix(MBSubModuleBase __instance)
         {
-            if (!(__instance is TSubModule))
-                return;
+            OnMethod?.Invoke(null, new DelayedSubModuleEventArgs(__instance.GetType(), false, HarmonyPatchType.Postfix, "OnBeforeInitialModuleScreenSetAsRoot"));
+        }
 
-            GlobalOnBeforeInitialModuleScreenSetAsRoot?.Invoke(null, EventArgs.Empty);
+        private static void OnGameStartPrefix(MBSubModuleBase __instance)
+        {
+            OnMethod?.Invoke(null, new DelayedSubModuleEventArgs(__instance.GetType(), false, HarmonyPatchType.Prefix, "OnGameStart"));
         }
         private static void OnGameStartPostfix(MBSubModuleBase __instance)
         {
-            if (!(__instance is TSubModule))
-                return;
+            OnMethod?.Invoke(null, new DelayedSubModuleEventArgs(__instance.GetType(), false, HarmonyPatchType.Postfix, "OnGameStart"));
+        }
 
-            GlobalOnGameStart?.Invoke(null, EventArgs.Empty);
+        private static void OnGameEndPrefix(MBSubModuleBase __instance)
+        {
+            OnMethod?.Invoke(null, new DelayedSubModuleEventArgs(__instance.GetType(), false, HarmonyPatchType.Prefix, "OnGameEnd"));
         }
         private static void OnGameEndPostfix(MBSubModuleBase __instance)
         {
-            if (!(__instance is TSubModule))
-                return;
-
-            GlobalOnGameEnd?.Invoke(null, EventArgs.Empty);
+            OnMethod?.Invoke(null, new DelayedSubModuleEventArgs(__instance.GetType(), false, HarmonyPatchType.Postfix, "OnGameEnd"));
         }
     }
 }

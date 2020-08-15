@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection;
 
 using static HarmonyLib.AccessTools;
 
@@ -14,7 +13,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// <returns>A delegate or null when type/name is null or when the method cannot be found</returns>
         public static TDelegate? GetDelegate<TDelegate>(Type type, string method) where TDelegate : Delegate
         {
-            MethodInfo miOriginal = Method(type, method);
+            var miOriginal = Method(type, method);
             return miOriginal != null ? (TDelegate)Delegate.CreateDelegate(typeof(TDelegate), miOriginal) : null;
         }
 
@@ -24,7 +23,8 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// <returns>A delegate or null when type/name is null or when the method cannot be found</returns>
         public static TDelegate? GetDelegate<TDelegate, TInstance>(TInstance instance, string method) where TDelegate : Delegate where TInstance : notnull
         {
-            return GetDelegate<TDelegate>(instance.GetType(), method);
+            var miOriginal = Method(instance.GetType(), method);
+            return miOriginal != null ? (TDelegate)Delegate.CreateDelegate(typeof(TDelegate), instance, miOriginal) : null;
         }
 
         /// <summary>Gets the delegate for a directly declared method</summary>
@@ -33,7 +33,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// <returns>A delegate or null when type/name is null or when the method cannot be found</returns>
         public static TDelegate? GetDeclaredDelegate<TDelegate>(Type type, string method) where TDelegate : Delegate
         {
-            MethodInfo miOriginal = DeclaredMethod(type, method);
+            var miOriginal = DeclaredMethod(type, method);
             return miOriginal != null ? (TDelegate)Delegate.CreateDelegate(typeof(TDelegate), miOriginal) : null;
         }
 
@@ -43,7 +43,8 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// <returns>A delegate or null when type/name is null or when the method cannot be found</returns>
         public static TDelegate? GetDeclaredDelegate<TDelegate, TInstance>(TInstance instance, string method) where TDelegate : Delegate where TInstance : notnull
         {
-            return GetDeclaredDelegate<TDelegate>(instance.GetType(), method);
+            var miOriginal = DeclaredMethod(instance.GetType(), method);
+            return miOriginal != null ? (TDelegate)Delegate.CreateDelegate(typeof(TDelegate), instance, miOriginal) : null;
         }
     }
 }

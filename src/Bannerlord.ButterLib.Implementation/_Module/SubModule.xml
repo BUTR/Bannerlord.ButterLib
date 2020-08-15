@@ -3,24 +3,40 @@
   <Name value="ButterLib" />
   <Id value="Bannerlord.ButterLib" />
   <Version value="v$version$" />
+  <Official value="false"/>
   <SingleplayerModule value="true" />
   <MultiplayerModule value="false" />
-  <Official value="false"/>
   <DependedModules>
     <DependedModule Id="Bannerlord.Harmony" />
   </DependedModules>
   <SubModules>
     <SubModule>
-      <Name value="Bannerlord.ButterLib" />
+      <Name value="ButterLib Main SubModule" />
       <DLLName value="Bannerlord.ButterLib.dll" />
-      <SubModuleClassType value="Bannerlord.ButterLib.SubModule" />
+      <SubModuleClassType value="Bannerlord.ButterLib.ButterLibSubModule" />
       <Assemblies>
-        <Assembly></Assembly>
+        <!--Microsoft Abstractions-->
+        <Assembly value="Microsoft.Extensions.DependencyInjection.Abstractions.dll"/>
+        <Assembly value="Microsoft.Extensions.Logging.Abstractions.dll"/>
+        <!--Microsoft Implementations-->
+        <Assembly value="Microsoft.Extensions.DependencyInjection.dll"/>
+        <Assembly value="Microsoft.Extensions.Logging.dll"/>
+        <Assembly value="Microsoft.Extensions.Options.dll"/>
+        <Assembly value="Microsoft.Extensions.Primitives.dll"/>
+        <!--ILogger Implementation Serilog-->
+        <Assembly value="Serilog.dll"/>
+        <Assembly value="Serilog.Extensions.Logging.dll"/>
+        <Assembly value="Serilog.Sinks.File.dll"/>
+        <!--Helper library for Microsoft.Extensions.Primitives-->
+        <Assembly value="System.Runtime.CompilerServices.Unsafe.dll"/>
       </Assemblies>
-      <Tags>
-        <Tag key="DedicatedServerType" value="none" />
-        <Tag key="IsNoRenderModeElement" value="false" />
-      </Tags>
+      <Tags/>
+    </SubModule>
+    <SubModule>
+      <Name value="ButterLib Implementation Loader" />
+      <DLLName value="Bannerlord.ButterLib.dll" />
+      <SubModuleClassType value="Bannerlord.ButterLib.ImplementationLoaderSubModule" />
+      <Tags/>
     </SubModule>
   </SubModules>
 </Module>

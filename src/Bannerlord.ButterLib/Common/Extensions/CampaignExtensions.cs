@@ -20,7 +20,7 @@ namespace Bannerlord.ButterLib.Common.Extensions
     {
         internal static ICampaignExtensions? _instance;
         internal static ICampaignExtensions Instance =>
-            _instance ??= SubModule.ServiceProvider.GetRequiredService<ICampaignExtensions>();
+            _instance ??= ButterLibSubModule.Instance.GetServiceProvider().GetRequiredService<ICampaignExtensions>();
 
         /// <summary>Gets ID of the <see cref="Campaign" />.</summary>
         /// <param name="campaign">The campaign</param>

@@ -19,7 +19,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging" Version="$(ExtensionVersion)" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="$(ExtensionVersion)" />
     <PackageReference Include="Microsoft.Extensions.Primitives" Version="$(ExtensionVersion)" />
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" IncludeAssets="compile" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="3.0.1" />
     <PackageReference Include="Serilog.Sinks.File" Version="4.1.0" />
   </ItemGroup>

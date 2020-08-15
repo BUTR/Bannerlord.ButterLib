@@ -13,13 +13,13 @@ namespace Bannerlord.ButterLib.DistanceMatrix
     public abstract class DistanceMatrix<T> where T : MBObjectBase
     {
         public static DistanceMatrix<T>? Create() =>
-            SubModule.ServiceProvider.Create<DistanceMatrix<T>>();
+            ButterLibSubModule.Instance.GetServiceProvider().Create<DistanceMatrix<T>>();
         public static DistanceMatrix<T>? Create(Func<IEnumerable<T>> customListGetter, Func<T, T, float> customDistanceCalculator) =>
-            SubModule.ServiceProvider.Create<DistanceMatrix<T>>(customListGetter, customDistanceCalculator);
+            ButterLibSubModule.Instance.GetServiceProvider().Create<DistanceMatrix<T>>(customListGetter, customDistanceCalculator);
 
         internal static DistanceMatrix<T>? _instance;
         internal static DistanceMatrix<T> Instance =>
-            _instance ??= SubModule.ServiceProvider.GetRequiredService<DistanceMatrix<T>>();
+            _instance ??= ButterLibSubModule.Instance.GetServiceProvider().GetRequiredService<DistanceMatrix<T>>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix`1"/> class
