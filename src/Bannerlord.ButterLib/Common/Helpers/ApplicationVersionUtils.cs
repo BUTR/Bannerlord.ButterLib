@@ -58,11 +58,11 @@ namespace Bannerlord.ButterLib.Common.Helpers
                 return false;
 
             var applicationVersionType = ApplicationVersion.ApplicationVersionTypeFromString(array[0][0].ToString());
-            if (!Int32.TryParse(array[0].Substring(1), out var major))
+            if (!int.TryParse(array[0].Substring(1), out var major))
                 return false;
-            if (!Int32.TryParse(array[1], out var minor))
+            if (!int.TryParse(array[1], out var minor))
                 return false;
-            if (!Int32.TryParse(array[2], out var revision))
+            if (!int.TryParse(array[2], out var revision))
                 return false;
 
             version = Create(applicationVersionType, major, minor, revision);

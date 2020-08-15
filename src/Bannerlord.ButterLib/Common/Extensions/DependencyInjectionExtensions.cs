@@ -26,10 +26,22 @@ namespace Bannerlord.ButterLib.Common.Extensions
 {
     public static class DependencyInjectionExtensions
     {
-        public static IServiceProvider GetServiceProvider(this Game game) => ButterLibSubModule.ServiceProvider;
-        public static IServiceProvider GetServiceProvider(this MBSubModuleBase subModule) => ButterLibSubModule.ServiceProvider;
-        public static IServiceCollection GetServices(this MBSubModuleBase subModule) => ButterLibSubModule.Services;
-        public static IServiceProvider GetTempServiceProvider(this MBSubModuleBase subModule) => ButterLibSubModule.Services.BuildServiceProvider();
+        /// <summary>
+        /// For Stage 3.
+        /// </summary>
+        public static IServiceProvider GetServiceProvider(this Game _) => ButterLibSubModule.ServiceProvider;
+        /// <summary>
+        /// For Stage 3.
+        /// </summary>
+        public static IServiceProvider GetServiceProvider(this MBSubModuleBase _) => ButterLibSubModule.ServiceProvider;
+        /// <summary>
+        /// For Stage 2.
+        /// </summary>
+        public static IServiceCollection GetServices(this MBSubModuleBase _) => ButterLibSubModule.Services;
+        /// <summary>
+        /// For Stage 2.
+        /// </summary>
+        public static IServiceProvider GetTempServiceProvider(this MBSubModuleBase _) => ButterLibSubModule.Services.BuildServiceProvider();
 
         private static string ModLogsPath = Path.Combine(Utilities.GetConfigsPath(), "ModLogs");
         private static string OutputTemplate =
@@ -57,21 +69,11 @@ namespace Bannerlord.ButterLib.Common.Extensions
         /// <summary>
         /// Don't forget to get a new ILogger after adding a new ILoggerProvider
         /// </summary>
-        /// <param name="subModule"></param>
-        /// <param name="filename"></param>
-        /// <param name="filter"></param>
-        /// <returns></returns>
-        public static IServiceCollection AddSerilogLoggerProvider(this MBSubModuleBase subModule, string filename, IEnumerable<Assembly> filter)
-        {
-            return subModule.AddSerilogLoggerProvider(filename, filter.Select(x => x.GetName().Name));
-        }
+        public static IServiceCollection AddSerilogLoggerProvider(this MBSubModuleBase subModule, string filename, IEnumerable<Assembly> filter) =>
+            subModule.AddSerilogLoggerProvider(filename, filter.Select(x => x.GetName().Name));
         /// <summary>
         /// Don't forget to get a new ILogger after adding a new ILoggerProvider
         /// </summary>
-        /// <param name="subModule"></param>
-        /// <param name="filename"></param>
-        /// <param name="filter"></param>
-        /// <returns></returns>
         public static IServiceCollection AddSerilogLoggerProvider(this MBSubModuleBase subModule, string filename, IEnumerable<string>? filter = null, Action<LoggerConfiguration>? confugure = null)
         {
             filter ??= new List<string> { subModule.GetType().Assembly.GetName().Name };

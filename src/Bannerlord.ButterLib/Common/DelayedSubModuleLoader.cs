@@ -9,7 +9,7 @@ namespace Bannerlord.ButterLib.Common
     /// <summary>
     /// Instead of depending on a module in SubModule.xml, just execute some code after its execution.
     /// </summary>
-    public class DelayedSubModuleLoader
+    public static class DelayedSubModuleLoader
     {
         public static event EventHandler<DelayedSubModuleEventArgs>? OnMethod;
 

@@ -1,0 +1,2 @@
+This is an optional implementation of the new Dependency Injection framework created for .NET Core.  
+You are not required to use it. We have made sure that it does not leak into any classes ``ButterLib`` provides for the developers when using ``ButterLib`` as a standard library.

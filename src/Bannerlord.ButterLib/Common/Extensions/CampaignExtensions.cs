@@ -18,8 +18,8 @@ namespace Bannerlord.ButterLib.Common.Extensions
     /// </remarks>
     public static class CampaignExtensions
     {
-        internal static ICampaignExtensions? _instance;
-        internal static ICampaignExtensions Instance =>
+        private static ICampaignExtensions? _instance;
+        private static ICampaignExtensions Instance =>
             _instance ??= ButterLibSubModule.Instance.GetServiceProvider().GetRequiredService<ICampaignExtensions>();
 
         /// <summary>Gets ID of the <see cref="Campaign" />.</summary>

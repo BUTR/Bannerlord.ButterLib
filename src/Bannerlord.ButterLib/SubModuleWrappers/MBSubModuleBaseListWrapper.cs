@@ -6,6 +6,10 @@ using TaleWorlds.MountAndBlade;
 
 namespace Bannerlord.ButterLib.SubModuleWrappers
 {
+    /// <summary>
+    /// Wraps several <see cref="MBSubModuleBase"/> so when the game calls any method, it
+    /// will be passed to its children.
+    /// </summary>
     public class MBSubModuleBaseListWrapper : MBSubModuleBase
     {
         protected List<MBSubModuleBaseWrapper> SubModules { get; } = new List<MBSubModuleBaseWrapper>();

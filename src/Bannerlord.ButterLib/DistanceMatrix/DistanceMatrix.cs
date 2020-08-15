@@ -17,8 +17,8 @@ namespace Bannerlord.ButterLib.DistanceMatrix
         public static DistanceMatrix<T>? Create(Func<IEnumerable<T>> customListGetter, Func<T, T, float> customDistanceCalculator) =>
             ButterLibSubModule.Instance.GetServiceProvider().Create<DistanceMatrix<T>>(customListGetter, customDistanceCalculator);
 
-        internal static DistanceMatrix<T>? _instance;
-        internal static DistanceMatrix<T> Instance =>
+        private static DistanceMatrix<T>? _instance;
+        private static DistanceMatrix<T> Instance =>
             _instance ??= ButterLibSubModule.Instance.GetServiceProvider().GetRequiredService<DistanceMatrix<T>>();
 
         /// <summary>

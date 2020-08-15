@@ -16,6 +16,9 @@ using TaleWorlds.MountAndBlade;
 
 namespace Bannerlord.ButterLib
 {
+    /// <summary>
+    /// Loads all ButterLib's implementation libraries that are supported by the game.
+    /// </summary>
     public class ImplementationLoaderSubModule : MBSubModuleBaseListWrapper
     {
         private static IEnumerable<MBSubModuleBase> LoadAllImplementationAssemblies(ILogger? logger)
