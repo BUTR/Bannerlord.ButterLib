@@ -3,8 +3,8 @@ name: Publish
 on:
   push:
     branches:
-      #- dev-abstraction
       - master
+      #- dev-abstraction
 
 jobs:
 ###########################

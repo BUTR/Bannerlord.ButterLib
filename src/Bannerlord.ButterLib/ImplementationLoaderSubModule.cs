@@ -92,7 +92,7 @@ namespace Bannerlord.ButterLib
 
                 case { } i when i == 1:
                 {
-                    logger?.LogInformation("Found matching implementation {name}. Loading it.");
+                    logger?.LogInformation("Found matching implementation. Loading it.");
 
                     var (implementation, version) = implementationsForGameVersion[0];
                     logger?.LogInformation("Implementation {name} for game {gameVersion} is loaded.", implementation.Name, version);
@@ -255,6 +255,27 @@ namespace Bannerlord.ButterLib
     /// </summary>
     internal class AssemblyLoadProxy : MarshalByRefObject
     {
+        public AssemblyLoadProxy()
+        {
+            AppDomain.CurrentDomain.AssemblyResolve += OnAssemblyResolve;
+        }
+        ~AssemblyLoadProxy()
+        {
+            AppDomain.CurrentDomain.AssemblyResolve -= OnAssemblyResolve;
+        }
+
+        private static Assembly? OnAssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                if (assembly.FullName == args.Name)
+                {
+                    return assembly;
+                }
+            }
+            return null;
+        }
+
         public void LoadFile(string path)
         {
             ValidatePath(path);
@@ -278,7 +299,7 @@ namespace Bannerlord.ButterLib
             }
         }
 
-        private void ValidatePath(string path)
+        private static void ValidatePath(string path)
         {
             if (path == null) throw new ArgumentNullException(nameof(path));
             if (!File.Exists(path)) throw new ArgumentException($"path \"{path}\" does not exist");

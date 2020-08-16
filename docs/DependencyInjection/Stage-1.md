@@ -1,4 +1,4 @@
-This is the stage before ``ButterLib`` gets the opportunity to do the fisrt initialization steps.  
+This is the stage before ``ButterLib`` gets the opportunity to do the first initialization steps.  
 It is useful for overriding ``ButterLib``'s default behavior.  
 ``SubModule.GetServices`` is not available at this stage.  
   

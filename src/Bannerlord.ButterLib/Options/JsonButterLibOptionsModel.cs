@@ -13,7 +13,7 @@ namespace Bannerlord.ButterLib.Options
     internal class JsonButterLibOptionsModel
     {
         //private static string Path = System.IO.Path.Combine(Utilities.GetConfigsPath(), "ModSettings/Global/ButterLib/ButterLib_v1.json");
-        private static string Path = System.IO.Path.Combine(Utilities.GetBasePath(), "Modules/Bannerlord.ButterLib/Options.json");
+        private static string Path = System.IO.Path.Combine(Utilities.GetConfigsPath(), "ModSettings/ButterLib/Options.json");
 
         [JsonProperty("MinLogLevel", DefaultValueHandling = DefaultValueHandling.Populate)]
         public int MinLogLevel { get; private set; } = (int) LogLevel.Information;
@@ -23,7 +23,7 @@ namespace Bannerlord.ButterLib.Options
             var file = new FileInfo(Path);
 
             if (!file.Directory.Exists)
-                throw new DirectoryNotFoundException("Modules/Bannerlord.ButterLib does not exists.");
+                file.Directory.Create();
 
             if (file.Exists)
             {

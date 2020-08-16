@@ -16,7 +16,7 @@ namespace Bannerlord.ButterLib
         /// The only way to inject your stuff before ButterLib will start it's initialization
         /// Can be used to inject a custom <see cref="ButterLibOptions"/> provider, but it needs to load before ButterLib
         /// </summary>
-        public static void ConfigureBeforeStart(Action<IServiceCollection> action)
+        public static void ConfigureBeforeInitialization(Action<IServiceCollection> action)
         {
             if (CanBeConfigured)
                 BeforeInitialization.Add(action);
