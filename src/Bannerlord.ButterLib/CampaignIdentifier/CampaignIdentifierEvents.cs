@@ -3,7 +3,7 @@
 namespace Bannerlord.ButterLib.CampaignIdentifier
 {
     /// <summary>Custom events used by CampaignIdentifier.</summary>
-    public class CampaignIdentifierEvents
+    public sealed class CampaignIdentifierEvents
     {
         private readonly MbEvent _onDescriptorRelatedDataChanged = new MbEvent();
         private readonly MbEvent<CampaignDescriptor> _onDescriptorAssigned = new MbEvent<CampaignDescriptor>();

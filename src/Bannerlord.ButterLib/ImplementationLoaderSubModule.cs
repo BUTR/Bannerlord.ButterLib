@@ -1,4 +1,5 @@
-﻿using Bannerlord.ButterLib.Common.Extensions;
+﻿using Bannerlord.ButterLib.Assemblies;
+using Bannerlord.ButterLib.Common.Extensions;
 using Bannerlord.ButterLib.Common.Helpers;
 using Bannerlord.ButterLib.SubModuleWrappers;
 
@@ -12,18 +13,15 @@ using System.Linq;
 using System.Reflection;
 
 using TaleWorlds.Core;
-using TaleWorlds.Engine;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
-
-using Path = System.IO.Path;
 
 namespace Bannerlord.ButterLib
 {
     /// <summary>
     /// Loads all ButterLib's implementation libraries that are supported by the game.
     /// </summary>
-    public class ImplementationLoaderSubModule : MBSubModuleBaseListWrapper
+    public sealed class ImplementationLoaderSubModule : MBSubModuleBaseListWrapper
     {
         private static IEnumerable<MBSubModuleBase> LoadAllImplementations(ILogger? logger)
         {
@@ -146,32 +144,15 @@ namespace Bannerlord.ButterLib
 
         private static IEnumerable<(FileInfo Implementation, ApplicationVersion Version)> GetImplementations(IEnumerable<FileInfo> implementations, ILogger? logger = null)
         {
-            // We create an AppDomain to load the implementation and see if it's compatible with the game
-            // This is done so we will not load an incompatible assembly into the main AppDomain, thus breaking the game.
-            var domain = AppDomain.CreateDomain(
-                "ButterLib_Implementation_Resolver",
-                AppDomain.CurrentDomain.Evidence,
-                new AppDomainSetup
-                {
-                    ApplicationName = "ButterLib_Implementation_Resolver",
-                    ApplicationBase = Path.Combine(Utilities.GetBasePath(), "Modules", "Bannerlord.ButterLib", "bin", "Win64_Shipping_Client")
-                });
-
-            // Get loader
-            AssemblyLoadProxy? assemblyLoader;
-            try
-            {
-                assemblyLoader = domain.CreateInstanceAndUnwrap(typeof(AssemblyLoadProxy).Assembly.FullName, typeof(AssemblyLoadProxy).FullName) as AssemblyLoadProxy;
-            }
-            catch (Exception e)
-            {
-                logger?.LogError(0, e, "AssemblyLoadProxy could not be initialized.");
-                yield break;
-            }
-
+            using var assemblyVerifier = new AssemblyVerifier("ButterLib");
+            var assemblyLoader = assemblyVerifier.GetLoader(out var exception);
             if (assemblyLoader == null)
             {
-                logger?.LogError("AssemblyLoadProxy could not be initialized.");
+                if (exception != null)
+                    logger?.LogError(0, exception, "AssemblyLoadProxy could not be initialized.");
+                else
+                    logger?.LogError("AssemblyLoadProxy could not be initialized.");
+
                 yield break;
             }
 
@@ -208,8 +189,6 @@ namespace Bannerlord.ButterLib
 
                 yield return (implementation, implementationGameVersion);
             }
-
-            AppDomain.Unload(domain);
         }
 
         private static IEnumerable<(FileInfo Implementation, ApplicationVersion Version)> ImplementationForGameVersion(ApplicationVersion gameVersion, IEnumerable<(FileInfo Implementation, ApplicationVersion Verion)> implementations)
@@ -247,62 +226,6 @@ namespace Bannerlord.ButterLib
             SubModules.AddRange(LoadAllImplementations(_logger).Select(x => new MBSubModuleBaseWrapper(x)).ToList());
 
             base.OnSubModuleLoad();
-        }
-    }
-
-    /// <summary>
-    /// Proxy for calling <see cref="Assembly.LoadFile(string)"/> of a non-default <see cref="AppDomain"/>.
-    /// </summary>
-    internal class AssemblyLoadProxy : MarshalByRefObject
-    {
-        public AssemblyLoadProxy()
-        {
-            AppDomain.CurrentDomain.AssemblyResolve += OnAssemblyResolve;
-        }
-        ~AssemblyLoadProxy()
-        {
-            AppDomain.CurrentDomain.AssemblyResolve -= OnAssemblyResolve;
-        }
-
-        private static Assembly? OnAssemblyResolve(object sender, ResolveEventArgs args)
-        {
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                if (assembly.FullName == args.Name)
-                {
-                    return assembly;
-                }
-            }
-            return null;
-        }
-
-        public void LoadFile(string path)
-        {
-            ValidatePath(path);
-
-            Assembly.LoadFile(path);
-        }
-
-        public bool LoadFileAndTest(string path)
-        {
-            ValidatePath(path);
-
-            var assembly = Assembly.LoadFile(path);
-            try
-            {
-                assembly.GetTypes();
-                return true;
-            }
-            catch (Exception e) when (e is ReflectionTypeLoadException)
-            {
-                return false;
-            }
-        }
-
-        private static void ValidatePath(string path)
-        {
-            if (path == null) throw new ArgumentNullException(nameof(path));
-            if (!File.Exists(path)) throw new ArgumentException($"path \"{path}\" does not exist");
         }
     }
 }

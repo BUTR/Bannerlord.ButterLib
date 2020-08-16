@@ -10,7 +10,7 @@ using TaleWorlds.Engine;
 namespace Bannerlord.ButterLib.Options
 {
     [JsonObject(MemberSerialization.OptIn)]
-    internal class JsonButterLibOptionsModel
+    internal sealed class JsonButterLibOptionsModel
     {
         //private static readonly string Path = System.IO.Path.Combine(Utilities.GetConfigsPath(), "ModSettings/Global/ButterLib/ButterLib_v1.json");
         private static readonly string Path = System.IO.Path.Combine(Utilities.GetConfigsPath(), "ModSettings/ButterLib/Options.json");

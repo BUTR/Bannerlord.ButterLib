@@ -10,7 +10,7 @@ using TaleWorlds.CampaignSystem;
 namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehaviors
 {
     /// <summary>Custom behavior used by CampaignIdentifier.</summary>
-    internal class CampaignIdentifierBehavior : CampaignBehaviorBase
+    internal sealed class CampaignIdentifierBehavior : CampaignBehaviorBase
     {
         private CampaignDescriptorManager _descriptorManager;
 

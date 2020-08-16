@@ -4,7 +4,7 @@ using System;
 
 namespace Bannerlord.ButterLib.Common
 {
-    public class DelayedSubModuleEventArgs : EventArgs
+    public sealed class DelayedSubModuleEventArgs : EventArgs
     {
         public Type Type { get; }
         /// <summary>

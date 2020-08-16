@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier
 {
-    internal class CISaveableTypeDefiner : ButterLibSaveableTypeDefiner
+    internal sealed class CISaveableTypeDefiner : ButterLibSaveableTypeDefiner
     {
         internal CISaveableTypeDefiner() : base(0) { }
 

@@ -13,7 +13,7 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.Helpers
         {
             lock (AOLogFile)
             {
-                using StreamWriter streamWriter = File.AppendText(AOLogFile);
+                using var streamWriter = File.AppendText(AOLogFile);
                 streamWriter.WriteLine(message);
             }
         }
@@ -22,7 +22,7 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.Helpers
         {
             lock (AOLogFile)
             {
-                using StreamWriter streamWriter = File.AppendText(AOLogFile);
+                using var streamWriter = File.AppendText(AOLogFile);
                 streamWriter.WriteLine($"[{DateTime.Now:dd.MM.yyyy HH:mm:ss}] - {sectionName}.\n{message}");
             }
         }
