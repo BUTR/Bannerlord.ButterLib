@@ -193,7 +193,7 @@ namespace Bannerlord.ButterLib
                 var assembly = Assembly.ReflectionOnlyLoadFrom(implementation.FullName);
                 
                 var metadataList = assembly.GetCustomAttributesData();
-                var implementationGameVersionStr = (string?) metadataList.FirstOrDefault(x => x.ConstructorArguments.Count == 2 && (string?) x.ConstructorArguments[0].Value == "GameVersion").ConstructorArguments[1].Value;
+                var implementationGameVersionStr = (string?) metadataList.FirstOrDefault(x => x.ConstructorArguments.Count == 2 && (string?) x.ConstructorArguments[0].Value == "GameVersion")?.ConstructorArguments[1].Value;
                 if (string.IsNullOrEmpty(implementationGameVersionStr))
                 {
                     logger?.LogError("Implementation {name} is missing GameVersion AssemblyMetadataAttribute!", implementation.Name);
@@ -232,7 +232,7 @@ namespace Bannerlord.ButterLib
                 }
             }
         }
-        private static (FileInfo Implementation, ApplicationVersion Version) ImplementationLatest(IEnumerable<(FileInfo Implementation, ApplicationVersion Version)> implementations, ILogger? logger = null)
+        private static (FileInfo Implementation, ApplicationVersion Version) ImplementationLatest(IEnumerable<(FileInfo Implementation, ApplicationVersion Version)> implementations)
         {
             return implementations.MaxBy(x => x.Version);
         }

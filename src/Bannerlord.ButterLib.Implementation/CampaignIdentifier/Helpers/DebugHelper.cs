@@ -7,7 +7,7 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.Helpers
     {
         public static void HandleException(Exception ex, MethodBase methodBase, string sectionName)
         {
-            LoggingHelper.Log($"Error occured{(methodBase != null ? $" in {methodBase}" : "")} - {ex}", sectionName);
+            LoggingHelper.Log($"Error occurred{(methodBase != null ? $" in {methodBase}" : "")} - {ex}", sectionName);
         }
 
         public static void HandleException(Exception ex, string sectionName, string logMessage)
