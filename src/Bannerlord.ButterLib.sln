@@ -33,13 +33,18 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bannerlord.ButterLib", "Ban
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{98D79DD7-266F-4EB7-915A-31BB67D2A9B8}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DependencyInjection and Logging", "DependencyInjection and Logging", "{6500D465-629A-428B-AFCF-61A8D112C151}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DependencyInjection", "DependencyInjection", "{6500D465-629A-428B-AFCF-61A8D112C151}"
 	ProjectSection(SolutionItems) = preProject
-		..\docs\DependencyInjection and Logging\Initialization-Stages.md = ..\docs\DependencyInjection and Logging\Initialization-Stages.md
-		..\docs\DependencyInjection and Logging\README.md = ..\docs\DependencyInjection and Logging\README.md
-		..\docs\DependencyInjection and Logging\Stage-1.md = ..\docs\DependencyInjection and Logging\Stage-1.md
-		..\docs\DependencyInjection and Logging\Stage-2.md = ..\docs\DependencyInjection and Logging\Stage-2.md
-		..\docs\DependencyInjection and Logging\Stage-3.md = ..\docs\DependencyInjection and Logging\Stage-3.md
+		..\docs\DependencyInjection\Initialization-Stages.md = ..\docs\DependencyInjection\Initialization-Stages.md
+		..\docs\DependencyInjection\README.md = ..\docs\DependencyInjection\README.md
+		..\docs\DependencyInjection\Stage-1.md = ..\docs\DependencyInjection\Stage-1.md
+		..\docs\DependencyInjection\Stage-2.md = ..\docs\DependencyInjection\Stage-2.md
+		..\docs\DependencyInjection\Stage-3.md = ..\docs\DependencyInjection\Stage-3.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Logging", "Logging", "{8F165DE7-910F-4106-9B5A-B406F6D81A42}"
+	ProjectSection(SolutionItems) = preProject
+		..\docs\Logging\README.md = ..\docs\Logging\README.md
 	EndProjectSection
 EndProject
 Global
@@ -78,6 +83,7 @@ Global
 		{17BE8506-B22B-4705-A777-C862888DA1F5} = {1392C229-D932-4592-9B4C-EF8E29E83D16}
 		{98D79DD7-266F-4EB7-915A-31BB67D2A9B8} = {F11F675F-87A9-4959-92FE-6B44D9500F1B}
 		{6500D465-629A-428B-AFCF-61A8D112C151} = {98D79DD7-266F-4EB7-915A-31BB67D2A9B8}
+		{8F165DE7-910F-4106-9B5A-B406F6D81A42} = {98D79DD7-266F-4EB7-915A-31BB67D2A9B8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {368BCFA9-8202-4785-AAD4-E8D3D1913736}

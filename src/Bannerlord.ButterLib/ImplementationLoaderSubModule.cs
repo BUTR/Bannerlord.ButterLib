@@ -11,8 +11,12 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
+using TaleWorlds.Core;
+using TaleWorlds.Engine;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
+
+using Path = System.IO.Path;
 
 namespace Bannerlord.ButterLib
 {
@@ -21,7 +25,7 @@ namespace Bannerlord.ButterLib
     /// </summary>
     public class ImplementationLoaderSubModule : MBSubModuleBaseListWrapper
     {
-        private static IEnumerable<MBSubModuleBase> LoadAllImplementationAssemblies(ILogger? logger)
+        private static IEnumerable<MBSubModuleBase> LoadAllImplementations(ILogger? logger)
         {
             logger?.LogInformation("Loading implementations...");
 
@@ -45,8 +49,8 @@ namespace Bannerlord.ButterLib
                 yield break;
             }
 
-            var matches = assemblyDirectory.GetFiles("Bannerlord.ButterLib.Implementation.*.dll");
-            if (!matches.Any())
+            var implementations = assemblyDirectory.GetFiles("Bannerlord.ButterLib.Implementation.*.dll");
+            if (!implementations.Any())
             {
                 logger?.LogError("No implementations found.");
                 yield break;
@@ -59,44 +63,72 @@ namespace Bannerlord.ButterLib
                 yield break;
             }
 
-            foreach (var match in matches.Where(m => assemblies.All(a => Path.GetFileNameWithoutExtension(a.Location) != Path.GetFileNameWithoutExtension(m.Name))))
+
+            var implementationsFiles = implementations.Where(x => assemblies.All(a => Path.GetFileNameWithoutExtension(a.Location) != Path.GetFileNameWithoutExtension(x.Name)));
+            var implementationsWithVersions = GetImplementations(implementationsFiles, logger).ToList();
+            if (implementationsWithVersions.Count == 0)
             {
-                logger?.LogInformation("Found implementation {name}.", match.Name);
+                logger?.LogError("No compatible implementations were found!");
+                yield break;
+            }
 
-                var assembly = Assembly.ReflectionOnlyLoadFrom(match.FullName);
-                
-                var metadatas = assembly.GetCustomAttributesData();
-                var supportedVersionStr = (string?) metadatas.FirstOrDefault(x => x.ConstructorArguments.Count == 2 && (string?) x.ConstructorArguments[0].Value == "GameVersion").ConstructorArguments[1].Value;
-                if (string.IsNullOrEmpty(supportedVersionStr))
+            var implementationsForGameVersion = ImplementationForGameVersion(gameVersion.Value, implementationsWithVersions).ToList();
+            switch (implementationsForGameVersion.Count)
+            {
+                case { } i when i > 1:
                 {
-                    logger?.LogError("Implementation {name} is missing GameVersion AssemblyMetadataAttribute!", match.Name);
-                    continue;
+                    logger?.LogInformation("Found multiple matching implementations:");
+                    foreach (var (implementation1, version1) in implementationsForGameVersion)
+                        logger?.LogInformation("Implementation {name} for game {gameVersion}.", implementation1.Name, version1);
+
+
+                    logger?.LogInformation("Loading the latest available.");
+
+                    var (implementation, version) = ImplementationLatest(implementationsForGameVersion);
+                    logger?.LogInformation("Implementation {name} for game {gameVersion} is loaded.", implementation.Name, version);
+                    implementationAssemblies.Add(Assembly.LoadFrom(implementation.FullName));
+                    break;
                 }
 
-                var supportedVersion = !string.IsNullOrEmpty(supportedVersionStr) && ApplicationVersionUtils.TryParse(supportedVersionStr, out var sv)
-                    ? sv
-                    : (ApplicationVersion?) null;
-                if (supportedVersion == null)
+                case { } i when i == 1:
                 {
-                    logger?.LogError("Implementation {name} has invalid GameVersion AssemblyMetadataAttribute!", match.Name);
-                    continue;
+                    logger?.LogInformation("Found matching implementation {name}. Loading it.");
+
+                    var (implementation, version) = implementationsForGameVersion[0];
+                    logger?.LogInformation("Implementation {name} for game {gameVersion} is loaded.", implementation.Name, version);
+                    implementationAssemblies.Add(Assembly.LoadFrom(implementation.FullName));
+                    break;
                 }
 
-                if (gameVersion.Value.IsSameWithoutRevision(supportedVersion.Value))
+                case { } i when i == 0:
                 {
-                    logger?.LogInformation("Implementation {name} is loaded.", match.Name);
-                    implementationAssemblies.Add(Assembly.LoadFrom(match.FullName));
-                }
-                else
-                {
-                    logger?.LogInformation("Implementation {name} is skipped.", match.Name);
+                    logger?.LogInformation("Found no matching implementations. Loading the latest available.");
+
+                    var (implementation, version) = ImplementationLatest(implementationsWithVersions);
+                    logger?.LogInformation("Implementation {name} for game {gameVersion} is loaded.", implementation.Name, version);
+                    implementationAssemblies.Add(Assembly.LoadFrom(implementation.FullName));
+                    break;
                 }
             }
 
-            var submodules = implementationAssemblies.SelectMany(assembly =>
-                assembly.GetTypes().Where(t =>
-                    t.FullName != typeof(ImplementationLoaderSubModule).FullName && typeof(MBSubModuleBase).IsAssignableFrom(t)));
-            foreach (var subModuleType in submodules)
+            var subModules = implementationAssemblies.SelectMany(a =>
+            {
+                try
+                {
+                    return a.GetTypes().Where(t => typeof(MBSubModuleBase).IsAssignableFrom(t));
+                }
+                catch (Exception e) when (e is ReflectionTypeLoadException)
+                {
+                    logger?.LogError("Implementation {name} is not compatible with the current game!", Path.GetFileName(a.Location));
+                    return Enumerable.Empty<Type>();
+                }
+
+            }).ToList();
+
+            if (subModules.Count == 0)
+                logger?.LogError("No implementation was initialized!");
+
+            foreach (var subModuleType in subModules)
             {
                 var constructor = subModuleType.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.CreateInstance, null, Type.EmptyTypes, null);
                 if (constructor == null)
@@ -112,15 +144,144 @@ namespace Bannerlord.ButterLib
             logger?.LogInformation("Finished loading implementations.");
         }
 
+        private static IEnumerable<(FileInfo Implementation, ApplicationVersion Version)> GetImplementations(IEnumerable<FileInfo> implementations, ILogger? logger = null)
+        {
+            // We create an AppDomain to load the implementation and see if it's compatible with the game
+            // This is done so we will not load an incompatible assembly into the main AppDomain, thus breaking the game.
+            var domain = AppDomain.CreateDomain(
+                "ButterLib_Implementation_Resolver",
+                AppDomain.CurrentDomain.Evidence,
+                new AppDomainSetup
+                {
+                    ApplicationName = "ButterLib_Implementation_Resolver",
+                    ApplicationBase = Path.Combine(Utilities.GetBasePath(), "Modules", "Bannerlord.ButterLib", "bin", "Win64_Shipping_Client")
+                });
+
+            // Get loader
+            AssemblyLoadProxy? assemblyLoader;
+            try
+            {
+                assemblyLoader = domain.CreateInstanceAndUnwrap(typeof(AssemblyLoadProxy).Assembly.FullName, typeof(AssemblyLoadProxy).FullName) as AssemblyLoadProxy;
+            }
+            catch (Exception e)
+            {
+                logger?.LogError(0, e, "AssemblyLoadProxy could not be initialized.");
+                yield break;
+            }
+
+            if (assemblyLoader == null)
+            {
+                logger?.LogError("AssemblyLoadProxy could not be initialized.");
+                yield break;
+            }
+
+            // Load all current assemblies
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies().Where(a => !a.FullName.StartsWith("mscorlib") && !a.IsDynamic))
+                assemblyLoader.LoadFile(assembly.Location);
+
+            foreach (var implementation in implementations)
+            {
+                logger?.LogInformation("Found implementation {name}.", implementation.Name);
+
+                var result = assemblyLoader.LoadFileAndTest(implementation.FullName);
+                if (!result)
+                {
+                    logger?.LogError("Implementation {name} is not compatible with the current game!", implementation.Name);
+                    continue;
+                }
+
+                var assembly = Assembly.ReflectionOnlyLoadFrom(implementation.FullName);
+                
+                var metadataList = assembly.GetCustomAttributesData();
+                var implementationGameVersionStr = (string?) metadataList.FirstOrDefault(x => x.ConstructorArguments.Count == 2 && (string?) x.ConstructorArguments[0].Value == "GameVersion").ConstructorArguments[1].Value;
+                if (string.IsNullOrEmpty(implementationGameVersionStr))
+                {
+                    logger?.LogError("Implementation {name} is missing GameVersion AssemblyMetadataAttribute!", implementation.Name);
+                    continue;
+                }
+
+                if (!ApplicationVersionUtils.TryParse(implementationGameVersionStr, out var implementationGameVersion))
+                {
+                    logger?.LogError("Implementation {name} has invalid GameVersion AssemblyMetadataAttribute!", implementation.Name);
+                    continue;
+                }
+
+                yield return (implementation, implementationGameVersion);
+            }
+
+            AppDomain.Unload(domain);
+        }
+
+        private static IEnumerable<(FileInfo Implementation, ApplicationVersion Version)> ImplementationForGameVersion(ApplicationVersion gameVersion, IEnumerable<(FileInfo Implementation, ApplicationVersion Verion)> implementations)
+        {
+            foreach (var (implementation, version) in implementations)
+            {
+                if (version.Revision == -1) // Implementation does not specify the revision
+                {
+                    if (gameVersion.IsSameWithoutRevision(version))
+                    {
+                        yield return (implementation, version);
+                    }
+                }
+                else // Implementation specified the revision
+                {
+                    if (gameVersion.IsSameWithRevision(version))
+                    {
+                        yield return (implementation, version);
+                    }
+                }
+            }
+        }
+        private static (FileInfo Implementation, ApplicationVersion Version) ImplementationLatest(IEnumerable<(FileInfo Implementation, ApplicationVersion Version)> implementations, ILogger? logger = null)
+        {
+            return implementations.MaxBy(x => x.Version);
+        }
+
+
         private ILogger _logger = default!;
 
         protected override void OnSubModuleLoad()
         {
             _logger = ButterLibSubModule.Instance.GetTempServiceProvider().GetRequiredService<ILogger<ImplementationLoaderSubModule>>();
 
-            SubModules.AddRange(LoadAllImplementationAssemblies(_logger).Select(x => new MBSubModuleBaseWrapper(x)).ToList());
+            SubModules.AddRange(LoadAllImplementations(_logger).Select(x => new MBSubModuleBaseWrapper(x)).ToList());
 
             base.OnSubModuleLoad();
+        }
+    }
+
+    /// <summary>
+    /// Proxy for calling <see cref="Assembly.LoadFile(string)"/> of a non-default <see cref="AppDomain"/>.
+    /// </summary>
+    internal class AssemblyLoadProxy : MarshalByRefObject
+    {
+        public void LoadFile(string path)
+        {
+            ValidatePath(path);
+
+            Assembly.LoadFile(path);
+        }
+
+        public bool LoadFileAndTest(string path)
+        {
+            ValidatePath(path);
+
+            var assembly = Assembly.LoadFile(path);
+            try
+            {
+                assembly.GetTypes();
+                return true;
+            }
+            catch (Exception e) when (e is ReflectionTypeLoadException)
+            {
+                return false;
+            }
+        }
+
+        private void ValidatePath(string path)
+        {
+            if (path == null) throw new ArgumentNullException(nameof(path));
+            if (!File.Exists(path)) throw new ArgumentException($"path \"{path}\" does not exist");
         }
     }
 }
