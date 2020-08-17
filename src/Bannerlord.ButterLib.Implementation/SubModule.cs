@@ -23,6 +23,7 @@ using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade.GauntletUI;
 
 namespace Bannerlord.ButterLib.Implementation
 {
@@ -55,27 +56,12 @@ namespace Bannerlord.ButterLib.Implementation
             services.AddScoped(typeof(DistanceMatrix<>), typeof(DistanceMatrixImplementation<>));
             services.AddSingleton<ICampaignExtensions, CampaignExtensionsImplementation>();
 
-            DelayedSubModuleLoader.Register<StoryModeSubModule>();
-            DelayedSubModuleLoader.OnMethod += (s, e) =>
-            {
-                if (e.Type != typeof(StoryModeSubModule) || e.MethodName != "OnSubModuleLoad")
-                    return;
+            DelayedSubModuleLoader.Register<GauntletUISubModule>();
+            DelayedSubModuleLoader.OnMethod += WarnNotPatched;
 
-                if (e.IsBase && e.PatchType == DelayedSubModuleEventArgs.SubModulePatchType.Postfix)
-                {
-                    try
-                    {
-                        CampaignIdentifierHarmonyInstance ??= new Harmony("Bannerlord.ButterLib.CampaignIdentifier");
-                        CampaignIdentifierHarmonyInstance.PatchAll();
-                        Patched = true;
-                    }
-                    catch (Exception ex)
-                    {
-                        Patched = false;
-                        DebugHelper.HandleException(ex, "Error in OnSubModuleLoad while initializing CampaignIdentifier.");
-                    }
-                }
-            };
+            DelayedSubModuleLoader.Register<StoryModeSubModule>();
+            DelayedSubModuleLoader.OnMethod += InitializeCampaignIdentifier;
+
             Logger.LogTrace("OnSubModuleLoad() finished.");
         }
 
@@ -97,11 +83,6 @@ namespace Bannerlord.ButterLib.Implementation
                 Debug.DebugManager = new DebugManagerWrapper(Debug.DebugManager, serviceProvider);
             }
 
-            if (!Patched)
-            {
-                Logger.LogError("Failed to execute patches!");
-                InformationManager.DisplayMessage(new InformationMessage(new TextObject(SErrorLoading).ToString(), Colors.Red));
-            }
             Logger.LogTrace("OnBeforeInitialModuleScreenSetAsRoot() finished.");
         }
 
@@ -119,6 +100,42 @@ namespace Bannerlord.ButterLib.Implementation
                 gameStarter.AddBehavior(new GeopoliticsCachingBehavior());
             }
             Logger.LogTrace("OnGameStart(Game, IGameStarter) finished.");
+        }
+
+        private void InitializeCampaignIdentifier(object s, DelayedSubModuleEventArgs e)
+        {
+            if (e.Type != typeof(StoryModeSubModule) || e.MethodName != "OnSubModuleLoad"
+                || !e.IsBase || e.PatchType != DelayedSubModuleEventArgs.SubModulePatchType.Postfix)
+            {
+                return;
+            }
+
+            try
+            {
+                CampaignIdentifierHarmonyInstance ??= new Harmony("Bannerlord.ButterLib.CampaignIdentifier");
+                CampaignIdentifierHarmonyInstance.PatchAll();
+                Patched = true;
+            }
+            catch (Exception ex)
+            {
+                Patched = false;
+                DebugHelper.HandleException(ex, "Error in OnSubModuleLoad while initializing CampaignIdentifier.");
+            }
+        }
+
+        private void WarnNotPatched(object s, DelayedSubModuleEventArgs e)
+        {
+            if (e.Type != typeof(GauntletUISubModule) || e.MethodName != "OnBeforeInitialModuleScreenSetAsRoot"
+                || e.PatchType != DelayedSubModuleEventArgs.SubModulePatchType.Postfix)
+            {
+                return;
+            }
+
+            if (!Patched)
+            {
+                Logger.LogError("Failed to execute patches!");
+                InformationManager.DisplayMessage(new InformationMessage(new TextObject(SErrorLoading).ToString(), Colors.Red));
+            }
         }
     }
 }

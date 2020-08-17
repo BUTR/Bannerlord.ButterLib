@@ -8,7 +8,6 @@
   <MultiplayerModule value="false" />
   <DependedModules>
     <DependedModule Id="Bannerlord.Harmony" />
-	<DependedModule Id="Native"/>
   </DependedModules>
   <SubModules>
     <SubModule>
