@@ -1,6 +1,6 @@
 ﻿using Bannerlord.ButterLib.CampaignIdentifier;
-using Bannerlord.ButterLib.Common;
 using Bannerlord.ButterLib.Common.Extensions;
+using Bannerlord.ButterLib.DelayedSubModule;
 using Bannerlord.ButterLib.DistanceMatrix;
 using Bannerlord.ButterLib.Implementation.CampaignIdentifier;
 using Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehaviors;
@@ -36,11 +36,6 @@ namespace Bannerlord.ButterLib.Implementation
 
         internal static ILogger? Logger { get; private set; }
 
-        static SubModule()
-        {
-            Logger = default!;
-        }
-
         protected override void OnSubModuleLoad()
         {
             base.OnSubModuleLoad();
@@ -56,11 +51,10 @@ namespace Bannerlord.ButterLib.Implementation
             services.AddScoped(typeof(DistanceMatrix<>), typeof(DistanceMatrixImplementation<>));
             services.AddSingleton<ICampaignExtensions, CampaignExtensionsImplementation>();
 
-            DelayedSubModuleLoader.Register<GauntletUISubModule>();
-            DelayedSubModuleLoader.OnMethod += WarnNotPatched;
-
             DelayedSubModuleLoader.Register<StoryModeSubModule>();
-            DelayedSubModuleLoader.OnMethod += InitializeCampaignIdentifier;
+            DelayedSubModuleLoader.Subscribe<GauntletUISubModule, SubModule>(
+                nameof(OnSubModuleLoad), DelayedSubModuleSubscriptionType.AfterMethod, 
+                InitializeCampaignIdentifier);
 
             Logger.LogTrace("OnSubModuleLoad() finished.");
         }
@@ -83,6 +77,14 @@ namespace Bannerlord.ButterLib.Implementation
                 Debug.DebugManager = new DebugManagerWrapper(Debug.DebugManager, serviceProvider);
             }
 
+            DelayedSubModuleLoader.Register<GauntletUISubModule>();
+            DelayedSubModuleLoader.Subscribe<GauntletUISubModule, SubModule>(
+                nameof(OnBeforeInitialModuleScreenSetAsRoot),
+                DelayedSubModuleSubscriptionType.AfterMethod,
+                WarnNotPatched);
+
+            var t = DistanceMatrix<Clan>.Create();
+
             Logger.LogTrace("OnBeforeInitialModuleScreenSetAsRoot() finished.");
         }
 
@@ -104,11 +106,8 @@ namespace Bannerlord.ButterLib.Implementation
 
         private void InitializeCampaignIdentifier(object s, DelayedSubModuleEventArgs e)
         {
-            if (e.Type != typeof(StoryModeSubModule) || e.MethodName != "OnSubModuleLoad"
-                || !e.IsBase || e.PatchType != DelayedSubModuleEventArgs.SubModulePatchType.Postfix)
-            {
+            if (!e.IsValid<StoryModeSubModule>(nameof(OnSubModuleLoad), DelayedSubModuleSubscriptionType.AfterMethod))
                 return;
-            }
 
             try
             {
@@ -125,11 +124,8 @@ namespace Bannerlord.ButterLib.Implementation
 
         private void WarnNotPatched(object s, DelayedSubModuleEventArgs e)
         {
-            if (e.Type != typeof(GauntletUISubModule) || e.MethodName != "OnBeforeInitialModuleScreenSetAsRoot"
-                || e.PatchType != DelayedSubModuleEventArgs.SubModulePatchType.Postfix)
-            {
+            if (!e.IsValid<GauntletUISubModule>(nameof(OnBeforeInitialModuleScreenSetAsRoot), DelayedSubModuleSubscriptionType.AfterMethod))
                 return;
-            }
 
             if (!Patched)
             {

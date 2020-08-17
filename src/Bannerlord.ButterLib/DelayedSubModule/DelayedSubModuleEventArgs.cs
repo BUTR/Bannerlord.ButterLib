@@ -4,7 +4,7 @@ using System;
 
 using TaleWorlds.MountAndBlade;
 
-namespace Bannerlord.ButterLib.Common
+namespace Bannerlord.ButterLib.DelayedSubModule
 {
     /// <summary>
     /// A container class for the arguments of the events,
@@ -26,20 +26,20 @@ namespace Bannerlord.ButterLib.Common
         /// </summary>
         /// <value><para>
         /// <see langword="true"/>, if base <see cref="MBSubModuleBase"/> virtual method was called. 
-        /// <see cref="PatchType"/> can only be a <see cref="SubModulePatchType.Postfix"/> in that case.
+        /// <see cref="SubscriptionType"/> can only be a <see cref="DelayedSubModuleSubscriptionType.AfterMethod"/> in that case.
         /// </para><para>
         /// <see langword="false"/>, if corresponding override method of the derived class specified
-        /// in <see cref="Type"/> was called. <see cref="PatchType"/> could be both
-        /// <see cref="SubModulePatchType.Prefix"/> and <see cref="SubModulePatchType.Postfix"/> in that case.
+        /// in <see cref="Type"/> was called. <see cref="SubscriptionType"/> could be both
+        /// <see cref="DelayedSubModuleSubscriptionType.BeforeMethod"/> and <see cref="DelayedSubModuleSubscriptionType.AfterMethod"/> in that case.
         /// </para></value>
         public bool IsBase { get; }
 
         /// <summary>A type of the Harmony patch that was used to raise the event.</summary>
         /// <value>
-        /// <see cref="SubModulePatchType.Prefix"/>, when event is raised before the execution of the method;
-        /// <see cref="SubModulePatchType.Postfix"/>, when event is raised after the execution of the method.
+        /// <see cref="DelayedSubModuleSubscriptionType.BeforeMethod"/>, when event is raised before the execution of the method;
+        /// <see cref="DelayedSubModuleSubscriptionType.AfterMethod"/>, when event is raised after the execution of the method.
         /// </value>
-        public SubModulePatchType PatchType { get; }
+        public DelayedSubModuleSubscriptionType SubscriptionType { get; }
 
         /// <summary>A method of the <see cref="MBSubModuleBase"/> derived class that was used to raise the event.</summary>
         /// <value>A string containing the name of the method.</value>
@@ -53,32 +53,35 @@ namespace Bannerlord.ButterLib.Common
         /// An indicator that the underlying virtual implementation of the <see cref="MBSubModuleBase"/>
         /// method was called, not a derived class override.
         /// </param>
-        /// <param name="patchType">A type of the Harmony patch that was used to raise the event.</param>
+        /// <param name="subscriptionType">A type of the Harmony patch that was used to raise the event.</param>
         /// <param name="methodName">A method of the <see cref="MBSubModuleBase"/> derived class that was used to raise the event.</param>
         /// <exception cref="T:System.ArgumentException">Thrown when <paramref name="type"/>
         /// does not point to a subclass of the <see cref="MBSubModuleBase"/>.</exception>
-        /// <exception cref="T:System.ArgumentOutOfRangeException">Thrown when <paramref name="patchType"/>
-        /// is not a valid <see cref="SubModulePatchType"/> enum.</exception>
-        public DelayedSubModuleEventArgs(Type type, bool isBase, SubModulePatchType patchType, string methodName)
+        /// <exception cref="T:System.ArgumentOutOfRangeException">Thrown when <paramref name="subscriptionType"/>
+        /// is not a valid <see cref="DelayedSubModuleSubscriptionType"/> enum.</exception>
+        public DelayedSubModuleEventArgs(Type type, bool isBase, DelayedSubModuleSubscriptionType subscriptionType, string methodName)
         {
             if (!typeof(MBSubModuleBase).IsAssignableFrom(type))
             {
-                throw new ArgumentException(string.Format("{0} is not supported type.", type.FullName), nameof(type));
+                throw new ArgumentException($"{type.FullName} is not supported type.", nameof(type));
             }
-            if (!Enum.IsDefined(typeof(SubModulePatchType), patchType))
+            if (!Enum.IsDefined(typeof(DelayedSubModuleSubscriptionType), subscriptionType))
             {
-                throw new ArgumentOutOfRangeException(nameof(patchType), patchType, $"DelayedSubModuleEventArgs ctor is supplied with not supported {typeof(SubModulePatchType).Name} value.");
+                throw new ArgumentOutOfRangeException(nameof(subscriptionType), subscriptionType, $"DelayedSubModuleEventArgs .ctor is supplied with not supported {nameof(DelayedSubModuleSubscriptionType)} value.");
             }
             Type = type;
             IsBase = isBase;
-            PatchType = patchType;
+            SubscriptionType = subscriptionType;
             MethodName = methodName;
         }
 
-        public enum SubModulePatchType : byte
+        public bool IsValid<T>(string methodName, DelayedSubModuleSubscriptionType subscriptionType) where T: MBSubModuleBase
         {
-            Prefix = 0,
-            Postfix = 1
+            return Type == typeof(T) && MethodName == methodName && !IsBase && SubscriptionType == subscriptionType;
+        }
+        public bool IsValidBase<T>(string methodName, DelayedSubModuleSubscriptionType subscriptionType) where T: MBSubModuleBase
+        {
+            return Type == typeof(T) && MethodName == methodName && IsBase && SubscriptionType == subscriptionType;
         }
     }
 }

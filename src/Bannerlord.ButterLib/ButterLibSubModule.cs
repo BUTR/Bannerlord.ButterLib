@@ -5,8 +5,6 @@ using Bannerlord.ButterLib.Options;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-using System;
-
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
@@ -38,7 +36,7 @@ namespace Bannerlord.ButterLib
                 action?.Invoke(Services);
 
             this.AddSerilogLogger();
-            this.AddSerilogLoggerProvider($"butterlib.txt", new[] { "Bannerlord.ButterLib.*" });
+            this.AddSerilogLoggerProvider("butterlib.txt", new[] { "Bannerlord.ButterLib.*" });
 
             _logger = this.GetTempServiceProvider().GetRequiredService<ILogger<ButterLibSubModule>>();
             _logger.LogTrace("OnSubModuleLoad() started tracking.");
