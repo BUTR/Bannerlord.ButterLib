@@ -12,7 +12,7 @@ namespace Bannerlord.ButterLib.Implementation.Logging
     /// Wraps a <see cref="IDebugManager"/>. Doubles the logs into out logging system
     /// but still keeps the original execution flow.
     /// </summary>
-    internal class DebugManagerWrapper : IDebugManager
+    internal sealed class DebugManagerWrapper : IDebugManager
     {
         public IDebugManager OriginalDebugManager { get; }
         

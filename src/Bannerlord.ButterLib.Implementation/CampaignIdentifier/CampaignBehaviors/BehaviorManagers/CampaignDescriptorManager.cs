@@ -16,7 +16,7 @@ using Path = System.IO.Path;
 namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehaviors.BehaviorManagers
 {
     [SaveableClass(2)]
-    internal class CampaignDescriptorManager
+    internal sealed class CampaignDescriptorManager
     {
         private const string InquiryUpperBody =
             "{=gRz8MZ0YZ7}This game has no ID. It probably was started before installing ButterLib Campaign Identifier. We have found other ongoing campaigns that have similar initial character background and were already assigned an ID. If this game refers to one of them, please, select corresponding option.";

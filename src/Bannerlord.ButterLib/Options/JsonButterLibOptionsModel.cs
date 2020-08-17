@@ -10,9 +10,9 @@ using TaleWorlds.Engine;
 namespace Bannerlord.ButterLib.Options
 {
     [JsonObject(MemberSerialization.OptIn)]
-    internal class JsonButterLibOptionsModel
+    internal sealed class JsonButterLibOptionsModel
     {
-        //private static string Path = System.IO.Path.Combine(Utilities.GetConfigsPath(), "ModSettings/Global/ButterLib/ButterLib_v1.json");
+        //private static readonly string Path = System.IO.Path.Combine(Utilities.GetConfigsPath(), "ModSettings/Global/ButterLib/ButterLib_v1.json");
         private static readonly string Path = System.IO.Path.Combine(Utilities.GetConfigsPath(), "ModSettings/ButterLib/Options.json");
 
         [JsonProperty("MinLogLevel", DefaultValueHandling = DefaultValueHandling.Populate)]
@@ -21,6 +21,9 @@ namespace Bannerlord.ButterLib.Options
         public JsonButterLibOptionsModel()
         {
             var file = new FileInfo(Path);
+
+            if (file.Directory == null)
+                throw new NullReferenceException($"Directory for path {Path} is null!");
 
             if (!file.Directory.Exists)
                 file.Directory.Create();

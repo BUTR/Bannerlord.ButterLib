@@ -43,7 +43,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// <param name="versionAsString">A string containing a version to convert.</param>
         /// <param name="version">
         /// When this method returns, contains the <see cref="ApplicationVersion" /> struct equivalent
-        /// of the verion contained in <paramref name="versionAsString" />, if the conversion succeeded
+        /// of the version contained in <paramref name="versionAsString" />, if the conversion succeeded
         /// or <see langword="default" /> if the conversion failed.
         /// </param>
         /// <returns><see langword="true" /> if <paramref name="versionAsString" /> was converted successfully; otherwise <see langword="false" />.</returns>

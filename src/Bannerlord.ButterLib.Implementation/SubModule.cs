@@ -26,7 +26,7 @@ using TaleWorlds.MountAndBlade;
 
 namespace Bannerlord.ButterLib.Implementation
 {
-    public class SubModule : MBSubModuleBase
+    public sealed class SubModule : MBSubModuleBase
     {
         private const string SErrorLoading = "{=PZthBmJc9B}ButterLib Campaign Identifier failed to load! See details in the mod log.";
 

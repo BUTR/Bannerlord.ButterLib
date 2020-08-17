@@ -18,7 +18,7 @@ namespace Bannerlord.ButterLib.Implementation.Common.Extensions
     /// provided by CampaignIdentifier service as well as various geopolitical distance matrices
     /// held in <see cref="T:Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix`1" /> objects.
     /// </remarks>
-    internal class CampaignExtensionsImplementation : ICampaignExtensions
+    internal sealed class CampaignExtensionsImplementation : ICampaignExtensions
     {
         /// <summary>Gets ID of the <see cref="Campaign" />.</summary>
         /// <param name="campaign">The campaign</param>

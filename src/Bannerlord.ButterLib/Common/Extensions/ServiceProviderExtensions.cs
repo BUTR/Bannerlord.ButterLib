@@ -4,7 +4,7 @@ using System;
 
 namespace Bannerlord.ButterLib.Common.Extensions
 {
-    public static class IServiceProviderExtensions
+    public static class ServiceProviderExtensions
     {
         public static T Create<T>(this IServiceProvider serviceProvider, params object[] parameters) =>
             ActivatorUtilities.CreateInstance<T>(serviceProvider, parameters);

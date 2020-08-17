@@ -12,9 +12,9 @@ namespace Bannerlord.ButterLib.DistanceMatrix
 {
     public abstract class DistanceMatrix<T> where T : MBObjectBase
     {
-        public static DistanceMatrix<T>? Create() =>
+        public static DistanceMatrix<T> Create() =>
             ButterLibSubModule.Instance.GetServiceProvider().Create<DistanceMatrix<T>>();
-        public static DistanceMatrix<T>? Create(Func<IEnumerable<T>> customListGetter, Func<T, T, float> customDistanceCalculator) =>
+        public static DistanceMatrix<T> Create(Func<IEnumerable<T>> customListGetter, Func<T, T, float> customDistanceCalculator) =>
             ButterLibSubModule.Instance.GetServiceProvider().Create<DistanceMatrix<T>>(customListGetter, customDistanceCalculator);
 
         private static DistanceMatrix<T>? _instance;

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace Bannerlord.ButterLib
 {
-    public partial class ButterLibSubModule
+    public sealed partial class ButterLibSubModule
     {
         public static bool CanBeConfigured { get; private set; } = true;
         private static List<Action<IServiceCollection>> BeforeInitialization { get; } = new List<Action<IServiceCollection>>();
