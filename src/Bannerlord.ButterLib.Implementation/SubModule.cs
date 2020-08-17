@@ -83,8 +83,6 @@ namespace Bannerlord.ButterLib.Implementation
                 DelayedSubModuleSubscriptionType.AfterMethod,
                 WarnNotPatched);
 
-            var t = DistanceMatrix<Clan>.Create();
-
             Logger.LogTrace("OnBeforeInitialModuleScreenSetAsRoot() finished.");
         }
 

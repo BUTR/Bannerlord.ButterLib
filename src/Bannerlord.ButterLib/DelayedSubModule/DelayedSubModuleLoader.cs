@@ -4,7 +4,7 @@ using HarmonyLib;
 
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
+
 using TaleWorlds.MountAndBlade;
 
 namespace Bannerlord.ButterLib.DelayedSubModule
