@@ -128,11 +128,9 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehavio
                 Directory.CreateDirectory(Path.GetDirectoryName(ExistingCampaignDescriptorsLogFile));
             }
 
-            using (FileStream fileStream = File.OpenWrite(ExistingCampaignDescriptorsLogFile))
-            {
-                var binaryFormatter = new BinaryFormatter();
-                binaryFormatter.Serialize(fileStream, existingCampaignDescriptors);
-            }
+            using FileStream fileStream = File.OpenWrite(ExistingCampaignDescriptorsLogFile);
+            var binaryFormatter = new BinaryFormatter();
+            binaryFormatter.Serialize(fileStream, existingCampaignDescriptors);
         }
 
         private static List<CampaignDescriptorImplementation> LoadExistingDescriptors()
@@ -142,12 +140,10 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehavio
                 return new List<CampaignDescriptorImplementation>();
             }
 
-            using (FileStream fileStream = File.OpenRead(ExistingCampaignDescriptorsLogFile))
-            {
-                var binaryFormatter = new BinaryFormatter();
-                var existingCampaignDescriptors = (List<CampaignDescriptorImplementation>) binaryFormatter.Deserialize(fileStream);
-                return existingCampaignDescriptors;
-            }
+            using FileStream fileStream = File.OpenRead(ExistingCampaignDescriptorsLogFile);
+            var binaryFormatter = new BinaryFormatter();
+            var existingCampaignDescriptors = (List<CampaignDescriptorImplementation>)binaryFormatter.Deserialize(fileStream);
+            return existingCampaignDescriptors;
         }
 
         internal void Sync()

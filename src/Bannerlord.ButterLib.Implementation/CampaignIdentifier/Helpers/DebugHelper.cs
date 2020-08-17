@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Reflection;
 
 namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.Helpers
@@ -7,12 +8,12 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.Helpers
     {
         public static void HandleException(Exception ex, MethodBase methodBase, string sectionName)
         {
-            LoggingHelper.Log($"Error occured{(methodBase != null ? $" in {methodBase}" : "")} - {ex}", sectionName);
+            SubModule.Logger.LogError(exception: ex, message: "{sectionName} - Error occured in {methodBase}.", sectionName, methodBase.Name);
         }
 
-        public static void HandleException(Exception ex, string sectionName, string logMessage)
+        public static void HandleException(Exception ex, string logMessage)
         {
-            LoggingHelper.Log(string.Format(logMessage, ex), sectionName);
+            SubModule.Logger.LogError(ex, logMessage);
         }
 
         public static ArgumentOutOfRangeException GetOutOfRangeException<T>(T value, string functionName, string argumentName)

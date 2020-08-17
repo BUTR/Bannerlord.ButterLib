@@ -33,16 +33,21 @@ namespace Bannerlord.ButterLib.Implementation
         public Harmony? CampaignIdentifierHarmonyInstance { get; private set; }
         internal bool Patched { get; private set; }
 
-        private ILogger _logger = default!;
+        internal static ILogger? Logger { get; private set; }
+
+        static SubModule()
+        {
+            Logger = default!;
+        }
 
         protected override void OnSubModuleLoad()
         {
             base.OnSubModuleLoad();
             
-            _logger = this.GetTempServiceProvider().GetRequiredService<ILogger<SubModule>>();
-            _logger.LogTrace("OnSubModuleLoad() started tracking.");
+            Logger = this.GetTempServiceProvider().GetRequiredService<ILogger<SubModule>>();
+            Logger.LogTrace("OnSubModuleLoad() started tracking.");
 
-            _logger.LogInformation("Wrapping DebugManager of type {type} with DebugManagerWrapper.", Debug.DebugManager.GetType());
+            Logger.LogInformation("Wrapping DebugManager of type {type} with DebugManagerWrapper.", Debug.DebugManager.GetType());
             Debug.DebugManager = new DebugManagerWrapper(Debug.DebugManager, this.GetTempServiceProvider());
 
             var services = this.GetServices();
@@ -56,7 +61,7 @@ namespace Bannerlord.ButterLib.Implementation
                 if (e.Type != typeof(StoryModeSubModule) || e.MethodName != "OnSubModuleLoad")
                     return;
 
-                if (e.IsBase && e.PatchType == HarmonyPatchType.Postfix)
+                if (e.IsBase && e.PatchType == DelayedSubModuleEventArgs.SubModulePatchType.Postfix)
                 {
                     try
                     {
@@ -67,20 +72,20 @@ namespace Bannerlord.ButterLib.Implementation
                     catch (Exception ex)
                     {
                         Patched = false;
-                        DebugHelper.HandleException(ex, "OnSubModuleLoad", "Initialization error - {0}");
+                        DebugHelper.HandleException(ex, "Error in OnSubModuleLoad while initializing CampaignIdentifier.");
                     }
                 }
             };
-            _logger.LogTrace("OnSubModuleLoad() finished.");
+            Logger.LogTrace("OnSubModuleLoad() finished.");
         }
 
         protected override void OnBeforeInitialModuleScreenSetAsRoot()
         {
             base.OnBeforeInitialModuleScreenSetAsRoot();
-            _logger.LogTrace("OnBeforeInitialModuleScreenSetAsRoot() started.");
+            Logger.LogTrace("OnBeforeInitialModuleScreenSetAsRoot() started.");
 
             var serviceProvider = this.GetServiceProvider();
-            _logger = serviceProvider.GetRequiredService<ILogger<SubModule>>();
+            Logger = serviceProvider.GetRequiredService<ILogger<SubModule>>();
 
             if (Debug.DebugManager is DebugManagerWrapper debugManagerWrapper)
             {
@@ -88,22 +93,22 @@ namespace Bannerlord.ButterLib.Implementation
             }
             else
             {
-                _logger.LogWarning("DebugManagerWrapper was replaced with {type}! Wrapping it with DebugManagerWrapper.", Debug.DebugManager.GetType());
+                Logger.LogWarning("DebugManagerWrapper was replaced with {type}! Wrapping it with DebugManagerWrapper.", Debug.DebugManager.GetType());
                 Debug.DebugManager = new DebugManagerWrapper(Debug.DebugManager, serviceProvider);
             }
 
             if (!Patched)
             {
-                _logger.LogError("Failed to execute patches!");
+                Logger.LogError("Failed to execute patches!");
                 InformationManager.DisplayMessage(new InformationMessage(new TextObject(SErrorLoading).ToString(), Colors.Red));
             }
-            _logger.LogTrace("OnBeforeInitialModuleScreenSetAsRoot() finished.");
+            Logger.LogTrace("OnBeforeInitialModuleScreenSetAsRoot() finished.");
         }
 
         protected override void OnGameStart(Game game, IGameStarter gameStarterObject)
         {
             base.OnGameStart(game, gameStarterObject);
-            _logger.LogTrace("OnGameStart(Game, IGameStarter) started.");
+            Logger.LogTrace("OnGameStart(Game, IGameStarter) started.");
 
             if (game.GameType is Campaign)
             {
@@ -113,7 +118,7 @@ namespace Bannerlord.ButterLib.Implementation
                 gameStarter.AddBehavior(new CampaignIdentifierBehavior());
                 gameStarter.AddBehavior(new GeopoliticsCachingBehavior());
             }
-            _logger.LogTrace("OnGameStart(Game, IGameStarter) finished.");
+            Logger.LogTrace("OnGameStart(Game, IGameStarter) finished.");
         }
     }
 }

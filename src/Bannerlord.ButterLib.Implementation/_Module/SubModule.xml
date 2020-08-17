@@ -8,13 +8,14 @@
   <MultiplayerModule value="false" />
   <DependedModules>
     <DependedModule Id="Bannerlord.Harmony" />
+	<DependedModule Id="Native"/>
   </DependedModules>
   <SubModules>
     <SubModule>
       <Name value="ButterLib Main SubModule" />
       <DLLName value="Bannerlord.ButterLib.dll" />
       <SubModuleClassType value="Bannerlord.ButterLib.ButterLibSubModule" />
-      <!-- Assemblies does not work with e 1.4.2 -->
+      <!-- Assemblies do not work with e 1.4.2 -->
       <?ignore
       <Assemblies>
         <!--Microsoft Abstractions-->
