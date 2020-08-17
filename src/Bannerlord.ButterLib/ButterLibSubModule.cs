@@ -38,7 +38,7 @@ namespace Bannerlord.ButterLib
                 action?.Invoke(Services);
 
             this.AddSerilogLogger();
-            this.AddSerilogLoggerProvider($"butterlib_{DateTimeOffset.Now:yyyyMMdd_HHmmss}.txt", new[] { "Bannerlord.ButterLib.*" });
+            this.AddSerilogLoggerProvider($"butterlib.txt", new[] { "Bannerlord.ButterLib.*" });
 
             _logger = this.GetTempServiceProvider().GetRequiredService<ILogger<ButterLibSubModule>>();
             _logger.LogTrace("OnSubModuleLoad() started tracking.");

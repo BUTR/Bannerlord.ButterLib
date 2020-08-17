@@ -59,7 +59,8 @@ namespace Bannerlord.ButterLib.Common.Extensions
                 .Enrich.FromLogContext()
                 .WriteTo.File(
                     outputTemplate: OutputTemplate,
-                    path: Path.Combine(ModLogsPath, $"default_{DateTimeOffset.Now:yyyyMMdd_HHmmss}.log"))
+                    path: Path.Combine(ModLogsPath, $"default.log"),
+                    rollingInterval: RollingInterval.Day)
                 .CreateLogger();
 
 
@@ -88,7 +89,8 @@ namespace Bannerlord.ButterLib.Common.Extensions
                 .Filter.ByIncludingOnly(FromSources(filterList))
                 .WriteTo.File(
                     outputTemplate: OutputTemplate,
-                    path: Path.Combine(ModLogsPath, filename));
+                    path: Path.Combine(ModLogsPath, filename),
+                    rollingInterval: RollingInterval.Day);
             confugure?.Invoke(builder);
             var logger = builder.CreateLogger();
             
