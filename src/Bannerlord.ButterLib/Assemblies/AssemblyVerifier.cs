@@ -11,6 +11,9 @@ namespace Bannerlord.ButterLib.Assemblies
     /// Creates a full copy of the game's AppDomain.
     /// Should be used to check if a loading Assembly will be compatible with the game.
     /// </summary>
+    /// <remarks>
+    /// Should be replaced with AssemblyLoadContext once Bannerlord switched to .NET Core
+    /// </remarks>
     public sealed class AssemblyVerifier : IDisposable
     {
         private readonly AppDomain _domain;

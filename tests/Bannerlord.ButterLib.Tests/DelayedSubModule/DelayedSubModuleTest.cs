@@ -4,14 +4,13 @@ using Bannerlord.ButterLib.SubModuleWrappers;
 
 using HarmonyLib;
 
+using NUnit.Framework;
+
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 
 using TaleWorlds.Library;
-
-using Xunit;
-using Xunit.Abstractions;
 
 namespace Bannerlord.ButterLib.Tests.DelayedSubModule
 {
@@ -26,6 +25,7 @@ namespace Bannerlord.ButterLib.Tests.DelayedSubModule
         private static bool MockedGetModuleInfo(Type type, ref ModuleInfo? __result)
         {
             if (type == typeof(TestSubModuleCaller))
+
             {
                 __result = TestHelper.ModuleInfoCaller;
             }
@@ -37,14 +37,10 @@ namespace Bannerlord.ButterLib.Tests.DelayedSubModule
             return false;
         }
 
-
-        protected readonly ITestOutputHelper OutputHelper;
-
-        public DelayedSubModuleTest(ITestOutputHelper outputHelper)
+        [SetUp]
+        public void Setup()
         {
-            OutputHelper = outputHelper;
-
-            var harmony = new Harmony("DelayedSubModuleTest.Setup");
+            var harmony = new Harmony($"{nameof(DelayedSubModuleTest)}.{nameof(Setup)}");
             harmony.Patch(SymbolExtensions.GetMethodInfo(() => ModuleInfoHelper.GetModuleInfo(null!)),
                 prefix: new HarmonyMethod(GetMethodInfo(MockedGetModuleInfo)));
 
@@ -52,7 +48,7 @@ namespace Bannerlord.ButterLib.Tests.DelayedSubModule
             DelayedSubModuleLoader.Register<TestSubModuleTarget>();
         }
 
-        [Fact]
+        [Test]
         public void SubscribeBeforeTargetLoad_Test()
         {
             // Initialization
@@ -74,7 +70,7 @@ namespace Bannerlord.ButterLib.Tests.DelayedSubModule
             Assert.False(delegateWasCalled);
         }
 
-        [Fact]
+        [Test]
         public void SubscribeBeforeTargetLoad_CallTargetManually_Test()
         {
             // Initialization
@@ -101,7 +97,7 @@ namespace Bannerlord.ButterLib.Tests.DelayedSubModule
             Assert.True(delegateWasCalled);
         }
 
-        [Fact]
+        [Test]
         public void SubscribeAfterTargetLoad_Test()
         {
             // Initialization
