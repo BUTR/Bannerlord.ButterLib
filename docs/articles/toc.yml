@@ -1,4 +1,14 @@
+- name: AssemblyVerifier
+  href: AssemblyVerifier/
+  homepage: AssemblyVerifier/Overview.md
+
+- name: CampaignIdentifier
+  href: CampaignIdentifier/
+  homepage: CampaignIdentifier/Overview.md
+
+- name: DistanceMatrix
+  href: DistanceMatrix/
+  homepage: DistanceMatrix/Overview.md
+
 - name: Optional
   href: Optional/toc.yml
-
-  
