@@ -69,7 +69,7 @@ jobs:
       shell: pwsh
 
     - name: Build Solution
-      run: dotnet build src/Bannerlord.ButterLib.sln
+      run: dotnet build src/Bannerlord.ButterLib/Bannerlord.ButterLib.csproj
       env:
         DOCFX: true
         DOTNET_NOLOGO: 1
