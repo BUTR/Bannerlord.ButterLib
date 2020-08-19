@@ -9,7 +9,11 @@ namespace Bannerlord.ButterLib.CampaignIdentifier
 {
     public abstract class CampaignDescriptor
     {
-        public static CampaignDescriptor? Create(Hero hero) => ButterLibSubModule.Instance.GetServiceProvider().GetRequiredService<CampaignDescriptorStatic>().Create(hero);
+        private static CampaignDescriptorStatic? _instance;
+        private static CampaignDescriptorStatic Instance =>
+            _instance ??= ButterLibSubModule.Instance.GetServiceProvider().GetRequiredService<CampaignDescriptorStatic>();
+
+        public static CampaignDescriptor? Create(Hero hero) => Instance.Create(hero);
 
 
         /// <summary>Initializes a new instance of the class <see cref="CampaignDescriptor" />.</summary>

@@ -12,14 +12,14 @@ namespace Bannerlord.ButterLib.DistanceMatrix
 {
     public abstract class DistanceMatrix<T> where T : MBObjectBase
     {
-        public static DistanceMatrix<T> Create() =>
-            ButterLibSubModule.Instance.GetServiceProvider().GetRequiredService<DistanceMatrixStatic<T>>().Create();
-        public static DistanceMatrix<T> Create(Func<IEnumerable<T>> customListGetter, Func<T, T, float> customDistanceCalculator) =>
-            ButterLibSubModule.Instance.GetServiceProvider().GetRequiredService<DistanceMatrixStatic<T>>().Create(customListGetter, customDistanceCalculator);
+        private static DistanceMatrixStatic<T>? _instance;
+        private static DistanceMatrixStatic<T> Instance =>
+            _instance ??= ButterLibSubModule.Instance.GetServiceProvider().GetRequiredService<DistanceMatrixStatic<T>>();
 
-        private static DistanceMatrix<T>? _instance;
-        private static DistanceMatrix<T> Instance =>
-            _instance ??= ButterLibSubModule.Instance.GetServiceProvider().GetRequiredService<DistanceMatrix<T>>();
+        public static DistanceMatrix<T> Create() =>
+            Instance.Create();
+        public static DistanceMatrix<T> Create(Func<IEnumerable<T>> customListGetter, Func<T, T, float> customDistanceCalculator) =>
+            Instance.Create(customListGetter, customDistanceCalculator);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix`1"/> class
@@ -66,6 +66,7 @@ namespace Bannerlord.ButterLib.DistanceMatrix
         /// </returns>
         public abstract float GetDistance(T object1, T object2);
 
+
         /// <summary>Calculates distance between two given <see cref="Hero"/> objects.</summary>
         /// <param name="hero1">The first of the heroes to calculate distance between.</param>
         /// <param name="hero2">The second of the heroes to calculate distance between.</param>
@@ -74,8 +75,7 @@ namespace Bannerlord.ButterLib.DistanceMatrix
         /// or <see cref="float.NaN" /> if distance could not be calculated.
         /// </returns>
         public static float CalculateDistanceBetweenHeroes(Hero hero1, Hero hero2)
-            => Instance.CalculateDistanceBetweenHeroesInternal(hero1, hero2);
-        protected abstract float CalculateDistanceBetweenHeroesInternal(Hero hero1, Hero hero2);
+            => Instance.CalculateDistanceBetweenHeroes(hero1, hero2);
 
         /// <summary>Calculates distance between two given <see cref="Clan"/> objects.</summary>
         /// <param name="clan1">First of the clans to calculate distance between.</param>
@@ -90,8 +90,7 @@ namespace Bannerlord.ButterLib.DistanceMatrix
         /// </returns>
         /// <remarks>Calculation is based on the average distance between clans fiefs weighted by the fief type.</remarks>
         public static float CalculateDistanceBetweenClans(Clan clan1, Clan clan2, List<(ulong owners, float distance, float weight)> settlementOwnersPairedList)
-            => Instance.CalculateDistanceBetweenClansInternal(clan1, clan2, settlementOwnersPairedList);
-        protected abstract float CalculateDistanceBetweenClansInternal(Clan clan1, Clan clan2, List<(ulong owners, float distance, float weight)> settlementOwnersPairedList);
+            => Instance.CalculateDistanceBetweenClans(clan1, clan2, settlementOwnersPairedList);
 
         /// <summary>Calculates distance between two given <see cref="Kingdom"/> objects.</summary>
         /// <param name="kingdom1">First of the kingdoms to calculate distance between.</param>
@@ -103,8 +102,7 @@ namespace Bannerlord.ButterLib.DistanceMatrix
         /// </returns>
         /// <remarks>Calculation is based on the average distance between kingdoms fiefs weighted by the fief type.</remarks>
         public static float CalculateDistanceBetweenKingdoms(Kingdom kingdom1, Kingdom kingdom2, DistanceMatrix<Settlement> settlementDistanceMatrix)
-            => Instance.CalculateDistanceBetweenKingdomsInternal(kingdom1, kingdom2, settlementDistanceMatrix);
-        protected abstract float CalculateDistanceBetweenKingdomsInternal(Kingdom kingdom1, Kingdom kingdom2, DistanceMatrix<Settlement> settlementDistanceMatrix);
+            => Instance.CalculateDistanceBetweenKingdoms(kingdom1, kingdom2, settlementDistanceMatrix);
 
         /// <summary>
         /// Transforms given <see cref="Settlement"/> distance matrix into list of the weighted distances
@@ -121,7 +119,6 @@ namespace Bannerlord.ButterLib.DistanceMatrix
         /// method with required list argument.
         /// </remarks>
         public static List<(ulong owners, float distance, float weight)> GetSettlementOwnersPairedList(DistanceMatrix<Settlement> settlementDistanceMatrix)
-            => Instance.GetSettlementOwnersPairedListInternal(settlementDistanceMatrix);
-        protected abstract List<(ulong owners, float distance, float weight)> GetSettlementOwnersPairedListInternal(DistanceMatrix<Settlement> settlementDistanceMatrix);
+            => Instance.GetSettlementOwnersPairedList(settlementDistanceMatrix);
     }
 }
