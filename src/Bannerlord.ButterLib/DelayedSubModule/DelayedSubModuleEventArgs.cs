@@ -25,7 +25,7 @@ namespace Bannerlord.ButterLib.DelayedSubModule
         /// method was called, not a derived class override.
         /// </summary>
         /// <value><para>
-        /// <see langword="true"/>, if base <see cref="MBSubModuleBase"/> virtual method was called. 
+        /// <see langword="true"/>, if base <see cref="MBSubModuleBase"/> virtual method was called.
         /// <see cref="SubscriptionType"/> can only be a <see cref="DelayedSubModuleSubscriptionType.AfterMethod"/> in that case.
         /// </para><para>
         /// <see langword="false"/>, if corresponding override method of the derived class specified

@@ -8,7 +8,6 @@ using NUnit.Framework;
 
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 
 using TaleWorlds.Library;
 
@@ -16,12 +15,6 @@ namespace Bannerlord.ButterLib.Tests.DelayedSubModule
 {
     public class DelayedSubModuleTest
     {
-        private delegate bool MockedGetLoadedModulesDelegate(ref List<ModuleInfo> list);
-        private static MethodInfo GetMethodInfo(MockedGetLoadedModulesDelegate @delegate) => @delegate.Method;
-
-        private delegate bool MockedGetModuleInfoDelegate(Type type, ref ModuleInfo? __result);
-        private static MethodInfo GetMethodInfo(MockedGetModuleInfoDelegate @delegate) => @delegate.Method;
-
         private static bool MockedGetModuleInfo(Type type, ref ModuleInfo? __result)
         {
             if (type == typeof(TestSubModuleCaller))
@@ -42,7 +35,7 @@ namespace Bannerlord.ButterLib.Tests.DelayedSubModule
         {
             var harmony = new Harmony($"{nameof(DelayedSubModuleTest)}.{nameof(Setup)}");
             harmony.Patch(SymbolExtensions.GetMethodInfo(() => ModuleInfoHelper.GetModuleInfo(null!)),
-                prefix: new HarmonyMethod(GetMethodInfo(MockedGetModuleInfo)));
+                prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetModuleInfo)));
 
             DelayedSubModuleLoader.Register<TestSubModuleCaller>();
             DelayedSubModuleLoader.Register<TestSubModuleTarget>();
@@ -60,7 +53,7 @@ namespace Bannerlord.ButterLib.Tests.DelayedSubModule
 
             using var harmony = new HarmonyDisposable($"{nameof(DelayedSubModuleTest)}.{nameof(SubscribeAfterTargetLoad_Test)}");
             harmony.Patch(SymbolExtensions.GetMethodInfo(() => ModuleInfoHelper.GetLoadedModules()),
-                prefix: new HarmonyMethod(GetMethodInfo(MockedGetLoadedModules)));
+                prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetLoadedModules)));
             // Initialization
 
             // Because the Target SubModule loads after Caller, Subscribe should not instacall the delegate
@@ -82,7 +75,7 @@ namespace Bannerlord.ButterLib.Tests.DelayedSubModule
 
             using var harmony = new HarmonyDisposable($"{nameof(DelayedSubModuleTest)}.{nameof(SubscribeBeforeTargetLoad_CallTargetManually_Test)}");
             harmony.Patch(SymbolExtensions.GetMethodInfo(() => ModuleInfoHelper.GetLoadedModules()),
-                prefix: new HarmonyMethod(GetMethodInfo(MockedGetLoadedModules)));
+                prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetLoadedModules)));
             // Initialization
 
             // Because the Target SubModule loads after Caller, Subscribe should not instacall the delegate
@@ -109,7 +102,7 @@ namespace Bannerlord.ButterLib.Tests.DelayedSubModule
 
             using var harmony = new HarmonyDisposable($"{nameof(DelayedSubModuleTest)}.{nameof(SubscribeAfterTargetLoad_Test)}");
             harmony.Patch(SymbolExtensions.GetMethodInfo(() => ModuleInfoHelper.GetLoadedModules()),
-                prefix: new HarmonyMethod(GetMethodInfo(MockedGetLoadedModules)));
+                prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetLoadedModules)));
             // Initialization
 
             // Because the Target SubModule loads before Caller, Subscribe should instacall the delegate

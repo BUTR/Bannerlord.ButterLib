@@ -39,7 +39,7 @@ namespace Bannerlord.ButterLib.Implementation
         protected override void OnSubModuleLoad()
         {
             base.OnSubModuleLoad();
-            
+
             Logger = this.GetTempServiceProvider().GetRequiredService<ILogger<SubModule>>();
             Logger.LogTrace("OnSubModuleLoad() started tracking.");
 
@@ -48,12 +48,14 @@ namespace Bannerlord.ButterLib.Implementation
 
             var services = this.GetServices();
             services.AddScoped<CampaignDescriptor, CampaignDescriptorImplementation>();
+            services.AddSingleton<CampaignDescriptorStatic, CampaignDescriptorStaticImplementation>();
             services.AddScoped(typeof(DistanceMatrix<>), typeof(DistanceMatrixImplementation<>));
+            services.AddSingleton(typeof(DistanceMatrixStatic<>), typeof(DistanceMatrixStaticImplementation<>));
             services.AddSingleton<ICampaignExtensions, CampaignExtensionsImplementation>();
 
             DelayedSubModuleLoader.Register<StoryModeSubModule>();
             DelayedSubModuleLoader.Subscribe<GauntletUISubModule, SubModule>(
-                nameof(OnSubModuleLoad), DelayedSubModuleSubscriptionType.AfterMethod, 
+                nameof(OnSubModuleLoad), DelayedSubModuleSubscriptionType.AfterMethod,
                 InitializeCampaignIdentifier);
 
             Logger.LogTrace("OnSubModuleLoad() finished.");

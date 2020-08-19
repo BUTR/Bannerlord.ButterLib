@@ -1,5 +1,7 @@
 ﻿using Bannerlord.ButterLib.Common.Extensions;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
 
@@ -7,7 +9,7 @@ namespace Bannerlord.ButterLib.CampaignIdentifier
 {
     public abstract class CampaignDescriptor
     {
-        public static CampaignDescriptor? Create() => ButterLibSubModule.Instance.GetServiceProvider().Create<CampaignDescriptor>();
+        public static CampaignDescriptor? Create(Hero hero) => ButterLibSubModule.Instance.GetServiceProvider().GetRequiredService<CampaignDescriptorStatic>().Create(hero);
 
 
         /// <summary>Initializes a new instance of the class <see cref="CampaignDescriptor" />.</summary>
@@ -27,13 +29,13 @@ namespace Bannerlord.ButterLib.CampaignIdentifier
         public abstract string FullCharacterName { get; }
 
         /// <summary>
-        /// Localizable description of the campaign, based on the <see cref="Hero" /> 
+        /// Localizable description of the campaign, based on the <see cref="Hero" />
         /// that was used when creating this <see cref="CampaignDescriptor" /> instance.
         /// </summary>
         public abstract string Descriptor { get; }
 
         /// <summary>
-        /// The <see cref="T:TaleWorlds.Core.CharacterCode" /> of the <see cref="Hero" /> 
+        /// The <see cref="T:TaleWorlds.Core.CharacterCode" /> of the <see cref="Hero" />
         /// that current <see cref="CampaignDescriptor" /> instance is based on.
         /// </summary>
         public abstract CharacterCode CharacterCode { get; }

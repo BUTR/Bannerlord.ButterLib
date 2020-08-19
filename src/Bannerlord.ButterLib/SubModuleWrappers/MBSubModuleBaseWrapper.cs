@@ -35,7 +35,7 @@ namespace Bannerlord.ButterLib.SubModuleWrappers
             OnGameStartInstance = AccessTools2.GetDelegate<OnGameStartDelegate, MBSubModuleBase>(subModule, "OnGameStart");
             OnApplicationTickInstance = AccessTools2.GetDelegate<OnApplicationTickDelegate, MBSubModuleBase>(subModule, "OnApplicationTick");
         }
-        
+
         protected override void OnSubModuleLoad()
         {
             base.OnSubModuleLoad();

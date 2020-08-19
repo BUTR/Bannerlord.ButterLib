@@ -78,14 +78,14 @@ namespace Bannerlord.ButterLib.DelayedSubModule
             OnMethod?.Invoke(null, new DelayedSubModuleEventArgs(__instance.GetType(), true, DelayedSubModuleSubscriptionType.AfterMethod, "OnGameEnd"));
         }
 
-        /// <summary>Registers a module to be a target of the <see cref="DelayedSubModuleLoader"/> patching.</summary>        
+        /// <summary>Registers a module to be a target of the <see cref="DelayedSubModuleLoader"/> patching.</summary>
         /// <typeparam name="TSubModule">The exact type of the module to be patched.</typeparam>
         /// <param name="priority">The <see cref="HarmonyPriority"/> that would be assigned to the patches that would be made.</param>
         /// <param name="before">A list of <see cref="Harmony.Id"/>s that should come after the patches that would be made.</param>
         /// <param name="after">A list of <see cref="Harmony.Id"/>s that should come before the patches that would be made.</param>
         public static void Register<TSubModule>(int priority = -1, string[]? before= null, string[]? after = null) where TSubModule : MBSubModuleBase => Register(typeof(TSubModule), priority, before, after);
 
-        /// <summary>Registers a module to be a target of the <see cref="DelayedSubModuleLoader"/> patching.</summary>        
+        /// <summary>Registers a module to be a target of the <see cref="DelayedSubModuleLoader"/> patching.</summary>
         /// <param name="subModule">The exact type of the module to be patched.</param>
         /// <param name="priority">The <see cref="HarmonyPriority"/> that would be assigned to the patches that would be made.</param>
         /// <param name="before">A list of <see cref="Harmony.Id"/>s that should come after the patches that would be made.</param>

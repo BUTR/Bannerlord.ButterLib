@@ -92,7 +92,7 @@ namespace Bannerlord.ButterLib.Common.Extensions
                     rollingInterval: RollingInterval.Day);
             confugure?.Invoke(builder);
             var logger = builder.CreateLogger();
-            
+
             services.AddSingleton<ILoggerProvider, SerilogLoggerProvider>(_ => new SerilogLoggerProvider(logger, true));
             return services;
         }

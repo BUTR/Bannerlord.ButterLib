@@ -65,13 +65,13 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier
         public override string FullCharacterName => string.Join(" ", _attributes[DescriptorAttribute.HeroName], _attributes[DescriptorAttribute.HeroFamilyName]);
 
         /// <summary>
-        /// Localizable description of the campaign, based on the <see cref="Hero" /> 
+        /// Localizable description of the campaign, based on the <see cref="Hero" />
         /// that was used when creating this <see cref="CampaignDescriptorImplementation" /> instance.
         /// </summary>
         public override string Descriptor => GetLocalizableValue();
 
         /// <summary>
-        /// The <see cref="T:TaleWorlds.Core.CharacterCode" /> of the <see cref="Hero" /> 
+        /// The <see cref="T:TaleWorlds.Core.CharacterCode" /> of the <see cref="Hero" />
         /// that current <see cref="CampaignDescriptorImplementation" /> instance is based on.
         /// </summary>
         public override CharacterCode CharacterCode => CharacterCode.CreateFrom((string) _attributes[DescriptorAttribute.CharacterCode]);

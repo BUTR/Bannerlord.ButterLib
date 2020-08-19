@@ -13,12 +13,12 @@ namespace Bannerlord.ButterLib.CampaignIdentifier
         public static CampaignIdentifierEvents Instance { get; internal set; } = null!; // Won't be null when properly accessed.
 
         /// <summary>
-        /// Removes any listeners to the <see cref="CampaignIdentifierEvents" /> 
+        /// Removes any listeners to the <see cref="CampaignIdentifierEvents" />
         /// that are associated with a certain <see cref="T:System.Object" />.
         /// </summary>
         /// <param name="o">The object holding the listeners that are to be removed</param>
         /// <remarks>
-        /// This is primarily used to deactivate certain behaviors. 
+        /// This is primarily used to deactivate certain behaviors.
         /// In that case argument "o" should be assigned the behavior to be deactivated.
         /// </remarks>
         public static void RemoveListeners(object o)

@@ -44,7 +44,7 @@ namespace Bannerlord.ButterLib.Common.Extensions
         /// <param name="arg1">Fist argument of the event.</param>
         /// <param name="arg2">Second argument of the event.</param>
         /// <remarks>
-        /// This is accomplished by calling a delegate on the private method called "Invoke" of the <see cref="T:TaleWorlds.CampaignSystem.MbEvent`2}" />, 
+        /// This is accomplished by calling a delegate on the private method called "Invoke" of the <see cref="T:TaleWorlds.CampaignSystem.MbEvent`2}" />,
         /// which guarantees fast and native execution.
         /// </remarks>
         public static void Invoke<T1, T2>(this MbEvent<T1, T2> instance, T1 arg1, T2 arg2)
@@ -61,7 +61,7 @@ namespace Bannerlord.ButterLib.Common.Extensions
         /// <param name="arg2">Second argument of the event.</param>
         /// <param name="arg3">Third argument of the event.</param>
         /// <remarks>
-        /// This is accomplished by calling a delegate on the private method called "Invoke" of the <see cref="T:TaleWorlds.CampaignSystem.MbEvent`3}" />, 
+        /// This is accomplished by calling a delegate on the private method called "Invoke" of the <see cref="T:TaleWorlds.CampaignSystem.MbEvent`3}" />,
         /// which guarantees fast and native execution.
         /// </remarks>
         public static void Invoke<T1, T2, T3>(this MbEvent<T1, T2, T3> instance, T1 arg1, T2 arg2, T3 arg3)
@@ -80,7 +80,7 @@ namespace Bannerlord.ButterLib.Common.Extensions
         /// <param name="arg3">Third argument of the event.</param>
         /// <param name="arg4">Fourth argument of the event.</param>
         /// <remarks>
-        /// This is accomplished by calling a delegate on the private method called "Invoke" of the <see cref="T:TaleWorlds.CampaignSystem.MbEvent`4}" />, 
+        /// This is accomplished by calling a delegate on the private method called "Invoke" of the <see cref="T:TaleWorlds.CampaignSystem.MbEvent`4}" />,
         /// which guarantees fast and native execution.
         /// </remarks>
         public static void Invoke<T1, T2, T3, T4>(this MbEvent<T1, T2, T3, T4> instance, T1 arg1, T2 arg2, T3 arg3, T4 arg4)
@@ -101,7 +101,7 @@ namespace Bannerlord.ButterLib.Common.Extensions
         /// <param name="arg4">Fourth argument of the event.</param>
         /// <param name="arg5">Fifth argument of the event.</param>
         /// <remarks>
-        /// This is accomplished by calling a delegate on the private method called "Invoke" of the <see cref="T:TaleWorlds.CampaignSystem.MbEvent`5}" />, 
+        /// This is accomplished by calling a delegate on the private method called "Invoke" of the <see cref="T:TaleWorlds.CampaignSystem.MbEvent`5}" />,
         /// which guarantees fast and native execution.
         /// </remarks>
         public static void Invoke<T1, T2, T3, T4, T5>(this MbEvent<T1, T2, T3, T4, T5> instance, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5)
@@ -124,7 +124,7 @@ namespace Bannerlord.ButterLib.Common.Extensions
         /// <param name="arg5">Fifth argument of the event.</param>
         /// <param name="arg6">Sixth argument of the event.</param>
         /// <remarks>
-        /// This is accomplished by calling a delegate on the private method called "Invoke" of the <see cref="T:TaleWorlds.CampaignSystem.MbEvent`6}" />, 
+        /// This is accomplished by calling a delegate on the private method called "Invoke" of the <see cref="T:TaleWorlds.CampaignSystem.MbEvent`6}" />,
         /// which guarantees fast and native execution.
         /// </remarks>
         public static void Invoke<T1, T2, T3, T4, T5, T6>(this MbEvent<T1, T2, T3, T4, T5, T6> instance, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6)

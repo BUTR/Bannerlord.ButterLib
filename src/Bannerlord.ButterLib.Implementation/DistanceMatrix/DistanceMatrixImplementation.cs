@@ -214,19 +214,19 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
             if (_entityListGetter != null && _distanceCalculator != null)
             {
                 var entities = _entityListGetter().ToList();
-                return entities.SelectMany(x => entities, (x, y) => (x, y)).Where(tuple => tuple.x.Id < tuple.y.Id)
+                return entities.SelectMany(_ => entities, (x, y) => (x, y)).Where(tuple => tuple.x.Id < tuple.y.Id)
                                .ToDictionary(key => ElegantPairHelper.Pair(key.x.Id, key.y.Id), value => _distanceCalculator(value.x, value.y));
             }
             if (typeof(Hero).IsAssignableFrom(typeof(T)))
             {
                 var activeHeroes = Hero.All.Where(h => h.IsInitialized && !h.IsNotSpawned && !h.IsDisabled && !h.IsDead && !h.IsNotable).ToList();
-                return activeHeroes.SelectMany(x => activeHeroes, (x, y) => (x, y)).Where(tuple => tuple.x.Id < tuple.y.Id)
+                return activeHeroes.SelectMany(_ => activeHeroes, (x, y) => (x, y)).Where(tuple => tuple.x.Id < tuple.y.Id)
                                    .ToDictionary(key => ElegantPairHelper.Pair(key.x.Id, key.y.Id), value => CalculateDistanceBetweenHeroes(value.x, value.y));
             }
             if (typeof(Settlement).IsAssignableFrom(typeof(T)))
             {
                 var settlements = Settlement.All.Where(s => s.IsInitialized && (s.IsFortification || s.IsVillage)).ToList();
-                return settlements.SelectMany(x => settlements, (x, y) => (x, y)).Where(tuple => tuple.x.Id < tuple.y.Id)
+                return settlements.SelectMany(_ => settlements, (x, y) => (x, y)).Where(tuple => tuple.x.Id < tuple.y.Id)
                                   .ToDictionary(key => ElegantPairHelper.Pair(key.x.Id, key.y.Id), value => Campaign.Current.Models.MapDistanceModel.GetDistance(value.x, value.y));
             }
             if (typeof(Clan).IsAssignableFrom(typeof(T)))
@@ -235,14 +235,14 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
                 var settlementDistanceMatrix = Campaign.Current.GetCampaignBehavior<GeopoliticsCachingBehavior>().SettlementDistanceMatrix ?? new DistanceMatrixImplementation<Settlement>();
                 var lst = GetSettlementOwnersPairedList(settlementDistanceMatrix);
 
-                return clans.SelectMany(x => clans, (x, y) => (x, y)).Where(tuple => tuple.x.Id < tuple.y.Id)
+                return clans.SelectMany(_ => clans, (x, y) => (x, y)).Where(tuple => tuple.x.Id < tuple.y.Id)
                             .ToDictionary(key => ElegantPairHelper.Pair(key.x.Id, key.y.Id), value => CalculateDistanceBetweenClans(value.x, value.y, lst));
             }
             if (typeof(Kingdom).IsAssignableFrom(typeof(T)))
             {
                 var kingdoms = Kingdom.All.Where(k => k.IsInitialized && k.Fiefs.Any()).ToList();
                 var settlementDistanceMatrix = Campaign.Current.GetCampaignBehavior<GeopoliticsCachingBehavior>().SettlementDistanceMatrix ?? new DistanceMatrixImplementation<Settlement>();
-                return kingdoms.SelectMany(x => kingdoms, (x, y) => (x, y)).Where(tuple => tuple.x.Id < tuple.y.Id)
+                return kingdoms.SelectMany(_ => kingdoms, (x, y) => (x, y)).Where(tuple => tuple.x.Id < tuple.y.Id)
                                .ToDictionary(key => ElegantPairHelper.Pair(key.x.Id, key.y.Id), value => CalculateDistanceBetweenKingdoms(value.x, value.y, settlementDistanceMatrix));
             }
             throw new ArgumentException(string.Format("{0} is not supported type", typeof(string).FullName));

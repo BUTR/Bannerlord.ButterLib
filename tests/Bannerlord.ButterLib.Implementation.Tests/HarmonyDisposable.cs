@@ -2,7 +2,7 @@ using HarmonyLib;
 
 using System;
 
-namespace Bannerlord.ButterLib.Tests
+namespace Bannerlord.ButterLib.Implementation.Tests
 {
     public sealed class HarmonyDisposable : Harmony, IDisposable
     {

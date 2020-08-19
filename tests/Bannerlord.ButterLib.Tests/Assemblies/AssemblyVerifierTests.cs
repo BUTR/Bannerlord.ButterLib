@@ -6,7 +6,6 @@ using NUnit.Framework;
 
 using System;
 using System.IO;
-using System.Reflection;
 
 using TaleWorlds.Engine;
 
@@ -16,9 +15,6 @@ namespace Bannerlord.ButterLib.Tests.Assemblies
 {
     public class AssemblyVerifierTests
     {
-        private delegate bool MockedGetBasePathDelegate(ref string __result);
-        private static MethodInfo GetMethodInfo(MockedGetBasePathDelegate @delegate) => @delegate.Method;
-
         private static bool MockedGetBasePath(ref string __result)
         {
             __result = AppDomain.CurrentDomain.BaseDirectory;
@@ -38,7 +34,7 @@ namespace Bannerlord.ButterLib.Tests.Assemblies
         {
             var harmony = new Harmony($"{nameof(AssemblyVerifierTests)}.{nameof(Setup)}");
             harmony.Patch(SymbolExtensions.GetMethodInfo(() => Utilities.GetBasePath()),
-                prefix: new HarmonyMethod(GetMethodInfo(MockedGetBasePath)));
+                prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetBasePath)));
 
             // Copy the ButterLib.dll which contains the AssemblyLoaderProxy.
             var directory = new DirectoryInfo(ButterLibModule);

@@ -45,4 +45,9 @@
   </ItemGroup>
   <!--NuGet References-->
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="Bannerlord.ButterLib.Tests" />
+    <InternalsVisibleTo Include="Bannerlord.ButterLib.Implementation.Tests" />
+  </ItemGroup>
+
 </Project>

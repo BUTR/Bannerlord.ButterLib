@@ -28,7 +28,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
                 return "e1.0.0";
 
             var @params = GetVersionStrMethod.GetParameters();
-            if (!@params.Any())
+            if (@params.Length == 0)
                 return GetVersionStrMethod.Invoke(null, Array.Empty<object>()) as string ?? "e1.0.0";
             if (@params.Length == 1 && @params[0].ParameterType == typeof(string))
                 return GetVersionStrMethod.Invoke(null, new object[] { "Singleplayer" }) as string ?? "e1.0.0";

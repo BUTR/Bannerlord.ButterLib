@@ -41,14 +41,14 @@ namespace Bannerlord.ButterLib
             }
 
             var assemblyDirectory = assemblyFile.Directory;
-            if (assemblyDirectory == null || !assemblyDirectory.Exists)
+            if (assemblyDirectory?.Exists != true)
             {
                 logger?.LogError("Assembly directory does not exists!");
                 yield break;
             }
 
             var implementations = assemblyDirectory.GetFiles("Bannerlord.ButterLib.Implementation.*.dll");
-            if (!implementations.Any())
+            if (implementations.Length == 0)
             {
                 logger?.LogError("No implementations found.");
                 yield break;
@@ -172,7 +172,7 @@ namespace Bannerlord.ButterLib
                 }
 
                 var assembly = Assembly.ReflectionOnlyLoadFrom(implementation.FullName);
-                
+
                 var metadataList = assembly.GetCustomAttributesData();
                 var implementationGameVersionStr = (string?) metadataList.FirstOrDefault(x => x.ConstructorArguments.Count == 2 && (string?) x.ConstructorArguments[0].Value == "GameVersion")?.ConstructorArguments[1].Value;
                 if (string.IsNullOrEmpty(implementationGameVersionStr))

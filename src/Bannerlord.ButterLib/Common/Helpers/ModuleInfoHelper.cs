@@ -45,7 +45,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
                 return null;
 
             var assemblyPath = GetPath(type.Assembly);
-            
+
             var fullAssemblyPath= Path.GetFullPath(assemblyPath);
             foreach (var loadedModule in GetLoadedModules())
             {

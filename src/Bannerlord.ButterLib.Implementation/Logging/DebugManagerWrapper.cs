@@ -15,7 +15,7 @@ namespace Bannerlord.ButterLib.Implementation.Logging
     internal sealed class DebugManagerWrapper : IDebugManager
     {
         public IDebugManager OriginalDebugManager { get; }
-        
+
         private readonly ILogger _logger;
         private readonly ILogger _debugManagerLogger;
 

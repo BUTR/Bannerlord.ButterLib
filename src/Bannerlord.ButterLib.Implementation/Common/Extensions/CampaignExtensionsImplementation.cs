@@ -10,7 +10,7 @@ using TaleWorlds.CampaignSystem;
 namespace Bannerlord.ButterLib.Implementation.Common.Extensions
 {
     /// <summary>
-    /// Helper extension of the <see cref="Campaign" /> class 
+    /// Helper extension of the <see cref="Campaign" /> class
     /// returning additional information, provided by the ButterLib.
     /// </summary>
     /// <remarks>
@@ -33,7 +33,7 @@ namespace Bannerlord.ButterLib.Implementation.Common.Extensions
         /// <summary>Gets CampaignDescriptor for the <see cref="Campaign" />.</summary>
         /// <param name="campaign">The campaign</param>
         /// <returns>
-        /// <see cref="CampaignDescriptor" /> object corresponding with the campaign 
+        /// <see cref="CampaignDescriptor" /> object corresponding with the campaign
         /// or null if campaign is not started or not yet identified.
         /// </returns>
         public CampaignDescriptor? GetCampaignDescriptor(Campaign campaign)
@@ -49,7 +49,7 @@ namespace Bannerlord.ButterLib.Implementation.Common.Extensions
         /// </summary>
         /// <param name="campaign">The campaign</param>
         /// <returns>
-        /// Distance matrix for all the towns, castles and villages of the current campaign, 
+        /// Distance matrix for all the towns, castles and villages of the current campaign,
         /// or null if the campaign has not started yet.
         /// </returns>
         public DistanceMatrix<Settlement>? GetDefaultSettlementDistanceMatrix(Campaign campaign)
@@ -65,7 +65,7 @@ namespace Bannerlord.ButterLib.Implementation.Common.Extensions
         /// </summary>
         /// <param name="campaign">The campaign</param>
         /// <returns>
-        /// Distance matrix for all the active clans of the current campaign, 
+        /// Distance matrix for all the active clans of the current campaign,
         /// or null if the campaign has not started yet.
         /// </returns>
         /// <remarks>Calculation is based on the average distance between clans fiefs weighted by the fief type.</remarks>
@@ -82,7 +82,7 @@ namespace Bannerlord.ButterLib.Implementation.Common.Extensions
         /// </summary>
         /// <param name="campaign">The campaign</param>
         /// <returns>
-        /// Distance matrix for all the active kingdoms of the current campaign, 
+        /// Distance matrix for all the active kingdoms of the current campaign,
         /// or null if the campaign has not started yet.
         /// </returns>
         /// <remarks>Calculation is based on the average distance between kingdoms fiefs weighted by the fief type.</remarks>

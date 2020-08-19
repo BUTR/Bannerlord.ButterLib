@@ -4,7 +4,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
 {
     /// <summary>Helper class that implements the pairing function created by Matthew Szudzik.</summary>
     /// <remarks>
-    /// A pairing function on a set A associates each pair of members from A with a single member of B, 
+    /// A pairing function on a set A associates each pair of members from A with a single member of B,
     /// so that any two distinct pairs of members from A are associated with two distinct members of B.
     /// </remarks>
     public static class ElegantPairHelper

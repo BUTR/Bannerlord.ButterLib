@@ -51,7 +51,7 @@ namespace Bannerlord.ButterLib
             _logger.LogTrace("OnSubModuleUnloaded() started.");
 
             Instance = null!;
-            
+
             _logger.LogTrace("OnSubModuleUnloaded() finished.");
         }
 
@@ -64,7 +64,7 @@ namespace Bannerlord.ButterLib
             Services = null!;
 
             _logger = ServiceProvider.GetRequiredService<ILogger<ButterLibSubModule>>();
-            
+
             _logger.LogTrace("OnBeforeInitialModuleScreenSetAsRoot() finished.");
         }
 

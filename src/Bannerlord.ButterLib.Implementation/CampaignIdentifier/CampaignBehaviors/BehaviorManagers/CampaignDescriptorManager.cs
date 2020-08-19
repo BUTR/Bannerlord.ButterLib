@@ -71,7 +71,7 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehavio
                 .Where(cd => cd.ImmutableKey == _descriptorToBeAssigned.ImmutableKey)
                 .ToList();
 
-            if (possiblyMatchingDescriptors.Any())
+            if (possiblyMatchingDescriptors.Count > 0)
             {
                 var inquiryElements = possiblyMatchingDescriptors
                     .Select(existingDescriptor => new InquiryElement(

@@ -64,7 +64,7 @@ namespace Bannerlord.ButterLib.Assemblies
         {
             ReleaseUnmanagedResources();
             GC.SuppressFinalize(this);
-        }   
+        }
         ~AssemblyVerifier()
         {
             ReleaseUnmanagedResources();
