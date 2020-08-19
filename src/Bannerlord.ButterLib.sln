@@ -70,6 +70,28 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DistanceMatrix", "DistanceM
 		..\docs\articles\DistanceMatrix\Overview.md = ..\docs\articles\DistanceMatrix\Overview.md
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SubModuleWrappers", "SubModuleWrappers", "{8BC9CF61-16CD-49CE-A9C1-F7B3E4205D8C}"
+	ProjectSection(SolutionItems) = preProject
+		..\docs\articles\SubModuleWrappers\Overview.md = ..\docs\articles\SubModuleWrappers\Overview.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DelayedSubModule", "DelayedSubModule", "{45845F8C-E085-4210-8EC4-99C30BA25805}"
+	ProjectSection(SolutionItems) = preProject
+		..\docs\articles\DelayedSubModule\Overview.md = ..\docs\articles\DelayedSubModule\Overview.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{C6CCF42F-1FF0-41C2-A9E2-CE2536FFB8B0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensions", "Extensions", "{8DC26B0D-516B-428B-8632-FE4760E8B0DA}"
+	ProjectSection(SolutionItems) = preProject
+		..\docs\articles\Common\Extensions\Overview.md = ..\docs\articles\Common\Extensions\Overview.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Helpers", "Helpers", "{D898106F-DFC9-4CB5-8AB7-A93B635F8176}"
+	ProjectSection(SolutionItems) = preProject
+		..\docs\articles\Common\Helpers\Overview.md = ..\docs\articles\Common\Helpers\Overview.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Beta_Debug|Any CPU = Beta_Debug|Any CPU
@@ -130,6 +152,11 @@ Global
 		{D5C3EA41-BE06-41DB-B7F9-60BB0EFDC0B6} = {98D79DD7-266F-4EB7-915A-31BB67D2A9B8}
 		{5217581D-2AF9-4218-B7A0-A09110BA1434} = {98D79DD7-266F-4EB7-915A-31BB67D2A9B8}
 		{F626B2A9-96E8-4838-9FD7-1BDB2F0D4867} = {98D79DD7-266F-4EB7-915A-31BB67D2A9B8}
+		{8BC9CF61-16CD-49CE-A9C1-F7B3E4205D8C} = {98D79DD7-266F-4EB7-915A-31BB67D2A9B8}
+		{45845F8C-E085-4210-8EC4-99C30BA25805} = {98D79DD7-266F-4EB7-915A-31BB67D2A9B8}
+		{C6CCF42F-1FF0-41C2-A9E2-CE2536FFB8B0} = {98D79DD7-266F-4EB7-915A-31BB67D2A9B8}
+		{8DC26B0D-516B-428B-8632-FE4760E8B0DA} = {C6CCF42F-1FF0-41C2-A9E2-CE2536FFB8B0}
+		{D898106F-DFC9-4CB5-8AB7-A93B635F8176} = {C6CCF42F-1FF0-41C2-A9E2-CE2536FFB8B0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {368BCFA9-8202-4785-AAD4-E8D3D1913736}
