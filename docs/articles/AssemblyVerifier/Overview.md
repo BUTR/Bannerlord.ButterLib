@@ -1,5 +1,5 @@
 ``AssembliVerifier`` gives the ability to pre-load an assembly and check if it's compatible with the game by calling ``Assembly.GetTypes()``
-```charp
+```csharp
 string dependencyPath;
 string assemblyPath;
 
