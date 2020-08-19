@@ -7,9 +7,6 @@
 
 - name: API 
   href: api/
-  
-- name: API Implementtation
-  href: api_implementation/
 
 - name: Bannerlord Documentation
   href: https://docs.bannerlordmodding.com
