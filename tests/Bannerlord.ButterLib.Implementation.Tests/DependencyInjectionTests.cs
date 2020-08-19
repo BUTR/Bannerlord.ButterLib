@@ -87,6 +87,7 @@ namespace Bannerlord.ButterLib.Implementation.Tests
 
             var campaignExtensions = serviceProvider.GetRequiredService<ICampaignExtensions>();
             Assert.NotNull(campaignExtensions);
+            Assert.True(campaignExtensions is CampaignExtensionsImplementation);
         }
 
         [Test]
@@ -105,6 +106,7 @@ namespace Bannerlord.ButterLib.Implementation.Tests
 
             var campaignDescriptor = CampaignDescriptor.Create(hero);
             Assert.NotNull(campaignDescriptor);
+            Assert.True(campaignDescriptor is CampaignDescriptorImplementation);
         }
 
         [Test]
@@ -120,6 +122,7 @@ namespace Bannerlord.ButterLib.Implementation.Tests
 
             var distanceMatrix = scope.ServiceProvider.GetRequiredService<DistanceMatrix<Settlement>>();
             Assert.NotNull(distanceMatrix);
+            Assert.True(distanceMatrix.GetType().GetGenericTypeDefinition() == typeof(DistanceMatrixImplementation<>));
         }
     }
 }
