@@ -4,5 +4,5 @@ CampaignIdentifier associates unique string ID with every campaign basing on the
 string campaignID = Camapaign.Current.GetCampaignId();
 
 // Get current campaign descriptor
-var campaignDescriptor = Camapaign.Current.GetCampaignDescriptor;
+var campaignDescriptor = Camapaign.Current.GetCampaignDescriptor();
 ```
