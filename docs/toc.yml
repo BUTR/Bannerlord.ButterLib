@@ -5,8 +5,13 @@
   href: articles/
   homepage: articles/index.md
 
-- name: API 
+- name: API Documentation
   href: api/
 
-- name: Bannerlord Documentation
-  href: https://docs.bannerlordmodding.com
+- name: Bannerlord Documentations
+  dropdown: true
+  items:
+    #- name: Official Documentation
+    #  href: http://docs.modding.bannerlord.com/
+    - name: Community Documentation
+      href: https://docs.bannerlordmodding.com
