@@ -31,7 +31,9 @@
     <PackageReference Include="Lib.Harmony" Version="2.0.2" IncludeAssets="compile" />
     <PackageReference Include="Bannerlord.ReferenceAssemblies.Core.EarlyAccess" Version="$(StableVersion).*" PrivateAssets="All" />
     <PackageReference Include="Bannerlord.ReferenceAssemblies.StoryMode.EarlyAccess" Version="$(StableVersion).*" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="$(ExtensionVersion)" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="$(ExtensionVersion)" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(ExtensionVersion)" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="$(ExtensionVersion)" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="$(ExtensionVersion)" />
     <PackageReference Include="Microsoft.Extensions.Primitives" Version="$(ExtensionVersion)" />

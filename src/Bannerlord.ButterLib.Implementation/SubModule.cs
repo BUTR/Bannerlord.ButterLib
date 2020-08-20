@@ -54,7 +54,7 @@ namespace Bannerlord.ButterLib.Implementation
             services.AddSingleton<ICampaignExtensions, CampaignExtensionsImplementation>();
 
             DelayedSubModuleLoader.Register<StoryModeSubModule>();
-            DelayedSubModuleLoader.Subscribe<GauntletUISubModule, SubModule>(
+            DelayedSubModuleLoader.Subscribe<StoryModeSubModule, SubModule>(
                 nameof(OnSubModuleLoad), DelayedSubModuleSubscriptionType.AfterMethod,
                 InitializeCampaignIdentifier);
 
@@ -106,7 +106,7 @@ namespace Bannerlord.ButterLib.Implementation
 
         private void InitializeCampaignIdentifier(object s, DelayedSubModuleEventArgs e)
         {
-            if (!e.IsValid<StoryModeSubModule>(nameof(OnSubModuleLoad), DelayedSubModuleSubscriptionType.AfterMethod))
+            if (!e.IsValidBase<StoryModeSubModule>(nameof(OnSubModuleLoad), DelayedSubModuleSubscriptionType.AfterMethod))
                 return;
 
             try

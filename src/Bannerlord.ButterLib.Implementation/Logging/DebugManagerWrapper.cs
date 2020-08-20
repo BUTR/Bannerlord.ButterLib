@@ -79,14 +79,12 @@ namespace Bannerlord.ButterLib.Implementation.Logging
             OriginalDebugManager.Assert(condition, message, callerFile, callerMethod, callerLine);
         }
 
-#if BETA
         public void SilentAssert(bool condition, string message = "", bool getDump = false, [CallerFilePath] string callerFile = "",  [CallerMemberName] string callerMethod = "",  [CallerLineNumber] int callerLine = 0)
         {
             if (!condition)
                 _debugManagerLogger.LogError("Silent Assert Failed!: {message}; CallerFilePath: {callerFile}; CallerMemberName: {callerMethod}; CallerLineNumber: {callerLine}", message, callerFile, callerMethod, callerLine);
             OriginalDebugManager.SilentAssert(condition, message, getDump, callerFile, callerMethod, callerLine);
         }
-#endif
 
         public void RenderDebugLine(Vec3 position, Vec3 direction, uint color = 4294967295, bool depthCheck = false, float time = 0) =>
             OriginalDebugManager.RenderDebugLine(position, direction, color, depthCheck, time);
