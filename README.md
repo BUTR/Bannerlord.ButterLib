@@ -5,6 +5,8 @@
   </br>
   <a href="https://www.nuget.org/packages/Bannerlord.ButterLib" alt="NuGet Bannerlord.ButterLib">
   <img src="https://img.shields.io/nuget/v/Bannerlord.ButterLib.svg?label=NuGet%20Bannerlord.ButterLib&colorB=blue" /></a>
+  <a href="https://butr.github.io/Bannerlord.ButterLib" alt="Documentation">
+  <img src="https://img.shields.io/badge/Documentation-%F0%9F%94%8D-blue?style=flat" /></a>
   </br>
   <a href="https://www.nexusmods.com/mountandblade2bannerlord/mods/2018" alt="Nexus ButterLib">
   <img src="https://img.shields.io/badge/Nexus-ButterLib-yellow.svg" /></a>  
