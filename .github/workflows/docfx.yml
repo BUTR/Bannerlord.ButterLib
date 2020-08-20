@@ -10,6 +10,7 @@ on:
       - '.github/workflows/docfx.yml'
       - 'src/Bannerlord.ButterLib/**.cs'
       - 'docs/**'
+      - 'README.md'
 
 jobs:
   docfx:
