@@ -12,19 +12,19 @@ namespace Bannerlord.ButterLib.Common.Helpers
     public static class LocalizationHelper
     {
         /// <summary>
-        /// A string tag that corresponds with <see cref="PluralForm.Plural" /> 
+        /// A string tag that corresponds with <see cref="PluralForm.Plural" />
         /// and could be stored as an attribute of the numeric variable by the "SetNumericVariable" method.
         /// </summary>
         public const string PLURAL_FORM_TAG = "PLURAL_FORM";
 
         /// <summary>
-        /// A string tag that corresponds with <see cref="PluralForm.SpecificSingular" /> 
+        /// A string tag that corresponds with <see cref="PluralForm.SpecificSingular" />
         /// and could be stored as an attribute of the numeric variable by the "SetNumericVariable" method.
         /// </summary>
         public const string SPECIFIC_SINGULAR_FORM_TAG = "SPECIFIC_SINGULAR_FORM";
 
         /// <summary>
-        /// A string tag that corresponds with <see cref="PluralForm.SpecificPlural" /> 
+        /// A string tag that corresponds with <see cref="PluralForm.SpecificPlural" />
         /// and could be stored as an attribute of the numeric variable by the "SetNumericVariable" method.
         /// </summary>
         public const string SPECIFIC_PLURAL_FORM_TAG = "SPECIFIC_PLURAL_FORM";
@@ -157,7 +157,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
             int lastDigit = absNumber % 10;
             return
               EasternSlavicPluralExceptions.Contains(absNumber % 100) || !EasternSlavicSingularNumerics.Contains(lastDigit)
-                ? PluralForm.Plural 
+                ? PluralForm.Plural
                 : !EasternSlavicPluralExceptions.Contains(absNumber) && EasternSlavicSingularNumerics.Contains(lastDigit) && lastDigit != 1
                 ? PluralForm.SpecificSingular : PluralForm.Singular;
         }
@@ -168,7 +168,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
             int lastDigit = absNumber % 10;
             return
               absNumber > 1 && (WesternSlavicPluralExceptions.Contains(absNumber % 100) || !WesternSlavicSingularNumerics.Contains(lastDigit))
-                ? PluralForm.Plural 
+                ? PluralForm.Plural
                 : !WesternSlavicPluralExceptions.Contains(absNumber) && WesternSlavicSingularNumerics.Contains(lastDigit)
                 ? PluralForm.SpecificPlural : PluralForm.Singular;
         }

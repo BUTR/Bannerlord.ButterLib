@@ -1,0 +1,17 @@
+- name: ButterLib
+  href: index.md
+
+- name: Articles
+  href: articles/
+  homepage: articles/index.md
+
+- name: API Documentation
+  href: api/
+
+- name: Bannerlord Documentations
+  dropdown: true
+  items:
+    #- name: Official Documentation
+    #  href: http://docs.modding.bannerlord.com/
+    - name: Community Documentation
+      href: https://docs.bannerlordmodding.com

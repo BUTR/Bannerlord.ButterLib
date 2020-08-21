@@ -14,8 +14,8 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// <returns>A delegate or null when type/name is null or when the method cannot be found</returns>
         public static TDelegate? GetDelegate<TDelegate>(Type type, string method) where TDelegate : Delegate
         {
-            MethodInfo miOriginal = Method(type, method);
-            return miOriginal != null ? (TDelegate)Delegate.CreateDelegate(typeof(TDelegate), miOriginal) : null;
+            var miOriginal = Method(type, method);
+            return miOriginal != null ? GetDelegate<TDelegate>(miOriginal) : null;
         }
 
         /// <summary>Gets the delegate for a method by searching the type and all its super types</summary>
@@ -24,7 +24,8 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// <returns>A delegate or null when type/name is null or when the method cannot be found</returns>
         public static TDelegate? GetDelegate<TDelegate, TInstance>(TInstance instance, string method) where TDelegate : Delegate where TInstance : notnull
         {
-            return GetDelegate<TDelegate>(instance.GetType(), method);
+            var miOriginal = Method(instance.GetType(), method);
+            return miOriginal == null ? null : GetDelegate<TDelegate, TInstance>(instance, miOriginal);
         }
 
         /// <summary>Gets the delegate for a directly declared method</summary>
@@ -33,8 +34,8 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// <returns>A delegate or null when type/name is null or when the method cannot be found</returns>
         public static TDelegate? GetDeclaredDelegate<TDelegate>(Type type, string method) where TDelegate : Delegate
         {
-            MethodInfo miOriginal = DeclaredMethod(type, method);
-            return miOriginal != null ? (TDelegate)Delegate.CreateDelegate(typeof(TDelegate), miOriginal) : null;
+            var miOriginal = DeclaredMethod(type, method);
+            return miOriginal != null ? GetDelegate<TDelegate>(miOriginal) : null;
         }
 
         /// <summary>Gets the delegate for a directly declared method</summary>
@@ -43,7 +44,25 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// <returns>A delegate or null when type/name is null or when the method cannot be found</returns>
         public static TDelegate? GetDeclaredDelegate<TDelegate, TInstance>(TInstance instance, string method) where TDelegate : Delegate where TInstance : notnull
         {
-            return GetDeclaredDelegate<TDelegate>(instance.GetType(), method);
+            var miOriginal = DeclaredMethod(instance.GetType(), method);
+            return miOriginal == null ? null : GetDelegate<TDelegate, TInstance>(instance, miOriginal);
+        }
+
+        /// <summary>Gets the delegate for a method</summary>
+        /// <param name="methodInfo">The method's <see cref="MethodInfo"/></param>
+        /// <returns>A delegate or null when type/name is null or when the method cannot be found</returns>
+        public static TDelegate? GetDelegate<TDelegate>(MethodInfo methodInfo) where TDelegate : Delegate
+        {
+            return Delegate.CreateDelegate(typeof(TDelegate), methodInfo) as TDelegate;
+        }
+
+        /// <summary>Gets the delegate for a method</summary>
+        /// <param name="instance">The instance where the method is declared</param>
+        /// <param name="methodInfo">The method's <see cref="MethodInfo"/></param>
+        /// <returns>A delegate or null when type/name is null or when the method cannot be found</returns>
+        public static TDelegate? GetDelegate<TDelegate, TInstance>(TInstance instance, MethodInfo methodInfo) where TDelegate : Delegate where TInstance : notnull
+        {
+            return Delegate.CreateDelegate(typeof(TDelegate), instance, methodInfo) as TDelegate;
         }
     }
 }

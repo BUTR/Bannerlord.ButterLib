@@ -83,7 +83,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
                         result = 1;
                 }
                 else
-                    result = string.Compare(chunk1.ToString(), chunk2.ToString(), StringComparison.Ordinal);
+                    result = string.CompareOrdinal(chunk1.ToString(), chunk2.ToString());
 
                 if (result != 0)
                     return result;
