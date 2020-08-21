@@ -106,7 +106,7 @@ namespace Bannerlord.ButterLib.Implementation
 
         private void InitializeCampaignIdentifier(object s, DelayedSubModuleEventArgs e)
         {
-            if (!e.IsValidBase<StoryModeSubModule>(nameof(OnSubModuleLoad), DelayedSubModuleSubscriptionType.AfterMethod))
+            if (!e.IsBase)
                 return;
 
             try
@@ -124,7 +124,7 @@ namespace Bannerlord.ButterLib.Implementation
 
         private void WarnNotPatched(object s, DelayedSubModuleEventArgs e)
         {
-            if (!e.IsValid<GauntletUISubModule>(nameof(OnBeforeInitialModuleScreenSetAsRoot), DelayedSubModuleSubscriptionType.AfterMethod))
+            if (e.IsBase)
                 return;
 
             if (!Patched)

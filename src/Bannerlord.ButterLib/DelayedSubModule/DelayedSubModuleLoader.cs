@@ -36,7 +36,7 @@ namespace Bannerlord.ButterLib.DelayedSubModule
         /// Supported methods are: 'OnSubModuleLoad', 'OnSubModuleUnloaded',
         /// 'OnBeforeInitialModuleScreenSetAsRoot', 'OnGameStart', 'OnGameEnd'.
         /// </para></remarks>
-        public static event EventHandler<DelayedSubModuleEventArgs>? OnMethod;
+        public static event EventHandler<DelayedSubModuleGlobalEventArgs>? OnMethod;
 
         static DelayedSubModuleLoader()
         {
@@ -59,23 +59,23 @@ namespace Bannerlord.ButterLib.DelayedSubModule
         }
         private static void BaseSubModuleLoadPostfix(MBSubModuleBase __instance)
         {
-            OnMethod?.Invoke(null, new DelayedSubModuleEventArgs(__instance.GetType(), true, DelayedSubModuleSubscriptionType.AfterMethod, "OnSubModuleLoad"));
+            OnMethod?.Invoke(null, new DelayedSubModuleGlobalEventArgs(__instance.GetType(), true, DelayedSubModuleSubscriptionType.AfterMethod, "OnSubModuleLoad"));
         }
         private static void BaseOnSubModuleUnloadedPostfix(MBSubModuleBase __instance)
         {
-            OnMethod?.Invoke(null, new DelayedSubModuleEventArgs(__instance.GetType(), true, DelayedSubModuleSubscriptionType.AfterMethod, "OnSubModuleUnloaded"));
+            OnMethod?.Invoke(null, new DelayedSubModuleGlobalEventArgs(__instance.GetType(), true, DelayedSubModuleSubscriptionType.AfterMethod, "OnSubModuleUnloaded"));
         }
         private static void BaseOnBeforeInitialModuleScreenSetAsRootPostfix(MBSubModuleBase __instance)
         {
-            OnMethod?.Invoke(null, new DelayedSubModuleEventArgs(__instance.GetType(), true, DelayedSubModuleSubscriptionType.AfterMethod, "OnBeforeInitialModuleScreenSetAsRoot"));
+            OnMethod?.Invoke(null, new DelayedSubModuleGlobalEventArgs(__instance.GetType(), true, DelayedSubModuleSubscriptionType.AfterMethod, "OnBeforeInitialModuleScreenSetAsRoot"));
         }
         private static void BaseOnGameStartPostfix(MBSubModuleBase __instance)
         {
-            OnMethod?.Invoke(null, new DelayedSubModuleEventArgs(__instance.GetType(), true, DelayedSubModuleSubscriptionType.AfterMethod, "OnGameStart"));
+            OnMethod?.Invoke(null, new DelayedSubModuleGlobalEventArgs(__instance.GetType(), true, DelayedSubModuleSubscriptionType.AfterMethod, "OnGameStart"));
         }
         private static void BaseOnGameEndPostfix(MBSubModuleBase __instance)
         {
-            OnMethod?.Invoke(null, new DelayedSubModuleEventArgs(__instance.GetType(), true, DelayedSubModuleSubscriptionType.AfterMethod, "OnGameEnd"));
+            OnMethod?.Invoke(null, new DelayedSubModuleGlobalEventArgs(__instance.GetType(), true, DelayedSubModuleSubscriptionType.AfterMethod, "OnGameEnd"));
         }
 
         /// <summary>Registers a module to be a target of the <see cref="DelayedSubModuleLoader"/> patching.</summary>
@@ -133,47 +133,47 @@ namespace Bannerlord.ButterLib.DelayedSubModule
         }
         private static void SubModuleLoadPrefix(MBSubModuleBase __instance)
         {
-            OnMethod?.Invoke(null, new DelayedSubModuleEventArgs(__instance.GetType(), false, DelayedSubModuleSubscriptionType.BeforeMethod, "OnSubModuleLoad"));
+            OnMethod?.Invoke(null, new DelayedSubModuleGlobalEventArgs(__instance.GetType(), false, DelayedSubModuleSubscriptionType.BeforeMethod, "OnSubModuleLoad"));
         }
         private static void SubModuleLoadPostfix(MBSubModuleBase __instance)
         {
-            OnMethod?.Invoke(null, new DelayedSubModuleEventArgs(__instance.GetType(), false, DelayedSubModuleSubscriptionType.AfterMethod, "OnSubModuleLoad"));
+            OnMethod?.Invoke(null, new DelayedSubModuleGlobalEventArgs(__instance.GetType(), false, DelayedSubModuleSubscriptionType.AfterMethod, "OnSubModuleLoad"));
         }
 
         private static void OnSubModuleUnloadedPrefix(MBSubModuleBase __instance)
         {
-            OnMethod?.Invoke(null, new DelayedSubModuleEventArgs(__instance.GetType(), false, DelayedSubModuleSubscriptionType.BeforeMethod, "OnSubModuleUnloaded"));
+            OnMethod?.Invoke(null, new DelayedSubModuleGlobalEventArgs(__instance.GetType(), false, DelayedSubModuleSubscriptionType.BeforeMethod, "OnSubModuleUnloaded"));
         }
         private static void OnSubModuleUnloadedPostfix(MBSubModuleBase __instance)
         {
-            OnMethod?.Invoke(null, new DelayedSubModuleEventArgs(__instance.GetType(), false, DelayedSubModuleSubscriptionType.AfterMethod, "OnSubModuleUnloaded"));
+            OnMethod?.Invoke(null, new DelayedSubModuleGlobalEventArgs(__instance.GetType(), false, DelayedSubModuleSubscriptionType.AfterMethod, "OnSubModuleUnloaded"));
         }
 
         private static void OnBeforeInitialModuleScreenSetAsRootPrefix(MBSubModuleBase __instance)
         {
-            OnMethod?.Invoke(null, new DelayedSubModuleEventArgs(__instance.GetType(), false, DelayedSubModuleSubscriptionType.BeforeMethod, "OnBeforeInitialModuleScreenSetAsRoot"));
+            OnMethod?.Invoke(null, new DelayedSubModuleGlobalEventArgs(__instance.GetType(), false, DelayedSubModuleSubscriptionType.BeforeMethod, "OnBeforeInitialModuleScreenSetAsRoot"));
         }
         private static void OnBeforeInitialModuleScreenSetAsRootPostfix(MBSubModuleBase __instance)
         {
-            OnMethod?.Invoke(null, new DelayedSubModuleEventArgs(__instance.GetType(), false, DelayedSubModuleSubscriptionType.AfterMethod, "OnBeforeInitialModuleScreenSetAsRoot"));
+            OnMethod?.Invoke(null, new DelayedSubModuleGlobalEventArgs(__instance.GetType(), false, DelayedSubModuleSubscriptionType.AfterMethod, "OnBeforeInitialModuleScreenSetAsRoot"));
         }
 
         private static void OnGameStartPrefix(MBSubModuleBase __instance)
         {
-            OnMethod?.Invoke(null, new DelayedSubModuleEventArgs(__instance.GetType(), false, DelayedSubModuleSubscriptionType.BeforeMethod, "OnGameStart"));
+            OnMethod?.Invoke(null, new DelayedSubModuleGlobalEventArgs(__instance.GetType(), false, DelayedSubModuleSubscriptionType.BeforeMethod, "OnGameStart"));
         }
         private static void OnGameStartPostfix(MBSubModuleBase __instance)
         {
-            OnMethod?.Invoke(null, new DelayedSubModuleEventArgs(__instance.GetType(), false, DelayedSubModuleSubscriptionType.AfterMethod, "OnGameStart"));
+            OnMethod?.Invoke(null, new DelayedSubModuleGlobalEventArgs(__instance.GetType(), false, DelayedSubModuleSubscriptionType.AfterMethod, "OnGameStart"));
         }
 
         private static void OnGameEndPrefix(MBSubModuleBase __instance)
         {
-            OnMethod?.Invoke(null, new DelayedSubModuleEventArgs(__instance.GetType(), false, DelayedSubModuleSubscriptionType.BeforeMethod, "OnGameEnd"));
+            OnMethod?.Invoke(null, new DelayedSubModuleGlobalEventArgs(__instance.GetType(), false, DelayedSubModuleSubscriptionType.BeforeMethod, "OnGameEnd"));
         }
         private static void OnGameEndPostfix(MBSubModuleBase __instance)
         {
-            OnMethod?.Invoke(null, new DelayedSubModuleEventArgs(__instance.GetType(), false, DelayedSubModuleSubscriptionType.AfterMethod, "OnGameEnd"));
+            OnMethod?.Invoke(null, new DelayedSubModuleGlobalEventArgs(__instance.GetType(), false, DelayedSubModuleSubscriptionType.AfterMethod, "OnGameEnd"));
         }
 
         public static void Subscribe<T1, T2>(string method, DelayedSubModuleSubscriptionType subscriptionType, EventHandler<DelayedSubModuleEventArgs> @delegate)
@@ -199,22 +199,34 @@ namespace Bannerlord.ButterLib.DelayedSubModule
 
             if (callerModulePosition < destModulePosition) // Dest module was still not called
             {
-                OnMethod += @delegate;
+                OnMethod += (s, e) =>
+                {
+                    if (!e.IsValid<T>(method, subscriptionType))
+                        return;
+
+                    @delegate.Invoke(s, new DelayedSubModuleEventArgs(e.IsBase));
+                };
             }
             if (callerModulePosition == destModulePosition) // This should not happen
             {
                 if (subscriptionType == DelayedSubModuleSubscriptionType.BeforeMethod)
                 {
-                    @delegate.Invoke(caller, new DelayedSubModuleEventArgs(typeof(T), false, subscriptionType, method));
+                    @delegate.Invoke(null, new DelayedSubModuleEventArgs(false));
                 }
                 if (subscriptionType == DelayedSubModuleSubscriptionType.AfterMethod)
                 {
-                    OnMethod += @delegate;
+                    OnMethod += (s, e) =>
+                    {
+                        if (!e.IsValid<T>(method, subscriptionType))
+                            return;
+
+                        @delegate.Invoke(s, new DelayedSubModuleEventArgs(e.IsBase));
+                    };
                 }
             }
             if (callerModulePosition > destModulePosition) // Dest module was already called
             {
-                @delegate.Invoke(caller, new DelayedSubModuleEventArgs(typeof(T), false, subscriptionType, method));
+                @delegate.Invoke(null, new DelayedSubModuleEventArgs(false));
             }
         }
     }
