@@ -65,6 +65,11 @@ button, a {
     color: #64b5f6;
 }
 
+a code {
+    color: #90caf9;
+    background-color: #4a4c52
+}
+
 #constructors, #fields, #properties, #methods, #events {
     font-weight: normal;
 }

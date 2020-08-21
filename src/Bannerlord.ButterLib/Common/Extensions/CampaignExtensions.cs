@@ -13,7 +13,7 @@ namespace Bannerlord.ButterLib.Common.Extensions
     /// </summary>
     /// <remarks>
     /// Contains easy accessible getters for the current CampaignId and <see cref="CampaignDescriptor" />
-    /// provided by CampaignIdentifier service as well as various geopolitical distance matrixes
+    /// provided by CampaignIdentifier service as well as various geopolitical distance matrices
     /// held in <see cref="T:Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix`1" /> objects.
     /// </remarks>
     public static class CampaignExtensions

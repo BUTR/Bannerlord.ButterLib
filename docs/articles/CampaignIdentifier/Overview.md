@@ -1,4 +1,4 @@
-CampaignIdentifier associates unique string ID with every campaign basing on the initial character.
+[``CampaignIdentifier``](xref:Bannerlord.ButterLib.CampaignIdentifier) associates unique string ID with every campaign basing on the initial character.
 ```csharp
 // Get current campaign ID
 string campaignID = Camapaign.Current.GetCampaignId();

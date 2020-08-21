@@ -1,4 +1,4 @@
-By default, the ``ILogger`` implementation will write it's logs in ``%GAME CONFIG%/ModLogs/default*.log``.  
+By default, the [``ILogger``](xref:Microsoft.Extensions.Logging.ILogger) implementation will write it's logs in ``%GAME CONFIG%/ModLogs/default*.log``.  
 You can create your own log file with this code:
 ```csharp
 this.AddSerilogLoggerProvider("FILENAME.txt", new[] { FILTER });
