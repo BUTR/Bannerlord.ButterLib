@@ -38,4 +38,5 @@ protected override void OnBeforeInitialModuleScreenSetAsRoot()
 ```
 
 ## Note:
-If for some reason your Module will load after the Module that you subscribed to, the delegate you passed in ``Subscribe`` will be executed immediately.
+* If for some reason your Module will load after the Module that you subscribed to, the delegate you passed in ``Subscribe`` will be executed immediately.
+* The current implementation does not allow to subscribe to methods e.g. [``OnBeforeInitialModuleScreenSetAsRoot``](xref:TaleWorlds.MountAndBlade.MBSubModuleBase.html#collapsible-TaleWorlds_MountAndBlade_MBSubModuleBase_OnBeforeInitialModuleScreenSetAsRoot) outside the [``OnBeforeInitialModuleScreenSetAsRoot``](xref:TaleWorlds.MountAndBlade.MBSubModuleBase.html#collapsible-TaleWorlds_MountAndBlade_MBSubModuleBase_OnBeforeInitialModuleScreenSetAsRoot) override. You will not be able to subscribe to [``OnBeforeInitialModuleScreenSetAsRoot``](xref:TaleWorlds.MountAndBlade.MBSubModuleBase.html#collapsible-TaleWorlds_MountAndBlade_MBSubModuleBase_OnBeforeInitialModuleScreenSetAsRoot) in [``OnSubModuleLoad``](xref:TaleWorlds.MountAndBlade.MBSubModuleBase.html#collapsible-TaleWorlds_MountAndBlade_MBSubModuleBase_OnSubModuleLoad) override and vise-versa.
