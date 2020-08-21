@@ -26,6 +26,7 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
 
         public override void RegisterEvents()
         {
+            CampaignEvents.OnNewGameCreatedEvent.AddNonSerializedListener(this, InitializeOnLoad);
             CampaignEvents.OnGameLoadedEvent.AddNonSerializedListener(this, InitializeOnLoad);
             CampaignEvents.OnSettlementOwnerChangedEvent.AddNonSerializedListener(this, UpdateOnSettlementOwnerChanged);
         }
