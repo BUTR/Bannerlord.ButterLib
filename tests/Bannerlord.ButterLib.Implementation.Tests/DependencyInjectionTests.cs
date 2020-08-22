@@ -115,7 +115,7 @@ namespace Bannerlord.ButterLib.Implementation.Tests
             using var harmony = new HarmonyDisposable($"{nameof(DependencyInjectionTests)}.{nameof(DistanceMatrix_Test)}");
             harmony.Patch(SymbolExtensions2.GetPropertyInfo(() => Settlement.All).GetMethod,
                 prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetSettlementAll)));
-            
+
 
             var serviceProvider = ButterLibSubModule.Instance.GetServiceProvider();
             var scope = serviceProvider.CreateScope();

@@ -53,10 +53,9 @@ namespace Bannerlord.ButterLib.Implementation
             services.AddSingleton(typeof(DistanceMatrixStatic<>), typeof(DistanceMatrixStaticImplementation<>));
             services.AddSingleton<ICampaignExtensions, CampaignExtensionsImplementation>();
 
-            DelayedSubModuleLoader.Register<StoryModeSubModule>();
-            DelayedSubModuleLoader.Subscribe<StoryModeSubModule, SubModule>(
-                nameof(OnSubModuleLoad), DelayedSubModuleSubscriptionType.AfterMethod,
-                InitializeCampaignIdentifier);
+            DelayedSubModuleManager.Register<StoryModeSubModule>();
+            DelayedSubModuleManager.Subscribe<StoryModeSubModule, SubModule>(
+                nameof(OnSubModuleLoad), SubscriptionType.AfterMethod, InitializeCampaignIdentifier);
 
             Logger.LogTrace("OnSubModuleLoad() finished.");
         }
@@ -79,11 +78,9 @@ namespace Bannerlord.ButterLib.Implementation
                 Debug.DebugManager = new DebugManagerWrapper(Debug.DebugManager, serviceProvider);
             }
 
-            DelayedSubModuleLoader.Register<GauntletUISubModule>();
-            DelayedSubModuleLoader.Subscribe<GauntletUISubModule, SubModule>(
-                nameof(OnBeforeInitialModuleScreenSetAsRoot),
-                DelayedSubModuleSubscriptionType.AfterMethod,
-                WarnNotPatched);
+            DelayedSubModuleManager.Register<GauntletUISubModule>();
+            DelayedSubModuleManager.Subscribe<GauntletUISubModule, SubModule>(
+                nameof(OnBeforeInitialModuleScreenSetAsRoot), SubscriptionType.AfterMethod, WarnNotPatched);
 
             Logger.LogTrace("OnBeforeInitialModuleScreenSetAsRoot() finished.");
         }
@@ -104,7 +101,7 @@ namespace Bannerlord.ButterLib.Implementation
             Logger.LogTrace("OnGameStart(Game, IGameStarter) finished.");
         }
 
-        private void InitializeCampaignIdentifier(object s, DelayedSubModuleEventArgs e)
+        private void InitializeCampaignIdentifier(object s, SubscriptionEventArgs e)
         {
             if (!e.IsBase)
                 return;
@@ -122,7 +119,7 @@ namespace Bannerlord.ButterLib.Implementation
             }
         }
 
-        private void WarnNotPatched(object s, DelayedSubModuleEventArgs e)
+        private void WarnNotPatched(object s, SubscriptionEventArgs e)
         {
             if (e.IsBase)
                 return;

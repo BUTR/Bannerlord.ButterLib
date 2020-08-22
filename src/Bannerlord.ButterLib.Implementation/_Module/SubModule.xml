@@ -27,8 +27,9 @@
         <Assembly value="Serilog.dll"/>
         <Assembly value="Serilog.Extensions.Logging.dll"/>
         <Assembly value="Serilog.Sinks.File.dll"/>
-        <!--Helper library for Microsoft.Extensions.Primitives-->
+        <!--Helper libraries-->
         <Assembly value="System.Runtime.CompilerServices.Unsafe.dll"/>
+        <Assembly value="Microsoft.Bcl.HashCode.dll"/>
       </Assemblies>
       <Tags/>
     </SubModule>

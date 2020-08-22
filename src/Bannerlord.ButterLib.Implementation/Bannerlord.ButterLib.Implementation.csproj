@@ -37,13 +37,11 @@
     <PackageReference Include="Bannerlord.ReferenceAssemblies.Native.EarlyAccess" Version="$(BetaVersion).*" PrivateAssets="All" />
     <PackageReference Include="Bannerlord.ReferenceAssemblies.StoryMode.EarlyAccess" Version="$(BetaVersion).*" PrivateAssets="All" />
   </ItemGroup>
+  <!--NuGet References-->
+
   <ItemGroup>
     <ProjectReference Include="..\Bannerlord.ButterLib\Bannerlord.ButterLib.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="CampaignIdentifier\Options\" />
-  </ItemGroup>
-  <!--NuGet References-->
 
   <ItemGroup>
     <InternalsVisibleTo Include="Bannerlord.ButterLib.Tests" />

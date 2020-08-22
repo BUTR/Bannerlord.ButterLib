@@ -6,9 +6,9 @@ protected override void OnSubModuleLoad()
  {
     base.OnSubModuleLoad();
 
-    DelayedSubModuleLoader.Register<StoryModeSubModule>();
-    DelayedSubModuleLoader.Subscribe<StoryModeSubModule, SubModule>(nameof(OnSubModuleLoad),
-        DelayedSubModuleSubscriptionType.AfterMethod, (s, e) =>
+    DelayedSubModuleManager.Register<StoryModeSubModule>();
+    DelayedSubModuleManager.Subscribe<StoryModeSubModule, SubModule>(
+        nameof(OnSubModuleLoad), SubscriptionType.AfterMethod, (s, e) =>
         {
             // StoryModeSubModule does not implement OnSubModuleLoad(), so we can only catch the base virtual method call.
             if (e.IsBase)
@@ -24,11 +24,12 @@ protected override void OnBeforeInitialModuleScreenSetAsRoot()
  {
     base.OnBeforeInitialModuleScreenSetAsRoot();
 
-    DelayedSubModuleLoader.Register<GauntletUISubModule>();
-    DelayedSubModuleLoader.Subscribe<GauntletUISubModule, SubModule>(nameof(OnBeforeInitialModuleScreenSetAsRoot),
-        DelayedSubModuleSubscriptionType.AfterMethod, (s, e) =>
+    DelayedSubModuleManager.Register<GauntletUISubModule>();
+    DelayedSubModuleManager.Subscribe<GauntletUISubModule, SubModule>(
+        nameof(OnBeforeInitialModuleScreenSetAsRoot), SubscriptionType.AfterMethod, (s, e) =>
         {
-            // GauntletUISubModule overrides OnBeforeInitialModuleScreenSetAsRoot, so we can catch the override method call.
+            // GauntletUISubModule overrides OnBeforeInitialModuleScreenSetAsRoot, so we can
+            // catch the override method call.
             if (!e.IsBase)
                 return;
 
@@ -39,5 +40,5 @@ protected override void OnBeforeInitialModuleScreenSetAsRoot()
 
 ## Note:
 * If for some reason your Module will load after the Module that you subscribed to, the delegate you passed in ``Subscribe`` will be executed immediately.
-* If a derived [``MBSubModuleBase``](xref:TaleWorlds.MountAndBlade.MBSubModuleBase) class overrides the method you subcsribe to and calls the base.Method(), you will get two calls, one from the override and one from calling the empty virtual method. Don't forget to filter by [``DelayedSubModuleEventArgs.IsBase``](xref:Bannerlord.ButterLib.DelayedSubModule.DelayedSubModuleEventArgs.html#collapsible-Bannerlord_ButterLib_DelayedSubModule_DelayedSubModuleEventArgs_IsBase).
+* If a derived [``MBSubModuleBase``](xref:TaleWorlds.MountAndBlade.MBSubModuleBase) class overrides the method you subcsribe to and calls the base.Method(), you will get two calls, one from the override and one from calling the empty virtual method. Don't forget to filter by [``SubscriptionEventArgs.IsBase``](xref:Bannerlord.ButterLib.DelayedSubModule.SubscriptionEventArgs.html#collapsible-Bannerlord_ButterLib_DelayedSubModule_SubscriptionEventArgs_IsBase).
 * The current implementation does not allow to subscribe to methods e.g. [``OnBeforeInitialModuleScreenSetAsRoot()``](xref:TaleWorlds.MountAndBlade.MBSubModuleBase.html#collapsible-TaleWorlds_MountAndBlade_MBSubModuleBase_OnBeforeInitialModuleScreenSetAsRoot) outside the [``OnBeforeInitialModuleScreenSetAsRoot()``](xref:TaleWorlds.MountAndBlade.MBSubModuleBase.html#collapsible-TaleWorlds_MountAndBlade_MBSubModuleBase_OnBeforeInitialModuleScreenSetAsRoot) override. You will not be able to subscribe to [``OnBeforeInitialModuleScreenSetAsRoot()``](xref:TaleWorlds.MountAndBlade.MBSubModuleBase.html#collapsible-TaleWorlds_MountAndBlade_MBSubModuleBase_OnBeforeInitialModuleScreenSetAsRoot) in [``OnSubModuleLoad()``](xref:TaleWorlds.MountAndBlade.MBSubModuleBase.html#collapsible-TaleWorlds_MountAndBlade_MBSubModuleBase_OnSubModuleLoad) override and vise-versa.

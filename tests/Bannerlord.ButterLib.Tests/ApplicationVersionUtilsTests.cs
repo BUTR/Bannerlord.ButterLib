@@ -11,8 +11,8 @@ namespace Bannerlord.ButterLib.Tests
 {
     public class ApplicationVersionUtilsTests
     {
-        private static string TestAppVerstionStr = "e1.4.3.231432";
-        private static ApplicationVersion TestAppVerstion = ApplicationVersion.FromString("e1.4.3.231432", ApplicationVersionGameType.Singleplayer);
+        private static readonly string TestAppVerstionStr = "e1.4.3.231432";
+        private static readonly ApplicationVersion TestAppVerstion = ApplicationVersion.FromString("e1.4.3.231432", ApplicationVersionGameType.Singleplayer);
 
         private static bool MockedGetVersionStr(ref string __result)
         {

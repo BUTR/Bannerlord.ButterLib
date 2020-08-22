@@ -37,8 +37,8 @@ namespace Bannerlord.ButterLib.Tests.DelayedSubModule
             harmony.Patch(SymbolExtensions.GetMethodInfo(() => ModuleInfoHelper.GetModuleInfo(null!)),
                 prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetModuleInfo)));
 
-            DelayedSubModuleLoader.Register<TestSubModuleCaller>();
-            DelayedSubModuleLoader.Register<TestSubModuleTarget>();
+            DelayedSubModuleManager.Register<TestSubModuleCaller>();
+            DelayedSubModuleManager.Register<TestSubModuleTarget>();
         }
 
         [Test]
@@ -58,8 +58,8 @@ namespace Bannerlord.ButterLib.Tests.DelayedSubModule
 
             // Because the Target SubModule loads after Caller, Subscribe should not instacall the delegate
             var delegateWasCalled = false;
-            void Delegate(object? sender, DelayedSubModuleEventArgs e) => delegateWasCalled = true;
-            DelayedSubModuleLoader.Subscribe<TestSubModuleTarget, TestSubModuleCaller>("OnSubModuleLoad", DelayedSubModuleSubscriptionType.AfterMethod, Delegate);
+            void Delegate(object? sender, SubscriptionEventArgs e) => delegateWasCalled = true;
+            DelayedSubModuleManager.Subscribe<TestSubModuleTarget, TestSubModuleCaller>("OnSubModuleLoad", SubscriptionType.AfterMethod, Delegate);
             Assert.False(delegateWasCalled);
         }
 
@@ -80,8 +80,8 @@ namespace Bannerlord.ButterLib.Tests.DelayedSubModule
 
             // Because the Target SubModule loads after Caller, Subscribe should not instacall the delegate
             var delegateWasCalled = false;
-            void Delegate(object? sender, DelayedSubModuleEventArgs e) => delegateWasCalled = true;
-            DelayedSubModuleLoader.Subscribe<TestSubModuleTarget, TestSubModuleCaller>("OnSubModuleLoad", DelayedSubModuleSubscriptionType.AfterMethod, Delegate);
+            void Delegate(object? sender, SubscriptionEventArgs e) => delegateWasCalled = true;
+            DelayedSubModuleManager.Subscribe<TestSubModuleTarget, TestSubModuleCaller>("OnSubModuleLoad", SubscriptionType.AfterMethod, Delegate);
             Assert.False(delegateWasCalled);
 
             // Manually trigger OnSubModuleLoad and confirm that the delegate is now called
@@ -107,8 +107,8 @@ namespace Bannerlord.ButterLib.Tests.DelayedSubModule
 
             // Because the Target SubModule loads before Caller, Subscribe should instacall the delegate
             var delegateWasCalled = false;
-            void Delegate(object? sender, DelayedSubModuleEventArgs e) => delegateWasCalled = true;
-            DelayedSubModuleLoader.Subscribe<TestSubModuleTarget, TestSubModuleCaller>("OnSubModuleLoad", DelayedSubModuleSubscriptionType.AfterMethod, Delegate);
+            void Delegate(object? sender, SubscriptionEventArgs e) => delegateWasCalled = true;
+            DelayedSubModuleManager.Subscribe<TestSubModuleTarget, TestSubModuleCaller>("OnSubModuleLoad", SubscriptionType.AfterMethod, Delegate);
             Assert.True(delegateWasCalled);
         }
     }
