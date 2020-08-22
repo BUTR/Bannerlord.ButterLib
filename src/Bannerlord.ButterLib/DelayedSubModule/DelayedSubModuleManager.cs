@@ -81,19 +81,27 @@ namespace Bannerlord.ButterLib.DelayedSubModule
             OnMethod?.Invoke(null, new SubscriptionGlobalEventArgs(__instance.GetType(), true, SubscriptionType.AfterMethod, "OnGameEnd"));
         }
 
-        /// <summary>Registers a module to be a target of the <see cref="DelayedSubModuleManager"/> Harmony patching.</summary>
-        /// <typeparam name="TSubModule">The exact type of the module to be patched.</typeparam>
-        /// <param name="priority">The <see cref="HarmonyPriority"/> that would be assigned to the patches that would be made.</param>
-        /// <param name="before">A list of <see cref="Harmony.Id"/>s that should come after the patches that would be made.</param>
-        /// <param name="after">A list of <see cref="Harmony.Id"/>s that should come before the patches that would be made.</param>
-        public static void Register<TSubModule>(int priority = -1, string[]? before= null, string[]? after = null) where TSubModule : MBSubModuleBase => Register(typeof(TSubModule), priority, before, after);
+        /// <summary>Registers a module to be a target of the <see cref="DelayedSubModuleManager"/>.</summary>
+        /// <typeparam name="TSubModule">The exact type of the SubModule to be registered.</typeparam>
+        public static void Register<TSubModule>() where TSubModule : MBSubModuleBase => Register<TSubModule>(-1, null, null);
+
+        /// <summary>Registers a module to be a target of the <see cref="DelayedSubModuleManager"/>.</summary>
+        /// <param name="subModule">The exact type of the SubModule to be registered.</param>
+        public static void Register(Type subModule) => Register(subModule, -1, null, null);
 
         /// <summary>Registers a module to be a target of the <see cref="DelayedSubModuleManager"/> Harmony patching.</summary>
-        /// <param name="subModule">The exact type of the module to be patched.</param>
+        /// <typeparam name="TSubModule">The exact type of the SubModule to be patched.</typeparam>
         /// <param name="priority">The <see cref="HarmonyPriority"/> that would be assigned to the patches that would be made.</param>
         /// <param name="before">A list of <see cref="Harmony.Id"/>s that should come after the patches that would be made.</param>
         /// <param name="after">A list of <see cref="Harmony.Id"/>s that should come before the patches that would be made.</param>
-        public static void Register(Type subModule, int priority = -1, string[]? before= null, string[]? after = null)
+        public static void Register<TSubModule>(int priority, string[]? before, string[]? after) where TSubModule : MBSubModuleBase => Register(typeof(TSubModule), priority, before, after);
+
+        /// <summary>Registers a module to be a target of the <see cref="DelayedSubModuleManager"/> Harmony patching.</summary>
+        /// <param name="subModule">The exact type of the SubModule to be patched.</param>
+        /// <param name="priority">The <see cref="HarmonyPriority"/> that would be assigned to the patches that would be made.</param>
+        /// <param name="before">A list of <see cref="Harmony.Id"/>s that should come after the patches that would be made.</param>
+        /// <param name="after">A list of <see cref="Harmony.Id"/>s that should come before the patches that would be made.</param>
+        public static void Register(Type subModule, int priority, string[]? before, string[]? after)
         {
             var key = new Key(subModule, priority, before, after);
             if (!RegisteredTypes.TryAdd(key, null))
@@ -135,6 +143,7 @@ namespace Bannerlord.ButterLib.DelayedSubModule
                     prefix: new HarmonyMethod(AccessTools.DeclaredMethod(typeof(DelayedSubModuleManager), nameof(OnGameEndPrefix)), priority, before, after),
                     postfix: new HarmonyMethod(AccessTools.DeclaredMethod(typeof(DelayedSubModuleManager), nameof(OnGameEndPostfix)), priority, before, after));
         }
+        
         private static void SubModuleLoadPrefix(MBSubModuleBase __instance)
         {
             OnMethod?.Invoke(null, new SubscriptionGlobalEventArgs(__instance.GetType(), false, SubscriptionType.BeforeMethod, "OnSubModuleLoad"));
