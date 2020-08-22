@@ -75,7 +75,7 @@ namespace Bannerlord.ButterLib.Implementation.Tests
             services.AddScoped<CampaignDescriptor, CampaignDescriptorImplementation>();
             services.AddSingleton<CampaignDescriptorStatic, CampaignDescriptorStaticImplementation>();
             services.AddScoped(typeof(DistanceMatrix<>), typeof(DistanceMatrixImplementation<>));
-            services.AddSingleton(typeof(DistanceMatrixStatic<>), typeof(DistanceMatrixStaticImplementation<>));
+            services.AddSingleton<DistanceMatrixStatic, DistanceMatrixStaticImplementation>();
             services.AddSingleton<ICampaignExtensions, CampaignExtensionsImplementation>();
             subModuleWrapper.BeforeInitialModuleScreenSetAsRoot();
         }
@@ -123,6 +123,18 @@ namespace Bannerlord.ButterLib.Implementation.Tests
             var distanceMatrix = scope.ServiceProvider.GetRequiredService<DistanceMatrix<Settlement>>();
             Assert.NotNull(distanceMatrix);
             Assert.True(distanceMatrix.GetType().GetGenericTypeDefinition() == typeof(DistanceMatrixImplementation<>));
+            Assert.AreEqual(distanceMatrix.GetType().GenericTypeArguments, new[] { typeof(Settlement) });
+
+
+            var distanceMatrix1 = Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix.Create<Settlement>();
+            Assert.NotNull(distanceMatrix1);
+            Assert.True(distanceMatrix1.GetType().GetGenericTypeDefinition() == typeof(DistanceMatrixImplementation<>));
+            Assert.AreEqual(distanceMatrix1.GetType().GenericTypeArguments, new[] { typeof(Settlement) });
+
+            var distanceMatrix2 = Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix<Settlement>.Create();
+            Assert.NotNull(distanceMatrix2);
+            Assert.True(distanceMatrix2.GetType().GetGenericTypeDefinition() == typeof(DistanceMatrixImplementation<>));
+            Assert.AreEqual(distanceMatrix2.GetType().GenericTypeArguments, new[] { typeof(Settlement) });
         }
     }
 }

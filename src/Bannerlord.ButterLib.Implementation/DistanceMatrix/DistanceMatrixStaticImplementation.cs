@@ -10,11 +10,11 @@ using TaleWorlds.ObjectSystem;
 
 namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
 {
-    internal sealed class DistanceMatrixStaticImplementation<T> : DistanceMatrixStatic<T> where T : MBObjectBase
+    internal sealed class DistanceMatrixStaticImplementation : DistanceMatrixStatic
     {
-        public override DistanceMatrix<T> Create() => new DistanceMatrixImplementation<T>();
+        public override DistanceMatrix<T> Create<T>() => new DistanceMatrixImplementation<T>();
 
-        public override DistanceMatrix<T> Create(Func<IEnumerable<T>> customListGetter, Func<T, T, float> customDistanceCalculator) =>
+        public override DistanceMatrix<T> Create<T>(Func<IEnumerable<T>> customListGetter, Func<T, T, float> customDistanceCalculator) =>
             new DistanceMatrixImplementation<T>(customListGetter, customDistanceCalculator);
 
         /// <summary>Calculates distance between two given <see cref="Hero"/> objects.</summary>
@@ -45,7 +45,7 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
         /// <param name="clan1">First of the clans to calculate distance between.</param>
         /// <param name="clan2">Second of the clans to calculate distance between.</param>
         /// <param name="settlementOwnersPairedList">
-        /// List of the distances between pairs of settlements and of the weights of the paired settlements,
+        /// Enumerable of the distances between pairs of settlements and of the weights of the paired settlements,
         /// except that the owner clan pairs are used instead of the settlements themselves to speed up the process.
         /// </param>
         /// <returns>
@@ -53,11 +53,11 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
         /// or <see cref="float.NaN" /> if distance could not be calculated.
         /// </returns>
         /// <remarks>Calculation is based on the average distance between clans fiefs weighted by the fief type.</remarks>
-        public override float CalculateDistanceBetweenClans(Clan clan1, Clan clan2, List<(ulong owners, float distance, float weight)> settlementOwnersPairedList)
+        public override float CalculateDistanceBetweenClans(Clan clan1, Clan clan2, IEnumerable<(ulong Owners, float Distance, float Weight)> settlementOwnersPairedList)
         {
             var pair = clan1.Id > clan2.Id ? ElegantPairHelper.Pair(clan2.Id, clan1.Id) : ElegantPairHelper.Pair(clan1.Id, clan2.Id);
-            var settlementDistances = settlementOwnersPairedList.Where(tuple => tuple.owners == pair && !float.IsNaN(tuple.distance))
-                                                                                                 .Select(x => (x.distance, x.weight)).ToList();
+            var settlementDistances = settlementOwnersPairedList.Where(tuple => tuple.Owners == pair && !float.IsNaN(tuple.Distance))
+                                                                                                 .Select(x => (x.Distance, x.Weight)).ToList();
             return GetWeightedMeanDistance(settlementDistances);
         }
 
@@ -94,30 +94,30 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
         /// </returns>
         /// <remarks>
         /// This method could be used to supply
-        /// <see cref="DistanceMatrixImplementation{T}.CalculateDistanceBetweenClans(Clan, Clan, List{(ulong owners, float distance, float weight)})"/>
+        /// <see cref="DistanceMatrixImplementation{T}.CalculateDistanceBetweenClans(Clan, Clan, List{(ulong Owners, float Distance, float Weight)})"/>
         /// method with required list argument.
         /// </remarks>
-        public override List<(ulong owners, float distance, float weight)> GetSettlementOwnersPairedList(DistanceMatrix<Settlement> settlementDistanceMatrix)
+        public override List<(ulong Owners, float Distance, float Weight)> GetSettlementOwnersPairedList(DistanceMatrix<Settlement> settlementDistanceMatrix)
         {
-            static (MBGUID ownerId1, MBGUID ownerId2, float value, float weight) FirstSelector(KeyValuePair<(Settlement object1, Settlement object2), float> kvp) =>
-              (ownerId1: kvp.Key.object1.OwnerClan.Id, ownerId2: kvp.Key.object2.OwnerClan.Id, value: kvp.Value, weight: GetSettlementWeight(kvp.Key.object1) + GetSettlementWeight(kvp.Key.object2));
+            static (MBGUID OwnerId1, MBGUID OwnerId2, float Distance, float Weight) FirstSelector(KeyValuePair<(Settlement Object1, Settlement Object2), float> kvp) =>
+              (OwnerId1: kvp.Key.Object1.OwnerClan.Id, OwnerId2: kvp.Key.Object2.OwnerClan.Id, Distance: kvp.Value, Weight: GetSettlementWeight(kvp.Key.Object1) + GetSettlementWeight(kvp.Key.Object2));
 
-            static (ulong, float value, float weight) SecondSelector((MBGUID ownerId1, MBGUID ownerId2, float value, float weight) tuple) =>
-              (tuple.ownerId1 > tuple.ownerId2 ? ElegantPairHelper.Pair(tuple.ownerId2, tuple.ownerId1) : ElegantPairHelper.Pair(tuple.ownerId1, tuple.ownerId2), tuple.value, tuple.weight);
+            static (ulong Owners, float Distance, float Weight) SecondSelector((MBGUID OwnerId1, MBGUID OwnerId2, float Distance, float Weight) tuple) =>
+              (tuple.OwnerId1 > tuple.OwnerId2 ? ElegantPairHelper.Pair(tuple.OwnerId2, tuple.OwnerId1) : ElegantPairHelper.Pair(tuple.OwnerId1, tuple.OwnerId2), tuple.Distance, tuple.Weight);
 
             return settlementDistanceMatrix.AsTypedDictionary.Select(FirstSelector).Select(SecondSelector).ToList();
         }
 
         private static (MobileParty? mobileParty, Settlement? settlement) GetMapPosition(Hero hero) =>
             hero.IsPrisoner && hero.PartyBelongedToAsPrisoner != null
-                ? hero.PartyBelongedToAsPrisoner.IsSettlement ? ((MobileParty?)null, hero.PartyBelongedToAsPrisoner.Settlement) : (hero.PartyBelongedToAsPrisoner.MobileParty, (Settlement?)null)
+                ? hero.PartyBelongedToAsPrisoner.IsSettlement ? ((MobileParty?)null, hero.PartyBelongedToAsPrisoner.Settlement) : (hero.PartyBelongedToAsPrisoner.MobileParty, null)
                 : hero.CurrentSettlement != null && !hero.IsFugitive
                     ? ((MobileParty?)null, hero.CurrentSettlement)
                     : hero.PartyBelongedTo != null ? (hero.PartyBelongedTo, (Settlement?)null) : (null, null);
 
-        private static float GetWeightedMeanDistance(IReadOnlyCollection<(float distance, float weight)> settlementDistances) =>
-            settlementDistances.Any(x => x.weight > 0)
-                ? (float)((settlementDistances.Sum(x => x.distance * x.weight) + 1.0) / (settlementDistances.Sum(x => x.weight) + 1.0))
+        private static float GetWeightedMeanDistance(IReadOnlyCollection<(float Distance, float Weight)> settlementDistances) =>
+            settlementDistances.Any(x => x.Weight > 0)
+                ? (float)((settlementDistances.Sum(x => x.Distance * x.Weight) + 1.0) / (settlementDistances.Sum(x => x.Weight) + 1.0))
                 : float.NaN;
 
         private static float GetSettlementWeight(Settlement settlement) => settlement.IsTown ? 2f : settlement.IsCastle ? 1f : settlement.IsVillage ? 0.5f : 0f;

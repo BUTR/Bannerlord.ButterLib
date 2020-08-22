@@ -24,20 +24,20 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehavio
         private const string InquiryLowerBody =
             "{=zed49rdkQR}Select '{NEW_ID}' if the loaded save is a separate campaign that has nothing to do with the suggested options and a new ID should be assigned to it.";
 
+        private static readonly string ExistingCampaignDescriptorsLogFile = Path.Combine(Utilities.GetConfigsPath(), "ButterLib", "CampaignIdentifier", "ExistingCampaignIdentifiers.bin");
+
+
         [SaveableField(1)]
         private CampaignDescriptorImplementation _campaignDescriptor;
 
         private CampaignDescriptorImplementation? _descriptorToBeAssigned;
 
-        internal static readonly string ExistingCampaignDescriptorsLogFile = Path.Combine(Utilities.GetConfigsPath(), "ButterLib", "CampaignIdentifier", "ExistingCampaignIdentifiers.bin");
+        internal CampaignDescriptorImplementation CampaignDescriptor => _campaignDescriptor;
 
         internal CampaignDescriptorManager()
         {
             _campaignDescriptor = null!; // Won't be null when properly accessed.
         }
-
-        internal CampaignDescriptorImplementation CampaignDescriptor => _campaignDescriptor;
-
         internal void GenerateNewGameDescriptor()
         {
             _campaignDescriptor = new CampaignDescriptorImplementation(Hero.MainHero);
@@ -46,7 +46,8 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehavio
 
         internal void CheckCampaignDescriptor()
         {
-            if (_campaignDescriptor is null)
+            // There is no guarantee that Load() will not yield a non null
+            if (_campaignDescriptor is null!)
             {
                 AddDescriptorToExistingCampaign();
             }
@@ -123,9 +124,11 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehavio
         {
             var existingCampaignDescriptors = LoadExistingDescriptors();
             existingCampaignDescriptors.Add(_campaignDescriptor);
-            if (!Directory.Exists(Path.GetDirectoryName(ExistingCampaignDescriptorsLogFile)))
+
+            var path = Path.GetDirectoryName(ExistingCampaignDescriptorsLogFile);
+            if (!string.IsNullOrEmpty(path) && !Directory.Exists(path))
             {
-                Directory.CreateDirectory(Path.GetDirectoryName(ExistingCampaignDescriptorsLogFile));
+                Directory.CreateDirectory(path!);
             }
 
             using FileStream fileStream = File.OpenWrite(ExistingCampaignDescriptorsLogFile);
@@ -142,13 +145,12 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehavio
 
             using FileStream fileStream = File.OpenRead(ExistingCampaignDescriptorsLogFile);
             var binaryFormatter = new BinaryFormatter();
-            var existingCampaignDescriptors = (List<CampaignDescriptorImplementation>)binaryFormatter.Deserialize(fileStream);
-            return existingCampaignDescriptors;
+            return (List<CampaignDescriptorImplementation>)binaryFormatter.Deserialize(fileStream);
         }
 
         internal void Sync()
         {
-            if (_descriptorToBeAssigned != null && _campaignDescriptor != null && _descriptorToBeAssigned == _campaignDescriptor)
+            if (_descriptorToBeAssigned != null && _campaignDescriptor != null! && _descriptorToBeAssigned == _campaignDescriptor)
             {
                 UpdateSavedDescriptors();
             }

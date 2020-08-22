@@ -55,6 +55,7 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehavio
         public override void SyncData(IDataStore dataStore)
         {
             dataStore.SyncData("_descriptorManager", ref _descriptorManager);
+
             if (dataStore.IsLoading && _descriptorManager == null)
             {
                 _descriptorManager = new CampaignDescriptorManager();

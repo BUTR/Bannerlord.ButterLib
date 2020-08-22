@@ -9,7 +9,7 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.Helpers
     {
         public static void HandleException(Exception ex, MethodBase methodBase, string sectionName)
         {
-            SubModule.Logger.LogError(exception: ex, message: "{sectionName} - Error occured in {methodBase}.", sectionName, methodBase.Name);
+            SubModule.Logger.LogError(ex, "{sectionName} - Error occurred in {methodBase}.", sectionName, methodBase.Name);
         }
 
         public static void HandleException(Exception ex, string logMessage)

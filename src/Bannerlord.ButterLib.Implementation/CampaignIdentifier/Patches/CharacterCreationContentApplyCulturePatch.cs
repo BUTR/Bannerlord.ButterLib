@@ -21,9 +21,9 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.Patches
             try
             {
                 //Assign player a random town from chosen culture as a born settlement
-                Settlement bornSettlement = SettlementHelper.FindRandomSettlement(s => s.Culture == Hero.MainHero.Culture && s.IsTown);
+                var bornSettlement = SettlementHelper.FindRandomSettlement(s => s.Culture == Hero.MainHero.Culture && s.IsTown);
                 FieldAccessHelper.ClanHomeSettlementByRef(Clan.PlayerClan) = bornSettlement;
-                foreach (Hero hero in Clan.PlayerClan.Heroes)
+                foreach (var hero in Clan.PlayerClan.Heroes)
                 {
                     hero.UpdateHomeSettlement();
                 }
