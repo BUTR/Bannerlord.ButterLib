@@ -10,7 +10,8 @@ protected override void OnSubModuleLoad()
     DelayedSubModuleManager.Subscribe<StoryModeSubModule, SubModule>(
         nameof(OnSubModuleLoad), SubscriptionType.AfterMethod, (s, e) =>
         {
-            // StoryModeSubModule does not implement OnSubModuleLoad(), so we can only catch the base virtual method call.
+            // StoryModeSubModule does not implement OnSubModuleLoad(),
+            // so we can only catch the base virtual method call.
             if (e.IsBase)
                 return;
 
