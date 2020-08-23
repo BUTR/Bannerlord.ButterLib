@@ -157,7 +157,7 @@ namespace Bannerlord.ButterLib
             }
 
             // Load all current assemblies
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies().Where(a => !a.FullName.StartsWith("mscorlib") && !a.IsDynamic))
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies().Where(a => !a.FullName.StartsWith("mscorlib") && !a.IsDynamic && !string.IsNullOrEmpty(a.Location)))
                 assemblyLoader.LoadFile(assembly.Location);
 
             foreach (var implementation in implementations)

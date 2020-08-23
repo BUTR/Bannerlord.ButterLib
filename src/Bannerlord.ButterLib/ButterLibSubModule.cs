@@ -60,10 +60,16 @@ namespace Bannerlord.ButterLib
             base.OnBeforeInitialModuleScreenSetAsRoot();
             _logger.LogTrace("OnBeforeInitialModuleScreenSetAsRoot() started.");
 
-            GlobalServiceProvider = Services.BuildServiceProvider();
-            Services = null!;
+            if (Services != null!) // First init.
+            {
+                GlobalServiceProvider = Services.BuildServiceProvider();
+                _logger.LogTrace("Created GlobalServiceProvider.");
+                Services = null!;
+                _logger.LogTrace("Set Services to null.");
 
-            _logger = ServiceProvider.GetRequiredService<ILogger<ButterLibSubModule>>();
+                _logger = ServiceProvider.GetRequiredService<ILogger<ButterLibSubModule>>();
+                _logger.LogTrace("Assigned new _logger from GlobalServiceProvider.");
+            }
 
             _logger.LogTrace("OnBeforeInitialModuleScreenSetAsRoot() finished.");
         }

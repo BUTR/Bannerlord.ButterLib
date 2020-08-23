@@ -60,9 +60,18 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// <param name="instance">The instance where the method is declared</param>
         /// <param name="methodInfo">The method's <see cref="MethodInfo"/></param>
         /// <returns>A delegate or null when type/name is null or when the method cannot be found</returns>
+        public static TDelegate? GetDelegate<TDelegate>(object instance, MethodInfo methodInfo) where TDelegate : Delegate
+        {
+            return Delegate.CreateDelegate(typeof(TDelegate), instance, methodInfo.Name) as TDelegate;
+        }
+
+        /// <summary>Gets the delegate for a method</summary>
+        /// <param name="instance">The instance where the method is declared</param>
+        /// <param name="methodInfo">The method's <see cref="MethodInfo"/></param>
+        /// <returns>A delegate or null when type/name is null or when the method cannot be found</returns>
         public static TDelegate? GetDelegate<TDelegate, TInstance>(TInstance instance, MethodInfo methodInfo) where TDelegate : Delegate where TInstance : notnull
         {
-            return Delegate.CreateDelegate(typeof(TDelegate), instance, methodInfo) as TDelegate;
+            return GetDelegate<TDelegate>(instance, methodInfo);
         }
     }
 }

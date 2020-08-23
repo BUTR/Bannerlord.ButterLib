@@ -23,7 +23,7 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier
     /// </remarks>
     [Serializable]
     [SaveableClass(1)]
-    internal sealed class CampaignDescriptorImplementation : CampaignDescriptor, ISerializable
+    public sealed class CampaignDescriptorImplementation : CampaignDescriptor, ISerializable
     {
         //Consts
         private const int DescriptorKeyLength = 12;
@@ -77,6 +77,12 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier
         public override CharacterCode CharacterCode => CharacterCode.CreateFrom((string) _attributes[DescriptorAttribute.CharacterCode]);
 
         //Constructors
+        public CampaignDescriptorImplementation()
+        {
+            _value = null!;
+            _attributes = null!;
+            _baseHero = null!; // Won't be needed since we have the attributes already
+        }
         /// <summary>Initializes a new instance of the class <see cref="CampaignDescriptorImplementation" />.</summary>
         /// <param name="baseHero">The hero to be used as descriptor base.</param>
         public CampaignDescriptorImplementation(Hero baseHero)
@@ -217,7 +223,6 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier
             return result.ToString();
         }
 
-        [SaveableEnum(3)]
         internal enum DescriptorAttribute : byte
         {
             HeroName = 0,
