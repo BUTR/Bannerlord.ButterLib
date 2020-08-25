@@ -1,0 +1,4 @@
+The last stage. ButterLib will create a permanent [``IServiceProvider``](xref:System.IServiceProvider) for usage.  
+[``MBSubModuleBase.GetServices()``](xref:Bannerlord.ButterLib.Common.Extensions.DependencyInjectionExtensions.html#collapsible-Bannerlord_ButterLib_Common_Extensions_DependencyInjectionExtensions_GetServices_TaleWorlds_MountAndBlade_MBSubModuleBase_) will not be available anymore, thus disabling any configuration/service registering.  
+  
+There's also a substage. When Creating/Loading a Campaign, the [``IServiceProvider``](xref:System.IServiceProvider) will create a scope that will span across the whole Campiagn. Should be userful for per-campaign services.  

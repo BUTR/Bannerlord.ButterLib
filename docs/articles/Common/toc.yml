@@ -1,0 +1,7 @@
+- name: Extensions
+  href: Extensions/
+  homepage: Extensions/Overview.md
+
+- name: Helpers
+  href: Helpers/
+  homepage: Helpers/Overview.md

@@ -8,15 +8,35 @@ using TaleWorlds.MountAndBlade;
 
 namespace Bannerlord.ButterLib.Common.Helpers
 {
+    /// <summary>Helper class used to store numeric variables or complex entities in <see cref="TextObject" />.</summary>
     public static class LocalizationHelper
     {
-        private const string PLURAL_FORM_TAG = "PLURAL_FORM";
-        private const string SPECIFIC_SINGULAR_FORM_TAG = "SPECIFIC_SINGULAR_FORM";
-        private const string SPECIFIC_PLURAL_FORM_TAG = "SPECIFIC_PLURAL_FORM";
+        /// <summary>
+        /// A string tag that corresponds with <see cref="PluralForm.Plural" />
+        /// and could be stored as an attribute of the numeric variable by the "SetNumericVariable" method.
+        /// </summary>
+        public const string PLURAL_FORM_TAG = "PLURAL_FORM";
 
-        private static readonly ReadOnlyCollection<int> SlavicPluralExceptions = new ReadOnlyCollection<int>(new List<int>() { 11, 12, 13, 14 });
-        private static readonly ReadOnlyCollection<int> SlavicSingularNumerics = new ReadOnlyCollection<int>(new List<int>() { 1, 2, 3, 4 });
-        private static readonly ReadOnlyCollection<string> SlavicGroupLanguageIDs = new ReadOnlyCollection<string>(new List<string>() { "Russian", "Русский", "Ukrainian", "Українська", "Belarusian", "Беларускі", "Polish", "Polski" });
+        /// <summary>
+        /// A string tag that corresponds with <see cref="PluralForm.SpecificSingular" />
+        /// and could be stored as an attribute of the numeric variable by the "SetNumericVariable" method.
+        /// </summary>
+        public const string SPECIFIC_SINGULAR_FORM_TAG = "SPECIFIC_SINGULAR_FORM";
+
+        /// <summary>
+        /// A string tag that corresponds with <see cref="PluralForm.SpecificPlural" />
+        /// and could be stored as an attribute of the numeric variable by the "SetNumericVariable" method.
+        /// </summary>
+        public const string SPECIFIC_PLURAL_FORM_TAG = "SPECIFIC_PLURAL_FORM";
+
+        private static readonly ReadOnlyCollection<int> EasternSlavicPluralExceptions = new ReadOnlyCollection<int>(new List<int>() { 11, 12, 13, 14 });
+        private static readonly ReadOnlyCollection<int> EasternSlavicSingularNumerics = new ReadOnlyCollection<int>(new List<int>() { 1, 2, 3, 4 });
+
+        private static readonly ReadOnlyCollection<int> WesternSlavicPluralExceptions = new ReadOnlyCollection<int>(new List<int>() { 12, 13, 14 });
+        private static readonly ReadOnlyCollection<int> WesternSlavicSingularNumerics = new ReadOnlyCollection<int>(new List<int>() { 2, 3, 4 });
+
+        private static readonly ReadOnlyCollection<string> EasternSlavicGroupLanguageIDs = new ReadOnlyCollection<string>(new List<string>() { "Russian", "Русский", "Ukrainian", "Українська", "Belarusian", "Беларускі" });
+        private static readonly ReadOnlyCollection<string> WesternSlavicGroupLanguageIDs = new ReadOnlyCollection<string>(new List<string>() { "Polish", "Polski" });
 
         private static RecursiveCaller GetRecursiveCaller(RecursiveCaller currentCaller, RecursiveCaller receivedCaller)
         {
@@ -103,6 +123,17 @@ namespace Bannerlord.ButterLib.Common.Helpers
             }
         }
 
+
+        /// <summary>Sets complex entity into specified text variable, along with additional information on other related entities.</summary>
+        /// <typeparam name="T">The type of the entity to be stored.</typeparam>
+        /// <param name="parentTextObject">
+        /// The <see cref="TextObject" /> to store entity information into.
+        /// Null means that information will be stored into <see cref="MBTextManager" />.
+        /// </param>
+        /// <param name="tag">A string tag that will be used to store information about entity and also as a prefix for tags that will store other relevant entities.</param>
+        /// <param name="entity">An instance of the entity to be stored.</param>
+        /// <param name="addLeaderInfo">An optional argument, specifying if information about leaders should be also stored, when applicable.</param>
+        /// <param name="recursiveCaller">An optional argument, specifying if method is called from itself, adding information on some related entity.</param>
         public static void SetEntityProperties<T>(TextObject? parentTextObject, string tag, T entity, bool addLeaderInfo = false, RecursiveCaller recursiveCaller = RecursiveCaller.None) where T : class
         {
             if (string.IsNullOrEmpty(tag) || entity is null || recursiveCaller == GetCurrentCaller(entity))
@@ -120,30 +151,52 @@ namespace Bannerlord.ButterLib.Common.Helpers
             SetRelatedProperties(parentTextObject, tag, entity, addLeaderInfo, recursiveCaller);
         }
 
-        private static PluralForm GetSlavicPluralFormInternal(int number)
+        private static PluralForm GetEasternSlavicPluralFormInternal(int number)
         {
             int absNumber = Math.Abs(number);
             int lastDigit = absNumber % 10;
             return
-              SlavicPluralExceptions.Contains(absNumber) || !SlavicSingularNumerics.Contains(lastDigit)
-                ? PluralForm.Plural : !SlavicPluralExceptions.Contains(absNumber) && SlavicSingularNumerics.Contains(lastDigit) && lastDigit != 1
+              EasternSlavicPluralExceptions.Contains(absNumber % 100) || !EasternSlavicSingularNumerics.Contains(lastDigit)
+                ? PluralForm.Plural
+                : !EasternSlavicPluralExceptions.Contains(absNumber) && EasternSlavicSingularNumerics.Contains(lastDigit) && lastDigit != 1
                 ? PluralForm.SpecificSingular : PluralForm.Singular;
         }
 
+        private static PluralForm GetWesternSlavicPluralFormInternal(int number)
+        {
+            int absNumber = Math.Abs(number);
+            int lastDigit = absNumber % 10;
+            return
+              absNumber > 1 && (WesternSlavicPluralExceptions.Contains(absNumber % 100) || !WesternSlavicSingularNumerics.Contains(lastDigit))
+                ? PluralForm.Plural
+                : !WesternSlavicPluralExceptions.Contains(absNumber) && WesternSlavicSingularNumerics.Contains(lastDigit)
+                ? PluralForm.SpecificPlural : PluralForm.Singular;
+        }
+
+        /// <summary>Gets which <see cref="PluralForm" /> should be used with the given number according to the grammar rules of the game language.</summary>
+        /// <param name="number">An integer number to get appropriate <see cref="PluralForm" /> for.</param>
+        /// <returns>The appropriate <see cref="PluralForm" /> that should be used with the given number in accordance with the grammar rules of the game language.</returns>
         public static PluralForm GetPluralForm(int number)
         {
-            if (SlavicGroupLanguageIDs.Contains(BannerlordConfig.Language))
+            if (EasternSlavicGroupLanguageIDs.Contains(BannerlordConfig.Language))
             {
-                return GetSlavicPluralFormInternal(number);
+                return GetEasternSlavicPluralFormInternal(number);
+            }
+            if (WesternSlavicGroupLanguageIDs.Contains(BannerlordConfig.Language))
+            {
+                return GetWesternSlavicPluralFormInternal(number);
             }
             return number != 1 ? PluralForm.Plural : PluralForm.Singular;
         }
 
+        /// <summary>Gets which <see cref="PluralForm" /> should be used with the given number according to the grammar rules of the game language.</summary>
+        /// <param name="number">A floating-point number to get appropriate <see cref="PluralForm" /> for.</param>
+        /// <returns>The appropriate <see cref="PluralForm" /> that should be used with the given number in accordance with the grammar rules of the game language.</returns>
         public static PluralForm GetPluralForm(float number)
         {
-            if (SlavicGroupLanguageIDs.Contains(BannerlordConfig.Language))
+            if (EasternSlavicGroupLanguageIDs.Contains(BannerlordConfig.Language))
             {
-                return GetSlavicPluralFormInternal((int)Math.Floor(number));
+                return GetEasternSlavicPluralFormInternal((int)Math.Floor(number));
             }
             return number != 1 ? PluralForm.Plural : PluralForm.Singular;
         }
@@ -156,7 +209,15 @@ namespace Bannerlord.ButterLib.Common.Helpers
                 [SPECIFIC_SINGULAR_FORM_TAG] = new TextObject(pluralForm != PluralForm.SpecificSingular ? 1 : 0)
             };
 
-        public static void SetNumericVariable(TextObject textObject, string tag, int variableValue, string? format = null)
+        /// <summary>Sets a numeric variable along with the appropriate <see cref="PluralForm" /> tag in accordance with the grammar rules of the game language.</summary>
+        /// <param name="textObject">
+        /// The <see cref="TextObject" /> to set a numeric variable into.
+        /// Null means that information will be stored into <see cref="MBTextManager" />.
+        /// </param>
+        /// <param name="tag">A string tag that will be used to store information about the numeric variable.</param>
+        /// <param name="variableValue">An integer number to be set.</param>
+        /// <param name="format">An optional argument, specifying string format to be used with the number.</param>
+        public static void SetNumericVariable(TextObject? textObject, string tag, int variableValue, string? format = null)
         {
             if (string.IsNullOrEmpty(tag))
             {
@@ -174,7 +235,15 @@ namespace Bannerlord.ButterLib.Common.Helpers
             }
         }
 
-        public static void SetNumericVariable(TextObject textObject, string tag, float variableValue, string? format = null)
+        /// <summary>Sets a numeric variable along with the appropriate <see cref="PluralForm" /> tag in accordance with the grammar rules of the game language.</summary>
+        /// <param name="textObject">
+        /// The <see cref="TextObject" /> to set a numeric variable into.
+        /// Null means that information will be stored into <see cref="MBTextManager" />.
+        /// </param>
+        /// <param name="tag">A string tag that will be used to store information about the numeric variable.</param>
+        /// <param name="variableValue">An floating-point number to be set.</param>
+        /// <param name="format">An optional argument, specifying string format to be used with the number.</param>
+        public static void SetNumericVariable(TextObject? textObject, string tag, float variableValue, string? format = null)
         {
             if (string.IsNullOrEmpty(tag))
             {
