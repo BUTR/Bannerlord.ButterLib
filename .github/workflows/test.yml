@@ -86,50 +86,16 @@ jobs:
         pathSource: opencover.4.7.922.zip
         pathTarget: opencover
 
-    #TODO
-    - name: Test Bannerlord.ButterLib.Tests Stable_Debug
-      run: dotnet test tests/Bannerlord.ButterLib.Tests/Bannerlord.ButterLib.Tests.csproj --configuration Stable_Debug -p:GameFolder="$PWD/bannerlord-stable";
-      env:
-        DOTNET_NOLOGO: 1
-        DOTNET_CLI_TELEMETRY_OPTOUT: 1
-      shell: pwsh
-    - name: Test Bannerlord.ButterLib.Tests Beta_Debug
-      run: dotnet test tests/Bannerlord.ButterLib.Tests/Bannerlord.ButterLib.Tests.csproj --configuration Beta_Debug -p:GameFolder="$PWD/bannerlord-beta";
-      env:
-        DOTNET_NOLOGO: 1
-        DOTNET_CLI_TELEMETRY_OPTOUT: 1
-      shell: pwsh
-    - name: Test Bannerlord.ButterLib.Tests Stable_Release
-      run: dotnet test tests/Bannerlord.ButterLib.Tests/Bannerlord.ButterLib.Tests.csproj --configuration Stable_Release -p:GameFolder="$PWD/bannerlord-stable";
-      env:
-        DOTNET_NOLOGO: 1
-        DOTNET_CLI_TELEMETRY_OPTOUT: 1
-    - name: Test Bannerlord.ButterLib.Tests Beta_Release
-      run: dotnet test tests/Bannerlord.ButterLib.Tests/Bannerlord.ButterLib.Tests.csproj --configuration Beta_Release -p:GameFolder="$PWD/bannerlord-beta";
-      env:
-        DOTNET_NOLOGO: 1
-        DOTNET_CLI_TELEMETRY_OPTOUT: 1
-      shell: pwsh
-    - name: Test Bannerlord.ButterLib.Implementation.Tests Stable_Debug
-      run: dotnet test tests/Bannerlord.ButterLib.Implementation.Tests/Bannerlord.ButterLib.Implementation.Tests.csproj --configuration Stable_Debug -p:GameFolder="$PWD/bannerlord-stable";
-      env:
-        DOTNET_NOLOGO: 1
-        DOTNET_CLI_TELEMETRY_OPTOUT: 1
-      shell: pwsh
-    - name: Test Bannerlord.ButterLib.Implementation.Tests Stable_Release
-      run: dotnet test tests/Bannerlord.ButterLib.Implementation.Tests/Bannerlord.ButterLib.Implementation.Tests.csproj --configuration Stable_Release -p:GameFolder="$PWD/bannerlord-stable";
-      env:
-        DOTNET_NOLOGO: 1
-        DOTNET_CLI_TELEMETRY_OPTOUT: 1
-      shell: pwsh
-    - name: Test Bannerlord.ButterLib.Implementation.Tests Beta_Debug
-      run: dotnet test tests/Bannerlord.ButterLib.Implementation.Tests/Bannerlord.ButterLib.Implementation.Tests.csproj --configuration Beta_Debug -p:GameFolder="$PWD/bannerlord-beta";
-      env:
-        DOTNET_NOLOGO: 1
-        DOTNET_CLI_TELEMETRY_OPTOUT: 1
-      shell: pwsh
-    - name: Test Bannerlord.ButterLib.Implementation.Tests Beta_Release
-      run: dotnet test tests/Bannerlord.ButterLib.Implementation.Tests/Bannerlord.ButterLib.Implementation.Tests.csproj --configuration Beta_Release -p:GameFolder="$PWD/bannerlord-beta";
+    - name: Test
+      run: >-
+          dotnet test tests/Bannerlord.ButterLib.Tests/Bannerlord.ButterLib.Tests.csproj --configuration Stable_Debug -p:GameFolder="$PWD/bannerlord-stable";
+          dotnet test tests/Bannerlord.ButterLib.Tests/Bannerlord.ButterLib.Tests.csproj --configuration Stable_Release -p:GameFolder="$PWD/bannerlord-stable";
+          dotnet test tests/Bannerlord.ButterLib.Tests/Bannerlord.ButterLib.Tests.csproj --configuration Beta_Debug -p:GameFolder="$PWD/bannerlord-beta";
+          dotnet test tests/Bannerlord.ButterLib.Tests/Bannerlord.ButterLib.Tests.csproj --configuration Beta_Release -p:GameFolder="$PWD/bannerlord-beta";
+          dotnet test tests/Bannerlord.ButterLib.Implementation.Tests/Bannerlord.ButterLib.Implementation.Tests.csproj --configuration Stable_Debug -p:GameFolder="$PWD/bannerlord-stable";
+          dotnet test tests/Bannerlord.ButterLib.Implementation.Tests/Bannerlord.ButterLib.Implementation.Tests.csproj --configuration Stable_Release -p:GameFolder="$PWD/bannerlord-stable";
+          dotnet test tests/Bannerlord.ButterLib.Implementation.Tests/Bannerlord.ButterLib.Implementation.Tests.csproj --configuration Beta_Debug -p:GameFolder="$PWD/bannerlord-beta";
+          dotnet test tests/Bannerlord.ButterLib.Implementation.Tests/Bannerlord.ButterLib.Implementation.Tests.csproj --configuration Beta_Release -p:GameFolder="$PWD/bannerlord-beta";
       env:
         DOTNET_NOLOGO: 1
         DOTNET_CLI_TELEMETRY_OPTOUT: 1
