@@ -95,9 +95,9 @@ jobs:
     - name: Test
       run: >-
           $stable_version=$env:STABLE_VERSION;
-          $stable_version.substring(1);
+          $stable_version=$stable_version.substring(1);
           $beta_version=$env:BETA_VERSION;
-          $beta_version.substring(1);
+          $beta_version=$beta_version.substring(1);
           dotnet test src/Bannerlord.ButterLib.sln --configuration Stable_Debug -p:StableVersion=$stable_version -p:GameFolder="$PWD/bannerlord-stable";
           dotnet test src/Bannerlord.ButterLib.sln --configuration Stable_Release -p:StableVersion=$stable_version -p:GameFolder="$PWD/bannerlord-stable";
           dotnet test src/Bannerlord.ButterLib.sln --configuration Beta_Debug -p:BetaVersion=$beta_version -p:GameFolder="$PWD/bannerlord-beta";
