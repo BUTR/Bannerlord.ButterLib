@@ -1,6 +1,8 @@
 name: Test
 
 on:
+  repository_dispatch:
+    types: [game_version_update]
   push:
     branches:
       - dev
@@ -59,14 +61,14 @@ jobs:
 
     - name: Download Bannerlord binaries (Stable)
       run: >-
-        dotnet depotdownloader/DepotDownloader.dll -app 261550 -depot 261551 -beta e1.4.3 -username ${{secrets.STEAM_LOGIN}}
+        dotnet depotdownloader/DepotDownloader.dll -app 261550 -depot 261551 -beta ${{secrets.SYNCED_GAME_STABLE_VERSION}} -username ${{secrets.STEAM_LOGIN}}
         -password ${{secrets.STEAM_PASSWORD}} -filelist ./.github/resources/FileFilters.regexp -dir bannerlord-stable
       env:
         DOTNET_NOLOGO: 1
         DOTNET_CLI_TELEMETRY_OPTOUT: 1
     - name: Download Bannerlord binaries (Beta)
       run: >-
-        dotnet depotdownloader/DepotDownloader.dll -app 261550 -depot 261551 -beta e1.5.0 -username ${{secrets.STEAM_LOGIN}}
+        dotnet depotdownloader/DepotDownloader.dll -app 261550 -depot 261551 -beta ${{secrets.SYNCED_GAME_BETA_VERSION}} -username ${{secrets.STEAM_LOGIN}}
         -password ${{secrets.STEAM_PASSWORD}} -filelist ./.github/resources/FileFilters.regexp -dir bannerlord-beta
       env:
         DOTNET_NOLOGO: 1
@@ -88,10 +90,14 @@ jobs:
 
     - name: Test
       run: >-
-          dotnet test src/Bannerlord.ButterLib.sln --configuration Stable_Debug -p:GameFolder="$PWD/bannerlord-stable";
-          dotnet test src/Bannerlord.ButterLib.sln --configuration Stable_Release -p:GameFolder="$PWD/bannerlord-stable";
-          dotnet test src/Bannerlord.ButterLib.sln --configuration Beta_Debug -p:GameFolder="$PWD/bannerlord-beta";
-          dotnet test src/Bannerlord.ButterLib.sln --configuration Beta_Release -p:GameFolder="$PWD/bannerlord-beta";
+          $stable_version = ${{secrets.SYNCED_GAME_STABLE_VERSION}};
+          $stable_version.substring(1);
+          $beta_version = ${{secrets.SYNCED_GAME_BETA_VERSION}};
+          $beta_version.substring(1);
+          dotnet test src/Bannerlord.ButterLib.sln --configuration Stable_Debug -p:StableVersion=$stable_version -p:GameFolder="$PWD/bannerlord-stable";
+          dotnet test src/Bannerlord.ButterLib.sln --configuration Stable_Release -p:StableVersion=$stable_version -p:GameFolder="$PWD/bannerlord-stable";
+          dotnet test src/Bannerlord.ButterLib.sln --configuration Beta_Debug -p:BetaVersion=$beta_version -p:GameFolder="$PWD/bannerlord-beta";
+          dotnet test src/Bannerlord.ButterLib.sln --configuration Beta_Release -p:BetaVersion=$beta_version -p:GameFolder="$PWD/bannerlord-beta";
       env:
         DOTNET_NOLOGO: 1
         DOTNET_CLI_TELEMETRY_OPTOUT: 1
