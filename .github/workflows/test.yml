@@ -61,7 +61,7 @@ jobs:
 
     - name: Download Bannerlord binaries (Stable)
       run: >-
-        dotnet depotdownloader/DepotDownloader.dll -app 261550 -depot 261551 -beta ${STABLE_VERSION} -username ${{secrets.STEAM_LOGIN}}
+        dotnet depotdownloader/DepotDownloader.dll -app 261550 -depot 261551 -beta $env:STABLE_VERSION -username ${{secrets.STEAM_LOGIN}}
         -password ${{secrets.STEAM_PASSWORD}} -filelist ./.github/resources/FileFilters.regexp -dir bannerlord-stable
       env:
         DOTNET_NOLOGO: 1
@@ -70,7 +70,7 @@ jobs:
       shell: pwsh
     - name: Download Bannerlord binaries (Beta)
       run: >-
-        dotnet depotdownloader/DepotDownloader.dll -app 261550 -depot 261551 -beta ${BETA_VERSION} -username ${{secrets.STEAM_LOGIN}}
+        dotnet depotdownloader/DepotDownloader.dll -app 261550 -depot 261551 -beta $env:BETA_VERSION -username ${{secrets.STEAM_LOGIN}}
         -password ${{secrets.STEAM_PASSWORD}} -filelist ./.github/resources/FileFilters.regexp -dir bannerlord-beta
       env:
         DOTNET_NOLOGO: 1
@@ -94,9 +94,9 @@ jobs:
 
     - name: Test
       run: >-
-          $stable_version=$(STABLE_VERSION);
+          $stable_version=$env:STABLE_VERSION;
           $stable_version.substring(1);
-          $beta_version=$(BETA_VERSION);
+          $beta_version=$env:BETA_VERSION;
           $beta_version.substring(1);
           dotnet test src/Bannerlord.ButterLib.sln --configuration Stable_Debug -p:StableVersion=$stable_version -p:GameFolder="$PWD/bannerlord-stable";
           dotnet test src/Bannerlord.ButterLib.sln --configuration Stable_Release -p:StableVersion=$stable_version -p:GameFolder="$PWD/bannerlord-stable";
