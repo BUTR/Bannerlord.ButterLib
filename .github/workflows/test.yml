@@ -88,8 +88,6 @@ jobs:
 
     - name: Test
       run: >-
-          dotnet test src/Bannerlord.ButterLib.sln --configuration Debug -p:GameFolder="$PWD/bannerlord-stable";
-          dotnet test src/Bannerlord.ButterLib.sln --configuration Release -p:GameFolder="$PWD/bannerlord-stable";
           dotnet test src/Bannerlord.ButterLib.sln --configuration Stable_Debug -p:GameFolder="$PWD/bannerlord-stable";
           dotnet test src/Bannerlord.ButterLib.sln --configuration Stable_Release -p:GameFolder="$PWD/bannerlord-stable";
           dotnet test src/Bannerlord.ButterLib.sln --configuration Beta_Debug -p:GameFolder="$PWD/bannerlord-beta";
@@ -115,7 +113,7 @@ jobs:
     - name: ReportGenerator
       uses: danielpalme/ReportGenerator-GitHub-Action@4.6.1
       with:
-        reports: 'coverage_butterlib_stable_debug.xml;coverage_butterlib_stable_release.xml;coverage_butterlib_beta_debug.xml;coverage_butterlib_beta_release.xml'
+        reports: 'coverage_butterlib_stable_debug.xml;coverage_butterlib_stable_release.xml;coverage_butterlib_impl_stable_debug.xml;coverage_butterlib_impl_stable_release.xml;coverage_butterlib_impl_beta_debug.xml;coverage_butterlib_impl_beta_release.xml;'
         targetdir: 'coveragereport'
         reporttypes: 'HtmlInline;Cobertura'
         sourcedirs: './'
