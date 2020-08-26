@@ -7,7 +7,7 @@
   <img src="https://tokei.rs/b1/github/BUTR/Bannerlord.ButterLib?category=code" /></a>
   <a href="https://www.codefactor.io/repository/github/butr/bannerlord.butterlib"><img src="https://www.codefactor.io/repository/github/butr/bannerlord.butterlib/badge" alt="CodeFactor" /></a>
   </br>
-  <a href="https://github.com/BUTR/Bannerlord.ButterLib/actions?query=workflow%3ATest"><img src="https://github.com/BUTR/Bannerlord.ButterLib/workflows/Test/badge.svg?branch=v3&event=push" alt="Test" /></a>
+  <a href="https://github.com/BUTR/Bannerlord.ButterLib/actions?query=workflow%3ATest"><img src="https://github.com/BUTR/Bannerlord.ButterLib/workflows/Test/badge.svg?branch=dev&event=push" alt="Test" /></a>
   <a href="https://codecov.io/gh/BUTR/Bannerlord.ButterLib"><img src="https://codecov.io/gh/BUTR/Bannerlord.ButterLib/branch/dev/graph/badge.svg" />
    </a>
   </br>
