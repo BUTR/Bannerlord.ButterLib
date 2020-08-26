@@ -57,10 +57,17 @@ jobs:
         pathSource: depotdownloader-2.3.6.zip
         pathTarget: depotdownloader
 
-    - name: Download Bannerlord binaries
+    - name: Download Bannerlord binaries (Stable)
       run: >-
-        dotnet depotdownloader/DepotDownloader.dll -app 261550 -depot 261551 -username ${{secrets.STEAM_LOGIN}}
-        -password ${{secrets.STEAM_PASSWORD}} -filelist ./.github/resources/FileFilters.regexp -dir bannerlord
+        dotnet depotdownloader/DepotDownloader.dll -app 261550 -depot 261551 -beta e1.4.3 -username ${{secrets.STEAM_LOGIN}}
+        -password ${{secrets.STEAM_PASSWORD}} -filelist ./.github/resources/FileFilters.regexp -dir bannerlord-stable
+      env:
+        DOTNET_NOLOGO: 1
+        DOTNET_CLI_TELEMETRY_OPTOUT: 1
+    - name: Download Bannerlord binaries (Beta)
+      run: >-
+        dotnet depotdownloader/DepotDownloader.dll -app 261550 -depot 261551 -beta e1.5.0 -username ${{secrets.STEAM_LOGIN}}
+        -password ${{secrets.STEAM_PASSWORD}} -filelist ./.github/resources/FileFilters.regexp -dir bannerlord-beta
       env:
         DOTNET_NOLOGO: 1
         DOTNET_CLI_TELEMETRY_OPTOUT: 1
@@ -79,12 +86,50 @@ jobs:
         pathSource: opencover.4.7.922.zip
         pathTarget: opencover
 
-    - name: Test
-      run: >-
-          dotnet test tests/Bannerlord.ButterLib.Tests/Bannerlord.ButterLib.Tests.csproj --configuration Debug -p:GameFolder="$PWD/bannerlord";
-          dotnet test tests/Bannerlord.ButterLib.Tests/Bannerlord.ButterLib.Tests.csproj --configuration Release -p:GameFolder="$PWD/bannerlord";
-          dotnet test tests/Bannerlord.ButterLib.Implementation.Tests/Bannerlord.ButterLib.Implementation.Tests.csproj --configuration Debug -p:GameFolder="$PWD/bannerlord";
-          dotnet test tests/Bannerlord.ButterLib.Implementation.Tests/Bannerlord.ButterLib.Implementation.Tests.csproj --configuration Release -p:GameFolder="$PWD/bannerlord";
+    #TODO
+    - name: Test Bannerlord.ButterLib.Tests Stable_Debug
+      run: dotnet test tests/Bannerlord.ButterLib.Tests/Bannerlord.ButterLib.Tests.csproj --configuration Stable_Debug -p:GameFolder="$PWD/bannerlord-stable";
+      env:
+        DOTNET_NOLOGO: 1
+        DOTNET_CLI_TELEMETRY_OPTOUT: 1
+      shell: pwsh
+    - name: Test Bannerlord.ButterLib.Tests Beta_Debug
+      run: dotnet test tests/Bannerlord.ButterLib.Tests/Bannerlord.ButterLib.Tests.csproj --configuration Beta_Debug -p:GameFolder="$PWD/bannerlord-beta";
+      env:
+        DOTNET_NOLOGO: 1
+        DOTNET_CLI_TELEMETRY_OPTOUT: 1
+      shell: pwsh
+    - name: Test Bannerlord.ButterLib.Tests Stable_Release
+      run: dotnet test tests/Bannerlord.ButterLib.Tests/Bannerlord.ButterLib.Tests.csproj --configuration Stable_Release -p:GameFolder="$PWD/bannerlord-stable";
+      env:
+        DOTNET_NOLOGO: 1
+        DOTNET_CLI_TELEMETRY_OPTOUT: 1
+    - name: Test Bannerlord.ButterLib.Tests Beta_Release
+      run: dotnet test tests/Bannerlord.ButterLib.Tests/Bannerlord.ButterLib.Tests.csproj --configuration Beta_Release -p:GameFolder="$PWD/bannerlord-beta";
+      env:
+        DOTNET_NOLOGO: 1
+        DOTNET_CLI_TELEMETRY_OPTOUT: 1
+      shell: pwsh
+    - name: Test Bannerlord.ButterLib.Implementation.Tests Stable_Debug
+      run: dotnet test tests/Bannerlord.ButterLib.Implementation.Tests/Bannerlord.ButterLib.Implementation.Tests.csproj --configuration Stable_Debug -p:GameFolder="$PWD/bannerlord-stable";
+      env:
+        DOTNET_NOLOGO: 1
+        DOTNET_CLI_TELEMETRY_OPTOUT: 1
+      shell: pwsh
+    - name: Test Bannerlord.ButterLib.Implementation.Tests Stable_Release
+      run: dotnet test tests/Bannerlord.ButterLib.Implementation.Tests/Bannerlord.ButterLib.Implementation.Tests.csproj --configuration Stable_Release -p:GameFolder="$PWD/bannerlord-stable";
+      env:
+        DOTNET_NOLOGO: 1
+        DOTNET_CLI_TELEMETRY_OPTOUT: 1
+      shell: pwsh
+    - name: Test Bannerlord.ButterLib.Implementation.Tests Beta_Debug
+      run: dotnet test tests/Bannerlord.ButterLib.Implementation.Tests/Bannerlord.ButterLib.Implementation.Tests.csproj --configuration Beta_Debug -p:GameFolder="$PWD/bannerlord-beta";
+      env:
+        DOTNET_NOLOGO: 1
+        DOTNET_CLI_TELEMETRY_OPTOUT: 1
+      shell: pwsh
+    - name: Test Bannerlord.ButterLib.Implementation.Tests Beta_Release
+      run: dotnet test tests/Bannerlord.ButterLib.Implementation.Tests/Bannerlord.ButterLib.Implementation.Tests.csproj --configuration Beta_Release -p:GameFolder="$PWD/bannerlord-beta";
       env:
         DOTNET_NOLOGO: 1
         DOTNET_CLI_TELEMETRY_OPTOUT: 1
@@ -92,10 +137,10 @@ jobs:
 
     - name: Test Coverage
       run: >-
-          opencover/OpenCover.Console.exe -register -target:"dotnet.exe" -targetargs:"test src/Bannerlord.ButterLib.sln --configuration Debug --no-build" -filter:"+[MCMv3.*]*" -output:coverage_butterlib_debug.xml -mergebyhash;
-          opencover/OpenCover.Console.exe -register -target:"dotnet.exe" -targetargs:"test src/Bannerlord.ButterLib.sln --configuration Release --no-build" -filter:"+[MCMv3.*]*" -output:coverage_butterlib_debug.xml -mergebyhash;
-          opencover/OpenCover.Console.exe -register -target:"dotnet.exe" -targetargs:"test src/Bannerlord.ButterLib.sln --configuration Debug --no-build" -filter:"+[MCMv3.*]*" -output:coverage_butterlib_release.xml -mergebyhash;
-          opencover/OpenCover.Console.exe -register -target:"dotnet.exe" -targetargs:"test src/Bannerlord.ButterLib.sln --configuration Release --no-build" -filter:"+[MCMv3.*]*" -output:coverage_butterlib_release.xml -mergebyhash;
+          opencover/OpenCover.Console.exe -register -target:"dotnet.exe" -targetargs:"test src/Bannerlord.ButterLib.sln --configuration Stable_Debug --no-build" -filter:"+[Bannerlord.ButterLib.*]*" -output:coverage_butterlib_stable_debug.xml -mergebyhash;
+          opencover/OpenCover.Console.exe -register -target:"dotnet.exe" -targetargs:"test src/Bannerlord.ButterLib.sln --configuration Stable_Release --no-build" -filter:"+[Bannerlord.ButterLib.*]*" -output:coverage_butterlib_stable_release.xml -mergebyhash;
+          opencover/OpenCover.Console.exe -register -target:"dotnet.exe" -targetargs:"test src/Bannerlord.ButterLib.sln --configuration Beta_Debug --no-build" -filter:"+[Bannerlord.ButterLib.*]*" -output:coverage_butterlib_beta_debug.xml -mergebyhash;
+          opencover/OpenCover.Console.exe -register -target:"dotnet.exe" -targetargs:"test src/Bannerlord.ButterLib.sln --configuration Beta_Release --no-build" -filter:"+[Bannerlord.ButterLib.*]*" -output:coverage_butterlib_beta_release.xml -mergebyhash;
       env:
         DOTNET_NOLOGO: 1
         DOTNET_CLI_TELEMETRY_OPTOUT: 1
@@ -104,7 +149,7 @@ jobs:
     - name: ReportGenerator
       uses: danielpalme/ReportGenerator-GitHub-Action@4.6.1
       with:
-        reports: 'coverage_mcm_butterlib.xml;coverage_butterlib_release.xml'
+        reports: 'coverage_butterlib_stable_debug.xml;coverage_butterlib_stable_release.xml;coverage_butterlib_beta_debug.xml;coverage_butterlib_beta_release.xml'
         targetdir: 'coveragereport'
         reporttypes: 'HtmlInline;Cobertura'
         sourcedirs: './'
