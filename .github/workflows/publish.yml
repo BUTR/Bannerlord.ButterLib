@@ -116,19 +116,8 @@ jobs:
         name: bannerlord-stable
         path: ./bannerlord
 
-    - name: Download beta bannerlord folder
-      uses: actions/download-artifact@v2
-      with:
-        name: bannerlord-beta
-        path: ./bannerlord
-
-    - name: Zip Bannerlord.ButterLib
-      run: 7z a -tzip Bannerlord.ButterLib.zip ./bannerlord/*
-
-    - name: Install Bannerlord.ChangelogParser and Bannerlord.NexusmodsUploader
-      run: >-
-        dotnet tool install -g Bannerlord.ChangelogParser;
-        dotnet tool install -g Bannerlord.NexusmodsUploader;
+    - name: Install Bannerlord.ChangelogParser
+      run: dotnet tool install -g Bannerlord.ChangelogParser;
       env:
         DOTNET_NOLOGO: 1
         DOTNET_CLI_TELEMETRY_OPTOUT: 1
@@ -147,27 +136,18 @@ jobs:
         DOTNET_NOLOGO: 1
         DOTNET_CLI_TELEMETRY_OPTOUT: 1
 
-    - name: Start Selenoid
-      uses: Xotabu4/selenoid-github-action@v1
-
-    - name: Run NexusmodsUploader
-      run: >-
-        bannerlord_nexusmods_uploader upload -g mountandblade2bannerlord -m 2018 -n "ButterLib"
-        -v "${{steps.changelog.outputs.mod_version}}" -l true -e true -d "${{steps.changelog.outputs.mod_description}}"
-        -p "$PWD/Bannerlord.ButterLib.zip";
-      env:
-        NEXUSMODS_COOKIES_JSON: '${{secrets.NEXUSMODS_COOKIES_JSON}}'
-        DOTNET_NOLOGO: 1
-        DOTNET_CLI_TELEMETRY_OPTOUT: 1
-
-    - name: Password protect Screenshots
-      run: 7z a -p${{secrets.SCREENSHOTS_PASSWORD}} Screenshots.7z ./Screenshots/*
-
-    - name: Upload Screenshots Artifact
-      uses: actions/upload-artifact@v2
+    - name: Download stable bannerlord folder
+      uses: BUTR/publish-nexusmods@master
       with:
-        name: Screenshots
-        path: Screenshots.7z
+        artifact: bannerlord
+        nexusmods-cookies: ${{secrets.NEXUSMODS_COOKIES_JSON}}
+        nexusmods-game: mountandblade2bannerlord
+        nexusmods-modid: 2018
+        nexusmods-folder: Bannerlord.ButterLib
+        nexusmods-title: ButterLib
+        nexusmods-description: ${{steps.changelog.outputs.mod_description}}
+        nexusmods-version: ${{steps.changelog.outputs.mod_version}}
+        screenshot-password: ${{secrets.SCREENSHOTS_PASSWORD}}
 
 ###########################
 #        NUGET/GPR        #
