@@ -26,3 +26,14 @@
 </p>
 
 Extension library for Mount & Blade II: Bannerlord.
+
+Highlighted features:
+* [CampaignIdentifier](https://butr.github.io/Bannerlord.ButterLib/articles/CampaignIdentifier/Overview.html) - Associates unique string ID with every campaign based on the initial character.  
+* [DistanceMatrix](https://butr.github.io/Bannerlord.ButterLib/articles/DistanceMatrix/Overview.html) - A generic class that pairs given objects of type MBObject and for each pair calculates the distance between the objects that formed it.  
+* [DelayedSubModule](https://butr.github.io/Bannerlord.ButterLib/articles/DelayedSubModule/Overview.html) - Execute code after specific SubModule method.  
+* [SubModuleWrappers](https://butr.github.io/Bannerlord.ButterLib/articles/SubModuleWrappers/Overview.html) - Wraps MBSubModulebase for easier calling of protected internal metods. 
+* [AccessTools2](https://butr.github.io/Bannerlord.ButterLib/api/Bannerlord.ButterLib.Common.Helpers.AccessTools2.html) - Adds delegate related functions.  
+* [SymbolExtensions2](https://butr.github.io/Bannerlord.ButterLib/api/Bannerlord.ButterLib.Common.Helpers.SymbolExtensions2.html) - More lambda functions. 
+* [AlphanumComparatorFast](https://butr.github.io/Bannerlord.ButterLib/api/Bannerlord.ButterLib.Common.Helpers.AlphanumComparatorFast.html) - Alphanumeric sort. This sorting algorithm logically handles numbers in strings.  
+
+Check the [/Articles](https://butr.github.io/Bannerlord.ButterLib/articles/index.html) section in the documentation to see all available features!
