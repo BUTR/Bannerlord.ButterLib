@@ -217,7 +217,7 @@ jobs:
         echo "::set-output name=mod_description::$desc"
 
     - name: Push to NuGet
-      run: dotnet nuget push "./packages/*.*nupkg" -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json
+      run: dotnet nuget push "./packages/*.nupkg" -k ${{secrets.NUGET_API_KEY}} -s https://www.nuget.org
       env:
         DOTNET_NOLOGO: 1
         DOTNET_CLI_TELEMETRY_OPTOUT: 1
