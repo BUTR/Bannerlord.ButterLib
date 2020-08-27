@@ -213,7 +213,7 @@ namespace Bannerlord.ButterLib
         }
         private static (FileInfo Implementation, ApplicationVersion Version) ImplementationLatest(IEnumerable<(FileInfo Implementation, ApplicationVersion Version)> implementations)
         {
-            return implementations.MaxBy(x => x.Version);
+            return implementations.MaxBy(x => x.Version, new ApplicationVersionComparer(), out _);
         }
 
 
