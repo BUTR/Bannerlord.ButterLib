@@ -1,4 +1,8 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.0.3
+Game Versions: e1.4.3,e1.5.0,e1.5.1
+* Fixed Version comparator
+---------------------------------------------------------------------------------------------------
 Version: 1.0.2
 Game Versions: e1.4.3,e1.5.0,e1.5.1
 * Added the ability to get a persistent and deterministic Campaign Id.
