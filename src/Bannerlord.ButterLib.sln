@@ -22,6 +22,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{
 		..\.github\workflows\docfx.yml = ..\.github\workflows\docfx.yml
 		..\.github\workflows\nexusmods-cookies.yml = ..\.github\workflows\nexusmods-cookies.yml
 		..\.github\workflows\publish.yml = ..\.github\workflows\publish.yml
+		..\.github\workflows\test.yml = ..\.github\workflows\test.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "root", "root", "{F11F675F-87A9-4959-92FE-6B44D9500F1B}"
@@ -125,14 +126,14 @@ Global
 		{C2FEF2CB-356C-4045-948D-F0755ABA6378}.Stable_Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C2FEF2CB-356C-4045-948D-F0755ABA6378}.Stable_Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C2FEF2CB-356C-4045-948D-F0755ABA6378}.Stable_Release|Any CPU.Build.0 = Release|Any CPU
-		{CC56F4AA-1C6F-4B20-9DA3-79A30E1F6734}.Beta_Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CC56F4AA-1C6F-4B20-9DA3-79A30E1F6734}.Beta_Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CC56F4AA-1C6F-4B20-9DA3-79A30E1F6734}.Beta_Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CC56F4AA-1C6F-4B20-9DA3-79A30E1F6734}.Beta_Release|Any CPU.Build.0 = Release|Any CPU
-		{CC56F4AA-1C6F-4B20-9DA3-79A30E1F6734}.Stable_Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CC56F4AA-1C6F-4B20-9DA3-79A30E1F6734}.Stable_Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CC56F4AA-1C6F-4B20-9DA3-79A30E1F6734}.Stable_Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CC56F4AA-1C6F-4B20-9DA3-79A30E1F6734}.Stable_Release|Any CPU.Build.0 = Release|Any CPU
+		{CC56F4AA-1C6F-4B20-9DA3-79A30E1F6734}.Beta_Debug|Any CPU.ActiveCfg = Beta_Debug|Any CPU
+		{CC56F4AA-1C6F-4B20-9DA3-79A30E1F6734}.Beta_Debug|Any CPU.Build.0 = Beta_Debug|Any CPU
+		{CC56F4AA-1C6F-4B20-9DA3-79A30E1F6734}.Beta_Release|Any CPU.ActiveCfg = Beta_Release|Any CPU
+		{CC56F4AA-1C6F-4B20-9DA3-79A30E1F6734}.Beta_Release|Any CPU.Build.0 = Beta_Release|Any CPU
+		{CC56F4AA-1C6F-4B20-9DA3-79A30E1F6734}.Stable_Debug|Any CPU.ActiveCfg = Stable_Debug|Any CPU
+		{CC56F4AA-1C6F-4B20-9DA3-79A30E1F6734}.Stable_Debug|Any CPU.Build.0 = Stable_Debug|Any CPU
+		{CC56F4AA-1C6F-4B20-9DA3-79A30E1F6734}.Stable_Release|Any CPU.ActiveCfg = Stable_Release|Any CPU
+		{CC56F4AA-1C6F-4B20-9DA3-79A30E1F6734}.Stable_Release|Any CPU.Build.0 = Stable_Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

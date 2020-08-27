@@ -10,20 +10,20 @@ using TaleWorlds.ObjectSystem;
 
 namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
 {
+    /// <summary>
+    /// A static class, containing accordant members of the
+    /// <see cref="T:Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix`1" /> class.
+    /// </summary>
     internal sealed class DistanceMatrixStaticImplementation : DistanceMatrixStatic
     {
+        /// <inheritdoc/>
         public override DistanceMatrix<T> Create<T>() => new DistanceMatrixImplementation<T>();
 
+        /// <inheritdoc/>
         public override DistanceMatrix<T> Create<T>(Func<IEnumerable<T>> customListGetter, Func<T, T, float> customDistanceCalculator) =>
             new DistanceMatrixImplementation<T>(customListGetter, customDistanceCalculator);
 
-        /// <summary>Calculates distance between two given <see cref="Hero"/> objects.</summary>
-        /// <param name="hero1">The first of the heroes to calculate distance between.</param>
-        /// <param name="hero2">The second of the heroes to calculate distance between.</param>
-        /// <returns>
-        /// A floating-point number representing the distance between two specified <see cref="Hero"/> objects
-        /// or <see cref="float.NaN" /> if distance could not be calculated.
-        /// </returns>
+        /// <inheritdoc/>
         public override float CalculateDistanceBetweenHeroes(Hero hero1, Hero hero2)
         {
             var (mobileParty1, settlement1) = GetMapPosition(hero1);
@@ -41,18 +41,7 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
               : float.NaN;
         }
 
-        /// <summary>Calculates distance between two given <see cref="Clan"/> objects.</summary>
-        /// <param name="clan1">First of the clans to calculate distance between.</param>
-        /// <param name="clan2">Second of the clans to calculate distance between.</param>
-        /// <param name="settlementOwnersPairedList">
-        /// Enumerable of the distances between pairs of settlements and of the weights of the paired settlements,
-        /// except that the owner clan pairs are used instead of the settlements themselves to speed up the process.
-        /// </param>
-        /// <returns>
-        /// A floating-point number representing the distance between two specified <see cref="Clan"/> objects
-        /// or <see cref="float.NaN" /> if distance could not be calculated.
-        /// </returns>
-        /// <remarks>Calculation is based on the average distance between clans fiefs weighted by the fief type.</remarks>
+        /// <inheritdoc/>
         public override float CalculateDistanceBetweenClans(Clan clan1, Clan clan2, IEnumerable<(ulong Owners, float Distance, float Weight)> settlementOwnersPairedList)
         {
             var pair = clan1.Id > clan2.Id ? ElegantPairHelper.Pair(clan2.Id, clan1.Id) : ElegantPairHelper.Pair(clan1.Id, clan2.Id);
@@ -61,15 +50,7 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
             return GetWeightedMeanDistance(settlementDistances);
         }
 
-        /// <summary>Calculates distance between two given <see cref="Kingdom"/> objects.</summary>
-        /// <param name="kingdom1">First of the kingdoms to calculate distance between.</param>
-        /// <param name="kingdom2">Second of the kingdoms to calculate distance between.</param>
-        /// <param name="settlementDistanceMatrix">Settlement distance matrix .</param>
-        /// <returns>
-        /// A floating-point number representing the distance between two specified <see cref="Kingdom"/> objects
-        /// or <see cref="float.NaN" /> if distance could not be calculated.
-        /// </returns>
-        /// <remarks>Calculation is based on the average distance between kingdoms fiefs weighted by the fief type.</remarks>
+        /// <inheritdoc/>
         public override float CalculateDistanceBetweenKingdoms(Kingdom kingdom1, Kingdom kingdom2, DistanceMatrix<Settlement> settlementDistanceMatrix)
         {
             bool Predicate(KeyValuePair<(Settlement object1, Settlement object2), float> x) =>
@@ -83,20 +64,7 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
             return GetWeightedMeanDistance(settlementDistances);
         }
 
-        /// <summary>
-        /// Transforms given <see cref="Settlement"/> distance matrix into list of the weighted distances
-        /// between pairs of settlements, except that the owner clan pairs are used instead of the settlements themselves.
-        /// </summary>
-        /// <param name="settlementDistanceMatrix">Settlement distance matrix to transform into list.</param>
-        /// <returns>
-        /// A list of tuples holding information about pair of initial settlements owners, distance between settlements
-        /// and combined settlement weight.
-        /// </returns>
-        /// <remarks>
-        /// This method could be used to supply
-        /// <see cref="DistanceMatrixImplementation{T}.CalculateDistanceBetweenClans(Clan, Clan, List{(ulong Owners, float Distance, float Weight)})"/>
-        /// method with required list argument.
-        /// </remarks>
+        /// <inheritdoc/>
         public override List<(ulong Owners, float Distance, float Weight)> GetSettlementOwnersPairedList(DistanceMatrix<Settlement> settlementDistanceMatrix)
         {
             static (MBGUID OwnerId1, MBGUID OwnerId2, float Distance, float Weight) FirstSelector(KeyValuePair<(Settlement Object1, Settlement Object2), float> kvp) =>
