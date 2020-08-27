@@ -7,6 +7,12 @@ namespace Bannerlord.ButterLib.Common.Helpers
 {
     internal static class ConstructorHelper
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TDelegate"></typeparam>
+        /// <param name="constructorInfo"></param>
+        /// <returns></returns>
         public static TDelegate? Delegate<TDelegate>(ConstructorInfo constructorInfo) where TDelegate : Delegate
         {
             var parameterTypes = constructorInfo.GetParameters();

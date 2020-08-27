@@ -2,6 +2,9 @@
 
 namespace Bannerlord.ButterLib.Common.Extensions
 {
+    /// <summary>
+    /// An extension class for the <see cref="ApplicationVersion" />.
+    /// </summary>
     public static class ApplicationVersionExtensions
     {
         /// <summary>

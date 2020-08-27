@@ -1,4 +1,6 @@
-﻿using TaleWorlds.CampaignSystem;
+﻿using System.Linq;
+
+using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.Actions;
 
 namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
@@ -42,8 +44,33 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
         {
             if ((newOwner.Clan != null || oldOwner.Clan != null) && newOwner.Clan != oldOwner.Clan)
             {
-                ClanDistanceMatrix = new DistanceMatrixImplementation<Clan>();
+                var clans = Clan.All.Where(c => c.IsInitialized && c.Fortifications.Count > 0).ToList();
+                var lst = ButterLib.DistanceMatrix.DistanceMatrix.GetSettlementOwnersPairedList(SettlementDistanceMatrix!);
+
+                if (oldOwner.Clan != null)
+                { 
+                    foreach (Clan clan in clans)
+                    {
+                        if (clan != oldOwner.Clan)
+                        {
+                            float distance = ButterLib.DistanceMatrix.DistanceMatrix.CalculateDistanceBetweenClans(oldOwner.Clan, clan, lst);
+                            ClanDistanceMatrix!.SetDistance(oldOwner.Clan, clan, distance);
+                        }
+                    }
+                }
+                if (newOwner.Clan != null)
+                {
+                    foreach (Clan clan in clans)
+                    {
+                        if (clan != newOwner.Clan)
+                        {
+                            float distance = ButterLib.DistanceMatrix.DistanceMatrix.CalculateDistanceBetweenClans(newOwner.Clan, clan, lst);
+                            ClanDistanceMatrix!.SetDistance(newOwner.Clan, clan, distance);
+                        }
+                    }
+                }
             }
+
             if ((newOwner.Clan?.Kingdom != null || oldOwner.Clan?.Kingdom != null) && newOwner.Clan?.Kingdom != oldOwner.Clan?.Kingdom)
             {
                 KingdomDistanceMatrix = new DistanceMatrixImplementation<Kingdom>();

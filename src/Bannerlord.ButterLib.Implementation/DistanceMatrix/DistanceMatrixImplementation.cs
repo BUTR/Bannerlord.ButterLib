@@ -11,16 +11,7 @@ using TaleWorlds.ObjectSystem;
 
 namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
 {
-    /// <summary>
-    /// A generic class that pairs given objects of type <typeparamref name="T"/>
-    /// and for each pair calculates the distance between the objects that formed it.
-    /// </summary>
-    /// <typeparam name="T">The type of objects for which the distance matrix should be calculated.</typeparam>
-    /// <remarks><see cref="T:Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix`1" /> implements built-in calculation for the <see cref="Hero"/>,
-    /// <see cref="Settlement"/>, <see cref="Clan"/> and <see cref="Kingdom"/> objects.
-    /// For any other <see cref="MBObjectBase"/> subtypes custom EntityListGetter and DistanceCalculator methods
-    /// should be provided using special constructor <see cref="DistanceMatrixImplementation{T}"/> .
-    /// </remarks>
+    /// <inheritdoc/>
     [Serializable]
     internal sealed class DistanceMatrixImplementation<T> : DistanceMatrix<T>, ISerializable where T : MBObjectBase
     {
@@ -34,27 +25,14 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
         private readonly Func<T, T, float>? _distanceCalculator;
 
         //properties
-        /// <summary>Raw distance matrix representation</summary>
-        /// <value>
-        /// A dictionary of paired type <typeparamref name="T"/> objects
-        /// represented by unique 64-bit unsigned number as key
-        /// and floating-point numbers, representing distances between those objects as value.
-        /// </value>
+        /// <inheritdoc/>
         public override Dictionary<ulong, float> AsDictionary => _distanceMatrix;
 
-        /// <summary>Objectified distance matrix representation</summary>
-        /// <value>
-        /// A dictionary of paired type <typeparamref name="T"/> objects as key
-        /// and floating-point numbers, representing distances between those objects as value.
-        /// </value>
+        /// <inheritdoc/>
         public override Dictionary<(T Object1, T Object2), float> AsTypedDictionary => _typedDistanceMatrix;
 
         //Constructors
-        /// <summary>
-        /// Initializes a new instance of the <see cref="T:Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix`1"/> class
-        /// with default EntityListGetter and DistanceCalculator methods.
-        /// </summary>
-        /// <exception cref="T:System.ArgumentException"></exception>
+        /// <inheritdoc/>
         public DistanceMatrixImplementation()
         {
             _entityListGetter = null;
@@ -63,18 +41,7 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
             _typedDistanceMatrix = GetTypedDistanceMatrix();
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="T:Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix`1"/> class
-        /// with custom methods that will be used to get the list of analyzed objects and calculate the distances between them.
-        /// </summary>
-        /// <param name="customListGetter">
-        /// A delegate to the method that will be used to get a list of objects of type <typeparamref name="T"/>
-        /// for calculating the distances between them.
-        /// </param>
-        /// <param name="customDistanceCalculator">
-        /// A delegate to the method that will be used to calculate the distance between two given type <typeparamref name="T"/> objects.
-        /// </param>
-        /// <exception cref="T:System.ArgumentException"></exception>
+        /// <inheritdoc/>
         public DistanceMatrixImplementation(Func<IEnumerable<T>> customListGetter, Func<T, T, float> customDistanceCalculator)
         {
             _entityListGetter = customListGetter;
@@ -84,7 +51,7 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix`1" /> class
+        /// Initializes a new instance of the <see cref="T:Bannerlord.ButterLib.Implementation.DistanceMatrix.DistanceMatrixImplementation`1" /> class
         /// using serialized data.
         /// </summary>
         /// <remarks>Used exclusively for deserialization.</remarks>
@@ -103,16 +70,17 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
             info.AddValue(typeof(T).Name + "DistanceMatrix", _distanceMatrix);
         }
 
-        /// <summary>Gets calculated distance between specified type <typeparamref name="T"/> objects.</summary>
-        /// <param name="object1">The first of the objects between which it is necessary to determine the distance.</param>
-        /// <param name="object2">The second of the objects between which it is necessary to determine the distance.</param>
-        /// <returns>
-        /// A floating-point number representing the distance between two specified <see cref="MBObjectBase"/> objects;
-        /// or <see cref="float.NaN" />, if distance was not calculated or it is uncomputable.
-        /// </returns>
+        /// <inheritdoc/>
         public override float GetDistance(T object1, T object2) =>
             _distanceMatrix.TryGetValue(object1.Id > object2.Id ? ElegantPairHelper.Pair(object2.Id, object1.Id) : ElegantPairHelper.Pair(object1.Id, object2.Id),
                                         out var distance) ? distance : float.NaN;
+
+        /// <inheritdoc/>
+        public override void SetDistance(T object1, T object2, float distance)
+        {
+            _distanceMatrix[object1.Id > object2.Id ? ElegantPairHelper.Pair(object2.Id, object1.Id) : ElegantPairHelper.Pair(object1.Id, object2.Id)] = distance;
+            _typedDistanceMatrix[object1.Id > object2.Id ? (object2, object1) : (object1, object2)] = distance;
+        }
 
         //Private methods
         /// <summary>Calculates distance matrix for the <see cref="MBObjectBase"/> objects of the specified subtype <typeparamref name="T"/>.</summary>

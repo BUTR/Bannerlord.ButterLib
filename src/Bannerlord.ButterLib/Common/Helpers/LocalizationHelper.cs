@@ -8,7 +8,7 @@ using TaleWorlds.MountAndBlade;
 
 namespace Bannerlord.ButterLib.Common.Helpers
 {
-    /// <summary>Helper class used to store numeric variables or complex entities in <see cref="TextObject" />.</summary>
+    /// <summary>Helper class used to store numeric variables or complex entities in the <see cref="TextObject" />.</summary>
     public static class LocalizationHelper
     {
         /// <summary>

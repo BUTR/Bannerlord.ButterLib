@@ -23,7 +23,7 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier
     /// </remarks>
     [Serializable]
     [SaveableClass(1)]
-    public sealed class CampaignDescriptorImplementation : CampaignDescriptor, ISerializable
+    internal sealed class CampaignDescriptorImplementation : CampaignDescriptor, ISerializable
     {
         //Consts
         private const int DescriptorKeyLength = 12;
@@ -49,40 +49,33 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier
         private readonly Hero _baseHero;
 
         //Properties
-        /// <summary>Alphanumeric campaign ID.</summary>
+        /// <inheritdoc/>
         public override string KeyValue => _value;
 
-        /// <summary>A string key that is used to compare unidentified ongoing campaigns.</summary>
-        /// <remarks>Contains information about gender, birthplace and culture of the initial character.</remarks>
+        /// <inheritdoc/>
         public override string ImmutableKey => Regex.Replace(
             $"GDR_{_attributes[DescriptorAttribute.HeroGender]}-BPL_{_attributes[DescriptorAttribute.BirthplaceName]}-CLR_{_attributes[DescriptorAttribute.HeroCulture]}",
             @"\{[\\?=][^}]*\}", string.Empty);
 
-        /// <summary>
-        /// Name of the <see cref="T:TaleWorlds.CampaignSystem.Hero" />
-        /// that was used when creating this <see cref="T:Bannerlord.ButterLib.CampaignIdentifier.CampaignDescriptor" /> instance.
-        /// </summary>
+        /// <inheritdoc/>
         public override string FullCharacterName => string.Join(" ", _attributes[DescriptorAttribute.HeroName], _attributes[DescriptorAttribute.HeroFamilyName]);
 
-        /// <summary>
-        /// Localizable description of the campaign, based on the <see cref="Hero" />
-        /// that was used when creating this <see cref="CampaignDescriptorImplementation" /> instance.
-        /// </summary>
+        /// <inheritdoc/>
         public override string Descriptor => GetLocalizableValue();
 
-        /// <summary>
-        /// The <see cref="T:TaleWorlds.Core.CharacterCode" /> of the <see cref="Hero" />
-        /// that current <see cref="CampaignDescriptorImplementation" /> instance is based on.
-        /// </summary>
+        /// <inheritdoc/>
         public override CharacterCode CharacterCode => CharacterCode.CreateFrom((string) _attributes[DescriptorAttribute.CharacterCode]);
 
         //Constructors
+        /// <summary>Initializes a new instance of the class <see cref="CampaignDescriptorImplementation" />
+        /// with default values.</summary>
         public CampaignDescriptorImplementation()
         {
             _value = null!;
             _attributes = null!;
             _baseHero = null!; // Won't be needed since we have the attributes already
         }
+
         /// <summary>Initializes a new instance of the class <see cref="CampaignDescriptorImplementation" />.</summary>
         /// <param name="baseHero">The hero to be used as descriptor base.</param>
         public CampaignDescriptorImplementation(Hero baseHero)
@@ -113,6 +106,7 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier
         }
 
         //Public methods
+        /// <inheritdoc/>
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             info.AddValue(nameof(KeyValue), _value);
