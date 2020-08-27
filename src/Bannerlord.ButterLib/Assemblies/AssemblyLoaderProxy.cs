@@ -52,6 +52,23 @@ namespace Bannerlord.ButterLib.Assemblies
                 return false;
             }
         }
+        public bool LoadFileAndTest(string path, out ReflectionTypeLoadException? exception)
+        {
+            ValidatePath(path);
+
+            var assembly = Assembly.LoadFile(path);
+            try
+            {
+                assembly.GetTypes();
+                exception = null;
+                return true;
+            }
+            catch (Exception e) when (e is ReflectionTypeLoadException r)
+            {
+                exception = r;
+                return false;
+            }
+        }
 
         private static void ValidatePath(string path)
         {
