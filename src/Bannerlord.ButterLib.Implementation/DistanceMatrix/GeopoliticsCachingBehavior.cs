@@ -48,12 +48,12 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
                 var lst = ButterLib.DistanceMatrix.DistanceMatrix.GetSettlementOwnersPairedList(SettlementDistanceMatrix!);
 
                 if (oldOwner.Clan != null)
-                { 
+                {
                     foreach (Clan clan in clans)
                     {
                         if (clan != oldOwner.Clan)
                         {
-                            float distance = ButterLib.DistanceMatrix.DistanceMatrix.CalculateDistanceBetweenClans(oldOwner.Clan, clan, lst);
+                            var distance = ButterLib.DistanceMatrix.DistanceMatrix.CalculateDistanceBetweenClans(oldOwner.Clan, clan, lst);
                             ClanDistanceMatrix!.SetDistance(oldOwner.Clan, clan, distance);
                         }
                     }

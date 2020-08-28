@@ -143,7 +143,7 @@ namespace Bannerlord.ButterLib.DelayedSubModule
                     prefix: new HarmonyMethod(AccessTools.DeclaredMethod(typeof(DelayedSubModuleManager), nameof(OnGameEndPrefix)), priority, before, after),
                     postfix: new HarmonyMethod(AccessTools.DeclaredMethod(typeof(DelayedSubModuleManager), nameof(OnGameEndPostfix)), priority, before, after));
         }
-        
+
         private static void SubModuleLoadPrefix(MBSubModuleBase __instance)
         {
             OnMethod?.Invoke(null, new SubscriptionGlobalEventArgs(__instance.GetType(), false, SubscriptionType.BeforeMethod, "OnSubModuleLoad"));
