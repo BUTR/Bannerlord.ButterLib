@@ -150,7 +150,7 @@ jobs:
     - name: Run NexusmodsUploader
       run: >-
         bannerlord_nexusmods_uploader upload -g mountandblade2bannerlord -m 2018 -n "ButterLib"
-        -v "${{steps.changelog.outputs.mod_version}}" -l true -e true -d "${{steps.changelog.outputs.mod_description}}"
+        -v "v${{steps.changelog.outputs.mod_version}}" -l true -e true -d "${{steps.changelog.outputs.mod_description}}"
         -p "$PWD/Bannerlord.ButterLib.zip";
       env:
         NEXUSMODS_COOKIES_JSON: '${{secrets.NEXUSMODS_COOKIES_JSON}}'
