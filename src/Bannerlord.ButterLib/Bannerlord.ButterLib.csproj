@@ -1,4 +1,4 @@
-﻿<!--EXTERNAL_PROPERTIES: Version;StableVersion;BetaVersion-->
+﻿<!--EXTERNAL_PROPERTIES: Version;StableVersion;BetaVersion;HarmonyVersion-->
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
@@ -28,7 +28,7 @@
 
   <!--NuGet References-->
   <ItemGroup>
-    <PackageReference Include="Lib.Harmony" Version="2.0.2" IncludeAssets="compile" />
+    <PackageReference Include="Lib.Harmony" Version="$(HarmonyVersion)" IncludeAssets="compile" />
     <PackageReference Include="Bannerlord.ReferenceAssemblies.Core.EarlyAccess" Version="$(StableVersion).*" PrivateAssets="All" />
     <PackageReference Include="Bannerlord.ReferenceAssemblies.StoryMode.EarlyAccess" Version="$(StableVersion).*" PrivateAssets="All" />
     <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.0" />
