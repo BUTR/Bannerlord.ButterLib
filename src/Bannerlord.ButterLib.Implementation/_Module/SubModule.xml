@@ -3,12 +3,24 @@
   <Name value="ButterLib" />
   <Id value="Bannerlord.ButterLib" />
   <Version value="v$version$" />
-  <Official value="false"/>
+  <Official value="false" />
+  <DefaultModule value="false" />
   <SingleplayerModule value="true" />
   <MultiplayerModule value="false" />
   <DependedModules>
     <DependedModule Id="Bannerlord.Harmony" />
   </DependedModules>
+  <!-- Prototype -->
+  <DependedModuleMetadatas>
+    <DependedModuleMetadata id="Bannerlord.Harmony" order="LoadBeforeThis" version="v$harmonyversion$" />
+
+    <DependedModuleMetadata id="Native" order="LoadAfterThis" />
+    <DependedModuleMetadata id="SandBoxCore" order="LoadAfterThis" optional="true" />
+    <DependedModuleMetadata id="Sandbox" order="LoadAfterThis" optional="true" />
+    <DependedModuleMetadata id="StoryMode" order="LoadAfterThis" />
+    <DependedModuleMetadata id="CustomBattle" order="LoadAfterThis" optional="true" />
+  </DependedModuleMetadatas>
+  <!-- Prototype -->
   <SubModules>
     <SubModule>
       <Name value="ButterLib" />
@@ -16,28 +28,28 @@
       <SubModuleClassType value="Bannerlord.ButterLib.ButterLibSubModule" />
       <Assemblies>
         <!--Microsoft Abstractions-->
-        <Assembly value="Microsoft.Extensions.DependencyInjection.Abstractions.dll"/>
-        <Assembly value="Microsoft.Extensions.Logging.Abstractions.dll"/>
+        <Assembly value="Microsoft.Extensions.DependencyInjection.Abstractions.dll" />
+        <Assembly value="Microsoft.Extensions.Logging.Abstractions.dll" />
         <!--Microsoft Implementations-->
-        <Assembly value="Microsoft.Extensions.DependencyInjection.dll"/>
-        <Assembly value="Microsoft.Extensions.Logging.dll"/>
-        <Assembly value="Microsoft.Extensions.Options.dll"/>
-        <Assembly value="Microsoft.Extensions.Primitives.dll"/>
+        <Assembly value="Microsoft.Extensions.DependencyInjection.dll" />
+        <Assembly value="Microsoft.Extensions.Logging.dll" />
+        <Assembly value="Microsoft.Extensions.Options.dll" />
+        <Assembly value="Microsoft.Extensions.Primitives.dll" />
         <!--ILogger Implementation Serilog-->
-        <Assembly value="Serilog.dll"/>
-        <Assembly value="Serilog.Extensions.Logging.dll"/>
-        <Assembly value="Serilog.Sinks.File.dll"/>
+        <Assembly value="Serilog.dll" />
+        <Assembly value="Serilog.Extensions.Logging.dll" />
+        <Assembly value="Serilog.Sinks.File.dll" />
         <!--Helper libraries-->
-        <Assembly value="System.Runtime.CompilerServices.Unsafe.dll"/>
-        <Assembly value="Microsoft.Bcl.HashCode.dll"/>
+        <Assembly value="System.Runtime.CompilerServices.Unsafe.dll" />
+        <Assembly value="Microsoft.Bcl.HashCode.dll" />
       </Assemblies>
-      <Tags/>
+      <Tags />
     </SubModule>
     <SubModule>
       <Name value="ButterLib Implementation Loader" />
       <DLLName value="Bannerlord.ButterLib.dll" />
       <SubModuleClassType value="Bannerlord.ButterLib.ImplementationLoaderSubModule" />
-      <Tags/>
+      <Tags />
     </SubModule>
   </SubModules>
 </Module>

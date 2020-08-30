@@ -1,12 +1,17 @@
 ﻿using Bannerlord.ButterLib.CampaignIdentifier;
 using Bannerlord.ButterLib.Common.Extensions;
+using Bannerlord.ButterLib.Common.Helpers;
 using Bannerlord.ButterLib.Options;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
+using System.Linq;
+
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
+using TaleWorlds.Library;
+using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
 
 namespace Bannerlord.ButterLib
@@ -16,6 +21,8 @@ namespace Bannerlord.ButterLib
     /// </summary>
     public sealed partial class ButterLibSubModule : MBSubModuleBase
     {
+        private const string SErrorOfficialLoadedBeforeButterLib = "{=GDkjThJcH6}ButterLib is loaded after the official modules! Make sure ButterLib is loaded before them!";
+
         private ILogger _logger = default!;
 
         protected override void OnSubModuleLoad()
@@ -69,6 +76,17 @@ namespace Bannerlord.ButterLib
 
                 _logger = ServiceProvider.GetRequiredService<ILogger<ButterLibSubModule>>();
                 _logger.LogTrace("Assigned new _logger from GlobalServiceProvider.");
+
+
+                var loadedModules = ModuleInfoHelper.GetLoadedModules();
+                var butterLibModule = loadedModules.SingleOrDefault(x => x.Id == "Bannerlord.ButterLib");
+                var butterLibModuleIndex = loadedModules.IndexOf(butterLibModule);
+                var officialModules = loadedModules.Where(x => x.IsOfficial).Select(x => (Module: x, Index: loadedModules.IndexOf(x)));
+                var modulesLoadedBeforeButterLib = officialModules.Where(tuple => tuple.Index < butterLibModuleIndex).ToList();
+                if (modulesLoadedBeforeButterLib.Any())
+                    InformationManager.DisplayMessage(new InformationMessage(new TextObject(SErrorOfficialLoadedBeforeButterLib).ToString(), Colors.Red));
+                foreach (var (module, _) in modulesLoadedBeforeButterLib)
+                    _logger.LogError("ButterLib is loaded after an official module: {module}!", module.Id);
             }
 
             _logger.LogTrace("OnBeforeInitialModuleScreenSetAsRoot() finished.");

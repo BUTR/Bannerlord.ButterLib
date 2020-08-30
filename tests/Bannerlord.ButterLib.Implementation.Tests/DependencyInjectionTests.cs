@@ -46,6 +46,12 @@ namespace Bannerlord.ButterLib.Implementation.Tests
             return false;
         }
 
+        private static bool MockedGetLoadedModules(ref List<ModuleInfo> __result)
+        {
+            __result = new List<ModuleInfo>();
+            return false;
+        }
+
         private static bool MockedGetSettlementAll(ref MBReadOnlyList<Settlement> __result)
         {
             var settlement = (Settlement) FormatterServices.GetUninitializedObject(typeof(Settlement));
@@ -65,7 +71,8 @@ namespace Bannerlord.ButterLib.Implementation.Tests
             var harmony = new Harmony($"{nameof(DependencyInjectionTests)}.{nameof(Setup)}");
             harmony.Patch(SymbolExtensions.GetMethodInfo(() => Utilities.GetConfigsPath()),
                 prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetConfigsPath)));
-
+            harmony.Patch(SymbolExtensions.GetMethodInfo(() => ModuleInfoHelper.GetLoadedModules()),
+                prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetLoadedModules)));
 
             var subModule = new ButterLibSubModule();
             var subModuleWrapper = new MBSubModuleBaseWrapper(subModule);

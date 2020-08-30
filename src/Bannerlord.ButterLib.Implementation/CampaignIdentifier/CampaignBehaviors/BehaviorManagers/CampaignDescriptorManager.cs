@@ -1,8 +1,10 @@
 ﻿using Bannerlord.ButterLib.CampaignIdentifier;
+using Bannerlord.ButterLib.Implementation.Common;
 
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters;
 using System.Runtime.Serialization.Formatters.Binary;
 
 using TaleWorlds.CampaignSystem;
@@ -132,7 +134,11 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehavio
             }
 
             using FileStream fileStream = File.OpenWrite(ExistingCampaignDescriptorsLogFile);
-            var binaryFormatter = new BinaryFormatter();
+            var binaryFormatter = new BinaryFormatter
+            {
+                AssemblyFormat = FormatterAssemblyStyle.Simple,
+                Binder = new ButterLibSerializationBinder()
+            };
             binaryFormatter.Serialize(fileStream, existingCampaignDescriptors);
         }
 
@@ -144,7 +150,11 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehavio
             }
 
             using FileStream fileStream = File.OpenRead(ExistingCampaignDescriptorsLogFile);
-            var binaryFormatter = new BinaryFormatter();
+            var binaryFormatter = new BinaryFormatter
+            {
+                AssemblyFormat = FormatterAssemblyStyle.Simple,
+                Binder = new ButterLibSerializationBinder()
+            };
             return (List<CampaignDescriptorImplementation>)binaryFormatter.Deserialize(fileStream);
         }
 
