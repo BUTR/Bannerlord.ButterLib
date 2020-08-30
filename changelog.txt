@@ -1,7 +1,8 @@
 ---------------------------------------------------------------------------------------------------
 Version: 1.0.6
 Game Versions: e1.4.3,e1.5.0,e1.5.1
-* Added an empty AppDomainManager to prevent Fixed Launcher issues
+* Added new Delegate extensions in AccessTools2
+* Added new ConstructorInfo extensions in SymbolExtensions2
 ---------------------------------------------------------------------------------------------------
 Version: 1.0.5
 Game Versions: e1.4.3,e1.5.0,e1.5.1
