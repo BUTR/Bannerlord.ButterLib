@@ -11,6 +11,26 @@ namespace Bannerlord.ButterLib.Common.Helpers
     /// <summary>An extension of Harmony's helper class for reflection related functions</summary>
     public static class AccessTools2
     {
+        public static TDelegate? GetDelegate<TDelegate>(ConstructorInfo constructorInfo) where TDelegate : Delegate
+        {
+            var parameters = constructorInfo.GetParameters().Select((p, i) => Expression.Parameter(p.ParameterType, $"p{i}")).ToList();
+            var newExpression = Expression.New(constructorInfo, parameters);
+            return Expression.Lambda<TDelegate>(newExpression, parameters).Compile();
+        }
+
+        public static TDelegate? GetConstructorDelegate<TDelegate>(Type type, Type[]? parameters = null) where TDelegate : Delegate
+        {
+            var constructorInfo = Constructor(type, parameters);
+            return GetDelegate<TDelegate>(constructorInfo);
+        }
+
+        public static TDelegate? GetDeclaredConstructorDelegate<TDelegate>(Type type, Type[]? parameters = null) where TDelegate : Delegate
+        {
+            var constructorInfo = DeclaredConstructor(type, parameters);
+            return GetDelegate<TDelegate>(constructorInfo);
+        }
+
+
         /// <summary>Allows to use object as Delegate's instance type.</summary>
         /// <param name="type">The type where the method is declared</param>
         /// <param name="method">The name of the method (case sensitive)</param>
