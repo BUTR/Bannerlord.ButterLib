@@ -23,6 +23,8 @@ namespace Bannerlord.ButterLib
     /// </summary>
     public sealed class ImplementationLoaderSubModule : MBSubModuleBaseListWrapper
     {
+        private delegate MBSubModuleBase ConstructorDelegate();
+
         private static IEnumerable<MBSubModuleBase> LoadAllImplementations(ILogger? logger)
         {
             logger?.LogInformation("Loading implementations...");
@@ -135,8 +137,14 @@ namespace Bannerlord.ButterLib
                     continue;
                 }
 
-                if (constructor.Invoke(Array.Empty<object>()) is MBSubModuleBase subModule)
-                    yield return subModule;
+                var constructorFunc = AccessTools2.GetDelegate<ConstructorDelegate>(constructor);
+                if (constructorFunc == null)
+                {
+                    logger?.LogError("SubModule {subModuleType}'s default constructor could not be converted to a delegate!", subModuleType);
+                    continue;
+                }
+
+                yield return constructorFunc();
             }
 
             logger?.LogInformation("Finished loading implementations.");
