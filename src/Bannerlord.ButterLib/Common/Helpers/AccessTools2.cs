@@ -105,6 +105,11 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// <returns>A delegate or null when type/name is null or when the method cannot be found</returns>
         public static TDelegate? GetDelegate<TDelegate, TInstance>(TInstance instance, MethodInfo methodInfo) where TDelegate : Delegate where TInstance : notnull
         {
+            return GetDelegate<TDelegate>(instance, methodInfo);
+        }
+
+        public static TDelegate? GetDelegate<TDelegate>(object instance, MethodInfo methodInfo) where TDelegate : Delegate
+        {
             return Delegate.CreateDelegate(typeof(TDelegate), instance, methodInfo.Name) as TDelegate;
         }
     }
