@@ -32,7 +32,9 @@ namespace Bannerlord.ButterLib.Assemblies
                 new AppDomainSetup
                 {
                     ApplicationName = domainName,
-                    ApplicationBase = Path.Combine(Utilities.GetBasePath(), "Modules", "Bannerlord.ButterLib", "bin", "Win64_Shipping_Client")
+                    ApplicationBase = Path.Combine(Utilities.GetBasePath(), "Modules", "Bannerlord.ButterLib", "bin", "Win64_Shipping_Client"),
+                    AppDomainManagerAssembly = "Bannerlord.ButterLib, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+                    AppDomainManagerType = "Bannerlord.ButterLib.Assemblies.EmptyAppDomainManager"
                 });
 
             try
