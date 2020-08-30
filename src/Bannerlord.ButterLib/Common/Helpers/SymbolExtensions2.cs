@@ -6,6 +6,22 @@ namespace Bannerlord.ButterLib.Common.Helpers
 {
     public static class SymbolExtensions2
     {
+       public static ConstructorInfo GetConstructorInfo<T>(Expression<Func<T>> expression)
+        {
+            return GetConstructorInfo((LambdaExpression)expression);
+        }
+        public static ConstructorInfo GetConstructorInfo<T, TResult>(Expression<Func<T, TResult>> expression)
+        {
+            return GetConstructorInfo((LambdaExpression)expression);
+        }
+        public static ConstructorInfo GetConstructorInfo(LambdaExpression expression)
+        {
+            if (!(expression.Body is NewExpression body) || body.Constructor is null)
+                throw new ArgumentException("Invalid Expression. Expression should consist of a Field return only.");
+
+            return body.Constructor;
+        }
+
         public static FieldInfo GetFieldInfo<T>(Expression<Func<T>> expression)
         {
             return GetFieldInfo((LambdaExpression)expression);
