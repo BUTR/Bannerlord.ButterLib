@@ -217,6 +217,7 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier
             return result.ToString();
         }
 
+        [Serializable]
         internal enum DescriptorAttribute : byte
         {
             HeroName = 0,
