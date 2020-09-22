@@ -6,7 +6,7 @@ protected override void OnSubModuleLoad()
  {
     base.OnSubModuleLoad();
 
-    // You first call Register() so the DubModule will be tracked by ButterLib
+    // You first call Register() so the SubModule will be tracked by ButterLib
     DelayedSubModuleManager.Register<StoryModeSubModule>();
     // You subscribe to the module's method call.
     // In this case, we do something after StoryModeSubModule.OnSubModuleLoad
