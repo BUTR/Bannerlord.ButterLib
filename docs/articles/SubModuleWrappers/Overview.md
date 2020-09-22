@@ -16,4 +16,16 @@ Dont forget to include the new SubModule in ``SubModule.xml``!
   <Tags/>
 </SubModule>
 ```
+```csharp
+    public sealed class DynamicSubModuleLoader : MBSubModuleBaseListWrapper
+    {
+        protected override void OnSubModuleLoad()
+        {
+            // Add any MBSubModuleBase instance that should be handled.
+            SubModules.AddRange(...);
+            base.OnSubModuleLoad();
+        }
+    }
+```
+
 See [``ImplementationLoaderSubModule``](xref:Bannerlord.ButterLib.ImplementationLoaderSubModule) for an example.  
