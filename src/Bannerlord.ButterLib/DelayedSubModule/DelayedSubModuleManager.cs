@@ -4,6 +4,7 @@ using HarmonyLib;
 
 using System;
 using System.Collections.Concurrent;
+using System.Runtime.CompilerServices;
 
 using TaleWorlds.MountAndBlade;
 
@@ -60,22 +61,27 @@ namespace Bannerlord.ButterLib.DelayedSubModule
                 AccessTools.DeclaredMethod(typeof(MBSubModuleBase), "OnGameEnd"),
                 postfix: new HarmonyMethod(typeof(DelayedSubModuleManager), nameof(BaseOnGameEndPostfix)));
         }
+        [MethodImpl(MethodImplOptions.NoInlining)]
         private static void BaseSubModuleLoadPostfix(MBSubModuleBase __instance)
         {
             OnMethod?.Invoke(null, new SubscriptionGlobalEventArgs(__instance.GetType(), true, SubscriptionType.AfterMethod, "OnSubModuleLoad"));
         }
+        [MethodImpl(MethodImplOptions.NoInlining)]
         private static void BaseOnSubModuleUnloadedPostfix(MBSubModuleBase __instance)
         {
             OnMethod?.Invoke(null, new SubscriptionGlobalEventArgs(__instance.GetType(), true, SubscriptionType.AfterMethod, "OnSubModuleUnloaded"));
         }
+        [MethodImpl(MethodImplOptions.NoInlining)]
         private static void BaseOnBeforeInitialModuleScreenSetAsRootPostfix(MBSubModuleBase __instance)
         {
             OnMethod?.Invoke(null, new SubscriptionGlobalEventArgs(__instance.GetType(), true, SubscriptionType.AfterMethod, "OnBeforeInitialModuleScreenSetAsRoot"));
         }
+        [MethodImpl(MethodImplOptions.NoInlining)]
         private static void BaseOnGameStartPostfix(MBSubModuleBase __instance)
         {
             OnMethod?.Invoke(null, new SubscriptionGlobalEventArgs(__instance.GetType(), true, SubscriptionType.AfterMethod, "OnGameStart"));
         }
+        [MethodImpl(MethodImplOptions.NoInlining)]
         private static void BaseOnGameEndPostfix(MBSubModuleBase __instance)
         {
             OnMethod?.Invoke(null, new SubscriptionGlobalEventArgs(__instance.GetType(), true, SubscriptionType.AfterMethod, "OnGameEnd"));
@@ -144,46 +150,56 @@ namespace Bannerlord.ButterLib.DelayedSubModule
                     postfix: new HarmonyMethod(AccessTools.DeclaredMethod(typeof(DelayedSubModuleManager), nameof(OnGameEndPostfix)), priority, before, after));
         }
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
         private static void SubModuleLoadPrefix(MBSubModuleBase __instance)
         {
             OnMethod?.Invoke(null, new SubscriptionGlobalEventArgs(__instance.GetType(), false, SubscriptionType.BeforeMethod, "OnSubModuleLoad"));
         }
+        [MethodImpl(MethodImplOptions.NoInlining)]
         private static void SubModuleLoadPostfix(MBSubModuleBase __instance)
         {
             OnMethod?.Invoke(null, new SubscriptionGlobalEventArgs(__instance.GetType(), false, SubscriptionType.AfterMethod, "OnSubModuleLoad"));
         }
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
         private static void OnSubModuleUnloadedPrefix(MBSubModuleBase __instance)
         {
             OnMethod?.Invoke(null, new SubscriptionGlobalEventArgs(__instance.GetType(), false, SubscriptionType.BeforeMethod, "OnSubModuleUnloaded"));
         }
+        [MethodImpl(MethodImplOptions.NoInlining)]
         private static void OnSubModuleUnloadedPostfix(MBSubModuleBase __instance)
         {
             OnMethod?.Invoke(null, new SubscriptionGlobalEventArgs(__instance.GetType(), false, SubscriptionType.AfterMethod, "OnSubModuleUnloaded"));
         }
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
         private static void OnBeforeInitialModuleScreenSetAsRootPrefix(MBSubModuleBase __instance)
         {
             OnMethod?.Invoke(null, new SubscriptionGlobalEventArgs(__instance.GetType(), false, SubscriptionType.BeforeMethod, "OnBeforeInitialModuleScreenSetAsRoot"));
         }
+        [MethodImpl(MethodImplOptions.NoInlining)]
         private static void OnBeforeInitialModuleScreenSetAsRootPostfix(MBSubModuleBase __instance)
         {
             OnMethod?.Invoke(null, new SubscriptionGlobalEventArgs(__instance.GetType(), false, SubscriptionType.AfterMethod, "OnBeforeInitialModuleScreenSetAsRoot"));
         }
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
         private static void OnGameStartPrefix(MBSubModuleBase __instance)
         {
             OnMethod?.Invoke(null, new SubscriptionGlobalEventArgs(__instance.GetType(), false, SubscriptionType.BeforeMethod, "OnGameStart"));
         }
+        [MethodImpl(MethodImplOptions.NoInlining)]
         private static void OnGameStartPostfix(MBSubModuleBase __instance)
         {
             OnMethod?.Invoke(null, new SubscriptionGlobalEventArgs(__instance.GetType(), false, SubscriptionType.AfterMethod, "OnGameStart"));
         }
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
         private static void OnGameEndPrefix(MBSubModuleBase __instance)
         {
             OnMethod?.Invoke(null, new SubscriptionGlobalEventArgs(__instance.GetType(), false, SubscriptionType.BeforeMethod, "OnGameEnd"));
         }
+        [MethodImpl(MethodImplOptions.NoInlining)]
         private static void OnGameEndPostfix(MBSubModuleBase __instance)
         {
             OnMethod?.Invoke(null, new SubscriptionGlobalEventArgs(__instance.GetType(), false, SubscriptionType.AfterMethod, "OnGameEnd"));

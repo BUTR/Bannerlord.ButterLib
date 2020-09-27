@@ -7,9 +7,9 @@
     <!--Harmony Version-->
     <HarmonyVersion>2.0.2</HarmonyVersion>
     <!--Current Bannerlord Stable Version-->
-    <StableVersion>1.5.0</StableVersion>
+    <StableVersion>1.5.1</StableVersion>
     <!--Current Bannerlord Beta Version-->
-    <BetaVersion>1.5.1</BetaVersion>
+    <BetaVersion>1.5.2</BetaVersion>
     <!--Bannerlord's Root Folder. Leave empty if you want it to be tried to be autoresolved.-->
     <GameFolder>C:\Program Files (x86)\Steam\steamapps\common\Mount &amp; Blade II Bannerlord</GameFolder>
   </PropertyGroup>

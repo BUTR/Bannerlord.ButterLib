@@ -4,6 +4,8 @@ using HarmonyLib;
 
 using NUnit.Framework;
 
+using System.Runtime.CompilerServices;
+
 using TaleWorlds.DotNet;
 using TaleWorlds.Library;
 
@@ -14,6 +16,7 @@ namespace Bannerlord.ButterLib.Tests
         private static readonly string TestAppVerstionStr = "e1.4.3.231432";
         private static readonly ApplicationVersion TestAppVerstion = ApplicationVersion.FromString("e1.4.3.231432", ApplicationVersionGameType.Singleplayer);
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
         private static bool MockedGetVersionStr(ref string __result)
         {
             __result = TestAppVerstionStr;

@@ -15,6 +15,7 @@ using NUnit.Framework;
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 
 using TaleWorlds.CampaignSystem;
@@ -28,24 +29,28 @@ namespace Bannerlord.ButterLib.Implementation.Tests
 {
     public class DependencyInjectionTests
     {
+        [MethodImpl(MethodImplOptions.NoInlining)]
         private static bool MockedCreateFrom(ref CharacterCode __result)
         {
             __result = CharacterCode.CreateEmpty();
             return false;
         }
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
         private static bool MockedCurrentTicks(ref long __result)
         {
             __result = 0;
             return false;
         }
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
         private static bool MockedGetConfigsPath(ref string __result)
         {
             __result = AppDomain.CurrentDomain.BaseDirectory;
             return false;
         }
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
         private static bool MockedGetLoadedModules(ref List<ModuleInfo> __result)
         {
             __result = new List<ModuleInfo>();

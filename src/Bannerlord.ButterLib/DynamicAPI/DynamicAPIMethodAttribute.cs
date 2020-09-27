@@ -2,7 +2,8 @@
 
 namespace Bannerlord.ButterLib.DynamicAPI
 {
-    public class DynamicAPIMethodAttribute : Attribute
+    [AttributeUsage(AttributeTargets.Method)]
+    public sealed class DynamicAPIMethodAttribute : Attribute
     {
         public string Method { get; }
 
