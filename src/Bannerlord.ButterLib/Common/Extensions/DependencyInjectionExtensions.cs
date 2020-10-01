@@ -29,24 +29,24 @@ namespace Bannerlord.ButterLib.Common.Extensions
         /// <summary>
         /// For Stage 3.
         /// </summary>
-        public static IServiceProvider GetServiceProvider(this Game _) => ButterLibSubModule.ServiceProvider;
+        public static IServiceProvider? GetServiceProvider(this Game _) => ButterLibSubModule.ServiceProvider;
         /// <summary>
         /// For Stage 3.
         /// </summary>
-        public static IServiceProvider GetServiceProvider(this MBSubModuleBase _) => ButterLibSubModule.ServiceProvider;
+        public static IServiceProvider? GetServiceProvider(this MBSubModuleBase _) => ButterLibSubModule.ServiceProvider;
         /// <summary>
         /// For Stage 2.
         /// </summary>
-        public static IServiceCollection GetServices(this MBSubModuleBase _) => ButterLibSubModule.Services;
+        public static IServiceCollection? GetServices(this MBSubModuleBase _) => ButterLibSubModule.Services;
         /// <summary>
         /// For Stage 2.
         /// </summary>
-        public static IServiceProvider GetTempServiceProvider(this MBSubModuleBase _) => ButterLibSubModule.Services.BuildServiceProvider();
+        public static IServiceProvider? GetTempServiceProvider(this MBSubModuleBase _) => ButterLibSubModule.Services?.BuildServiceProvider();
 
         private static readonly string ModLogsPath = Path.Combine(Utilities.GetConfigsPath(), "ModLogs");
         private static readonly string OutputTemplate = "[{Timestamp:HH:mm:ss.fff}] [{SourceContext}] [{Level:u3}]: {Message:lj}{NewLine}{Exception}";
 
-        internal static IServiceCollection AddSerilogLogger(this MBSubModuleBase subModule)
+        internal static IServiceCollection? AddSerilogLogger(this MBSubModuleBase subModule)
         {
             var services = subModule.GetServices();
 
@@ -102,46 +102,7 @@ namespace Bannerlord.ButterLib.Common.Extensions
             if (sources == null) throw new ArgumentNullException(nameof(sources));
             return Matching.WithProperty<string>(Constants.SourceContextPropertyName, s => s != null && sources.Any(x => MatchWildcardString(x, s)));
         }
-        // https://www.codeproject.com/Tips/57304/Use-wildcard-Characters-and-to-Compare-Strings
-        // Without Span this will create a huge memory pressure
         private static bool MatchWildcardString(string pattern, string input)
-        {
-            if (string.CompareOrdinal(pattern, input) == 0)
-            {
-                return true;
-            }
-            if (string.IsNullOrEmpty(input))
-            {
-                return string.IsNullOrEmpty(pattern.Trim('*'));
-            }
-            if (pattern.Length == 0)
-            {
-                return false;
-            }
-            if (pattern[0] == '?')
-            {
-                return MatchWildcardString(pattern.Substring(1), input.Substring(1));
-            }
-            if (pattern[pattern.Length - 1] == '?')
-            {
-                return MatchWildcardString(pattern.Substring(0, pattern.Length - 1), input.Substring(0, input.Length - 1));
-            }
-            if (pattern[0] == '*')
-            {
-                return MatchWildcardString(pattern.Substring(1), input) || MatchWildcardString(pattern, input.Substring(1));
-            }
-            if (pattern[pattern.Length - 1] == '*')
-            {
-                return MatchWildcardString(pattern.Substring(0, pattern.Length - 1), input) || MatchWildcardString(pattern, input.Substring(0, input.Length - 1));
-            }
-            if (pattern[0] == input[0])
-            {
-                return MatchWildcardString(pattern.Substring(1), input.Substring(1));
-            }
-            return false;
-        }
-        // Regex is slow in NET FX
-        private static bool MatchWildcardStringRegex(string pattern, string input)
         {
             string regexPattern = pattern.Aggregate("^", (current, c) => current + c switch
             {
@@ -149,7 +110,8 @@ namespace Bannerlord.ButterLib.Common.Extensions
                 '?' => ".",
                 _ => $"[{c}]"
             });
-            return new Regex($"{regexPattern}$").IsMatch(input);
+            // Lets hope that the Regex cache is sufficient.
+            return Regex.IsMatch(input, $"{regexPattern}$");
         }
     }
 }

@@ -23,16 +23,16 @@ namespace Bannerlord.ButterLib
         }
 
 
-        public static ButterLibSubModule Instance { get; set; } = default!;
+        public static ButterLibSubModule? Instance { get; set; }
 
-        private static IServiceProvider GlobalServiceProvider { get; set; } = default!;
+        private static IServiceProvider? GlobalServiceProvider { get; set; }
         private static IServiceProvider? GameScopeServiceProvider => GameScope?.ServiceProvider;
         private static IServiceScope? GameScope { get; set; }
 
         // DI workflow
         // OnSubModuleLoad - register services via GetServices(), use GetTempServiceProvider() to get the default logger.
         // OnBeforeInitialModuleScreenSetAsRoot - register disabled, GetServiceProvider() available. Re-init your ILogger.
-        internal static IServiceProvider ServiceProvider => GameScopeServiceProvider ?? GlobalServiceProvider;
-        internal static IServiceCollection Services { get; set; } = default!;
+        internal static IServiceProvider? ServiceProvider => GameScopeServiceProvider ?? GlobalServiceProvider;
+        internal static IServiceCollection? Services { get; set; }
     }
 }

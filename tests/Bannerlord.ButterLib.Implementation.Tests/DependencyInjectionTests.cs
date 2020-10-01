@@ -15,6 +15,7 @@ using NUnit.Framework;
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 
 using TaleWorlds.CampaignSystem;
@@ -28,24 +29,28 @@ namespace Bannerlord.ButterLib.Implementation.Tests
 {
     public class DependencyInjectionTests
     {
+        [MethodImpl(MethodImplOptions.NoInlining)]
         private static bool MockedCreateFrom(ref CharacterCode __result)
         {
             __result = CharacterCode.CreateEmpty();
             return false;
         }
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
         private static bool MockedCurrentTicks(ref long __result)
         {
             __result = 0;
             return false;
         }
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
         private static bool MockedGetConfigsPath(ref string __result)
         {
             __result = AppDomain.CurrentDomain.BaseDirectory;
             return false;
         }
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
         private static bool MockedGetLoadedModules(ref List<ModuleInfo> __result)
         {
             __result = new List<ModuleInfo>();
@@ -78,7 +83,7 @@ namespace Bannerlord.ButterLib.Implementation.Tests
             var subModuleWrapper = new MBSubModuleBaseWrapper(subModule);
             subModuleWrapper.SubModuleLoad();
 
-            var services = ButterLibSubModule.Instance.GetServices();
+            var services = ButterLibSubModule.Instance!.GetServices()!;
             services.AddScoped<CampaignDescriptor, CampaignDescriptorImplementation>();
             services.AddSingleton<CampaignDescriptorStatic, CampaignDescriptorStaticImplementation>();
             services.AddScoped(typeof(DistanceMatrix<>), typeof(DistanceMatrixImplementation<>));
@@ -90,7 +95,7 @@ namespace Bannerlord.ButterLib.Implementation.Tests
         [Test]
         public void ICampaignExtensions_Test()
         {
-            var serviceProvider = ButterLibSubModule.Instance.GetServiceProvider();
+            var serviceProvider = ButterLibSubModule.Instance!.GetServiceProvider()!;
 
             var campaignExtensions = serviceProvider.GetRequiredService<ICampaignExtensions>();
             Assert.NotNull(campaignExtensions);
@@ -124,7 +129,7 @@ namespace Bannerlord.ButterLib.Implementation.Tests
                 prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetSettlementAll)));
 
 
-            var serviceProvider = ButterLibSubModule.Instance.GetServiceProvider();
+            var serviceProvider = ButterLibSubModule.Instance!.GetServiceProvider()!;
             var scope = serviceProvider.CreateScope();
 
             var distanceMatrix = scope.ServiceProvider.GetRequiredService<DistanceMatrix<Settlement>>();
@@ -133,12 +138,12 @@ namespace Bannerlord.ButterLib.Implementation.Tests
             Assert.AreEqual(distanceMatrix.GetType().GenericTypeArguments, new[] { typeof(Settlement) });
 
 
-            var distanceMatrix1 = Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix.Create<Settlement>();
+            var distanceMatrix1 = Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix.Create<Settlement>()!;
             Assert.NotNull(distanceMatrix1);
             Assert.True(distanceMatrix1.GetType().GetGenericTypeDefinition() == typeof(DistanceMatrixImplementation<>));
             Assert.AreEqual(distanceMatrix1.GetType().GenericTypeArguments, new[] { typeof(Settlement) });
 
-            var distanceMatrix2 = Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix<Settlement>.Create();
+            var distanceMatrix2 = Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix<Settlement>.Create()!;
             Assert.NotNull(distanceMatrix2);
             Assert.True(distanceMatrix2.GetType().GetGenericTypeDefinition() == typeof(DistanceMatrixImplementation<>));
             Assert.AreEqual(distanceMatrix2.GetType().GenericTypeArguments, new[] { typeof(Settlement) });
