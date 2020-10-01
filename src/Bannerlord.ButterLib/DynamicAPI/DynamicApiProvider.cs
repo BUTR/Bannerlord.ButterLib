@@ -30,11 +30,11 @@ namespace Bannerlord.ButterLib.DynamicAPI
         }
     }
 
-    public static class DynamicAPI
+    internal static class DynamicAPI
     {
         public static DynamicAPIInstance? RequestAPIClass(string @class)
         {
-            return new DynamicAPIInstance(null);
+            return new DynamicAPIInstance(null!);
         }
 
         public static TDelegate? RequestAPIMethod<TDelegate>(string method, params Type[] types) where TDelegate : Delegate
@@ -43,7 +43,7 @@ namespace Bannerlord.ButterLib.DynamicAPI
             return null;
         }
     }
-    public class DynamicAPIInstance
+    internal class DynamicAPIInstance
     {
         public object Instance { get; }
 

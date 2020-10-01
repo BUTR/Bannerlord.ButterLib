@@ -5,6 +5,7 @@ using Bannerlord.ButterLib.SubModuleWrappers;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 
 using System;
 using System.Collections.Generic;
@@ -229,7 +230,7 @@ namespace Bannerlord.ButterLib
 
         protected override void OnSubModuleLoad()
         {
-            _logger = ButterLibSubModule.Instance.GetTempServiceProvider().GetRequiredService<ILogger<ImplementationLoaderSubModule>>();
+            _logger = ButterLibSubModule.Instance?.GetTempServiceProvider()?.GetRequiredService<ILogger<ImplementationLoaderSubModule>>() ?? NullLogger<ImplementationLoaderSubModule>.Instance;
 
             SubModules.AddRange(LoadAllImplementations(_logger).Select(x => new MBSubModuleBaseWrapper(x)).ToList());
 

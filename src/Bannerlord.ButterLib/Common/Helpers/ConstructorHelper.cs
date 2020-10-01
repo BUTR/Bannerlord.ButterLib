@@ -8,7 +8,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
     internal static class ConstructorHelper
     {
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <typeparam name="TDelegate"></typeparam>
         /// <param name="constructorInfo"></param>

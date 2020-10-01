@@ -97,7 +97,7 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
             {
                 var activeHeroes = Hero.All.Where(h => h.IsInitialized && !h.IsNotSpawned && !h.IsDisabled && !h.IsDead && !h.IsNotable).ToList();
                 return activeHeroes.SelectMany(_ => activeHeroes, (X, Y) => (X, Y)).Where(tuple => tuple.X.Id < tuple.Y.Id)
-                                   .ToDictionary(key => ElegantPairHelper.Pair(key.X.Id, key.Y.Id), value => CalculateDistanceBetweenHeroes(value.X, value.Y));
+                                   .ToDictionary(key => ElegantPairHelper.Pair(key.X.Id, key.Y.Id), value => CalculateDistanceBetweenHeroes(value.X, value.Y).GetValueOrDefault());
             }
             if (typeof(Settlement).IsAssignableFrom(typeof(T)))
             {
@@ -112,14 +112,14 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
                 var lst = GetSettlementOwnersPairedList(settlementDistanceMatrix);
 
                 return clans.SelectMany(_ => clans, (X, Y) => (X, Y)).Where(tuple => tuple.X.Id < tuple.Y.Id)
-                            .ToDictionary(key => ElegantPairHelper.Pair(key.X.Id, key.Y.Id), value => CalculateDistanceBetweenClans(value.X, value.Y, lst));
+                            .ToDictionary(key => ElegantPairHelper.Pair(key.X.Id, key.Y.Id), value => CalculateDistanceBetweenClans(value.X, value.Y, lst ?? Enumerable.Empty<(ulong, float, float)>()).GetValueOrDefault());
             }
             if (typeof(Kingdom).IsAssignableFrom(typeof(T)))
             {
                 var kingdoms = Kingdom.All.Where(k => k.IsInitialized && k.Fiefs.Any()).ToList();
                 var settlementDistanceMatrix = Campaign.Current.GetCampaignBehavior<GeopoliticsCachingBehavior>().SettlementDistanceMatrix ?? new DistanceMatrixImplementation<Settlement>();
                 return kingdoms.SelectMany(_ => kingdoms, (X, Y) => (X, Y)).Where(tuple => tuple.X.Id < tuple.Y.Id)
-                               .ToDictionary(key => ElegantPairHelper.Pair(key.X.Id, key.Y.Id), value => CalculateDistanceBetweenKingdoms(value.X, value.Y, settlementDistanceMatrix));
+                               .ToDictionary(key => ElegantPairHelper.Pair(key.X.Id, key.Y.Id), value => CalculateDistanceBetweenKingdoms(value.X, value.Y, settlementDistanceMatrix).GetValueOrDefault());
             }
             throw new ArgumentException($"{typeof(string).FullName} is not supported type");
         }
