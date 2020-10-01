@@ -6,6 +6,7 @@ using NUnit.Framework;
 
 using System;
 using System.IO;
+using System.Runtime.CompilerServices;
 
 using TaleWorlds.Engine;
 
@@ -15,6 +16,7 @@ namespace Bannerlord.ButterLib.Tests.Assemblies
 {
     public class AssemblyVerifierTests
     {
+        [MethodImpl(MethodImplOptions.NoInlining)]
         private static bool MockedGetBasePath(ref string __result)
         {
             __result = AppDomain.CurrentDomain.BaseDirectory;

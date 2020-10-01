@@ -4,7 +4,6 @@ using Bannerlord.ButterLib.DelayedSubModule;
 using Bannerlord.ButterLib.DistanceMatrix;
 using Bannerlord.ButterLib.Implementation.CampaignIdentifier;
 using Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehaviors;
-using Bannerlord.ButterLib.Implementation.CampaignIdentifier.Helpers;
 using Bannerlord.ButterLib.Implementation.Common.Extensions;
 using Bannerlord.ButterLib.Implementation.DistanceMatrix;
 using Bannerlord.ButterLib.Implementation.Logging;
@@ -44,7 +43,7 @@ namespace Bannerlord.ButterLib.Implementation
             Logger.LogTrace("OnSubModuleLoad() started tracking.");
 
             Logger.LogInformation("Wrapping DebugManager of type {type} with DebugManagerWrapper.", Debug.DebugManager.GetType());
-            Debug.DebugManager = new DebugManagerWrapper(Debug.DebugManager, this.GetTempServiceProvider());
+            Debug.DebugManager = new DebugManagerWrapper(Debug.DebugManager, this.GetTempServiceProvider()!);
 
             var services = this.GetServices();
             services.AddScoped<CampaignDescriptor, CampaignDescriptorImplementation>();
@@ -70,12 +69,12 @@ namespace Bannerlord.ButterLib.Implementation
 
             if (Debug.DebugManager is DebugManagerWrapper debugManagerWrapper)
             {
-                Debug.DebugManager = new DebugManagerWrapper(debugManagerWrapper.OriginalDebugManager, serviceProvider);
+                Debug.DebugManager = new DebugManagerWrapper(debugManagerWrapper.OriginalDebugManager, serviceProvider!);
             }
             else
             {
                 Logger.LogWarning("DebugManagerWrapper was replaced with {type}! Wrapping it with DebugManagerWrapper.", Debug.DebugManager.GetType());
-                Debug.DebugManager = new DebugManagerWrapper(Debug.DebugManager, serviceProvider);
+                Debug.DebugManager = new DebugManagerWrapper(Debug.DebugManager, serviceProvider!);
             }
 
             DelayedSubModuleManager.Register<GauntletUISubModule>();
@@ -115,7 +114,7 @@ namespace Bannerlord.ButterLib.Implementation
             catch (Exception ex)
             {
                 Patched = false;
-                DebugHelper.HandleException(ex, "Error in OnSubModuleLoad while initializing CampaignIdentifier.");
+                Logger.LogError(ex, "Error in OnSubModuleLoad while initializing CampaignIdentifier.");
             }
         }
 

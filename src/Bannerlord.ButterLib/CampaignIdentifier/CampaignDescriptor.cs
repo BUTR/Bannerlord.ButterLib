@@ -13,8 +13,8 @@ namespace Bannerlord.ButterLib.CampaignIdentifier
     public abstract class CampaignDescriptor
     {
         private static CampaignDescriptorStatic? _staticInstance;
-        internal static CampaignDescriptorStatic StaticInstance =>
-            _staticInstance ??= ButterLibSubModule.Instance.GetServiceProvider().GetRequiredService<CampaignDescriptorStatic>();
+        internal static CampaignDescriptorStatic? StaticInstance =>
+            _staticInstance ??= ButterLibSubModule.Instance?.GetServiceProvider()?.GetRequiredService<CampaignDescriptorStatic>();
 
         /// <summary>
         /// Initializes and returns a new instance of the class <see cref="CampaignDescriptor" />
@@ -22,7 +22,7 @@ namespace Bannerlord.ButterLib.CampaignIdentifier
         /// </summary>
         /// <param name="hero">The hero to be used as a descriptor base.</param>
         /// <returns>Newly initialized <see cref="CampaignDescriptor"/> instance.</returns>
-        public static CampaignDescriptor? Create(Hero hero) => StaticInstance.Create(hero);
+        public static CampaignDescriptor? Create(Hero hero) => StaticInstance?.Create(hero);
 
         /// <summary>Initializes a new instance of the class <see cref="CampaignDescriptor"/>.</summary>
         protected CampaignDescriptor() { }

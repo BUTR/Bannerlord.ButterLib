@@ -8,6 +8,7 @@ using NUnit.Framework;
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 using TaleWorlds.Library;
 
@@ -15,6 +16,7 @@ namespace Bannerlord.ButterLib.Tests.DelayedSubModule
 {
     public class DelayedSubModuleTest
     {
+        [MethodImpl(MethodImplOptions.NoInlining)]
         private static bool MockedGetModuleInfo(Type type, ref ModuleInfo? __result)
         {
             if (type == typeof(TestSubModuleCaller))
@@ -45,6 +47,7 @@ namespace Bannerlord.ButterLib.Tests.DelayedSubModule
         public void SubscribeBeforeTargetLoad_Test()
         {
             // Initialization
+            [MethodImpl(MethodImplOptions.NoInlining)]
             static bool MockedGetLoadedModules(ref List<ModuleInfo> __result)
             {
                 __result = new List<ModuleInfo> { TestHelper.ModuleInfoCaller, TestHelper.ModuleInfoTarget };
@@ -67,6 +70,7 @@ namespace Bannerlord.ButterLib.Tests.DelayedSubModule
         public void SubscribeBeforeTargetLoad_CallTargetManually_Test()
         {
             // Initialization
+            [MethodImpl(MethodImplOptions.NoInlining)]
             static bool MockedGetLoadedModules(ref List<ModuleInfo> __result)
             {
                 __result = new List<ModuleInfo> { TestHelper.ModuleInfoCaller, TestHelper.ModuleInfoTarget };
@@ -94,6 +98,7 @@ namespace Bannerlord.ButterLib.Tests.DelayedSubModule
         public void SubscribeAfterTargetLoad_Test()
         {
             // Initialization
+            [MethodImpl(MethodImplOptions.NoInlining)]
             static bool MockedGetLoadedModules(ref List<ModuleInfo> __result)
             {
                 __result = new List<ModuleInfo> { TestHelper.ModuleInfoTarget, TestHelper.ModuleInfoCaller };

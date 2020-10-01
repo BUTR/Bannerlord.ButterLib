@@ -23,7 +23,7 @@ namespace Bannerlord.ButterLib.DistanceMatrix
         /// as per actual implementation with the default EntityListGetter and DistanceCalculator methods.
         /// </summary>
         /// <exception cref="T:System.ArgumentException"></exception>
-        public static DistanceMatrix<T> Create() => StaticInstance.Create<T>();
+        public static DistanceMatrix<T>? Create() => StaticInstance?.Create<T>();
 
         /// <summary>
         /// Initializes and returns a new instance of the <see cref="T:Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix`1"/> class
@@ -38,8 +38,8 @@ namespace Bannerlord.ButterLib.DistanceMatrix
         /// A delegate to the method that will be used to calculate the distance between two given type <typeparamref name="T"/> objects.
         /// </param>
         /// <exception cref="T:System.ArgumentException"></exception>
-        public static DistanceMatrix<T> Create(Func<IEnumerable<T>> customListGetter, Func<T, T, float> customDistanceCalculator) =>
-            StaticInstance.Create(customListGetter, customDistanceCalculator);
+        public static DistanceMatrix<T>? Create(Func<IEnumerable<T>> customListGetter, Func<T, T, float> customDistanceCalculator) =>
+            StaticInstance?.Create(customListGetter, customDistanceCalculator);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix`1"/> class

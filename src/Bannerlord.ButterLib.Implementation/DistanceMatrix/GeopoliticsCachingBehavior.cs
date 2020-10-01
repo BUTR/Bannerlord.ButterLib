@@ -42,10 +42,13 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
 
         private void UpdateOnSettlementOwnerChanged(Settlement settlement, bool openToClaim, Hero newOwner, Hero oldOwner, Hero capturerHero, ChangeOwnerOfSettlementAction.ChangeOwnerOfSettlementDetail detail)
         {
+            var lst = ButterLib.DistanceMatrix.DistanceMatrix.GetSettlementOwnersPairedList(SettlementDistanceMatrix!);
+            if (lst == null)
+                return;
+
             if ((newOwner.Clan != null || oldOwner.Clan != null) && newOwner.Clan != oldOwner.Clan)
             {
                 var clans = Clan.All.Where(c => c.IsInitialized && c.Fortifications.Count > 0).ToList();
-                var lst = ButterLib.DistanceMatrix.DistanceMatrix.GetSettlementOwnersPairedList(SettlementDistanceMatrix!);
 
                 if (oldOwner.Clan != null)
                 {
@@ -54,7 +57,7 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
                         if (clan != oldOwner.Clan)
                         {
                             var distance = ButterLib.DistanceMatrix.DistanceMatrix.CalculateDistanceBetweenClans(oldOwner.Clan, clan, lst);
-                            ClanDistanceMatrix!.SetDistance(oldOwner.Clan, clan, distance);
+                            ClanDistanceMatrix!.SetDistance(oldOwner.Clan, clan, distance.GetValueOrDefault());
                         }
                     }
                 }
@@ -64,8 +67,8 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
                     {
                         if (clan != newOwner.Clan)
                         {
-                            float distance = ButterLib.DistanceMatrix.DistanceMatrix.CalculateDistanceBetweenClans(newOwner.Clan, clan, lst);
-                            ClanDistanceMatrix!.SetDistance(newOwner.Clan, clan, distance);
+                            var distance = ButterLib.DistanceMatrix.DistanceMatrix.CalculateDistanceBetweenClans(newOwner.Clan, clan, lst);
+                            ClanDistanceMatrix!.SetDistance(newOwner.Clan, clan, distance.GetValueOrDefault());
                         }
                     }
                 }
