@@ -21,8 +21,7 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier
     /// Also stores some general description on the campaign, based on a specified hero
     /// (default is the initial player character in the current campaign).
     /// </remarks>
-    [Serializable]
-    [SaveableClass(1)]
+    [SaveableClass(1), Serializable]
     internal sealed class CampaignDescriptorImplementation : CampaignDescriptor, ISerializable
     {
         //Consts
@@ -101,6 +100,7 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier
         private CampaignDescriptorImplementation(SerializationInfo info, StreamingContext context)
         {
             _value = info.GetString(nameof(KeyValue));
+            // Do not fix typo
             _attributes = (Dictionary<DescriptorAttribute, object>) info.GetValue("DecriptorAttributes", typeof(Dictionary<DescriptorAttribute, object>));
             _baseHero = null!; // Serialization will do it's thing.
         }
@@ -110,6 +110,7 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             info.AddValue(nameof(KeyValue), _value);
+            // Do not fix typo
             info.AddValue("DecriptorAttributes", _attributes);
         }
 

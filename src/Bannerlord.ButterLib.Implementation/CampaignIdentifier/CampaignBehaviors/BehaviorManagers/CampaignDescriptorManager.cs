@@ -1,11 +1,11 @@
 ﻿using Bannerlord.ButterLib.CampaignIdentifier;
-using Bannerlord.ButterLib.Implementation.Common;
+using Bannerlord.ButterLib.Common.Extensions;
+
+using Microsoft.Extensions.DependencyInjection;
 
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters;
-using System.Runtime.Serialization.Formatters.Binary;
 
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
@@ -26,20 +26,17 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehavio
         private const string InquiryLowerBody =
             "{=zed49rdkQR}Select '{NEW_ID}' if the loaded save is a separate campaign that has nothing to do with the suggested options and a new ID should be assigned to it.";
 
-        private static readonly string ExistingCampaignDescriptorsLogFile = Path.Combine(Utilities.GetConfigsPath(), "ButterLib", "CampaignIdentifier", "ExistingCampaignIdentifiers.bin");
-
+        private ICampaignDescriptorProvider? _campaignDescriptorSerializer;
+        private ICampaignDescriptorProvider CampaignDescriptorSerializer => _campaignDescriptorSerializer ??=
+            ButterLibSubModule.Instance?.GetServiceProvider()?.GetRequiredService<ICampaignDescriptorProvider>() ?? new JsonCampaignDescriptorProvider();
 
         [SaveableField(1)]
-        private CampaignDescriptorImplementation _campaignDescriptor;
+        private CampaignDescriptorImplementation _campaignDescriptor = null!; // Won't be null when properly accessed.
 
         private CampaignDescriptorImplementation? _descriptorToBeAssigned;
 
         internal CampaignDescriptorImplementation CampaignDescriptor => _campaignDescriptor;
 
-        internal CampaignDescriptorManager()
-        {
-            _campaignDescriptor = null!; // Won't be null when properly accessed.
-        }
         internal void GenerateNewGameDescriptor()
         {
             _campaignDescriptor = new CampaignDescriptorImplementation(Hero.MainHero);
@@ -127,35 +124,22 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehavio
             var existingCampaignDescriptors = LoadExistingDescriptors();
             existingCampaignDescriptors.Add(_campaignDescriptor);
 
-            var path = Path.GetDirectoryName(ExistingCampaignDescriptorsLogFile);
-            if (!string.IsNullOrEmpty(path) && !Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path!);
-            }
-
-            using FileStream fileStream = File.OpenWrite(ExistingCampaignDescriptorsLogFile);
-            var binaryFormatter = new BinaryFormatter
-            {
-                AssemblyFormat = FormatterAssemblyStyle.Simple,
-                Binder = new ButterLibSerializationBinder()
-            };
-            binaryFormatter.Serialize(fileStream, existingCampaignDescriptors);
+            CampaignDescriptorSerializer.Save(existingCampaignDescriptors);
         }
 
-        private static List<CampaignDescriptorImplementation> LoadExistingDescriptors()
+        private List<CampaignDescriptor> LoadExistingDescriptors()
         {
-            if (!File.Exists(ExistingCampaignDescriptorsLogFile))
+            // We are stuck with it for backwards compatibility sake
+            var binaryFile = Path.Combine(Utilities.GetConfigsPath(), "ButterLib", "CampaignIdentifier", "ExistingCampaignIdentifiers.bin");
+            var binaryDescriptors = new List<CampaignDescriptor>();
+            if (File.Exists(binaryFile))
             {
-                return new List<CampaignDescriptorImplementation>();
+                var binaryCampaignDescriptorProvider = new BinaryCampaignDescriptorProvider();
+                binaryDescriptors.AddRange(binaryCampaignDescriptorProvider.Load());
+                File.Delete(binaryFile);
             }
 
-            using FileStream fileStream = File.OpenRead(ExistingCampaignDescriptorsLogFile);
-            var binaryFormatter = new BinaryFormatter
-            {
-                AssemblyFormat = FormatterAssemblyStyle.Simple,
-                Binder = new ButterLibSerializationBinder()
-            };
-            return (List<CampaignDescriptorImplementation>)binaryFormatter.Deserialize(fileStream);
+            return CampaignDescriptorSerializer.Load().Concat(binaryDescriptors).ToList();
         }
 
         internal void Sync()

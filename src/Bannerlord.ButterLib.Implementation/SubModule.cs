@@ -51,6 +51,7 @@ namespace Bannerlord.ButterLib.Implementation
             services.AddScoped(typeof(DistanceMatrix<>), typeof(DistanceMatrixImplementation<>));
             services.AddSingleton<DistanceMatrixStatic, DistanceMatrixStaticImplementation>();
             services.AddSingleton<ICampaignExtensions, CampaignExtensionsImplementation>();
+            services.AddTransient<ICampaignDescriptorProvider, JsonCampaignDescriptorProvider>();
 
             DelayedSubModuleManager.Register<StoryModeSubModule>();
             DelayedSubModuleManager.Subscribe<StoryModeSubModule, SubModule>(
