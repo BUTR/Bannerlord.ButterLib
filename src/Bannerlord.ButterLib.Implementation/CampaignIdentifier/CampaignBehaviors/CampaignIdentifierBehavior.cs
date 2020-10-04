@@ -12,19 +12,13 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehavio
     /// <summary>Custom behavior used by CampaignIdentifier.</summary>
     internal sealed class CampaignIdentifierBehavior : CampaignBehaviorBase
     {
-        private CampaignDescriptorManager _descriptorManager;
+        private CampaignDescriptorManager _descriptorManager = new CampaignDescriptorManager();
 
         /// <summary>Alphanumeric campaign ID.</summary>
         public string CampaignId => _descriptorManager.CampaignDescriptor.KeyValue;
 
         /// <summary><see cref = "T:Bannerlord.ButterLib.CampaignIdentifier.CampaignDescriptor" /> object corresponding with the campaign.</summary>
         public CampaignDescriptorImplementation CampaignDescriptor => _descriptorManager.CampaignDescriptor;
-
-        /// <summary>Initializes a new instance of the <see cref="CampaignIdentifierBehavior" />.</summary>
-        public CampaignIdentifierBehavior()
-        {
-            _descriptorManager = new CampaignDescriptorManager();
-        }
 
         public override void RegisterEvents()
         {
