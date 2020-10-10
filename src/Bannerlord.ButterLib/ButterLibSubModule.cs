@@ -26,6 +26,13 @@ namespace Bannerlord.ButterLib
     /// </summary>
     public sealed partial class ButterLibSubModule : MBSubModuleBase
     {
+        private static readonly AccessTools.FieldRef<Campaign, ICampaignBehaviorManager> CampaignBehaviorManager =
+            AccessTools.FieldRefAccess<Campaign, ICampaignBehaviorManager>("_campaignBehaviorManager");
+        private static readonly AccessTools.FieldRef<CampaignBehaviorManager, object> CampaignBehaviorDataStore =
+            AccessTools.FieldRefAccess<CampaignBehaviorManager, object>("_campaignBehaviorDataStore");
+        private static readonly Type CampaignBehaviorDataStoreType =
+            typeof(CampaignTime).Assembly.GetType("TaleWorlds.CampaignSystem.CampaignBehaviorDataStore");
+
         private const string SErrorOfficialLoadedBeforeButterLib = "{=GDkjThJcH6}ButterLib is loaded after the official modules! Make sure ButterLib is loaded before them!";
 
         private ILogger _logger = default!;
@@ -96,14 +103,7 @@ namespace Bannerlord.ButterLib
 
             _logger.LogTrace("OnBeforeInitialModuleScreenSetAsRoot() finished.");
         }
-
-        private static AccessTools.FieldRef<Campaign, ICampaignBehaviorManager> _campaignBehaviorManager =
-            AccessTools.FieldRefAccess<Campaign, ICampaignBehaviorManager>("_campaignBehaviorManager");
-        private static AccessTools.FieldRef<CampaignBehaviorManager, object> _campaignBehaviorDataStore =
-            AccessTools.FieldRefAccess<CampaignBehaviorManager, object>("_campaignBehaviorDataStore");
-        private static Type _campaignBehaviorDataStoreType =
-            typeof(CampaignTime).Assembly.GetType("TaleWorlds.CampaignSystem.CampaignBehaviorDataStore");
-
+        
         protected override void OnGameStart(Game game, IGameStarter gameStarterObject)
         {
             base.OnGameStart(game, gameStarterObject);
@@ -114,16 +114,13 @@ namespace Bannerlord.ButterLib
 
             if (game.GameType is Campaign campaign)
             {
-                var behaviorManager = _campaignBehaviorManager(campaign);
-                if (behaviorManager is CampaignBehaviorManager campaignBehaviorManager)
+                if (false && CampaignBehaviorManager(campaign) is CampaignBehaviorManager campaignBehaviorManager)
                 {
-                    var campaignBehaviorDataStore = _campaignBehaviorDataStore(campaignBehaviorManager);
+                    var campaignBehaviorDataStore = CampaignBehaviorDataStore(campaignBehaviorManager);
                     var mbObjectBaseExtensionCampaignBehavior = new MBObjectBaseExtensionCampaignBehavior();
-                    var method = AccessTools.DeclaredMethod(_campaignBehaviorDataStoreType, "LoadBehaviorData");
+                    var method = AccessTools.DeclaredMethod(CampaignBehaviorDataStoreType, "LoadBehaviorData");
                     method?.Invoke(campaignBehaviorDataStore, new object[] { mbObjectBaseExtensionCampaignBehavior });
                     MBObjectBaseExtensionCampaignBehavior.Instance = mbObjectBaseExtensionCampaignBehavior;
-
-                    ;
                 }
 
                 //Events
@@ -140,7 +137,18 @@ namespace Bannerlord.ButterLib
 
             GameScope = null;
 
-            MBObjectBaseExtensionCampaignBehavior.Instance = null;
+            if (game.GameType is Campaign campaign)
+            {
+                if (false && CampaignBehaviorManager(campaign) is CampaignBehaviorManager campaignBehaviorManager)
+                {
+                    var campaignBehaviorDataStore = CampaignBehaviorDataStore(campaignBehaviorManager);
+                    var method = AccessTools.DeclaredMethod(CampaignBehaviorDataStoreType, "SaveBehaviorData");
+                    method?.Invoke(campaignBehaviorDataStore, new object[] { MBObjectBaseExtensionCampaignBehavior.Instance! });
+                    MBObjectBaseExtensionCampaignBehavior.Instance = null;
+                }
+
+                CampaignIdentifierEvents.Instance = null;
+            }
 
             _logger.LogTrace("OnGameEnd(Game) finished.");
         }

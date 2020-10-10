@@ -13,13 +13,13 @@ namespace Bannerlord.ButterLib.Tests
 {
     public class ApplicationVersionUtilsTests
     {
-        private static readonly string TestAppVerstionStr = "e1.4.3.231432";
-        private static readonly ApplicationVersion TestAppVerstion = ApplicationVersion.FromString("e1.4.3.231432", ApplicationVersionGameType.Singleplayer);
+        private static readonly string TestAppVersionStr = "e1.4.3.231432";
+        private static readonly ApplicationVersion TestAppVersion = ApplicationVersion.FromString("e1.4.3.231432", ApplicationVersionGameType.Singleplayer);
 
         [MethodImpl(MethodImplOptions.NoInlining)]
         private static bool MockedGetVersionStr(ref string __result)
         {
-            __result = TestAppVerstionStr;
+            __result = TestAppVersionStr;
             return false;
         }
 
@@ -36,7 +36,7 @@ namespace Bannerlord.ButterLib.Tests
         {
             var gameVersionStr = ApplicationVersionUtils.GameVersionStr();
             Assert.NotNull(gameVersionStr);
-            Assert.AreEqual(TestAppVerstionStr, gameVersionStr);
+            Assert.AreEqual(TestAppVersionStr, gameVersionStr);
         }
 
         [Test]
@@ -44,15 +44,15 @@ namespace Bannerlord.ButterLib.Tests
         {
             var gameVersion = ApplicationVersionUtils.GameVersion();
             Assert.NotNull(gameVersion);
-            Assert.AreEqual(TestAppVerstion, gameVersion);
+            Assert.AreEqual(TestAppVersion, gameVersion);
         }
 
         [Test]
         public void TryParse_Test()
         {
-            var result = ApplicationVersionUtils.TryParse(TestAppVerstionStr, out var gameVersion);
+            var result = ApplicationVersionUtils.TryParse(TestAppVersionStr, out var gameVersion);
             Assert.True(result);
-            Assert.AreEqual(TestAppVerstion, gameVersion);
+            Assert.AreEqual(TestAppVersion, gameVersion);
         }
     }
 }

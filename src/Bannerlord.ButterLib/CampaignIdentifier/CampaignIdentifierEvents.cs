@@ -10,7 +10,7 @@ namespace Bannerlord.ButterLib.CampaignIdentifier
 
         /// <summary>An instance of the CampaignIdentifier custom events.</summary>
         /// <remarks>Assigned in the process of creating new game or loading existing one.</remarks>
-        public static CampaignIdentifierEvents Instance { get; internal set; } = null!; // Won't be null when properly accessed.
+        public static CampaignIdentifierEvents? Instance { get; internal set; } // Won't be null when properly accessed.
 
         /// <summary>
         /// Removes any listeners to the <see cref="CampaignIdentifierEvents" />
@@ -23,7 +23,7 @@ namespace Bannerlord.ButterLib.CampaignIdentifier
         /// </remarks>
         public static void RemoveListeners(object o)
         {
-            Instance.RemoveListenersInternal(o);
+            Instance?.RemoveListenersInternal(o);
         }
 
         internal void RemoveListenersInternal(object obj)
@@ -39,7 +39,7 @@ namespace Bannerlord.ButterLib.CampaignIdentifier
         /// This event is used to update information in the <see cref="CampaignDescriptor" /> assigned to the campaign.
         /// It should be fired when initial player character's gender, culture or birthplace are changed.
         /// </remarks>
-        public static IMbEvent OnDescriptorRelatedDataChangedEvent => Instance._onDescriptorRelatedDataChanged;
+        public static IMbEvent? OnDescriptorRelatedDataChangedEvent => Instance?._onDescriptorRelatedDataChanged;
 
         /// <summary>Fires OnDescriptorRelatedDataChangedEvent.</summary>
         /// <remarks>
@@ -49,16 +49,16 @@ namespace Bannerlord.ButterLib.CampaignIdentifier
         /// </remarks>
         public void OnDescriptorRelatedDataChanged()
         {
-            Instance._onDescriptorRelatedDataChanged.Invoke();
+            Instance?._onDescriptorRelatedDataChanged.Invoke();
         }
 
         /// <summary>A custom event that fires when a campaign is assigned an ID.</summary>
         /// <remarks>The assigned ID would be stored in the event argument.</remarks>
-        public static IMbEvent<CampaignDescriptor> OnDescriptorAssignedEvent => Instance._onDescriptorAssigned;
+        public static IMbEvent<CampaignDescriptor>? OnDescriptorAssignedEvent => Instance?._onDescriptorAssigned;
 
         internal void OnDescriptorAssigned(CampaignDescriptor assignedDescriptor)
         {
-            Instance._onDescriptorAssigned.Invoke(assignedDescriptor);
+            Instance?._onDescriptorAssigned.Invoke(assignedDescriptor);
         }
     }
 }
