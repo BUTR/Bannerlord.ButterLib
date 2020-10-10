@@ -1,4 +1,10 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.0.11
+Game Versions: e1.4.3,e1.5.0,e1.5.1,e1.5.2,e1.5.3
+ * Added the ability to save classes via JSON instead of the games binary serialization
+ * Better logging
+ * Better AppDomain setup
+---------------------------------------------------------------------------------------------------
 Version: 1.0.10
 Game Versions: e1.4.3,e1.5.0,e1.5.1,e1.5.2,e1.5.3
 * Switched serialization from binary to json
