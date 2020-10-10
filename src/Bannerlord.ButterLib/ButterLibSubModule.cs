@@ -4,12 +4,16 @@ using Bannerlord.ButterLib.Common.Helpers;
 using Bannerlord.ButterLib.Options;
 using Bannerlord.ButterLib.SaveSystem;
 
+using HarmonyLib;
+
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
+using System;
 using System.Linq;
 
 using TaleWorlds.CampaignSystem;
+using TaleWorlds.CampaignSystem.SandBox.CampaignBehaviors;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
@@ -93,6 +97,13 @@ namespace Bannerlord.ButterLib
             _logger.LogTrace("OnBeforeInitialModuleScreenSetAsRoot() finished.");
         }
 
+        private static AccessTools.FieldRef<Campaign, ICampaignBehaviorManager> _campaignBehaviorManager =
+            AccessTools.FieldRefAccess<Campaign, ICampaignBehaviorManager>("_campaignBehaviorManager");
+        private static AccessTools.FieldRef<CampaignBehaviorManager, object> _campaignBehaviorDataStore =
+            AccessTools.FieldRefAccess<CampaignBehaviorManager, object>("_campaignBehaviorDataStore");
+        private static Type _campaignBehaviorDataStoreType =
+            typeof(CampaignTime).Assembly.GetType("TaleWorlds.CampaignSystem.CampaignBehaviorDataStore");
+
         protected override void OnGameStart(Game game, IGameStarter gameStarterObject)
         {
             base.OnGameStart(game, gameStarterObject);
@@ -101,10 +112,20 @@ namespace Bannerlord.ButterLib
             GameScope = ServiceProvider.CreateScope();
             _logger.LogInformation("Created GameScope..");
 
-            MBObjectBaseExtensionStore.Extensions.Clear();
-
-            if (game.GameType is Campaign)
+            if (game.GameType is Campaign campaign)
             {
+                var behaviorManager = _campaignBehaviorManager(campaign);
+                if (behaviorManager is CampaignBehaviorManager campaignBehaviorManager)
+                {
+                    var campaignBehaviorDataStore = _campaignBehaviorDataStore(campaignBehaviorManager);
+                    var mbObjectBaseExtensionCampaignBehavior = new MBObjectBaseExtensionCampaignBehavior();
+                    var method = AccessTools.DeclaredMethod(_campaignBehaviorDataStoreType, "LoadBehaviorData");
+                    method?.Invoke(campaignBehaviorDataStore, new object[] { mbObjectBaseExtensionCampaignBehavior });
+                    MBObjectBaseExtensionCampaignBehavior.Instance = mbObjectBaseExtensionCampaignBehavior;
+
+                    ;
+                }
+
                 //Events
                 CampaignIdentifierEvents.Instance = new CampaignIdentifierEvents();
             }
@@ -118,6 +139,8 @@ namespace Bannerlord.ButterLib
             _logger.LogTrace("OnGameEnd(Game) started.");
 
             GameScope = null;
+
+            MBObjectBaseExtensionCampaignBehavior.Instance = null;
 
             _logger.LogTrace("OnGameEnd(Game) finished.");
         }
