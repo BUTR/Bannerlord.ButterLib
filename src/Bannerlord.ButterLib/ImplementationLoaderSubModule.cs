@@ -120,7 +120,7 @@ namespace Bannerlord.ButterLib
                 }
                 catch (Exception e) when (e is ReflectionTypeLoadException)
                 {
-                    logger?.LogError("Implementation {name} is not compatible with the current game!", Path.GetFileName(a.Location));
+                    logger?.LogError(e, "Implementation {name} is not compatible with the current game!", Path.GetFileName(a.Location));
                     return Enumerable.Empty<Type>();
                 }
 
@@ -173,10 +173,10 @@ namespace Bannerlord.ButterLib
             {
                 logger?.LogInformation("Found implementation {name}.", implementation.Name);
 
-                var result = assemblyLoader.LoadFileAndTest(implementation.FullName);
+                var result = assemblyLoader.LoadFileAndTest(implementation.FullName, out var e);
                 if (!result)
                 {
-                    logger?.LogError("Implementation {name} is not compatible with the current game!", implementation.Name);
+                    logger?.LogError(e, "Implementation {name} is not compatible with the current game!", implementation.Name);
                     continue;
                 }
 

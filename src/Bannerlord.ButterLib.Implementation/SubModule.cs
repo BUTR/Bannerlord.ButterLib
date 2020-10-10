@@ -32,6 +32,7 @@ namespace Bannerlord.ButterLib.Implementation
 
         public Harmony? CampaignIdentifierHarmonyInstance { get; private set; }
         internal bool Patched { get; private set; }
+        private bool FirstInit { get; set; } = true;
 
         internal static ILogger? Logger { get; private set; }
 
@@ -65,22 +66,27 @@ namespace Bannerlord.ButterLib.Implementation
             base.OnBeforeInitialModuleScreenSetAsRoot();
             Logger.LogTrace("OnBeforeInitialModuleScreenSetAsRoot() started.");
 
-            var serviceProvider = this.GetServiceProvider();
-            Logger = serviceProvider.GetRequiredService<ILogger<SubModule>>();
-
-            if (Debug.DebugManager is DebugManagerWrapper debugManagerWrapper)
+            if (FirstInit)
             {
-                Debug.DebugManager = new DebugManagerWrapper(debugManagerWrapper.OriginalDebugManager, serviceProvider!);
-            }
-            else
-            {
-                Logger.LogWarning("DebugManagerWrapper was replaced with {type}! Wrapping it with DebugManagerWrapper.", Debug.DebugManager.GetType());
-                Debug.DebugManager = new DebugManagerWrapper(Debug.DebugManager, serviceProvider!);
-            }
+                FirstInit = false;
 
-            DelayedSubModuleManager.Register<GauntletUISubModule>();
-            DelayedSubModuleManager.Subscribe<GauntletUISubModule, SubModule>(
-                nameof(OnBeforeInitialModuleScreenSetAsRoot), SubscriptionType.AfterMethod, WarnNotPatched);
+                var serviceProvider = this.GetServiceProvider();
+                Logger = serviceProvider.GetRequiredService<ILogger<SubModule>>();
+
+                if (Debug.DebugManager is DebugManagerWrapper debugManagerWrapper)
+                {
+                    Debug.DebugManager = new DebugManagerWrapper(debugManagerWrapper.OriginalDebugManager, serviceProvider!);
+                }
+                else
+                {
+                    Logger.LogWarning("DebugManagerWrapper was replaced with {type}! Wrapping it with DebugManagerWrapper.", Debug.DebugManager.GetType());
+                    Debug.DebugManager = new DebugManagerWrapper(Debug.DebugManager, serviceProvider!);
+                }
+
+                DelayedSubModuleManager.Register<GauntletUISubModule>();
+                DelayedSubModuleManager.Subscribe<GauntletUISubModule, SubModule>(
+                    nameof(OnBeforeInitialModuleScreenSetAsRoot), SubscriptionType.AfterMethod, WarnNotPatched);
+            }
 
             Logger.LogTrace("OnBeforeInitialModuleScreenSetAsRoot() finished.");
         }

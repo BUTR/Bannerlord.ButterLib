@@ -20,6 +20,10 @@
 - name: Optional
   href: Optional/toc.yml
 
+- name: SaveSystem
+  href: SaveSystem/
+  homepage: SaveSystem/Overview.md
+
 - name: SubModuleWrappers
   href: SubModuleWrappers/
   homepage: SubModuleWrappers/Overview.md
