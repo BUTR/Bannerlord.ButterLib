@@ -1,5 +1,6 @@
 ﻿using Bannerlord.ButterLib.CampaignIdentifier;
 using Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehaviors.BehaviorManagers;
+using Bannerlord.ButterLib.SaveSystem.Extensions;
 
 using StoryMode;
 
@@ -48,7 +49,7 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehavio
 
         public override void SyncData(IDataStore dataStore)
         {
-            dataStore.SyncData("_descriptorManager", ref _descriptorManager);
+            dataStore.SyncDataAsJson("_descriptorManager", ref _descriptorManager);
 
             if (dataStore.IsLoading && _descriptorManager == null)
             {

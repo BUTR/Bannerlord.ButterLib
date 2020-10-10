@@ -2,6 +2,7 @@
 using Bannerlord.ButterLib.Common.Extensions;
 using Bannerlord.ButterLib.Common.Helpers;
 using Bannerlord.ButterLib.Options;
+using Bannerlord.ButterLib.SaveSystem;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -99,6 +100,8 @@ namespace Bannerlord.ButterLib
 
             GameScope = ServiceProvider.CreateScope();
             _logger.LogInformation("Created GameScope..");
+
+            MBObjectBaseExtensionStore.Extensions.Clear();
 
             if (game.GameType is Campaign)
             {

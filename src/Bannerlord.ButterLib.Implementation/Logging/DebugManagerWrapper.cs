@@ -32,6 +32,8 @@ namespace Bannerlord.ButterLib.Implementation.Logging
             OriginalDebugManager.ShowWarning(message);
         }
 
+        public void ShowMessageBox(string lpText, string lpCaption, uint uType) { }
+
         public void DisplayDebugMessage(string message)
         {
             _debugManagerLogger.LogDebug("{message}", message);
