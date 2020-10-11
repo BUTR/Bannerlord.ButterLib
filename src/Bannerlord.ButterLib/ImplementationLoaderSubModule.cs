@@ -173,7 +173,15 @@ namespace Bannerlord.ButterLib
             {
                 logger?.LogInformation("Found implementation {name}.", implementation.Name);
 
-                var result = assemblyLoader.LoadFileAndTest(implementation.FullName, out var e);
+                var result = false;
+                Exception? e = null;
+                try
+                {
+                    // Will throw the exception outside, we need to catch it.
+                    result = assemblyLoader.LoadFileAndTest(implementation.FullName, out var ex);
+                    e = ex;
+                }
+                catch (Exception ex) { e = ex; }
                 if (!result)
                 {
                     logger?.LogError(e, "Implementation {name} is not compatible with the current game!", implementation.Name);
