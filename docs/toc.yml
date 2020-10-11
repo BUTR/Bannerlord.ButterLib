@@ -11,7 +11,7 @@
 - name: Bannerlord Documentations
   dropdown: true
   items:
-    #- name: Official Documentation
-    #  href: http://docs.modding.bannerlord.com/
+    - name: Official Documentation
+      href: http://docs.modding.bannerlord.com/
     - name: Community Documentation
       href: https://docs.bannerlordmodding.com
