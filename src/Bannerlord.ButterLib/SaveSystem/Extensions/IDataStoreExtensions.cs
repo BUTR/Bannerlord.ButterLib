@@ -13,7 +13,11 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
         {
             settings ??= new JsonSerializerSettings
             {
-                ContractResolver = new TaleWorldsContractResolver()
+                ContractResolver = new TaleWorldsContractResolver(),
+                Converters = { new DictionaryToArrayConverter(), new MBObjectBaseConverter() },
+                TypeNameHandling = TypeNameHandling.All,
+                //ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
+                //PreserveReferencesHandling = PreserveReferencesHandling.Objects
             };
 
             if (dataStore.IsSaving)
