@@ -1,4 +1,4 @@
-<!--EXTERNAL_PROPERTIES: GameFolder-->
+<!--EXTERNAL_PROPERTIES: GameFolder;StableVersion;BetaVersion-->
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
