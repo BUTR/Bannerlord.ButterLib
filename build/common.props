@@ -11,7 +11,7 @@
     <!--Current Bannerlord Beta Version-->
     <BetaVersion>1.5.3</BetaVersion>
     <!--Bannerlord's Root Folder. Leave empty if you want it to be tried to be autoresolved.-->
-    <GameFolder>C:\Program Files (x86)\Steam\steamapps\common\Mount &amp; Blade II Bannerlord</GameFolder>
+    <GameFolder>$(MOUNT_AND_BLADE_DIR)</GameFolder>
   </PropertyGroup>
 
   <PropertyGroup>
