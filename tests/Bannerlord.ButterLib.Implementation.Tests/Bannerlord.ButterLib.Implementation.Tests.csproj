@@ -23,13 +23,13 @@
     <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />
   </ItemGroup>
 
-  <ItemGroup Condition="!Exists($(GameFolder)) AND $(Configuration) == 'Stable_Debug' OR $(Configuration) == 'Stable_Release'">
+  <ItemGroup Condition="!Exists($(GameFolder)) AND ($(Configuration) == 'Stable_Debug' OR $(Configuration) == 'Stable_Release')">
     <PackageReference Include="Bannerlord.ReferenceAssemblies.Core.EarlyAccess" Version="$(StableVersion).*" PrivateAssets="All" />
     <PackageReference Include="Bannerlord.ReferenceAssemblies.Native.EarlyAccess" Version="$(StableVersion).*" PrivateAssets="All" />
     <PackageReference Include="Bannerlord.ReferenceAssemblies.StoryMode.EarlyAccess" Version="$(StableVersion).*" PrivateAssets="All" />
     <PackageReference Include="Bannerlord.ReferenceAssemblies.SandBox.EarlyAccess" Version="$(StableVersion).*" PrivateAssets="All" />
   </ItemGroup>
-  <ItemGroup Condition="!Exists($(GameFolder)) AND $(Configuration) == 'Beta_Debug' OR $(Configuration) == 'Beta_Release'">
+  <ItemGroup Condition="!Exists($(GameFolder)) AND ($(Configuration) == 'Beta_Debug' OR $(Configuration) == 'Beta_Release')">
     <PackageReference Include="Bannerlord.ReferenceAssemblies.Core.EarlyAccess" Version="$(BetaVersion).*" PrivateAssets="All" />
     <PackageReference Include="Bannerlord.ReferenceAssemblies.Native.EarlyAccess" Version="$(BetaVersion).*" PrivateAssets="All" />
     <PackageReference Include="Bannerlord.ReferenceAssemblies.StoryMode.EarlyAccess" Version="$(BetaVersion).*" PrivateAssets="All" />
