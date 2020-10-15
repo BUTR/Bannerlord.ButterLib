@@ -1,6 +1,7 @@
 ﻿using Bannerlord.ButterLib.SaveSystem.Extensions;
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.ObjectSystem;
@@ -11,15 +12,36 @@ namespace Bannerlord.ButterLib.SaveSystem
     {
         public static MBObjectBaseExtensionCampaignBehavior? Instance { get; set; }
 
+        public override void RegisterEvents() { }
+
         public override void SyncData(IDataStore dataStore)
         {
+            if (dataStore.IsSaving)
+            {
+                // Cleanup variables in data store that refer to now-nonexistent/untracked objects.
+                // This is also periodically done due to autosaves to address any leak concerns.
+
+                // Cache known-expired object IDs, as MBObjectManager.GetObject can be slow,
+                // particularly for the types likely to have expired.
+                var expiredIdCache = new Dictionary<uint, bool>();
+
+                foreach (var sk in _extensions!.Keys)
+                {
+                    if (expiredIdCache.ContainsKey(sk.ObjectId))
+                        _extensions.TryRemove(sk, out _);
+                    else if (MBObjectManager.Instance.GetObject(new MBGUID(sk.ObjectId)) == default)
+                    {
+                        expiredIdCache[sk.ObjectId] = true;
+                        _extensions.TryRemove(sk, out _);
+                    }
+                }
+            }
+
             dataStore.SyncDataAsJson("_descriptorManager", ref _extensions);
 
             if (dataStore.IsLoading && _extensions == null)
                 _extensions = new ConcurrentDictionary<StorageKey, object?>();
         }
-
-        public override void RegisterEvents() { }
 
         public void AddExtension(MBObjectBase @object, string key, object? data)
         {
