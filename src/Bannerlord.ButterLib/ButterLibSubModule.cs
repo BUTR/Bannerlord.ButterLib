@@ -26,8 +26,6 @@ namespace Bannerlord.ButterLib
     /// </summary>
     public sealed partial class ButterLibSubModule : MBSubModuleBase
     {
-        private static readonly AccessTools.FieldRef<Campaign, ICampaignBehaviorManager> CampaignBehaviorManager =
-            AccessTools.FieldRefAccess<Campaign, ICampaignBehaviorManager>("_campaignBehaviorManager");
         private static readonly AccessTools.FieldRef<CampaignBehaviorManager, object> CampaignBehaviorDataStore =
             AccessTools.FieldRefAccess<CampaignBehaviorManager, object>("_campaignBehaviorDataStore");
         private static readonly Type CampaignBehaviorDataStoreType =
@@ -114,7 +112,7 @@ namespace Bannerlord.ButterLib
 
             if (game.GameType is Campaign campaign)
             {
-                if (false && CampaignBehaviorManager(campaign) is CampaignBehaviorManager campaignBehaviorManager)
+                if (false && campaign.CampaignBehaviorManager is CampaignBehaviorManager campaignBehaviorManager)
                 {
                     var campaignBehaviorDataStore = CampaignBehaviorDataStore(campaignBehaviorManager);
                     var mbObjectBaseExtensionCampaignBehavior = new MBObjectBaseExtensionCampaignBehavior();
@@ -139,7 +137,7 @@ namespace Bannerlord.ButterLib
 
             if (game.GameType is Campaign campaign)
             {
-                if (false && CampaignBehaviorManager(campaign) is CampaignBehaviorManager campaignBehaviorManager)
+                if (false && campaign.CampaignBehaviorManager is CampaignBehaviorManager campaignBehaviorManager)
                 {
                     var campaignBehaviorDataStore = CampaignBehaviorDataStore(campaignBehaviorManager);
                     var method = AccessTools.DeclaredMethod(CampaignBehaviorDataStoreType, "SaveBehaviorData");

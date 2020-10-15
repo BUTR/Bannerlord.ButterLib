@@ -22,8 +22,12 @@ namespace Bannerlord.ButterLib.SaveSystem
                 writer.WriteStartArray();
                 foreach (DictionaryEntry dictionaryEntry in dictionary)
                 {
-                    serializer.Serialize(writer, dictionaryEntry.Key, genericArguments[0]);
-                    serializer.Serialize(writer, dictionaryEntry.Value, genericArguments[1]);
+                    // TODO: Return to this
+                    if (dictionaryEntry.Key != null)
+                    {
+                        serializer.Serialize(writer, dictionaryEntry.Key, genericArguments[0]);
+                        serializer.Serialize(writer, dictionaryEntry.Value, genericArguments[1]);
+                    }
                 }
                 writer.WriteEndArray();
             }
@@ -47,10 +51,14 @@ namespace Bannerlord.ButterLib.SaveSystem
                     reader.Read();
                     var value = serializer.Deserialize(reader, genericArguments[1]);
                     reader.Read();
-                    if (dict.Contains(key))
-                        dict[key] = value;
-                    else
-                        dict.Add(key, value);
+                    // TODO: Return to this
+                    if (key != null)
+                    {
+                        if (dict.Contains(key))
+                            dict[key] = value;
+                        else
+                            dict.Add(key, value);
+                    }
                 } while (reader.TokenType != JsonToken.EndArray);
             }
             else if (reader.TokenType == JsonToken.StartObject)
