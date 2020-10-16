@@ -43,7 +43,7 @@ namespace Bannerlord.ButterLib.SaveSystem
         protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
         {
             // Container are an exception.
-            if ((_isContainerDelegate != null && _isContainerDelegate(type) || (_isContainerDelegate == null && IsContainerFallback(type))))
+            if ((_isContainerDelegate != null && _isContainerDelegate(type)) || (_isContainerDelegate == null && IsContainerFallback(type)))
                 return base.CreateProperties(type, memberSerialization);
 
             // SaveableRootClassAttribute is not needed
