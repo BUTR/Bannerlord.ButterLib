@@ -83,9 +83,10 @@ namespace Bannerlord.ButterLib.SaveSystem
 
             return default;
         }
-        #nullable restore
 
-        private class StorageKey : IEquatable<StorageKey>
+#nullable restore
+
+        private readonly struct StorageKey : IEquatable<StorageKey>
         {
             public static implicit operator MBGUID(StorageKey sk) => new MBGUID(sk.ObjectId);
 
