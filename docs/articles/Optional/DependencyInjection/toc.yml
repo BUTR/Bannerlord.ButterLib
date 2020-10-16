@@ -1,14 +1,10 @@
 - name: Overview
   href: Overview.md
-  
 - name: Initialization Stages
   href: Initialization-Stages.md
-  
 - name: Stage 1
   href: Stage-1.md
-  
 - name: Stage 2
   href: Stage-2.md
-  
 - name: Stage 3
   href: Stage-3.md
