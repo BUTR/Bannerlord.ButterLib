@@ -1,4 +1,5 @@
-﻿using Bannerlord.ButterLib.SaveSystem.Extensions;
+﻿using Bannerlord.ButterLib.SaveSystem;
+using Bannerlord.ButterLib.SaveSystem.Extensions;
 
 using System;
 using System.Collections.Concurrent;
@@ -7,13 +8,13 @@ using System.Collections.Generic;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.ObjectSystem;
 
-namespace Bannerlord.ButterLib.SaveSystem
+namespace Bannerlord.ButterLib.Implementation.SaveSystem
 {
-    internal sealed class MBObjectBaseExtensionCampaignBehavior : CampaignBehaviorBase
+    internal sealed class MBObjectVariableStorageBehavior : CampaignBehaviorBase, IMBObjectVariableStorage
     {
-        public static MBObjectBaseExtensionCampaignBehavior? Instance { get; set; }
+        public static MBObjectVariableStorageBehavior? Instance { get; set; }
 
-        private ConcurrentDictionary<StorageKey, object?>? _extensions;
+        private ConcurrentDictionary<StorageKey, object?>? _variables;
 
         public override void RegisterEvents() { }
 
@@ -28,46 +29,46 @@ namespace Bannerlord.ButterLib.SaveSystem
                 // particularly for the types likely to have expired.
                 var expiredIdCache = new Dictionary<uint, bool>();
 
-                foreach (var sk in _extensions!.Keys)
+                foreach (var sk in _variables!.Keys)
                 {
                     if (expiredIdCache.ContainsKey(sk.ObjectId))
-                        _extensions.TryRemove(sk, out _);
+                        _variables.TryRemove(sk, out _);
                     else if (MBObjectManager.Instance.GetObject(sk) == default)
                     {
                         expiredIdCache[sk.ObjectId] = true;
-                        _extensions.TryRemove(sk, out _);
+                        _variables.TryRemove(sk, out _);
                     }
                 }
             }
 
-            dataStore.SyncDataAsJson("ButterLib.MBObjectBaseExtensions", ref _extensions);
+            dataStore.SyncDataAsJson("ButterLib.MBObjectVariableStorage", ref _variables);
 
-            if (dataStore.IsLoading && _extensions == null)
-                _extensions = new ConcurrentDictionary<StorageKey, object?>();
+            if (dataStore.IsLoading && _variables == null)
+                _variables = new ConcurrentDictionary<StorageKey, object?>();
         }
 
         public void SetVariable(MBObjectBase @object, string key, object? data)
         {
-            if (_extensions == null)
+            if (_variables == null)
                 return;
 
-            _extensions[StorageKey.Make(@object, key)] = data;
+            _variables[StorageKey.Make(@object, key)] = data;
         }
 
         public void RemoveVariable(MBObjectBase @object, string key)
         {
-            if (_extensions == null)
+            if (_variables == null)
                 return;
 
-            _extensions.TryRemove(StorageKey.Make(@object, key), out _);
+            _variables.TryRemove(StorageKey.Make(@object, key), out _);
         }
 
         public object? GetVariable(MBObjectBase @object, string key)
         {
-            if (_extensions == null)
+            if (_variables == null)
                 return null;
 
-            if (_extensions.TryGetValue(StorageKey.Make(@object, key), out var value))
+            if (_variables.TryGetValue(StorageKey.Make(@object, key), out var value))
                 return value;
 
             return null;
@@ -77,10 +78,10 @@ namespace Bannerlord.ButterLib.SaveSystem
 
         public T GetVariable<T>(MBObjectBase @object, string key)
         {
-            if (_extensions == null)
+            if (_variables == null)
                 return default;
 
-            if (_extensions.TryGetValue(StorageKey.Make(@object, key), out var val) && val is T value)
+            if (_variables.TryGetValue(StorageKey.Make(@object, key), out var val) && val is T value)
                 return value;
 
             return default;

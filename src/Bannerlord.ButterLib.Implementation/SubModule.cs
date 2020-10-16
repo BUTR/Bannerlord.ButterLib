@@ -7,6 +7,8 @@ using Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehaviors;
 using Bannerlord.ButterLib.Implementation.Common.Extensions;
 using Bannerlord.ButterLib.Implementation.DistanceMatrix;
 using Bannerlord.ButterLib.Implementation.Logging;
+using Bannerlord.ButterLib.Implementation.SaveSystem;
+using Bannerlord.ButterLib.SaveSystem;
 
 using HarmonyLib;
 
@@ -53,6 +55,7 @@ namespace Bannerlord.ButterLib.Implementation
             services.AddSingleton<DistanceMatrixStatic, DistanceMatrixStaticImplementation>();
             services.AddSingleton<ICampaignExtensions, CampaignExtensionsImplementation>();
             services.AddTransient<ICampaignDescriptorProvider, JsonCampaignDescriptorProvider>();
+            services.AddScoped<IMBObjectVariableStorage, MBObjectVariableStorageBehavior>();
 
             DelayedSubModuleManager.Register<StoryModeSubModule>();
             DelayedSubModuleManager.Subscribe<StoryModeSubModule, SubModule>(
@@ -98,13 +101,28 @@ namespace Bannerlord.ButterLib.Implementation
 
             if (game.GameType is Campaign)
             {
-                //CampaignGameStarter
                 CampaignGameStarter gameStarter = (CampaignGameStarter) gameStarterObject;
-                //Behaviors
+
+                // Behaviors
                 gameStarter.AddBehavior(new CampaignIdentifierBehavior());
                 gameStarter.AddBehavior(new GeopoliticsCachingBehavior());
+
+                // Pseudo-behavior for MBObjectBase extension variable storage
+                MBObjectVariableStorageBehavior.Instance = new MBObjectVariableStorageBehavior();
             }
             Logger.LogTrace("OnGameStart(Game, IGameStarter) finished.");
+        }
+
+
+        public override void OnGameEnd(Game game)
+        {
+            base.OnGameEnd(game);
+            Logger.LogTrace("OnGameEnd(Game) started.");
+
+            if (game.GameType is Campaign)
+                MBObjectVariableStorageBehavior.Instance = null;
+
+            Logger.LogTrace("OnGameEnd(Game) finished.");
         }
 
         private void InitializeCampaignIdentifier(object s, SubscriptionEventArgs e)

@@ -2,7 +2,7 @@
 using Bannerlord.ButterLib.Common.Extensions;
 using Bannerlord.ButterLib.Common.Helpers;
 using Bannerlord.ButterLib.Options;
-using Bannerlord.ButterLib.SaveSystem;
+using Bannerlord.ButterLib.SaveSystem.Extensions;
 
 using HarmonyLib;
 
@@ -112,15 +112,6 @@ namespace Bannerlord.ButterLib
 
             if (game.GameType is Campaign campaign)
             {
-                if (false && campaign.CampaignBehaviorManager is CampaignBehaviorManager campaignBehaviorManager)
-                {
-                    var campaignBehaviorDataStore = CampaignBehaviorDataStore(campaignBehaviorManager);
-                    var mbObjectBaseExtensionCampaignBehavior = new MBObjectBaseExtensionCampaignBehavior();
-                    var method = AccessTools.DeclaredMethod(CampaignBehaviorDataStoreType, "LoadBehaviorData");
-                    method?.Invoke(campaignBehaviorDataStore, new object[] { mbObjectBaseExtensionCampaignBehavior });
-                    MBObjectBaseExtensionCampaignBehavior.Instance = mbObjectBaseExtensionCampaignBehavior;
-                }
-
                 //Events
                 CampaignIdentifierEvents.Instance = new CampaignIdentifierEvents();
             }
@@ -137,14 +128,7 @@ namespace Bannerlord.ButterLib
 
             if (game.GameType is Campaign campaign)
             {
-                if (false && campaign.CampaignBehaviorManager is CampaignBehaviorManager campaignBehaviorManager)
-                {
-                    var campaignBehaviorDataStore = CampaignBehaviorDataStore(campaignBehaviorManager);
-                    var method = AccessTools.DeclaredMethod(CampaignBehaviorDataStoreType, "SaveBehaviorData");
-                    method?.Invoke(campaignBehaviorDataStore, new object[] { MBObjectBaseExtensionCampaignBehavior.Instance! });
-                    MBObjectBaseExtensionCampaignBehavior.Instance = null;
-                }
-
+                MBObjectBaseExtensions.OnGameEnd();
                 CampaignIdentifierEvents.Instance = null;
             }
 
