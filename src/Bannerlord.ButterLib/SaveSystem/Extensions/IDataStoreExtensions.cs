@@ -31,13 +31,13 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
                 try
                 {
                     var jsonData = "";
-                    var @return = dataStore.SyncData(key, ref jsonData); /* try to get as JSON string */
+                    var @return = dataStore.SyncData(key, ref jsonData); // try to get as JSON string
                     data = JsonConvert.DeserializeObject<T>(jsonData, settings);
                     return @return;
                 }
                 catch (Exception e) when (e is InvalidCastException)
                 {
-                    return dataStore.SyncData(key, ref data); /* fallback to the default behavior, save will fix this */
+                    return dataStore.SyncData(key, ref data); // fallback to the game's default behavior, next save will fix this
                 }
             }
 

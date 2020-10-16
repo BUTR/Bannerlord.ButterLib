@@ -27,7 +27,7 @@ namespace Bannerlord.ButterLib.SaveSystem
             if (type.IsGenericType && !type.IsGenericTypeDefinition)
             {
                 var genericTypeDefinition = type.GetGenericTypeDefinition();
-                if (genericTypeDefinition == typeof(Dictionary<, >))
+                if (genericTypeDefinition == typeof(Dictionary<,>))
                     return true;
                 if (genericTypeDefinition == typeof(List<>))
                     return true;

@@ -11,12 +11,12 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
         public static T GetExtension<T>(this MBObjectBase @object, string key)
         {
             if (MBObjectBaseExtensionCampaignBehavior.Instance is { } instance)
-                return instance.GetExtension(@object, key) is T val ? val : default;
+                return instance.GetExtension<T>(@object, key);
             return default;
         }
         public static T GetExtensionAsJson<T>(this MBObjectBase @object, string key, JsonSerializerSettings settings = null)
         {
-            if (MBObjectBaseExtensionCampaignBehavior.Instance is { } instance && instance.GetExtension(@object, key) is string jsonData)
+            if (MBObjectBaseExtensionCampaignBehavior.Instance is { } instance && instance.GetExtension<string>(@object, key) is { } jsonData)
                 return JsonConvert.DeserializeObject<T>(jsonData, settings);
             return default;
         }
@@ -30,10 +30,7 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
         public static void SetExtensionAsJson<T>(this MBObjectBase @object, string key, T data, JsonSerializerSettings? settings = null)
         {
             if (MBObjectBaseExtensionCampaignBehavior.Instance is { } instance)
-            {
-                var jsonData = JsonConvert.SerializeObject(data, settings);
-                instance.AddExtension(@object, key, jsonData);
-            }
+                instance.AddExtension(@object, key, JsonConvert.SerializeObject(data, settings));
         }
 
         public static void RemoveExtension(this MBObjectBase @object, string key)

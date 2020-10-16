@@ -1,4 +1,5 @@
 ﻿using Bannerlord.ButterLib.SaveSystem.Extensions;
+
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -11,6 +12,8 @@ namespace Bannerlord.ButterLib.SaveSystem
     internal sealed class MBObjectBaseExtensionCampaignBehavior : CampaignBehaviorBase
     {
         public static MBObjectBaseExtensionCampaignBehavior? Instance { get; set; }
+
+        private ConcurrentDictionary<StorageKey, object?>? _extensions;
 
         public override void RegisterEvents() { }
 
@@ -29,7 +32,7 @@ namespace Bannerlord.ButterLib.SaveSystem
                 {
                     if (expiredIdCache.ContainsKey(sk.ObjectId))
                         _extensions.TryRemove(sk, out _);
-                    else if (MBObjectManager.Instance.GetObject(new MBGUID(sk.ObjectId)) == default)
+                    else if (MBObjectManager.Instance.GetObject(sk) == default)
                     {
                         expiredIdCache[sk.ObjectId] = true;
                         _extensions.TryRemove(sk, out _);
@@ -37,7 +40,7 @@ namespace Bannerlord.ButterLib.SaveSystem
                 }
             }
 
-            dataStore.SyncDataAsJson("_descriptorManager", ref _extensions);
+            dataStore.SyncDataAsJson("ButterLib.MBObjectBaseExtensions", ref _extensions);
 
             if (dataStore.IsLoading && _extensions == null)
                 _extensions = new ConcurrentDictionary<StorageKey, object?>();
@@ -59,25 +62,37 @@ namespace Bannerlord.ButterLib.SaveSystem
             _extensions.TryRemove(StorageKey.Make(@object, key), out _);
         }
 
-#nullable disable
-        public object GetExtension(MBObjectBase @object, string key)
+        public object? GetExtension(MBObjectBase @object, string key)
         {
             if (_extensions == null)
-                return default;
+                return null;
 
             if (_extensions.TryGetValue(StorageKey.Make(@object, key), out var value))
                 return value;
 
+            return null;
+        }
+#nullable disable
+        public T GetExtension<T>(MBObjectBase @object, string key)
+        {
+            if (_extensions == null)
+                return default;
+
+            if (_extensions.TryGetValue(StorageKey.Make(@object, key), out var val) && val is T value)
+                return value;
+
             return default;
         }
-#nullable restore
+        #nullable restore
 
-        class StorageKey : IEquatable<StorageKey>
+        private class StorageKey : IEquatable<StorageKey>
         {
-            public uint ObjectId;
-            public string Key;
+            public static implicit operator MBGUID(StorageKey sk) => new MBGUID(sk.ObjectId);
 
-            public StorageKey(uint objectId, string key) => (ObjectId, Key) = (objectId, key);
+            public readonly uint ObjectId;
+            public readonly string Key;
+
+            private StorageKey(uint objectId, string key) => (ObjectId, Key) = (objectId, key);
 
             public static StorageKey Make(MBObjectBase obj, string key) => new StorageKey(obj.Id.InternalValue, key);
 
@@ -87,7 +102,5 @@ namespace Bannerlord.ButterLib.SaveSystem
 
             public override int GetHashCode() => HashCode.Combine(ObjectId, Key);
         }
-
-        private ConcurrentDictionary<StorageKey, object?>? _extensions;
     }
 }
