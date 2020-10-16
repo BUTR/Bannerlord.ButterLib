@@ -46,7 +46,7 @@ namespace Bannerlord.ButterLib.SaveSystem
                 _extensions = new ConcurrentDictionary<StorageKey, object?>();
         }
 
-        public void AddExtension(MBObjectBase @object, string key, object? data)
+        public void SetVariable(MBObjectBase @object, string key, object? data)
         {
             if (_extensions == null)
                 return;
@@ -54,7 +54,7 @@ namespace Bannerlord.ButterLib.SaveSystem
             _extensions[StorageKey.Make(@object, key)] = data;
         }
 
-        public void RemoveExtension(MBObjectBase @object, string key)
+        public void RemoveVariable(MBObjectBase @object, string key)
         {
             if (_extensions == null)
                 return;
@@ -62,7 +62,7 @@ namespace Bannerlord.ButterLib.SaveSystem
             _extensions.TryRemove(StorageKey.Make(@object, key), out _);
         }
 
-        public object? GetExtension(MBObjectBase @object, string key)
+        public object? GetVariable(MBObjectBase @object, string key)
         {
             if (_extensions == null)
                 return null;
@@ -72,8 +72,10 @@ namespace Bannerlord.ButterLib.SaveSystem
 
             return null;
         }
+
 #nullable disable
-        public T GetExtension<T>(MBObjectBase @object, string key)
+
+        public T GetVariable<T>(MBObjectBase @object, string key)
         {
             if (_extensions == null)
                 return default;
