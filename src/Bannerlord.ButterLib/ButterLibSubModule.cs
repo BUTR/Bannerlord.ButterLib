@@ -84,8 +84,10 @@ namespace Bannerlord.ButterLib
                 var butterLibModuleIndex = loadedModules.IndexOf(butterLibModule);
                 var officialModules = loadedModules.Where(x => x.IsOfficial).Select(x => (Module: x, Index: loadedModules.IndexOf(x)));
                 var modulesLoadedBeforeButterLib = officialModules.Where(tuple => tuple.Index < butterLibModuleIndex).ToList();
+
                 if (modulesLoadedBeforeButterLib.Count > 0)
                     InformationManager.DisplayMessage(new InformationMessage(new TextObject(SErrorOfficialLoadedBeforeButterLib).ToString(), Colors.Red));
+
                 foreach (var (module, _) in modulesLoadedBeforeButterLib)
                     _logger.LogError("ButterLib is loaded after an official module: {module}!", module.Id);
             }
@@ -99,13 +101,10 @@ namespace Bannerlord.ButterLib
             _logger.LogTrace("OnGameStart(Game, IGameStarter) started.");
 
             GameScope = ServiceProvider.CreateScope();
-            _logger.LogInformation("Created GameScope..");
+            _logger.LogInformation("Created GameScope...");
 
             if (game.GameType is Campaign campaign)
-            {
-                //Events
                 CampaignIdentifierEvents.Instance = new CampaignIdentifierEvents();
-            }
 
             _logger.LogTrace("OnGameStart(Game, IGameStarter) finished.");
         }

@@ -6,10 +6,10 @@ using TaleWorlds.ObjectSystem;
 
 namespace Bannerlord.ButterLib.SaveSystem.Extensions
 {
-    // TODO:
     internal static class MBObjectBaseExtensions
     {
         // Backing data store:
+
         private static IMBObjectVariableStorage? _instance;
 
         private static IMBObjectVariableStorage? Instance =>

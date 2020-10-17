@@ -92,29 +92,17 @@ namespace Bannerlord.ButterLib.Implementation
 
             if (game.GameType is Campaign)
             {
-                CampaignGameStarter gameStarter = (CampaignGameStarter)gameStarterObject;
+                var gameStarter = (CampaignGameStarter)gameStarterObject;
 
                 // Behaviors
                 gameStarter.AddBehavior(new CampaignIdentifierBehavior());
                 gameStarter.AddBehavior(new GeopoliticsCachingBehavior());
 
-                // Pseudo-behavior for MBObjectBase extension variable storage
-                if (false)
-                    MBObjectVariableStorageBehavior.Instance = new MBObjectVariableStorageBehavior();
+                // Pseudo-Behavior for MBObjectBase extension variable storage in CampaignBehaviorDataStore
+                MBObjectVariableStorageBehavior.Instance = new MBObjectVariableStorageBehavior();
             }
 
             Logger.LogTrace("OnGameStart(Game, IGameStarter) finished.");
-        }
-
-        public override void OnGameEnd(Game game)
-        {
-            base.OnGameEnd(game);
-            Logger.LogTrace("OnGameEnd(Game) started.");
-
-            if (game.GameType is Campaign)
-                MBObjectVariableStorageBehavior.Instance = null;
-
-            Logger.LogTrace("OnGameEnd(Game) finished.");
         }
     }
 }

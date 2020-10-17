@@ -75,18 +75,19 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
         [MethodImpl(MethodImplOptions.NoInlining)]
         private static void OnGameLoadedPrefix(object? ____campaignBehaviorDataStore)
         {
+            if (MBObjectVariableStorageBehavior.Instance == null)
+            {
+                _logger.LogError("OnGameLoadedPrefix: MBObjectVariableStorageBehavior.Instance is null");
+                return;
+            }
+
             if (____campaignBehaviorDataStore == null)
             {
                 _logger.LogError("OnGameLoadedPrefix: ____campaignBehaviorDataStore is null");
                 return;
             }
 
-            MBObjectVariableStorageBehavior.Instance?.Dispose();
-            MBObjectVariableStorageBehavior.Instance = new MBObjectVariableStorageBehavior();
-
-            LoadBehaviorDataMethod?.Invoke(
-                ____campaignBehaviorDataStore,
-                new object[] { MBObjectVariableStorageBehavior.Instance });
+            LoadBehaviorDataMethod?.Invoke(____campaignBehaviorDataStore, new object[] { MBObjectVariableStorageBehavior.Instance });
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
@@ -104,9 +105,7 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
                 return;
             }
 
-            SaveBehaviorDataMethod?.Invoke(
-                ____campaignBehaviorDataStore,
-                new object[] { MBObjectVariableStorageBehavior.Instance });
+            SaveBehaviorDataMethod?.Invoke(____campaignBehaviorDataStore, new object[] { MBObjectVariableStorageBehavior.Instance });
         }
     }
 }

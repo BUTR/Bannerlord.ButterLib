@@ -10,11 +10,11 @@ using TaleWorlds.ObjectSystem;
 
 namespace Bannerlord.ButterLib.Implementation.SaveSystem
 {
-    internal sealed class MBObjectVariableStorageBehavior : CampaignBehaviorBase, IMBObjectVariableStorage, IDisposable
+    internal sealed class MBObjectVariableStorageBehavior : CampaignBehaviorBase, IMBObjectVariableStorage
     {
         public static MBObjectVariableStorageBehavior? Instance { get; set; }
 
-        private ConcurrentDictionary<StorageKey, object?>? _variables;
+        private ConcurrentDictionary<StorageKey, object?> _variables = new ConcurrentDictionary<StorageKey, object?>();
 
         public override void RegisterEvents() { }
 
@@ -29,7 +29,7 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem
                 // particularly for the types likely to have expired.
                 var expiredIdCache = new Dictionary<uint, bool>();
 
-                foreach (var sk in _variables!.Keys)
+                foreach (var sk in _variables.Keys)
                 {
                     if (expiredIdCache.ContainsKey(sk.ObjectId))
                         _variables.TryRemove(sk, out _);
@@ -43,49 +43,24 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem
 
             dataStore.SyncDataAsJson("ButterLib.MBObjectVariableStorage", ref _variables);
 
+            // Loading old saves resets dictionary to null temporarily (only moment it can be null):
             if (dataStore.IsLoading && _variables == null)
                 _variables = new ConcurrentDictionary<StorageKey, object?>();
         }
 
-        public void SetVariable(MBObjectBase @object, string key, object? data)
-        {
-            if (_variables == null)
-                return;
-
+        public void SetVariable(MBObjectBase @object, string key, object? data) =>
             _variables[StorageKey.Make(@object, key)] = data;
-        }
 
-        public void RemoveVariable(MBObjectBase @object, string key)
-        {
-            if (_variables == null)
-                return;
-
+        public void RemoveVariable(MBObjectBase @object, string key) =>
             _variables.TryRemove(StorageKey.Make(@object, key), out _);
-        }
 
-        public object? GetVariable(MBObjectBase @object, string key)
-        {
-            if (_variables == null)
-                return null;
-
-            if (_variables.TryGetValue(StorageKey.Make(@object, key), out var value))
-                return value;
-
-            return null;
-        }
+        public object? GetVariable(MBObjectBase @object, string key) =>
+            _variables.TryGetValue(StorageKey.Make(@object, key), out var value) ? value : null;
 
 #nullable disable
 
-        public T GetVariable<T>(MBObjectBase @object, string key)
-        {
-            if (_variables == null)
-                return default;
-
-            if (_variables.TryGetValue(StorageKey.Make(@object, key), out var val) && val is T value)
-                return value;
-
-            return default;
-        }
+        public T GetVariable<T>(MBObjectBase @object, string key) =>
+            (_variables.TryGetValue(StorageKey.Make(@object, key), out var val) && val is T value) ? value : default;
 
 #nullable restore
 
@@ -105,11 +80,6 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem
             public override bool Equals(object obj) => obj is StorageKey sk && Equals(sk);
 
             public override int GetHashCode() => HashCode.Combine(ObjectId, Key);
-        }
-
-        public void Dispose()
-        {
-            _variables?.Clear();
         }
     }
 }
