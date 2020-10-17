@@ -87,6 +87,8 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
                 return;
             }
 
+            MBObjectVariableStorageBehavior.Instance = new MBObjectVariableStorageBehavior();
+
             LoadBehaviorDataMethod?.Invoke(
                 ____campaignBehaviorDataStore,
                 new object[] { MBObjectVariableStorageBehavior.Instance });
@@ -110,6 +112,8 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
             SaveBehaviorDataMethod?.Invoke(
                 ____campaignBehaviorDataStore,
                 new object[] { MBObjectVariableStorageBehavior.Instance });
+
+            MBObjectVariableStorageBehavior.Instance = null;
         }
     }
 }
