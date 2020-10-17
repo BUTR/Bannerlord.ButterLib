@@ -10,7 +10,7 @@ using TaleWorlds.ObjectSystem;
 
 namespace Bannerlord.ButterLib.Implementation.SaveSystem
 {
-    internal sealed class MBObjectVariableStorageBehavior : CampaignBehaviorBase, IMBObjectVariableStorage
+    internal sealed class MBObjectVariableStorageBehavior : CampaignBehaviorBase, IMBObjectVariableStorage, IDisposable
     {
         public static MBObjectVariableStorageBehavior? Instance { get; set; }
 
@@ -105,6 +105,11 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem
             public override bool Equals(object obj) => obj is StorageKey sk && Equals(sk);
 
             public override int GetHashCode() => HashCode.Combine(ObjectId, Key);
+        }
+
+        public void Dispose()
+        {
+            _variables?.Clear();
         }
     }
 }
