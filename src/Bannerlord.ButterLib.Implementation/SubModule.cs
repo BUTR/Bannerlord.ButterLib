@@ -104,5 +104,19 @@ namespace Bannerlord.ButterLib.Implementation
 
             Logger.LogTrace("OnGameStart(Game, IGameStarter) finished.");
         }
+
+        public override void OnGameEnd(Game game)
+        {
+            base.OnGameEnd(game);
+            Logger.LogTrace("OnGameEnd(Game) started.");
+
+            if (game.GameType is Campaign)
+            {
+                CampaignIdentifierEvents.Instance = null;
+                MBObjectVariableStorageBehavior.Instance = null;
+            }
+
+            Logger.LogTrace("OnGameEnd(Game) finished.");
+        }
     }
 }
