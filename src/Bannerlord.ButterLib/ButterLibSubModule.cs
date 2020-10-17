@@ -4,16 +4,12 @@ using Bannerlord.ButterLib.Common.Helpers;
 using Bannerlord.ButterLib.Options;
 using Bannerlord.ButterLib.SaveSystem.Extensions;
 
-using HarmonyLib;
-
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-using System;
 using System.Linq;
 
 using TaleWorlds.CampaignSystem;
-using TaleWorlds.CampaignSystem.SandBox.CampaignBehaviors;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
@@ -26,11 +22,6 @@ namespace Bannerlord.ButterLib
     /// </summary>
     public sealed partial class ButterLibSubModule : MBSubModuleBase
     {
-        private static readonly AccessTools.FieldRef<CampaignBehaviorManager, object> CampaignBehaviorDataStore =
-            AccessTools.FieldRefAccess<CampaignBehaviorManager, object>("_campaignBehaviorDataStore");
-        private static readonly Type CampaignBehaviorDataStoreType =
-            typeof(CampaignTime).Assembly.GetType("TaleWorlds.CampaignSystem.CampaignBehaviorDataStore");
-
         private const string SErrorOfficialLoadedBeforeButterLib = "{=GDkjThJcH6}ButterLib is loaded after the official modules! Make sure ButterLib is loaded before them!";
 
         private ILogger _logger = default!;

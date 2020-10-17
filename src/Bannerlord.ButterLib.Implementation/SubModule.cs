@@ -8,6 +8,7 @@ using Bannerlord.ButterLib.Implementation.Common.Extensions;
 using Bannerlord.ButterLib.Implementation.DistanceMatrix;
 using Bannerlord.ButterLib.Implementation.Logging;
 using Bannerlord.ButterLib.Implementation.SaveSystem;
+using Bannerlord.ButterLib.Implementation.SaveSystem.Patches;
 using Bannerlord.ButterLib.SaveSystem;
 
 using HarmonyLib;
@@ -61,6 +62,9 @@ namespace Bannerlord.ButterLib.Implementation
             DelayedSubModuleManager.Subscribe<StoryModeSubModule, SubModule>(
                 nameof(OnSubModuleLoad), SubscriptionType.AfterMethod, InitializeCampaignIdentifier);
 
+            // Selectively apply Harmony patches for MBObjectVariableStorageBehavior load/save
+            CampaignBehaviorManagerPatch.Apply(new Harmony("Bannerlord.ButterLib.MBObjectVariableStorage"));
+
             Logger.LogTrace("OnSubModuleLoad() finished.");
         }
 
@@ -101,18 +105,19 @@ namespace Bannerlord.ButterLib.Implementation
 
             if (game.GameType is Campaign)
             {
-                CampaignGameStarter gameStarter = (CampaignGameStarter) gameStarterObject;
+                CampaignGameStarter gameStarter = (CampaignGameStarter)gameStarterObject;
 
                 // Behaviors
                 gameStarter.AddBehavior(new CampaignIdentifierBehavior());
                 gameStarter.AddBehavior(new GeopoliticsCachingBehavior());
 
                 // Pseudo-behavior for MBObjectBase extension variable storage
-                MBObjectVariableStorageBehavior.Instance = new MBObjectVariableStorageBehavior();
+                if (false)
+                    MBObjectVariableStorageBehavior.Instance = new MBObjectVariableStorageBehavior();
             }
+
             Logger.LogTrace("OnGameStart(Game, IGameStarter) finished.");
         }
-
 
         public override void OnGameEnd(Game game)
         {
