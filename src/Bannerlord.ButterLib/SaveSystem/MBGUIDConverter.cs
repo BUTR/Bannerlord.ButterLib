@@ -6,23 +6,23 @@ using TaleWorlds.ObjectSystem;
 
 namespace Bannerlord.ButterLib.SaveSystem
 {
-    public class MBObjectBaseConverter : JsonConverter
+    public class MBGUIDConverter : JsonConverter
     {
-        public override bool CanConvert(Type objectType) => typeof(MBObjectBase).IsAssignableFrom(objectType);
+        public override bool CanConvert(Type objectType) => objectType == typeof(MBGUID);
 
         public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
         {
-            if (value is MBObjectBase mbObjectBase)
+            if (value is MBGUID mbguid)
             {
-                serializer.Serialize(writer, mbObjectBase.Id);
+                serializer.Serialize(writer, mbguid.InternalValue);
             }
         }
 
         public override object? ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            if (serializer.Deserialize<MBGUID?>(reader) is { } mbguid)
+            if (serializer.Deserialize<uint?>(reader) is { } id)
             {
-                return MBObjectManager.Instance.GetObject(mbguid);
+                return new MBGUID(id);
             }
             return null;
         }

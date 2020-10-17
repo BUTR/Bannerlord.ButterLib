@@ -14,7 +14,7 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
             settings ??= new JsonSerializerSettings
             {
                 ContractResolver = new TaleWorldsContractResolver(),
-                Converters = { new DictionaryToArrayConverter(), new MBObjectBaseConverter() },
+                Converters = { new DictionaryToArrayConverter(), new MBGUIDConverter(), new MBObjectBaseConverter() },
                 TypeNameHandling = TypeNameHandling.All,
                 //ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
                 //PreserveReferencesHandling = PreserveReferencesHandling.Objects
