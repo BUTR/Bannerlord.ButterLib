@@ -51,7 +51,15 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
         public static void SetVariable<T>(this MBObjectBase @object, string key, T data)
         {
             if (Instance is { } instance)
+            {
+                if (data is char @char)
+                {
+                    instance.SetVariable(@object, key, @char.ToString());
+                    return;
+                }
+
                 instance.SetVariable(@object, key, data);
+            }
         }
 
         public static void SetVariableAsJson<T>(this MBObjectBase @object, string key, T data, JsonSerializerSettings? settings = null)

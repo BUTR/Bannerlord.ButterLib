@@ -64,7 +64,7 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem
 
 #nullable restore
 
-        private class MBGUIDConverter : JsonConverter
+        private sealed class MBGUIDConverter : JsonConverter
         {
             public override bool CanConvert(Type objectType) => objectType == typeof(StorageKey) || objectType == typeof(StorageKey?);
 

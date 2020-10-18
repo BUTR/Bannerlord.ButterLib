@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Bannerlord.ButterLib.SaveSystem
 {
-    public class DictionaryToArrayConverter : JsonConverter
+    public sealed class DictionaryToArrayConverter : JsonConverter
     {
         public override bool CanConvert(Type objectType) => typeof(IDictionary).IsAssignableFrom(objectType) || TypeImplementsGenericInterface(objectType, typeof(IDictionary<,>));
 

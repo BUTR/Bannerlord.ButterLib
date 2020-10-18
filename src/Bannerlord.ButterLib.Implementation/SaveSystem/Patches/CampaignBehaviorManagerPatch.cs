@@ -17,7 +17,7 @@ using TaleWorlds.CampaignSystem.SandBox.CampaignBehaviors;
 
 namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
 {
-    internal class CampaignBehaviorManagerPatch
+    internal sealed class CampaignBehaviorManagerPatch
     {
         private delegate void SaveBehaviorDataDelegate(CampaignBehaviorBase campaignBehavior);
         private delegate void LoadBehaviorDataDelegate(CampaignBehaviorBase campaignBehavior);

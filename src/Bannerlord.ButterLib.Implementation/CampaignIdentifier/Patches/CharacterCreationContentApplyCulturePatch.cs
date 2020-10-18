@@ -18,7 +18,7 @@ using static HarmonyLib.AccessTools;
 
 namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.Patches
 {
-    internal class CharacterCreationContentApplyCulturePatch
+    internal sealed class CharacterCreationContentApplyCulturePatch
     {
         private static ILogger _logger = default!;
 

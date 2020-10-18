@@ -30,7 +30,8 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
 
             if (dataStore.IsSaving)
             {
-                var jsonData = JsonConvert.SerializeObject(data, Formatting.None, settings);
+                var dataJson = JsonConvert.SerializeObject(data, Formatting.None, settings);
+                var jsonData = JsonConvert.SerializeObject(new JsonData(2, dataJson));
                 var chunks = ToChunks(jsonData, short.MaxValue - 1024).ToArray();
                 return dataStore.SyncData(key, ref chunks);
             }
@@ -42,32 +43,51 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
                     // The game's save system limits the string to be of size of short.MaxValue
                     // We avoid this limitation by splitting the string into chunks.
                     var jsonDataChunks = Array.Empty<string>();
-                    var @return = dataStore.SyncData(key, ref jsonDataChunks); // try to get as JSON string
-                    var jsonData = string.Concat(jsonDataChunks);
-                    data = JsonConvert.DeserializeObject<T>(jsonData, settings);
-                    return @return;
+                    var result = dataStore.SyncData(key, ref jsonDataChunks); // try to get as JSON string
+                    var jsonData = JsonConvert.DeserializeObject<JsonData>(string.Concat(jsonDataChunks ?? Array.Empty<string>()), settings);
+                    data = jsonData.Format switch
+                    {
+                        2 => JsonConvert.DeserializeObject<T>(jsonData.Data, settings),
+                        _ => data
+                    };
+                    return result;
                 }
-                catch (Exception e) when (e is InvalidCastException)
+                catch (Exception e) when (e is InvalidCastException) { }
+
+                try
                 {
-                    try
-                    {
-                        // The first version of SyncDataAsJson stored the string as a single entity
-                        var jsonData = "";
-                        var @return = dataStore.SyncData(key, ref jsonData); // try to get as JSON string
-                        data = JsonConvert.DeserializeObject<T>(jsonData, settings);
-                        return @return;
-                    }
-                    catch (Exception ex) when (ex is InvalidCastException)
-                    {
-                        // Most likely the save file stores the data with its default binary serialization
-                        // We read it as it is, the next save will convert the data to JSON
-                        return dataStore.SyncData(key, ref data);
-                    }
+                    // The first version of SyncDataAsJson stored the string as a single entity
+                    var jsonData = "";
+                    var result = dataStore.SyncData(key, ref jsonData); // try to get as JSON string
+                    data = JsonConvert.DeserializeObject<T>(jsonData, settings);
+                    return result;
                 }
+                catch (Exception ex) when (ex is InvalidCastException) { }
+
+                try
+                {
+                    // Most likely the save file stores the data with its default binary serialization
+                    // We read it as it is, the next save will convert the data to JSON
+                    var result = dataStore.SyncData(key, ref data);
+                    return result;
+                }
+                catch (Exception ex) when (ex is InvalidCastException) { }
             }
 
             return false;
         }
 #nullable restore
+
+        private sealed class JsonData
+        {
+            public int Format { get; private set; }
+            public string Data { get; private set; }
+
+            public JsonData(int format, string data)
+            {
+                Format = format;
+                Data = data;
+            }
+        }
     }
 }

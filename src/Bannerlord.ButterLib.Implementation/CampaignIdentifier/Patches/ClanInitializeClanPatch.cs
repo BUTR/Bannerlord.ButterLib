@@ -15,7 +15,7 @@ using static HarmonyLib.AccessTools;
 
 namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.Patches
 {
-    internal class ClanInitializeClanPatch
+    internal sealed class ClanInitializeClanPatch
     {
         private static ILogger _logger = default!;
 
