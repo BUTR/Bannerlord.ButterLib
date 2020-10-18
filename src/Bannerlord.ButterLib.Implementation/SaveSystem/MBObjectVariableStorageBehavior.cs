@@ -64,7 +64,7 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem
 
 #nullable restore
 
-        private sealed class MBGUIDConverter : JsonConverter
+        private sealed class StorageKeyConverter : JsonConverter
         {
             public override bool CanConvert(Type objectType) => objectType == typeof(StorageKey) || objectType == typeof(StorageKey?);
 
@@ -90,7 +90,7 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem
             }
         }
 
-        [JsonConverter(typeof(MBGUIDConverter))]
+        [JsonConverter(typeof(StorageKeyConverter))]
         private readonly struct StorageKey : IEquatable<StorageKey>
         {
             public static implicit operator MBGUID(StorageKey sk) => new MBGUID(sk.ObjectId);
