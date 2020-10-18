@@ -16,37 +16,42 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem
     {
         private ConcurrentDictionary<StorageKey, object?> _variables = new ConcurrentDictionary<StorageKey, object?>();
 
+        // JsonConvert won't do a ConcurrentBag, so another ConcurrentDictionary is easy.
+        private ConcurrentDictionary<StorageKey, bool> _flags = new ConcurrentDictionary<StorageKey, bool>();
+
         public override void RegisterEvents() { }
 
         public override void SyncData(IDataStore dataStore)
         {
             if (dataStore.IsSaving)
             {
-                // Cleanup variables in data store that refer to now-nonexistent/untracked objects.
-                // This is also periodically done due to autosaves to address any leak concerns.
-
-                // Cache known-expired object IDs, as MBObjectManager.GetObject can be slow,
-                // particularly for the types likely to have expired.
+                // Cache known-expired object IDs, as MBObjectManager.GetObject can be slow.
                 var expiredIdCache = new Dictionary<uint, bool>();
 
-                foreach (var sk in _variables.Keys)
-                {
-                    if (expiredIdCache.ContainsKey(sk.ObjectId))
-                        _variables.TryRemove(sk, out _);
-                    else if (MBObjectManager.Instance.GetObject(sk) == default)
-                    {
-                        expiredIdCache[sk.ObjectId] = true;
-                        _variables.TryRemove(sk, out _);
-                    }
-                }
+                // Remove entries in data store that refer to now-nonexistent/untracked objects.
+                ReleaseOrphanedEntries(_variables, expiredIdCache);
+                ReleaseOrphanedEntries(_flags, expiredIdCache);
             }
 
-            dataStore.SyncDataAsJson("ButterLib.MBObjectVariableStorage", ref _variables);
-
-            // Loading old saves resets dictionary to null temporarily (only moment it can be null):
-            if (dataStore.IsLoading && _variables == null!)
-                _variables = new ConcurrentDictionary<StorageKey, object?>();
+            dataStore.SyncDataAsJson("ButterLib.MBObjectVariableStorage.Vars", ref _variables);
+            dataStore.SyncDataAsJson("ButterLib.MBObjectVariableStorage.Flags", ref _flags);
         }
+
+        private void ReleaseOrphanedEntries<ValueT>(ConcurrentDictionary<StorageKey, ValueT> dict, Dictionary<uint, bool> expiredIdCache)
+        {
+            foreach (var sk in dict.Keys)
+            {
+                if (expiredIdCache.ContainsKey(sk.ObjectId))
+                    dict.TryRemove(sk, out _);
+                else if (MBObjectManager.Instance.GetObject(sk) == default)
+                {
+                    expiredIdCache[sk.ObjectId] = true;
+                    dict.TryRemove(sk, out _);
+                }
+            }
+         }
+
+        /* Variables Implementation */
 
         public void SetVariable(MBObjectBase @object, string key, object? data) =>
             _variables[StorageKey.Make(@object, key)] = data;
@@ -63,6 +68,16 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem
             (_variables.TryGetValue(StorageKey.Make(@object, key), out var val) && val is T value) ? value : default;
 
 #nullable restore
+
+        /* Flags Implementation */
+
+        public bool HasFlag(MBObjectBase @object, string name) => _flags.ContainsKey(StorageKey.Make(@object, name));
+
+        public void SetFlag(MBObjectBase @object, string name) => _flags[StorageKey.Make(@object, name)] = true;
+
+        public void RemoveFlag(MBObjectBase @object, string name) => _flags.TryRemove(StorageKey.Make(@object, name), out _);
+
+        /* StorageKey Implementation */
 
         private sealed class StorageKeyConverter : JsonConverter
         {
