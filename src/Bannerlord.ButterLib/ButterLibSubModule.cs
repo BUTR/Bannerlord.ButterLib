@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 using System.Linq;
-
+using Bannerlord.ButterLib.Logger.Extensions;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
@@ -86,7 +86,7 @@ namespace Bannerlord.ButterLib
                 var modulesLoadedBeforeButterLib = officialModules.Where(tuple => tuple.Index < butterLibModuleIndex).ToList();
 
                 if (modulesLoadedBeforeButterLib.Count > 0)
-                    InformationManager.DisplayMessage(new InformationMessage(new TextObject(SErrorOfficialLoadedBeforeButterLib).ToString(), Colors.Red));
+                    _logger.LogAndDisplay(LogLevel.Error, new TextObject(SErrorOfficialLoadedBeforeButterLib).ToString());
 
                 foreach (var (module, _) in modulesLoadedBeforeButterLib)
                     _logger.LogError("ButterLib is loaded after an official module: {module}!", module.Id);

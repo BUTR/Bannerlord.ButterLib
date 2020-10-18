@@ -30,7 +30,7 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
                 if (typeof(T) == typeof(char))
                 {
                     var str = instance.GetVariable<string>(@object, key);
-                    return str.Length > 0 && str[0] is T val ? val : default;
+                    return !string.IsNullOrEmpty(str) && str[0] is T val ? val : default;
                 }
 
                 return instance.GetVariable<T>(@object, key);

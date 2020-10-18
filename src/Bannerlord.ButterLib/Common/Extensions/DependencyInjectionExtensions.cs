@@ -16,6 +16,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
+using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
 using TaleWorlds.Engine;
 using TaleWorlds.MountAndBlade;
@@ -30,6 +31,10 @@ namespace Bannerlord.ButterLib.Common.Extensions
         /// For Stage 3.
         /// </summary>
         public static IServiceProvider? GetServiceProvider(this Game _) => ButterLibSubModule.ServiceProvider;
+        /// <summary>
+        /// For Stage 3.
+        /// </summary>
+        public static IServiceProvider? GetServiceProvider(this CampaignBehaviorBase _) => ButterLibSubModule.ServiceProvider;
         /// <summary>
         /// For Stage 3.
         /// </summary>
