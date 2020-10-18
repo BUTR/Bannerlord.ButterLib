@@ -86,7 +86,7 @@ namespace Bannerlord.ButterLib
                 var modulesLoadedBeforeButterLib = officialModules.Where(tuple => tuple.Index < butterLibModuleIndex).ToList();
 
                 if (modulesLoadedBeforeButterLib.Count > 0)
-                    _logger.LogAndDisplay(LogLevel.Error, new TextObject(SErrorOfficialLoadedBeforeButterLib).ToString());
+                    _logger.LogErrorAndDisplay(new TextObject(SErrorOfficialLoadedBeforeButterLib).ToString());
 
                 foreach (var (module, _) in modulesLoadedBeforeButterLib)
                     _logger.LogError("ButterLib is loaded after an official module: {module}!", module.Id);
