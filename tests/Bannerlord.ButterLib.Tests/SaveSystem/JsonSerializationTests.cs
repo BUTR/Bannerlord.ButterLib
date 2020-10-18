@@ -43,7 +43,7 @@ namespace Bannerlord.ButterLib.Tests.SaveSystem
             {
                 ContractResolver = new TaleWorldsContractResolver(),
                 Converters = { new DictionaryToArrayConverter(), new MBGUIDConverter(), new MBObjectBaseConverter() },
-                TypeNameHandling = TypeNameHandling.All
+                TypeNameHandling = TypeNameHandling.Auto
             };
 
             var saveableClassTypes = AppDomain.CurrentDomain.GetAssemblies()
@@ -89,7 +89,7 @@ namespace Bannerlord.ButterLib.Tests.SaveSystem
             {
                 ContractResolver = new TaleWorldsContractResolver(),
                 Converters = { new DictionaryToArrayConverter(), new MBGUIDConverter(), new MBObjectBaseConverter() },
-                TypeNameHandling = TypeNameHandling.All
+                TypeNameHandling = TypeNameHandling.Auto
             };
 
             var saveableClassTypes = AppDomain.CurrentDomain.GetAssemblies()

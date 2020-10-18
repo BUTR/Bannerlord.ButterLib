@@ -105,7 +105,7 @@ namespace Bannerlord.ButterLib.Implementation.Tests
         [Test]
         public void CampaignDescriptor_Test()
         {
-            using var harmony = new HarmonyDisposable($"{nameof(DependencyInjectionTests)}.{nameof(DistanceMatrix_Test)}");
+            using var harmony = new HarmonyDisposable($"{nameof(DependencyInjectionTests)}.{nameof(CampaignDescriptor_Test)}");
             harmony.Patch(AccessTools.DeclaredPropertyGetter(typeof(CampaignTime), "CurrentTicks"),
                 prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedCurrentTicks)));
             harmony.Patch(SymbolExtensions.GetMethodInfo(() => CharacterCode.CreateFrom((BasicCharacterObject) null!)),

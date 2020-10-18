@@ -1,6 +1,8 @@
 ﻿using Bannerlord.ButterLib.SaveSystem;
 using Bannerlord.ButterLib.SaveSystem.Extensions;
 
+using Newtonsoft.Json;
+
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -12,8 +14,6 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem
 {
     internal sealed class MBObjectVariableStorageBehavior : CampaignBehaviorBase, IMBObjectVariableStorage
     {
-        public static MBObjectVariableStorageBehavior? Instance { get; set; }
-
         private ConcurrentDictionary<StorageKey, object?> _variables = new ConcurrentDictionary<StorageKey, object?>();
 
         public override void RegisterEvents() { }
@@ -44,7 +44,7 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem
             dataStore.SyncDataAsJson("ButterLib.MBObjectVariableStorage", ref _variables);
 
             // Loading old saves resets dictionary to null temporarily (only moment it can be null):
-            if (dataStore.IsLoading && _variables == null)
+            if (dataStore.IsLoading && _variables == null!)
                 _variables = new ConcurrentDictionary<StorageKey, object?>();
         }
 
@@ -64,6 +64,33 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem
 
 #nullable restore
 
+        private class MBGUIDConverter : JsonConverter
+        {
+            public override bool CanConvert(Type objectType) => objectType == typeof(StorageKey) || objectType == typeof(StorageKey?);
+
+            public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
+            {
+                if (value is StorageKey storageKey)
+                {
+                    serializer.Serialize(writer, storageKey.ObjectId);
+                    serializer.Serialize(writer, storageKey.Key);
+                    return;
+                }
+
+                serializer.Serialize(writer, null);
+            }
+
+            public override object? ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+            {
+                if (serializer.Deserialize<uint?>(reader) is { } objectId && reader.Read() && serializer.Deserialize<string>(reader) is { } key)
+                {
+                    return new StorageKey(objectId, key);
+                }
+                return null;
+            }
+        }
+
+        [JsonConverter(typeof(MBGUIDConverter))]
         private readonly struct StorageKey : IEquatable<StorageKey>
         {
             public static implicit operator MBGUID(StorageKey sk) => new MBGUID(sk.ObjectId);
@@ -71,13 +98,13 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem
             public readonly uint ObjectId;
             public readonly string Key;
 
-            private StorageKey(uint objectId, string key) => (ObjectId, Key) = (objectId, key);
+            internal StorageKey(uint objectId, string key) => (ObjectId, Key) = (objectId, key);
 
             public static StorageKey Make(MBObjectBase obj, string key) => new StorageKey(obj.Id.InternalValue, key);
 
-            public bool Equals(StorageKey other) => ObjectId == other.ObjectId && Key.Equals(other.Key);
+            public bool Equals(StorageKey other) => ObjectId == other.ObjectId && Key != null! && other.Key != null! && Key.Equals(other.Key);
 
-            public override bool Equals(object obj) => obj is StorageKey sk && Equals(sk);
+            public override bool Equals(object? obj) => obj is StorageKey sk && Equals(sk);
 
             public override int GetHashCode() => HashCode.Combine(ObjectId, Key);
         }

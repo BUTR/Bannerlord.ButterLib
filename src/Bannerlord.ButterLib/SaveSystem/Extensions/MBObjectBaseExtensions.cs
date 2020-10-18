@@ -1,5 +1,7 @@
 ﻿using Bannerlord.ButterLib.Common.Extensions;
+
 using Microsoft.Extensions.DependencyInjection;
+
 using Newtonsoft.Json;
 
 using TaleWorlds.ObjectSystem;
@@ -24,7 +26,16 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
         public static T GetVariable<T>(this MBObjectBase @object, string key)
         {
             if (Instance is { } instance)
+            {
+                if (typeof(T) == typeof(char))
+                {
+                    var str = instance.GetVariable<string>(@object, key);
+                    return str.Length > 0 && str[0] is T val ? val : default;
+                }
+
                 return instance.GetVariable<T>(@object, key);
+            }
+
             return default;
         }
 

@@ -1,4 +1,6 @@
 ﻿using Bannerlord.ButterLib.Common.Extensions;
+using Bannerlord.ButterLib.Common.Helpers;
+using Bannerlord.ButterLib.SaveSystem;
 
 using HarmonyLib;
 
@@ -17,6 +19,9 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
 {
     internal class CampaignBehaviorManagerPatch
     {
+        private delegate void SaveBehaviorDataDelegate(CampaignBehaviorBase campaignBehavior);
+        private delegate void LoadBehaviorDataDelegate(CampaignBehaviorBase campaignBehavior);
+
         private static ILogger _logger = default!;
 
         // Application:
@@ -75,9 +80,10 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
         [MethodImpl(MethodImplOptions.NoInlining)]
         private static void OnGameLoadedPrefix(object? ____campaignBehaviorDataStore)
         {
-            if (MBObjectVariableStorageBehavior.Instance == null)
+            var mbObjectVariableStorage = ButterLibSubModule.Instance?.GetServiceProvider()?.GetRequiredService<IMBObjectVariableStorage>();
+            if (mbObjectVariableStorage == null)
             {
-                _logger.LogError("OnGameLoadedPrefix: MBObjectVariableStorageBehavior.Instance is null");
+                _logger.LogError("OnGameLoadedPrefix: mbObjectVariableStorage is null");
                 return;
             }
 
@@ -87,15 +93,24 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
                 return;
             }
 
-            LoadBehaviorDataMethod?.Invoke(____campaignBehaviorDataStore, new object[] { MBObjectVariableStorageBehavior.Instance });
+            if (LoadBehaviorDataMethod == null)
+            {
+                _logger.LogError("OnGameLoadedPrefix: SaveBehaviorDataMethod is null");
+                return;
+            }
+
+            var loadBehaviorData = AccessTools2.GetDelegate<LoadBehaviorDataDelegate>(____campaignBehaviorDataStore, LoadBehaviorDataMethod);
+            if (loadBehaviorData != null && mbObjectVariableStorage is CampaignBehaviorBase campaignBehavior)
+                loadBehaviorData(campaignBehavior);
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
         private static void OnBeforeSavePostfix(object? ____campaignBehaviorDataStore)
         {
-            if (MBObjectVariableStorageBehavior.Instance == null)
+            var mbObjectVariableStorage = ButterLibSubModule.Instance?.GetServiceProvider()?.GetRequiredService<IMBObjectVariableStorage>();
+            if (mbObjectVariableStorage == null)
             {
-                _logger.LogError("OnBeforeSavePostfix: MBObjectVariableStorageBehavior.Instance is null");
+                _logger.LogError("OnBeforeSavePostfix: mbObjectVariableStorage is null");
                 return;
             }
 
@@ -105,7 +120,15 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
                 return;
             }
 
-            SaveBehaviorDataMethod?.Invoke(____campaignBehaviorDataStore, new object[] { MBObjectVariableStorageBehavior.Instance });
+            if (SaveBehaviorDataMethod == null)
+            {
+                _logger.LogError("OnBeforeSavePostfix: SaveBehaviorDataMethod is null");
+                return;
+            }
+
+            var saveBehaviorData = AccessTools2.GetDelegate<SaveBehaviorDataDelegate>(____campaignBehaviorDataStore, SaveBehaviorDataMethod);
+            if (saveBehaviorData != null && mbObjectVariableStorage is CampaignBehaviorBase campaignBehavior)
+                saveBehaviorData(campaignBehavior);
         }
     }
 }

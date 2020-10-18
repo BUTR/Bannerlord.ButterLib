@@ -97,9 +97,6 @@ namespace Bannerlord.ButterLib.Implementation
                 // Behaviors
                 gameStarter.AddBehavior(new CampaignIdentifierBehavior());
                 gameStarter.AddBehavior(new GeopoliticsCachingBehavior());
-
-                // Pseudo-Behavior for MBObjectBase extension variable storage in CampaignBehaviorDataStore
-                MBObjectVariableStorageBehavior.Instance = new MBObjectVariableStorageBehavior();
             }
 
             Logger.LogTrace("OnGameStart(Game, IGameStarter) finished.");
@@ -113,7 +110,6 @@ namespace Bannerlord.ButterLib.Implementation
             if (game.GameType is Campaign)
             {
                 CampaignIdentifierEvents.Instance = null;
-                MBObjectVariableStorageBehavior.Instance = null;
             }
 
             Logger.LogTrace("OnGameEnd(Game) finished.");

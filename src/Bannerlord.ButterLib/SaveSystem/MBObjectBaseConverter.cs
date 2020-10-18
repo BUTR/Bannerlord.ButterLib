@@ -15,7 +15,10 @@ namespace Bannerlord.ButterLib.SaveSystem
             if (value is MBObjectBase mbObjectBase)
             {
                 serializer.Serialize(writer, mbObjectBase.Id);
+                return;
             }
+
+            serializer.Serialize(writer, null);
         }
 
         public override object? ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
