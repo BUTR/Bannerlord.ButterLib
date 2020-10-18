@@ -24,9 +24,9 @@ namespace Bannerlord.ButterLib.Logger.Extensions
                 LogLevel.Trace => Color.FromUint(0x00FFFFFF), // white
                 LogLevel.Debug => Color.FromUint(0x00808080), // grey
                 LogLevel.Information => Color.FromUint(0x00008000), // green
-                LogLevel.Warning => Color.FromUint(0x00FFFF00), // yellow
-                LogLevel.Error => Color.FromUint(0x00FF8000), // orange
-                LogLevel.Critical => Color.FromUint(0x00FF0000), // red
+                LogLevel.Warning => Color.FromUint(0x00FF8000), // orange
+                LogLevel.Error => Color.FromUint(0x00FF0000), // red
+                LogLevel.Critical => Color.FromUint(0x008B0000), // dark red
                 LogLevel.None => Color.White,
                 _ => throw new ArgumentOutOfRangeException(nameof(logLevel), logLevel, null)
             }));
