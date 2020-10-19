@@ -43,7 +43,7 @@ namespace Bannerlord.ButterLib
             foreach (var action in BeforeInitialization)
                 action?.Invoke(Services);
 
-            this.AddSerilogLogger();
+            this.AddDefaultSerilogLogger();
             this.AddSerilogLoggerProvider("butterlib.txt", new[] { "Bannerlord.ButterLib.*" });
 
             _logger = this.GetTempServiceProvider().GetRequiredService<ILogger<ButterLibSubModule>>();

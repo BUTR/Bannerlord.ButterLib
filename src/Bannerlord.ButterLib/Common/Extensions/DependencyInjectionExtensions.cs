@@ -51,7 +51,7 @@ namespace Bannerlord.ButterLib.Common.Extensions
         private static readonly string ModLogsPath = Path.Combine(Utilities.GetConfigsPath(), "ModLogs");
         private static readonly string OutputTemplate = "[{Timestamp:HH:mm:ss.fff}] [{SourceContext}] [{Level:u3}]: {Message:lj}{NewLine}{Exception}";
 
-        internal static IServiceCollection? AddSerilogLogger(this MBSubModuleBase subModule)
+        internal static IServiceCollection? AddDefaultSerilogLogger(this MBSubModuleBase subModule)
         {
             var services = subModule.GetServices();
 
