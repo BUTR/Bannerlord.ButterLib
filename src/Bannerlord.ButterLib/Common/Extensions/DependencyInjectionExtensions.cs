@@ -64,7 +64,8 @@ namespace Bannerlord.ButterLib.Common.Extensions
                 .WriteTo.File(
                     outputTemplate: OutputTemplate,
                     path: Path.Combine(ModLogsPath, "default.log"),
-                    rollingInterval: RollingInterval.Day)
+                    rollingInterval: RollingInterval.Day,
+                    retainedFileCountLimit: 7)
                 .CreateLogger();
 
 
@@ -79,7 +80,7 @@ namespace Bannerlord.ButterLib.Common.Extensions
         /// <summary>
         /// Don't forget to get a new ILogger after adding a new ILoggerProvider
         /// </summary>
-        public static IServiceCollection AddSerilogLoggerProvider(this MBSubModuleBase subModule, string filename, IEnumerable<string>? filter = null, Action<LoggerConfiguration>? confugure = null)
+        public static IServiceCollection AddSerilogLoggerProvider(this MBSubModuleBase subModule, string filename, IEnumerable<string>? filter = null, Action<LoggerConfiguration>? configure = null)
         {
             filter ??= new List<string> { subModule.GetType().Assembly.GetName().Name };
             var filterList = filter.ToList();
@@ -94,8 +95,9 @@ namespace Bannerlord.ButterLib.Common.Extensions
                 .WriteTo.File(
                     outputTemplate: OutputTemplate,
                     path: Path.Combine(ModLogsPath, filename),
-                    rollingInterval: RollingInterval.Day);
-            confugure?.Invoke(builder);
+                    rollingInterval: RollingInterval.Day,
+                    retainedFileCountLimit: 7);
+            configure?.Invoke(builder);
             var logger = builder.CreateLogger();
 
             services.AddSingleton<ILoggerProvider, SerilogLoggerProvider>(_ => new SerilogLoggerProvider(logger, true));
