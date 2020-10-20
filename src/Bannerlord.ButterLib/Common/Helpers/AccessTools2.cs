@@ -1,4 +1,6 @@
-﻿using System;
+﻿using HarmonyLib;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -11,6 +13,38 @@ namespace Bannerlord.ButterLib.Common.Helpers
     /// <summary>An extension of Harmony's helper class for reflection related functions</summary>
     public static class AccessTools2
     {
+        /// <summary>Creates a static field reference delegate</summary>
+        /// <typeparam name="TField">The type of the field</typeparam>
+        /// <param name="fieldInfo">The field</param>
+        /// <returns>A read and writable <see cref="T:HarmonyLib.AccessTools.FieldRef`1" /> delegate</returns>
+        public static FieldRef<TField>? StaticFieldRefAccess<TField>(FieldInfo fieldInfo)
+        {
+            return fieldInfo == null ? null : AccessTools.StaticFieldRefAccess<TField>(fieldInfo);
+        }
+
+        /// <summary>Creates an instance field reference delegate for a private type</summary>
+        /// <typeparam name="TField">The type of the field</typeparam>
+        /// <param name="type">The class/type</param>
+        /// <param name="fieldName">The name of the field</param>
+        /// <returns>A read and writable <see cref="T:HarmonyLib.AccessTools.FieldRef`2" /> delegate</returns>
+        public static FieldRef<object, TField>? FieldRefAccess<TField>(Type type, string fieldName)
+        {
+            var field = Field(type, fieldName);
+            return field == null ? null : AccessTools.FieldRefAccess<object, TField>(field);
+        }
+
+        /// <summary>Creates an instance field reference</summary>
+        /// <typeparam name="TObject">The class the field is defined in</typeparam>
+        /// <typeparam name="TField">The type of the field</typeparam>
+        /// <param name="fieldName">The name of the field</param>
+        /// <returns>A read and writable field reference delegate</returns>
+        public static FieldRef<TObject, TField>? FieldRefAccess<TObject, TField>(string fieldName)
+        {
+            var field = typeof(TObject).GetField(fieldName, BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.NonPublic);
+            return field == null ? null : AccessTools.FieldRefAccess<TObject, TField>(field);
+        }
+
+
         public static TDelegate? GetDelegate<TDelegate>(ConstructorInfo constructorInfo) where TDelegate : Delegate
         {
             var parameters = constructorInfo.GetParameters().Select((p, i) => Expression.Parameter(p.ParameterType, $"p{i}")).ToList();
