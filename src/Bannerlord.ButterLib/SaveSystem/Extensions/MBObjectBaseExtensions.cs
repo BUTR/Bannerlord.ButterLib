@@ -10,8 +10,6 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
 {
     public static class MBObjectBaseExtensions
     {
-        // Backing data store:
-
         private static IMBObjectVariableStorage? _instance;
 
         private static IMBObjectVariableStorage? Instance =>
@@ -19,7 +17,7 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
 
         internal static void OnGameEnd() => _instance = null;
 
-        // Extension method API:
+        /* Variables */
 
 #nullable disable
 
@@ -72,6 +70,23 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
         {
             if (Instance is { } instance)
                 instance.RemoveVariable(@object, key);
+        }
+
+        /* Flags */
+
+        public static bool HasFlag(MBObjectBase @object, string name) =>
+            (Instance is { } instance) && instance.HasFlag(@object, name);
+
+        public static void SetFlag(MBObjectBase @object, string name)
+        {
+            if (Instance is { } instance)
+                instance.SetFlag(@object, name);
+        }
+
+        public static void RemoveFlag(MBObjectBase @object, string name)
+        {
+            if (Instance is { } instance)
+                instance.RemoveFlag(@object, name);
         }
     }
 }
