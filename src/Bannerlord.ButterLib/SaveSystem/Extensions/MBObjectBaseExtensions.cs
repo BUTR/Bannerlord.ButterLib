@@ -47,19 +47,12 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
                 if (typeof(T) == typeof(char))
                 {
                     var str = instance.GetVariable<string>(@object, name);
-                    return !string.IsNullOrEmpty(str) && str[0] is T val ? val : default;
+                    return str != null && str.Length == 1 && str[0] is T val ? val : default;
                 }
 
                 return instance.GetVariable<T>(@object, name);
             }
 
-            return default;
-        }
-
-        public static T GetVariableAsJson<T>(this MBObjectBase @object, string name, JsonSerializerSettings settings = null)
-        {
-            if (Instance is { } instance && instance.GetVariable<string>(@object, name) is { } jsonData)
-                return JsonConvert.DeserializeObject<T>(jsonData, settings);
             return default;
         }
 
@@ -89,12 +82,6 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
 
                 instance.SetVariable(@object, name, data);
             }
-        }
-
-        public static void SetVariableAsJson<T>(this MBObjectBase @object, string name, T data, JsonSerializerSettings? settings = null)
-        {
-            if (Instance is { } instance)
-                instance.SetVariable(@object, name, JsonConvert.SerializeObject(data, settings));
         }
 
         /// <summary>
