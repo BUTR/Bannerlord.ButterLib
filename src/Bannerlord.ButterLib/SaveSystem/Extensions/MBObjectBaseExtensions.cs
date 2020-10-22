@@ -30,10 +30,12 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
         /// If no such variable exists, a default-valued <typeparamref name="T"/>.
         /// </returns>
         /// <example>
+        /// <code>
         /// var marshal = myTown.GetVariable&lt;Hero&gt;("AppointedMarshal");
         ///
-        /// if (marshal != null && marshal.IsAlive)
-        ///     UseMarshalForSomething(marshal);
+        /// if (marshal != null &amp;&amp; marshal.IsAlive)
+        ///     UseMarshal(marshal);
+        /// </code>
         /// </example>
         /// <typeparam name="T">The type of the variable value.</typeparam>
         /// <param name="object">A game object.</param>
@@ -68,8 +70,11 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
         /// to <paramref name="data"/>.
         /// </summary>
         /// <example>
-        /// myHero.SetVariable("Lovers", loverList);
+        /// <code>
+        /// myHero.SetVariable("Lovers", new List&lt;Hero&gt; { Hero.MainHero });
+        /// </code>
         /// </example>
+        /// <typeparam name="T">Type of variable's value.</typeparam>
         /// <param name="object">A game object.</param>
         /// <param name="name">The variable's name.</param>
         public static void SetVariable<T>(this MBObjectBase @object, string name, T data)
