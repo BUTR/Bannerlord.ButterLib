@@ -14,10 +14,14 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem
 {
     internal sealed class MBObjectVariableStorageBehavior : CampaignBehaviorBase, IMBObjectVariableStorage
     {
-        private ConcurrentDictionary<StorageKey, object?> _variables = new ConcurrentDictionary<StorageKey, object?>();
+        private ConcurrentDictionary<StorageKey, object?> _variables;
+        private ConcurrentDictionary<StorageKey, uint> _flags;
 
-        // JsonConvert won't do a ConcurrentBag, so another ConcurrentDictionary is easy.
-        private ConcurrentDictionary<StorageKey, bool> _flags = new ConcurrentDictionary<StorageKey, bool>();
+        public MBObjectVariableStorageBehavior()
+        {
+            _variables = new ConcurrentDictionary<StorageKey, object?>();
+            _flags     = new ConcurrentDictionary<StorageKey, uint>();
+        }
 
         public override void RegisterEvents() { }
 
@@ -33,23 +37,25 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem
                 ReleaseOrphanedEntries(_flags, expiredIdCache);
             }
 
-            dataStore.SyncDataAsJson("ButterLib.MBObjectVariableStorage.Vars", ref _variables);
+            dataStore.SyncDataAsJson("ButterLib.MBObjectVariableStorage.Vars",  ref _variables);
             dataStore.SyncDataAsJson("ButterLib.MBObjectVariableStorage.Flags", ref _flags);
         }
 
-        private void ReleaseOrphanedEntries<ValueT>(ConcurrentDictionary<StorageKey, ValueT> dict, Dictionary<uint, bool> expiredIdCache)
+        private static void ReleaseOrphanedEntries<TValue>(
+            ConcurrentDictionary<StorageKey, TValue> dict,
+            Dictionary<uint, bool> expiredIds)
         {
             foreach (var sk in dict.Keys)
             {
-                if (expiredIdCache.ContainsKey(sk.ObjectId))
+                if (expiredIds.ContainsKey(sk.ObjectId))
                     dict.TryRemove(sk, out _);
                 else if (MBObjectManager.Instance.GetObject(sk) == default)
                 {
-                    expiredIdCache[sk.ObjectId] = true;
+                    expiredIds[sk.ObjectId] = true;
                     dict.TryRemove(sk, out _);
                 }
             }
-         }
+        }
 
         /* Variables Implementation */
 
@@ -71,11 +77,14 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem
 
         /* Flags Implementation */
 
-        public bool HasFlag(MBObjectBase @object, string name) => _flags.ContainsKey(StorageKey.Make(@object, name));
+        public bool HasFlag(MBObjectBase @object, string name) =>
+            _flags.ContainsKey(StorageKey.Make(@object, name));
 
-        public void SetFlag(MBObjectBase @object, string name) => _flags[StorageKey.Make(@object, name)] = true;
+        public void SetFlag(MBObjectBase @object, string name) =>
+            _flags[StorageKey.Make(@object, name)] = 1;
 
-        public void RemoveFlag(MBObjectBase @object, string name) => _flags.TryRemove(StorageKey.Make(@object, name), out _);
+        public void RemoveFlag(MBObjectBase @object, string name) =>
+            _flags.TryRemove(StorageKey.Make(@object, name), out _);
 
         /* StorageKey Implementation */
 
