@@ -87,6 +87,11 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
         /// <summary>
         /// Remove the variable <paramref name="name"/> from <paramref name="object"/>.
         /// </summary>
+        /// <example>
+        /// <code>
+        /// myHero.RemoveVariable("TitlePrefix");
+        /// </code>
+        /// </example>
         /// <param name="object">A game object.</param>
         /// <param name="name">The variable's name.</param>
         public static void RemoveVariable(this MBObjectBase @object, string name)
@@ -101,12 +106,23 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
         /// Check whether the flag <paramref name="name"/> is set upon <paramref name="object"/>.
         /// </summary>
         /// <returns><see langword="true"/> if the flag is set, else <see langword="false"/>.</returns>
+        /// <example>
+        /// <code>
+        /// if (thisKingdom.HasFlag("IsRevoltFaction"))
+        ///     continue;
+        /// </code>
+        /// </example>
         /// <param name="object">A game object.</param>
         /// <param name="name">A string flag.</param>
         public static bool HasFlag(MBObjectBase @object, string name) =>
             (Instance is { } instance) && instance.HasFlag(@object, name);
 
         /// <summary>Set the flag <paramref name="name"/> upon <paramref name="object"/>.</summary>
+        /// <example>
+        /// <code>
+        /// myKingdom.SetFlag("IsRevoltFaction");
+        /// </code>
+        /// </example>
         /// <param name="object">A game object.</param>
         /// <param name="name">A string flag.</param>
         public static void SetFlag(MBObjectBase @object, string name)
@@ -116,6 +132,11 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
         }
 
         /// <summary>Remove the flag <paramref name="name"/> from <paramref name="object"/>, if set.</summary>
+        /// <example>
+        /// <code>
+        /// myHero.RemoveFlag("IsImmortal");
+        /// </code>
+        /// </example>
         /// <param name="object">A game object.</param>
         /// <param name="name">A string flag.</param>
         public static void RemoveFlag(MBObjectBase @object, string name)
