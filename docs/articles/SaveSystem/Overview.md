@@ -1,4 +1,4 @@
-[``SaveSystem``](xref:Bannerlord.ButterLib.SaveSystem) provides wrappers and extensions to the game's save systemmethods for the game's save system.   
+[``SaveSystem``](xref:Bannerlord.ButterLib.SaveSystem) provides wrappers and extensions to the game's save system.  
 
 # SyncDataAsJson
 

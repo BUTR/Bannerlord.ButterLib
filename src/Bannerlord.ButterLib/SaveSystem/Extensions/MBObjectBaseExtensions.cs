@@ -2,8 +2,6 @@
 
 using Microsoft.Extensions.DependencyInjection;
 
-using Newtonsoft.Json;
-using TaleWorlds.CampaignSystem;
 using TaleWorlds.ObjectSystem;
 
 namespace Bannerlord.ButterLib.SaveSystem.Extensions
@@ -48,7 +46,8 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
          * <param name="object"> A game object.</param>
          * <param name="name"> The variable's name.</param>
          */
-        public static object? GetVariable(this MBObjectBase @object, string name) => (Instance is { } instance) ? instance.GetVariable(@object, name) : null;
+        public static object? GetVariable(this MBObjectBase @object, string name) =>
+            (Instance is { } instance) ? instance.GetVariable(@object, name) : null;
 
 #nullable disable
 
@@ -77,10 +76,7 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
             if (Instance is { } instance)
             {
                 if (typeof(T) == typeof(char))
-                {
-                    var str = instance.GetVariable<string>(@object, name);
-                    return str != null && str.Length == 1 && str[0] is T val ? val : default;
-                }
+                    return instance.GetVariable<string>(@object, name) is { } str && str.Length == 1 && str[0] is T val ? val : default;
 
                 return instance.GetVariable<T>(@object, name);
             }
