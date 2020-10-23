@@ -22,7 +22,8 @@ namespace Bannerlord.ButterLib
     /// </summary>
     public sealed partial class ButterLibSubModule : MBSubModuleBase
     {
-        private const string SErrorOfficialLoadedBeforeButterLib = "{=GDkjThJcH6}ButterLib is loaded after the official modules! Make sure ButterLib is loaded before them!";
+        private const string SErrorOfficialLoadedBeforeButterLib = "{=GDkjThJcH6}ButterLib is loaded after the official modules! " +
+            "Make sure ButterLib is loaded before them!";
 
         private ILogger _logger = default!;
 
@@ -40,6 +41,7 @@ namespace Bannerlord.ButterLib
                 var defaultJsonOptions = new JsonButterLibOptionsModel();
                 o.MinLogLevel = defaultJsonOptions.MinLogLevel;
             });
+
             foreach (var action in BeforeInitialization)
                 action?.Invoke(Services);
 
