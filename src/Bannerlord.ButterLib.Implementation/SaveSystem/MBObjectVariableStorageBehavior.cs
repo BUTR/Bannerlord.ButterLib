@@ -14,14 +14,8 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem
 {
     internal sealed class MBObjectVariableStorageBehavior : CampaignBehaviorBase, IMBObjectVariableStorage
     {
-        private ConcurrentDictionary<StorageKey, object?> _variables;
-        private ConcurrentDictionary<StorageKey, uint> _flags;
-
-        public MBObjectVariableStorageBehavior()
-        {
-            _variables = new ConcurrentDictionary<StorageKey, object?>();
-            _flags     = new ConcurrentDictionary<StorageKey, uint>();
-        }
+        private ConcurrentDictionary<StorageKey, object?> _variables = new ConcurrentDictionary<StorageKey, object?>();
+        private ConcurrentDictionary<StorageKey, uint> _flags = new ConcurrentDictionary<StorageKey, uint>();
 
         public override void RegisterEvents() { }
 
@@ -37,13 +31,11 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem
                 ReleaseOrphanedEntries(_flags, expiredIdCache);
             }
 
-            dataStore.SyncDataAsJson("ButterLib.MBObjectVariableStorage.Vars",  ref _variables);
+            dataStore.SyncDataAsJson("ButterLib.MBObjectVariableStorage.Vars", ref _variables);
             dataStore.SyncDataAsJson("ButterLib.MBObjectVariableStorage.Flags", ref _flags);
         }
 
-        private static void ReleaseOrphanedEntries<TValue>(
-            ConcurrentDictionary<StorageKey, TValue> dict,
-            Dictionary<uint, bool> expiredIds)
+        private static void ReleaseOrphanedEntries<TValue>(ConcurrentDictionary<StorageKey, TValue> dict, Dictionary<uint, bool> expiredIds)
         {
             foreach (var sk in dict.Keys)
             {
@@ -59,11 +51,9 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem
 
         /* Variables Implementation */
 
-        public void SetVariable(MBObjectBase @object, string key, object? data) =>
-            _variables[StorageKey.Make(@object, key)] = data;
+        public void SetVariable(MBObjectBase @object, string key, object? data) => _variables[StorageKey.Make(@object, key)] = data;
 
-        public void RemoveVariable(MBObjectBase @object, string key) =>
-            _variables.TryRemove(StorageKey.Make(@object, key), out _);
+        public void RemoveVariable(MBObjectBase @object, string key) => _variables.TryRemove(StorageKey.Make(@object, key), out _);
 
         public object? GetVariable(MBObjectBase @object, string key) =>
             _variables.TryGetValue(StorageKey.Make(@object, key), out var value) ? value : null;
@@ -77,14 +67,11 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem
 
         /* Flags Implementation */
 
-        public bool HasFlag(MBObjectBase @object, string name) =>
-            _flags.ContainsKey(StorageKey.Make(@object, name));
+        public bool HasFlag(MBObjectBase @object, string name) => _flags.ContainsKey(StorageKey.Make(@object, name));
 
-        public void SetFlag(MBObjectBase @object, string name) =>
-            _flags[StorageKey.Make(@object, name)] = 1;
+        public void SetFlag(MBObjectBase @object, string name) => _flags[StorageKey.Make(@object, name)] = 1;
 
-        public void RemoveFlag(MBObjectBase @object, string name) =>
-            _flags.TryRemove(StorageKey.Make(@object, name), out _);
+        public void RemoveFlag(MBObjectBase @object, string name) => _flags.TryRemove(StorageKey.Make(@object, name), out _);
 
         /* StorageKey Implementation */
 
@@ -107,9 +94,8 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem
             public override object? ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
             {
                 if (serializer.Deserialize<uint?>(reader) is { } objectId && reader.Read() && serializer.Deserialize<string>(reader) is { } key)
-                {
                     return new StorageKey(objectId, key);
-                }
+
                 return null;
             }
         }

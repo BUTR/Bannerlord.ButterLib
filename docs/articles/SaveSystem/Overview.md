@@ -1,8 +1,8 @@
-[``SaveSystem``](xref:Bannerlord.ButterLib.SaveSystem) provides helper methods for the game's save system.   
+[``SaveSystem``](xref:Bannerlord.ButterLib.SaveSystem) provides wrappers and extensions to the game's save systemmethods for the game's save system.   
 
-## SyncDataAsJson
+# SyncDataAsJson
 
-### The Old Way
+## The Old Way
 
 To sync your custom data to savegames, you need to define a [``CampaignBehaviorBase``](xref:TaleWorlds.CampaignSystem.CampaignBehaviorBase) and override its [``SyncData(IDataStore dataStore)``](xref:TaleWorlds.CampaignSystem.CampaignBehaviorBase#collapsible-TaleWorlds_CampaignSystem_CampaignBehaviorBase_SyncData_TaleWorlds_CampaignSystem_IDataStore_) method. From there, you'd make one or more calls to [``dataStore.SyncData<T>(string key, ref T myObject)``](xref:TaleWorlds.CampaignSystem.IDataStore#collapsible-TaleWorlds_CampaignSystem_IDataStore_SyncData__1_System_String___0__]) to actually synchronize the data to the savegame.
 
@@ -10,7 +10,7 @@ This seems dandy right up until you realize that it's actually quite a pain in p
 
 In short, the old way is a pretty decent try, but it falls short on safely removing your mod from a savegame in all cases, the general amount of error-prone configuration required, too many of your wasted hours trying to synchronize data types that should obviously be handled by default but simply aren't, and wasted time marshalling things like [``MBGUID``](xref:TaleWorlds.ObjectSystem.MBGUID)s back to object references.
 
-### The New Way: SyncDataAsJson
+## The New Way: SyncDataAsJson
 
 We've developed a drop-in replacement for the aforementioned [``SyncData<T>``](xref:TaleWorlds.CampaignSystem.IDataStore#collapsible-TaleWorlds_CampaignSystem_IDataStore_SyncData__1_System_String___0__]): [``SyncDataAsJson<T>``](xref:Bannerlord.ButterLib.SaveSystem.Extensions.IDataStoreExtensions#collapsible-Bannerlord_ButterLib_SaveSystem_Extensions_IDataStoreExtensions_SyncDataAsJson__1_TaleWorlds_CampaignSystem_IDataStore_System_String___0__Newtonsoft_Json_JsonSerializerSettings_). It doesn't suffer from any of the aforementioned issues, and as an extension method of [``IDataStore``](xref:TaleWorlds.CampaignSystem.IDataStore), you use it exactly like you would've used [``SyncData<T>``](xref:TaleWorlds.CampaignSystem.IDataStore#collapsible-TaleWorlds_CampaignSystem_IDataStore_SyncData__1_System_String___0__]). However, your custom data is now, behind the scenes, serialized by ButterLib into a simple ``string`` (or similar primitive type).
 
@@ -61,7 +61,7 @@ public class CustomBehavior : CampaignBehaviorBase
 
 This extension is the next step in the evolution of best practices and just plain less frustrating practices for the synchronization of your mod's custom data to savegames.
   
-#### Notes:
+### Notes:
 
 * Built-in [``MBObjectBase``](xref:TaleWorlds.ObjectSystem.MBObjectBase)-derived types (e.g., [``Hero``](xref:TaleWorlds.CampaignSystem.Hero) or [``Town``](xref:TaleWorlds.CampaignSystem.Town)) have a [custom converter](xref:Bannerlord.ButterLib.SaveSystem.MBObjectBaseConverter). They are serialized as their [``Id``](xref:TaleWorlds.ObjectSystem.MBObjectBase#collapsible-TaleWorlds_ObjectSystem_MBObjectBase_Id) property. [``MBObjectManager``](xref:TaleWorlds.ObjectSystem.MBObjectManager) is used to resolve these numeric IDs to the correct, live game object references at deserialization time.
 

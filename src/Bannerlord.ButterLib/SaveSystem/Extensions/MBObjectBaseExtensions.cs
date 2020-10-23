@@ -3,11 +3,14 @@
 using Microsoft.Extensions.DependencyInjection;
 
 using Newtonsoft.Json;
-
+using TaleWorlds.CampaignSystem;
 using TaleWorlds.ObjectSystem;
 
 namespace Bannerlord.ButterLib.SaveSystem.Extensions
 {
+    /// <summary>
+    /// <see cref="TaleWorlds.ObjectSystem.MBObjectBase"/> extension methods for dynamic variable / flag storage
+    /// </summary>
     public static class MBObjectBaseExtensions
     {
         private static IMBObjectVariableStorage? _instance;
@@ -19,24 +22,33 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
 
         /* Variables */
 
-        /// <summary>
-        /// Gets the value of the variable <paramref name="name"/> stored for <paramref name="object"/>
-        /// as a raw <see cref="System.Object"/>.
-        /// </summary>
-        /// <returns>
-        /// The raw <see cref="System.Object"/> stored in the variable.
-        /// If no such variable exists, then <see langword="null"/>.
-        /// </returns>
-        /// <remarks>
-        /// It's preferred to use the <see cref="GetVariable{T}(MBObjectBase, string)">generic, strongly-typed
-        /// version of this method</see>. This version is provided for some special cases (e.g., if you don't know the type
-        /// of the object stored in the variable).
-        /// </remarks>
-        /// <seealso cref="GetVariable{T}(MBObjectBase, string)"/>
-        /// <param name="object"> A game object.</param>
-        /// <param name="name"> The variable's name.</param>
-        public static object? GetVariable(this MBObjectBase @object, string name) =>
-            (Instance is { } instance) ? instance.GetVariable(@object, name) : null;
+        /**
+         * <summary>
+         * Gets the value of the variable <paramref name="name"/> stored for <paramref name="object"/>
+         * as a raw <see cref="System.Object"/>.
+         * </summary>
+         * <returns>
+         * The raw <see cref="System.Object"/> stored in the variable.
+         * If no such variable exists, then <see langword="null"/>.
+         * </returns>
+         * <remarks>
+         * It's preferred to use <see cref="GetVariable{T}(MBObjectBase, string)"/>, the generic, strongly-typed
+         * variant. This method is provided for some special cases (e.g., if you don't know the type
+         * of the object stored in the variable).
+         * </remarks>
+         * <example>
+         * <code>
+         * var obj = hero.GetVariable("LifeContextData");
+         *
+         * if (obj != null)
+         *     return JsonConvert.SerializeObject(obj);
+         * </code>
+         * </example>
+         * <seealso cref="GetVariable{T}(MBObjectBase, string)"/>
+         * <param name="object"> A game object.</param>
+         * <param name="name"> The variable's name.</param>
+         */
+        public static object? GetVariable(this MBObjectBase @object, string name) => (Instance is { } instance) ? instance.GetVariable(@object, name) : null;
 
 #nullable disable
 
@@ -135,8 +147,7 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
         /// </example>
         /// <param name="object">A game object.</param>
         /// <param name="name">A string flag.</param>
-        public static bool HasFlag(MBObjectBase @object, string name) =>
-            (Instance is { } instance) && instance.HasFlag(@object, name);
+        public static bool HasFlag(MBObjectBase @object, string name) => (Instance is { } instance) && instance.HasFlag(@object, name);
 
         /// <summary>Set the flag <paramref name="name"/> upon <paramref name="object"/>.</summary>
         /// <example>
