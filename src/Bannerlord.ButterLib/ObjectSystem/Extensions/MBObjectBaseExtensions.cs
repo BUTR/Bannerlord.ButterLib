@@ -9,7 +9,7 @@ using TaleWorlds.ObjectSystem;
 namespace Bannerlord.ButterLib.SaveSystem.Extensions
 {
     /// <summary>
-    /// <see cref="TaleWorlds.ObjectSystem.MBObjectBase"/> extension methods for dynamic variable / flag storage
+    /// <see cref="MBObjectBase"/> extension methods for dynamic variable / flag storage
     /// </summary>
     public static class MBObjectBaseExtensions
     {
@@ -25,10 +25,10 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
         /**
          * <summary>
          * Gets the value of the variable <paramref name="name"/> stored for <paramref name="object"/>
-         * as a raw <see cref="System.Object"/>.
+         * as a raw <see cref="object"/>.
          * </summary>
          * <returns>
-         * The raw <see cref="System.Object"/> stored in the variable.
+         * The raw <see cref="object"/> stored in the variable.
          * If no such variable exists, then <see langword="null"/>.
          * </returns>
          * <remarks>

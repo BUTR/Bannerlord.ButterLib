@@ -5,7 +5,7 @@ using TaleWorlds.ObjectSystem;
 namespace Bannerlord.ButterLib.SaveSystem
 {
     /// <summary>
-    /// Interface to <see cref="TaleWorlds.ObjectSystem.MBObjectBase"/>-associated dynamic variable / flag storage
+    /// Interface to <see cref="MBObjectBase"/>-associated dynamic variable / flag storage
     /// </summary>
     public interface IMBObjectVariableStorage
     {
@@ -13,10 +13,10 @@ namespace Bannerlord.ButterLib.SaveSystem
 
         /// <summary>
         /// Gets the value of the variable <paramref name="name"/> stored for <paramref name="object"/>
-        /// as a raw <see cref="System.Object"/>.
+        /// as a raw <see cref="object"/>.
         /// </summary>
         /// <returns>
-        /// The raw <see cref="System.Object"/> stored in the variable.
+        /// The raw <see cref="object"/> stored in the variable.
         /// If no such variable exists, then <see langword="null"/>.
         /// </returns>
         /// <remarks>
