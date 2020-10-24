@@ -14,35 +14,11 @@ namespace Bannerlord.ButterLib.ObjectSystem
         /**
          * <summary>
          * Gets the <paramref name="value"/> of the variable <paramref name="name"/> stored for <paramref name="object"/>.
-         * as a raw <see cref="object"/>.
-         * </summary>
-         * <returns>
-         * If the variable exists, returns <see langword="true"/>, and <paramref name="value"/> is set to its raw <see cref="object"/> value.
-         * Otherwise, returns <see langword="false"/>, and <paramref name="value"/> is set to <see langword="null"/>.
-         * </returns>
-         * <remarks>
-         * It's preferred to use <see cref="TryGetVariable{T}(MBObjectBase, string, out T)"/>.
-         * This method is only provided for some special cases (e.g., if you don't know the type
-         * of the <see cref="object"/> stored in the variable).
-         *
-         * <para>ACTUALLY, I HAVE NO CLUE WHY THIS METHOD IS PROVIDED! HAHAHAHAA! WEEP BEFORE ME.</para>
-         *
-         * </remarks>
-         * <seealso cref="TryGetVariable{T}(MBObjectBase, string, out T)"/>
-         * <param name="object"> A game object.</param>
-         * <param name="name"> The variable's name.</param>
-         */
-        public bool TryGetVariable(MBObjectBase @object, string name, out object? value);
-
-        /**
-         * <summary>
-         * Gets the <paramref name="value"/> of the variable <paramref name="name"/> stored for <paramref name="object"/>.
          * </summary>
          * <returns>
          * If the variable exists, returns <see langword="true"/>, and <paramref name="value"/> is set to its value.
          * Otherwise, returns <see langword="false"/>, and <paramref name="value"/> is set to a default-valued <typeparamref name="T"/>.
          * </returns>
-         * <seealso cref="TryGetVariable(MBObjectBase, string, out object?)"/>
          * <typeparam name="T">The type of the variable's value.</typeparam>
          * <param name="object">A game object.</param>
          * <param name="name">The variable's name.</param>

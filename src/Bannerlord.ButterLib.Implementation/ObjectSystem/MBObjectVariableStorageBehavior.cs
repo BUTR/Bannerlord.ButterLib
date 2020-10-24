@@ -52,18 +52,6 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
 
         /* Variables Implementation */
 
-        public bool TryGetVariable(MBObjectBase @object, string key, out object? value)
-        {
-            if (_variables.TryGetValue(StorageKey.Make(@object, key), out var val))
-            {
-                value = val;
-                return true;
-            }
-
-            value = null;
-            return false;
-        }
-
         public bool TryGetVariable<T>(MBObjectBase @object, string key, [MaybeNull] out T value)
         {
             if (_variables.TryGetValue(StorageKey.Make(@object, key), out var val) && val is T typedVal)

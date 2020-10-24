@@ -22,46 +22,6 @@ namespace Bannerlord.ButterLib.ObjectSystem.Extensions
 
         /* Variables */
 
-        /////////////// THIS METHOD SHOULD PROBABLY DELETED AS REDUNDANT TO THE GENERIC VERSION -- RFC RFC //////////////////////
-        /**
-         * <summary>
-         * Gets the <paramref name="value"/> of the variable <paramref name="name"/> stored for <paramref name="object"/>.
-         * as a raw <see cref="object"/>.
-         * </summary>
-         * <returns>
-         * If the variable exists, returns <see langword="true"/>, and <paramref name="value"/> is set to its raw <see cref="object"/> value.
-         * Otherwise, returns <see langword="false"/>, and <paramref name="value"/> is set to <see langword="null"/>.
-         * </returns>
-         * <remarks>
-         * It's preferred to use <see cref="TryGetVariable{T}(MBObjectBase, string, out T)"/>.
-         * This method is only provided for some special cases (e.g., if you don't know the type
-         * of the <see cref="object"/> stored in the variable).
-         *
-         * <para>ACTUALLY, I HAVE NO CLUE WHY THIS METHOD IS PROVIDED! HAHAHAHAA! WEEP BEFORE ME.</para>
-         *
-         * </remarks>
-         * <example>
-         * <code>
-         * if (hero.TryGetVariable("LifeContextData", out object? obj) && obj != null)
-         *     return JsonConvert.SerializeObject(obj);
-         * </code>
-         * </example>
-         * <seealso cref="TryGetVariable{T}(MBObjectBase, string, out T)"/>
-         * <param name="object">A game object.</param>
-         * <param name="name">The variable's name.</param>
-         */
-        public static bool TryGetVariable(MBObjectBase @object, string name, out object? value)
-        {
-            if (Instance is { } instance && instance.TryGetVariable(@object, name, out var val))
-            {
-                value = val;
-                return true;
-            }
-
-            value = null;
-            return false;
-        }
-
         /**
          * <summary>
          * Gets the <paramref name="value"/> of the variable <paramref name="name"/> stored for <paramref name="object"/>.
@@ -83,7 +43,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Extensions
          */
         public static bool TryGetVariable<T>(MBObjectBase @object, string name, [MaybeNull] out T value)
         {
-            if (Instance is { } instance && instance.TryGetVariable(@object, name, out var val) && val is T typedVal)
+            if (Instance is { } instance && instance.TryGetVariable(@object, name, out T val) && val is T typedVal)
             {
                 value = typedVal;
                 return true;
