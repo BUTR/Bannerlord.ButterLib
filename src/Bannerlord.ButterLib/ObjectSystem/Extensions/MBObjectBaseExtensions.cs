@@ -22,67 +22,75 @@ namespace Bannerlord.ButterLib.ObjectSystem.Extensions
 
         /* Variables */
 
+        /////////////// THIS METHOD SHOULD PROBABLY DELETED AS REDUNDANT TO THE GENERIC VERSION -- RFC RFC //////////////////////
         /**
          * <summary>
-         * Gets the value of the variable <paramref name="name"/> stored for <paramref name="object"/>
+         * Gets the <paramref name="value"/> of the variable <paramref name="name"/> stored for <paramref name="object"/>.
          * as a raw <see cref="object"/>.
          * </summary>
          * <returns>
-         * The raw <see cref="object"/> stored in the variable.
-         * If no such variable exists, then <see langword="null"/>.
+         * If the variable exists, returns <see langword="true"/>, and <paramref name="value"/> is set to its raw <see cref="object"/> value.
+         * Otherwise, returns <see langword="false"/>, and <paramref name="value"/> is set to <see langword="null"/>.
          * </returns>
          * <remarks>
-         * It's preferred to use <see cref="GetVariable{T}(MBObjectBase, string)"/>, the generic, strongly-typed
-         * variant. This method is provided for some special cases (e.g., if you don't know the type
-         * of the object stored in the variable).
+         * It's preferred to use <see cref="TryGetVariable{T}(MBObjectBase, string, out T)"/>.
+         * This method is only provided for some special cases (e.g., if you don't know the type
+         * of the <see cref="object"/> stored in the variable).
+         *
+         * <para>ACTUALLY, I HAVE NO CLUE WHY THIS METHOD IS PROVIDED! HAHAHAHAA! WEEP BEFORE ME.</para>
+         *
          * </remarks>
          * <example>
          * <code>
-         * var obj = hero.GetVariable("LifeContextData");
-         *
-         * if (obj != null)
+         * if (hero.TryGetVariable("LifeContextData", out object? obj) && obj != null)
          *     return JsonConvert.SerializeObject(obj);
          * </code>
          * </example>
-         * <seealso cref="GetVariable{T}(MBObjectBase, string)"/>
-         * <param name="object"> A game object.</param>
-         * <param name="name"> The variable's name.</param>
+         * <seealso cref="TryGetVariable{T}(MBObjectBase, string, out T)"/>
+         * <param name="object">A game object.</param>
+         * <param name="name">The variable's name.</param>
          */
-        public static object? GetVariable(this MBObjectBase @object, string name) =>
-            (Instance is { } instance) ? instance.GetVariable(@object, name) : null;
-
-        /// <summary>
-        /// Get the value of the variable <paramref name="name"/> stored for <paramref name="object"/>
-        /// as a <typeparamref name="T"/>.
-        /// </summary>
-        /// <returns>
-        /// A stored value of type <typeparamref name="T"/> for the variable.
-        /// If no such variable exists, a default-valued <typeparamref name="T"/>.
-        /// </returns>
-        /// <example>
-        /// <code>
-        /// var marshal = myTown.GetVariable&lt;Hero&gt;("AppointedMarshal");
-        ///
-        /// if (marshal != null &amp;&amp; marshal.IsAlive)
-        ///     UseMarshal(myTown, marshal);
-        /// </code>
-        /// </example>
-        /// <seealso cref="GetVariable(MBObjectBase, string)"/>
-        /// <typeparam name="T">The type of the variable value.</typeparam>
-        /// <param name="object">A game object.</param>
-        /// <param name="name">The variable's name.</param>
-        [return: MaybeNull]
-        public static T GetVariable<T>(this MBObjectBase @object, string name)
+        public static bool TryGetVariable(MBObjectBase @object, string name, out object? value)
         {
-            if (Instance is { } instance)
+            if (Instance is { } instance && instance.TryGetVariable(@object, name, out var val))
             {
-                if (typeof(T) == typeof(char))
-                    return instance.GetVariable<string>(@object, name) is { } str && str.Length == 1 && str[0] is T val ? val : default;
-
-                return instance.GetVariable<T>(@object, name);
+                value = val;
+                return true;
             }
 
-            return default;
+            value = null;
+            return false;
+        }
+
+        /**
+         * <summary>
+         * Gets the <paramref name="value"/> of the variable <paramref name="name"/> stored for <paramref name="object"/>.
+         * </summary>
+         * <returns>
+         * If the variable exists, returns <see langword="true"/>, and <paramref name="value"/> is set to its value.
+         * Otherwise, returns <see langword="false"/>, and <paramref name="value"/> is set to a default-valued <typeparamref name="T"/>.
+         * </returns>
+         * <example>
+         * <code>
+         * if (myTown.TryGetVariable("AppointedMarshal", out Hero marshal))
+         *     DeployMarshal(marshal);
+         * </code>
+         * </example>
+         * <seealso cref="TryGetVariable(MBObjectBase, string, out object?)"/>
+         * <typeparam name="T">The type of the variable's value.</typeparam>
+         * <param name="object">A game object.</param>
+         * <param name="name">The variable's name.</param>
+         */
+        public static bool TryGetVariable<T>(MBObjectBase @object, string name, [MaybeNull] out T value)
+        {
+            if (Instance is { } instance && instance.TryGetVariable(@object, name, out var val) && val is T typedVal)
+            {
+                value = typedVal;
+                return true;
+            }
+
+            value = default;
+            return false;
         }
 
         /// <summary>
@@ -94,7 +102,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Extensions
         /// myHero.SetVariable("Lovers", new List&lt;Hero&gt; { Hero.MainHero });
         /// </code>
         /// </example>
-        /// <typeparam name="T">Type of variable's value.</typeparam>
+        /// <typeparam name="T">Type of the variable's value.</typeparam>
         /// <param name="object">A game object.</param>
         /// <param name="name">The variable's name.</param>
         /// <param name="data">The variable's value.</param>

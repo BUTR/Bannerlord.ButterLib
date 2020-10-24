@@ -52,24 +52,41 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
 
         /* Variables Implementation */
 
-        public object? GetVariable(MBObjectBase @object, string key) =>
-            _variables.TryGetValue(StorageKey.Make(@object, key), out var value) ? value : null;
+        public bool TryGetVariable(MBObjectBase @object, string key, out object? value)
+        {
+            if (_variables.TryGetValue(StorageKey.Make(@object, key), out var val))
+            {
+                value = val;
+                return true;
+            }
 
-        [return: MaybeNull]
-        public T GetVariable<T>(MBObjectBase @object, string key) =>
-            (_variables.TryGetValue(StorageKey.Make(@object, key), out var val) && val is T value) ? value : default;
+            value = null;
+            return false;
+        }
 
-        public void SetVariable(MBObjectBase @object, string key, object? data) => _variables[StorageKey.Make(@object, key)] = data;
+        public bool TryGetVariable<T>(MBObjectBase @object, string key, [MaybeNull] out T value)
+        {
+            if (_variables.TryGetValue(StorageKey.Make(@object, key), out var val) && val is T typedVal)
+            {
+                value = typedVal;
+                return true;
+            }
+
+            value = default;
+            return false;
+        }
 
         public void RemoveVariable(MBObjectBase @object, string key) => _variables.TryRemove(StorageKey.Make(@object, key), out _);
+
+        public void SetVariable(MBObjectBase @object, string key, object? data) => _variables[StorageKey.Make(@object, key)] = data;
 
         /* Flags Implementation */
 
         public bool HasFlag(MBObjectBase @object, string name) => _flags.ContainsKey(StorageKey.Make(@object, name));
 
-        public void SetFlag(MBObjectBase @object, string name) => _flags[StorageKey.Make(@object, name)] = 1;
-
         public void RemoveFlag(MBObjectBase @object, string name) => _flags.TryRemove(StorageKey.Make(@object, name), out _);
+
+        public void SetFlag(MBObjectBase @object, string name) => _flags[StorageKey.Make(@object, name)] = 1;
 
         /* StorageKey Implementation */
 

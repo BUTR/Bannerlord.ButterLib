@@ -11,40 +11,43 @@ namespace Bannerlord.ButterLib.ObjectSystem
     {
         /* Variables */
 
-        /// <summary>
-        /// Gets the value of the variable <paramref name="name"/> stored for <paramref name="object"/>
-        /// as a raw <see cref="object"/>.
-        /// </summary>
-        /// <returns>
-        /// The raw <see cref="object"/> stored in the variable.
-        /// If no such variable exists, then <see langword="null"/>.
-        /// </returns>
-        /// <remarks>
-        /// It's preferred to use <see cref="GetVariable{T}(MBObjectBase, string)"/>, the generic, strongly-typed
-        /// variant. This method is provided for some special cases (e.g., if you don't know the type
-        /// of the object stored in the variable).
-        /// </remarks>
-        /// <seealso cref="GetVariable{T}(MBObjectBase, string)"/>
-        /// <param name="object"> A game object.</param>
-        /// <param name="name"> The variable's name.</param>
-        public object? GetVariable(MBObjectBase @object, string name);
+        /**
+         * <summary>
+         * Gets the <paramref name="value"/> of the variable <paramref name="name"/> stored for <paramref name="object"/>.
+         * as a raw <see cref="object"/>.
+         * </summary>
+         * <returns>
+         * If the variable exists, returns <see langword="true"/>, and <paramref name="value"/> is set to its raw <see cref="object"/> value.
+         * Otherwise, returns <see langword="false"/>, and <paramref name="value"/> is set to <see langword="null"/>.
+         * </returns>
+         * <remarks>
+         * It's preferred to use <see cref="TryGetVariable{T}(MBObjectBase, string, out T)"/>.
+         * This method is only provided for some special cases (e.g., if you don't know the type
+         * of the <see cref="object"/> stored in the variable).
+         *
+         * <para>ACTUALLY, I HAVE NO CLUE WHY THIS METHOD IS PROVIDED! HAHAHAHAA! WEEP BEFORE ME.</para>
+         *
+         * </remarks>
+         * <seealso cref="TryGetVariable{T}(MBObjectBase, string, out T)"/>
+         * <param name="object"> A game object.</param>
+         * <param name="name"> The variable's name.</param>
+         */
+        public bool TryGetVariable(MBObjectBase @object, string name, out object? value);
 
         /**
          * <summary>
-         * Get the value of the variable <paramref name="name"/> stored for <paramref name="object"/>
-         * as a <typeparamref name="T"/>.
+         * Gets the <paramref name="value"/> of the variable <paramref name="name"/> stored for <paramref name="object"/>.
          * </summary>
          * <returns>
-         * If the variable exists, its value as a <typeparamref name="T"/>.
-         * If the variable doesn't exist, a default-valued <typeparamref name="T"/>.
+         * If the variable exists, returns <see langword="true"/>, and <paramref name="value"/> is set to its value.
+         * Otherwise, returns <see langword="false"/>, and <paramref name="value"/> is set to a default-valued <typeparamref name="T"/>.
          * </returns>
-         * <seealso cref="GetVariable(MBObjectBase, string)"/>
-         * <typeparam name="T">The type of the variable value.</typeparam>
+         * <seealso cref="TryGetVariable(MBObjectBase, string, out object?)"/>
+         * <typeparam name="T">The type of the variable's value.</typeparam>
          * <param name="object">A game object.</param>
          * <param name="name">The variable's name.</param>
          */
-        [return: MaybeNull]
-        public T GetVariable<T>(MBObjectBase @object, string name);
+        public bool TryGetVariable<T>(MBObjectBase @object, string name, [MaybeNull] out T value);
 
         /**
          * <summary>
