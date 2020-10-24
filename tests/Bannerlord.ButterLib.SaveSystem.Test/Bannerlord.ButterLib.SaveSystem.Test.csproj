@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Bannerlord.ButterLib\Bannerlord.ButterLib.csproj" />
+    <ProjectReference Include="..\..\src\Bannerlord.ButterLib\Bannerlord.ButterLib.csproj" />
   </ItemGroup>
 
 </Project>
