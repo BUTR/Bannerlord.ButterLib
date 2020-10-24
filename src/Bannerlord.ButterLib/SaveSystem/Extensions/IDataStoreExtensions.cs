@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 using TaleWorlds.CampaignSystem;
@@ -16,8 +17,8 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
                 yield return str.Substring(i, Math.Min(maxChunkSize, str.Length-i));
         }
 
-#nullable disable
-        public static bool SyncDataAsJson<T>(this IDataStore dataStore, string key, ref T data, JsonSerializerSettings settings = null)
+        [return: MaybeNull]
+        public static bool SyncDataAsJson<T>(this IDataStore dataStore, string key, ref T data, JsonSerializerSettings? settings = null)
         {
             settings ??= new JsonSerializerSettings
             {
@@ -76,7 +77,6 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
 
             return false;
         }
-#nullable restore
 
         private sealed class JsonData
         {

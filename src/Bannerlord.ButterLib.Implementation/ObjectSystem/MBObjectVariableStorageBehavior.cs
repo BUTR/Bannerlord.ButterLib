@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.ObjectSystem;
@@ -58,12 +59,9 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem
         public object? GetVariable(MBObjectBase @object, string key) =>
             _variables.TryGetValue(StorageKey.Make(@object, key), out var value) ? value : null;
 
-#nullable disable
-
+        [return: MaybeNull]
         public T GetVariable<T>(MBObjectBase @object, string key) =>
             (_variables.TryGetValue(StorageKey.Make(@object, key), out var val) && val is T value) ? value : default;
-
-#nullable restore
 
         /* Flags Implementation */
 
