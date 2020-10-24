@@ -1,6 +1,6 @@
 ﻿using Bannerlord.ButterLib.Common.Extensions;
 using Bannerlord.ButterLib.Logger.Extensions;
-using Bannerlord.ButterLib.SaveSystem.Extensions;
+using Bannerlord.ButterLib.ObjectSystem.Extensions;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -183,7 +183,7 @@ namespace Bannerlord.ButterLib.SaveSystem.Test
                 if (gotGender != gender)
                 {
                     stopAfterHero = true;
-                    _logger.LogError($"ERROR: gotGender != '{gender}' but gotGender == '{gotGender}'");
+                    _logger.LogError($"ERROR: gotGender should be '{gender}' but gotGender == '{gotGender}'");
                 }
             }
 

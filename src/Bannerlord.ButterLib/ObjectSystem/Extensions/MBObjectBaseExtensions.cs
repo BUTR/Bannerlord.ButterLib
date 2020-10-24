@@ -6,7 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 
 using TaleWorlds.ObjectSystem;
 
-namespace Bannerlord.ButterLib.SaveSystem.Extensions
+namespace Bannerlord.ButterLib.ObjectSystem.Extensions
 {
     /// <summary>
     /// <see cref="MBObjectBase"/> extension methods for dynamic variable / flag storage

@@ -1,6 +1,6 @@
 ﻿using Bannerlord.ButterLib.Common.Extensions;
 using Bannerlord.ButterLib.Common.Helpers;
-using Bannerlord.ButterLib.SaveSystem;
+using Bannerlord.ButterLib.ObjectSystem;
 
 using HarmonyLib;
 
@@ -15,7 +15,7 @@ using System.Runtime.CompilerServices;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.SandBox.CampaignBehaviors;
 
-namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
+namespace Bannerlord.ButterLib.Implementation.ObjectSystem.Patches
 {
     internal sealed class CampaignBehaviorManagerPatch
     {
@@ -31,55 +31,49 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
             _logger = ButterLibSubModule.Instance?.GetServiceProvider()?.GetRequiredService<ILogger<CampaignBehaviorManagerPatch>>() ??
                 NullLogger<CampaignBehaviorManagerPatch>.Instance;
 
-            if (OnGameLoadedTargetMethod == null)
-                _logger.LogError($"{nameof(OnGameLoadedTargetMethod)} is null");
-            if (OnBeforeSaveTargetMethod == null)
-                _logger.LogError($"{nameof(OnBeforeSaveTargetMethod)} is null");
-            if (OnGameLoadedPatchMethod == null)
-                _logger.LogError($"{nameof(OnGameLoadedPatchMethod)} is null");
-            if (OnBeforeSavePatchMethod == null)
-                _logger.LogError($"{nameof(OnBeforeSavePatchMethod)} is null");
-            if (LoadBehaviorDataMethod == null)
-                _logger.LogError($"{nameof(LoadBehaviorDataMethod)} is null");
-            if (SaveBehaviorDataMethod == null)
-                _logger.LogError($"{nameof(SaveBehaviorDataMethod)} is null");
-            if (CampaignBehaviorDataStoreType == null)
-                _logger.LogError($"{nameof(CampaignBehaviorDataStoreType)} is null");
+            if (OnGameLoadedTargetMI == null)
+                _logger.LogError($"{nameof(OnGameLoadedTargetMI)} is null");
+            if (OnBeforeSaveTargetMI == null)
+                _logger.LogError($"{nameof(OnBeforeSaveTargetMI)} is null");
+            if (OnGameLoadedPatchMI == null)
+                _logger.LogError($"{nameof(OnGameLoadedPatchMI)} is null");
+            if (OnBeforeSavePatchMI == null)
+                _logger.LogError($"{nameof(OnBeforeSavePatchMI)} is null");
+            if (LoadBehaviorDataMI == null)
+                _logger.LogError($"{nameof(LoadBehaviorDataMI)} is null");
+            if (SaveBehaviorDataMI == null)
+                _logger.LogError($"{nameof(SaveBehaviorDataMI)} is null");
+            if (CampaignBehaviorDataStoreT == null)
+                _logger.LogError($"{nameof(CampaignBehaviorDataStoreT)} is null");
 
-            if (OnGameLoadedTargetMethod == null || OnBeforeSaveTargetMethod == null ||
-                OnGameLoadedPatchMethod == null  || OnBeforeSavePatchMethod == null  ||
-                LoadBehaviorDataMethod == null   || SaveBehaviorDataMethod == null   ||
-                CampaignBehaviorDataStoreType == null)
+            if (OnGameLoadedTargetMI == null || OnBeforeSaveTargetMI == null ||
+                OnGameLoadedPatchMI == null  || OnBeforeSavePatchMI == null  ||
+                LoadBehaviorDataMI == null   || SaveBehaviorDataMI == null   ||
+                CampaignBehaviorDataStoreT == null)
                 return;
 
-            harmony.Patch(OnGameLoadedTargetMethod, prefix: new HarmonyMethod(OnGameLoadedPatchMethod));
-            harmony.Patch(OnBeforeSaveTargetMethod, postfix: new HarmonyMethod(OnBeforeSavePatchMethod));
+            harmony.Patch(OnGameLoadedTargetMI, prefix: new HarmonyMethod(OnGameLoadedPatchMI));
+            harmony.Patch(OnBeforeSaveTargetMI, postfix: new HarmonyMethod(OnBeforeSavePatchMI));
         }
 
         // Target and patch methods:
 
-        private static readonly MethodInfo? OnGameLoadedTargetMethod =
-            AccessTools.Method(typeof(CampaignBehaviorManager), "OnGameLoaded");
+        private static readonly MethodInfo? OnGameLoadedTargetMI = AccessTools.Method(typeof(CampaignBehaviorManager), "OnGameLoaded");
 
-        private static readonly MethodInfo? OnGameLoadedPatchMethod =
-            AccessTools.Method(typeof(CampaignBehaviorManagerPatch), nameof(OnGameLoadedPrefix));
+        private static readonly MethodInfo? OnGameLoadedPatchMI = AccessTools.Method(typeof(CampaignBehaviorManagerPatch), nameof(OnGameLoadedPrefix));
 
-        private static readonly MethodInfo? OnBeforeSaveTargetMethod =
-            AccessTools.Method(typeof(CampaignBehaviorManager), "OnBeforeSave");
+        private static readonly MethodInfo? OnBeforeSaveTargetMI = AccessTools.Method(typeof(CampaignBehaviorManager), "OnBeforeSave");
 
-        private static readonly MethodInfo? OnBeforeSavePatchMethod =
-            AccessTools.Method(typeof(CampaignBehaviorManagerPatch), nameof(OnBeforeSavePostfix));
+        private static readonly MethodInfo? OnBeforeSavePatchMI = AccessTools.Method(typeof(CampaignBehaviorManagerPatch), nameof(OnBeforeSavePostfix));
 
         // Necessary reflection:
 
-        private static readonly Type? CampaignBehaviorDataStoreType =
+        private static readonly Type? CampaignBehaviorDataStoreT =
             typeof(Campaign).Assembly.GetType("TaleWorlds.CampaignSystem.CampaignBehaviorDataStore");
 
-        private static readonly MethodInfo? LoadBehaviorDataMethod =
-            AccessTools.Method(CampaignBehaviorDataStoreType, "LoadBehaviorData");
+        private static readonly MethodInfo? LoadBehaviorDataMI = AccessTools.Method(CampaignBehaviorDataStoreT, "LoadBehaviorData");
 
-        private static readonly MethodInfo? SaveBehaviorDataMethod =
-            AccessTools.Method(CampaignBehaviorDataStoreType, "SaveBehaviorData");
+        private static readonly MethodInfo? SaveBehaviorDataMI = AccessTools.Method(CampaignBehaviorDataStoreT, "SaveBehaviorData");
 
         // Patch implementation:
 
@@ -106,7 +100,7 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
                 return;
             }
 
-            var loadBehaviorData = AccessTools2.GetDelegate<LoadBehaviorDataDelegate>(____campaignBehaviorDataStore, LoadBehaviorDataMethod!);
+            var loadBehaviorData = AccessTools2.GetDelegate<LoadBehaviorDataDelegate>(____campaignBehaviorDataStore, LoadBehaviorDataMI!);
             loadBehaviorData?.Invoke(storageBehavior);
         }
 
@@ -133,7 +127,7 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
                 return;
             }
 
-            var saveBehaviorData = AccessTools2.GetDelegate<SaveBehaviorDataDelegate>(____campaignBehaviorDataStore, SaveBehaviorDataMethod!);
+            var saveBehaviorData = AccessTools2.GetDelegate<SaveBehaviorDataDelegate>(____campaignBehaviorDataStore, SaveBehaviorDataMI!);
             saveBehaviorData?.Invoke(storageBehavior);
         }
     }

@@ -5,7 +5,7 @@
     <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
 
-    <ModuleName>Bannerlord.ButterLib.SaveSystem.Test</ModuleName>
+    <ModuleName>Bannerlord.ButterLib.ObjectSystem.Test</ModuleName>
   </PropertyGroup>
 
   <ItemGroup>

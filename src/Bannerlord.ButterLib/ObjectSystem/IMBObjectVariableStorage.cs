@@ -2,7 +2,7 @@
 
 using TaleWorlds.ObjectSystem;
 
-namespace Bannerlord.ButterLib.SaveSystem
+namespace Bannerlord.ButterLib.ObjectSystem
 {
     /// <summary>
     /// Interface to <see cref="MBObjectBase"/>-associated dynamic variable / flag storage

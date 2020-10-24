@@ -1,4 +1,4 @@
-﻿using Bannerlord.ButterLib.SaveSystem;
+﻿using Bannerlord.ButterLib.ObjectSystem;
 using Bannerlord.ButterLib.SaveSystem.Extensions;
 
 using Newtonsoft.Json;
@@ -11,7 +11,7 @@ using System.Diagnostics.CodeAnalysis;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.ObjectSystem;
 
-namespace Bannerlord.ButterLib.Implementation.SaveSystem
+namespace Bannerlord.ButterLib.Implementation.ObjectSystem
 {
     internal sealed class MBObjectVariableStorageBehavior : CampaignBehaviorBase, IMBObjectVariableStorage
     {
@@ -52,16 +52,16 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem
 
         /* Variables Implementation */
 
-        public void SetVariable(MBObjectBase @object, string key, object? data) => _variables[StorageKey.Make(@object, key)] = data;
-
-        public void RemoveVariable(MBObjectBase @object, string key) => _variables.TryRemove(StorageKey.Make(@object, key), out _);
-
         public object? GetVariable(MBObjectBase @object, string key) =>
             _variables.TryGetValue(StorageKey.Make(@object, key), out var value) ? value : null;
 
         [return: MaybeNull]
         public T GetVariable<T>(MBObjectBase @object, string key) =>
             (_variables.TryGetValue(StorageKey.Make(@object, key), out var val) && val is T value) ? value : default;
+
+        public void SetVariable(MBObjectBase @object, string key, object? data) => _variables[StorageKey.Make(@object, key)] = data;
+
+        public void RemoveVariable(MBObjectBase @object, string key) => _variables.TryRemove(StorageKey.Make(@object, key), out _);
 
         /* Flags Implementation */
 

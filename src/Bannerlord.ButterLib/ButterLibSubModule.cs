@@ -1,10 +1,10 @@
 ﻿using Bannerlord.ButterLib.CampaignIdentifier;
-using Bannerlord.ButterLib.Common.Extensions;
 using Bannerlord.ButterLib.Common.Helpers;
+using Bannerlord.ButterLib.Common.Extensions;
 using Bannerlord.ButterLib.Logger.Extensions;
-
+using Bannerlord.ButterLib.ObjectSystem.Extensions;
 using Bannerlord.ButterLib.Options;
-using Bannerlord.ButterLib.SaveSystem.Extensions;
+
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -105,7 +105,7 @@ namespace Bannerlord.ButterLib
             GameScope = ServiceProvider.CreateScope();
             _logger.LogInformation("Created GameScope...");
 
-            if (game.GameType is Campaign campaign)
+            if (game.GameType is Campaign)
                 CampaignIdentifierEvents.Instance = new CampaignIdentifierEvents();
 
             _logger.LogTrace("OnGameStart(Game, IGameStarter) finished.");
@@ -118,7 +118,7 @@ namespace Bannerlord.ButterLib
 
             GameScope = null;
 
-            if (game.GameType is Campaign campaign)
+            if (game.GameType is Campaign)
             {
                 MBObjectBaseExtensions.OnGameEnd();
                 CampaignIdentifierEvents.Instance = null;

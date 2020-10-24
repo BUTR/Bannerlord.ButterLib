@@ -98,7 +98,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SaveSystem", "SaveSystem", 
 		..\docs\articles\SaveSystem\Overview.md = ..\docs\articles\SaveSystem\Overview.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bannerlord.ButterLib.SaveSystem.Test", "..\tests\Bannerlord.ButterLib.SaveSystem.Test\Bannerlord.ButterLib.SaveSystem.Test.csproj", "{451849FC-0522-493D-B0DF-9538ABDBE56D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bannerlord.ButterLib.ObjectSystem.Test", "..\tests\Bannerlord.ButterLib.ObjectSystem.Test\Bannerlord.ButterLib.ObjectSystem.Test.csproj", "{451849FC-0522-493D-B0DF-9538ABDBE56D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
