@@ -17,6 +17,7 @@ namespace Bannerlord.ButterLib.SaveSystem.Test
 {
     internal class TestCampaignBehavior : CampaignBehaviorBase
     {
+        private bool _stopAfter = false;
         private readonly ILogger _logger;
 
         public TestCampaignBehavior()
@@ -79,7 +80,7 @@ namespace Bannerlord.ButterLib.SaveSystem.Test
             var spouse = h.Spouse;
             var kingdom = h.Clan?.Kingdom;
             var topLiege = kingdom?.Ruler;
-            var children = h.Children!;
+            var children = h.Children;
             var gender = h.IsFemale ? 'F' : 'M';
             var fellowClans = kingdom?.Clans.Where(c => c != h.Clan).ToArray();
 
@@ -102,7 +103,7 @@ namespace Bannerlord.ButterLib.SaveSystem.Test
                     Error("Set THC != Get THC");
 
                 if (h.TryGetVariable("Gender", out char gender2) && gender2 != gender)
-                    Error($"Set Gender '{gender}' != Get Gender '{((gender2 == default) ? "<default>" : gender2.ToString())}'");
+                    Error($"Set Gender '{gender}' != Get Gender '{ValOrDefault(gender2)}'");
 
                 if (h.TryGetVariable("FellowClans", out Clan[]? fellowClans2) && fellowClans2 != fellowClans)
                     Error("Set FellowClans != Get FellowClans");
@@ -141,8 +142,6 @@ namespace Bannerlord.ButterLib.SaveSystem.Test
 
         private void TestValVar<T>(string name, T want, T got) where T : struct
         {
-            static string ValOrDefault(T val) => val.Equals(default(T)) ? "<default>" : val.ToString();
-
             if (!want.Equals(got))
                 Error($"{name} is incorrect! Got: {ValOrDefault(got)} | Want: {ValOrDefault(want)}");
         }
@@ -185,9 +184,12 @@ namespace Bannerlord.ButterLib.SaveSystem.Test
             _logger.LogError("ERROR: " + msg);
         }
 
-        private string GetObjectTrace(MBObjectBase obj) => $"{obj.GetType().Name}[{obj.Id.InternalValue}]: {obj.GetName()}";
 
-        private string GetHeroTrace(Hero h)
+        private static string ValOrDefault<T>(T val) where T : struct => val.Equals(default(T)) ? "<default>" : val.ToString();
+
+        private static string GetObjectTrace(MBObjectBase obj) => $"{obj.GetType().Name}[{obj.Id.InternalValue}]: {obj.GetName()}";
+
+        private static string GetHeroTrace(Hero h)
         {
             var trace = h.Name.ToString();
 
@@ -218,7 +220,5 @@ namespace Bannerlord.ButterLib.SaveSystem.Test
             [SaveableField(5)]
             internal List<Hero> Children = new List<Hero>();
         }
-
-        private bool _stopAfter = false;
     }
 }
