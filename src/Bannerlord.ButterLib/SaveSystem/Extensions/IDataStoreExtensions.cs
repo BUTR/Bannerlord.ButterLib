@@ -33,7 +33,6 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
             return strBuilder.ToString();
         }
 
-        [return: MaybeNull]
         public static bool SyncDataAsJson<T>(this IDataStore dataStore, string key, ref T data, JsonSerializerSettings? settings = null)
         {
             settings ??= new JsonSerializerSettings
