@@ -5,7 +5,7 @@ using Bannerlord.ButterLib.ObjectSystem.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
-
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -132,7 +132,7 @@ namespace Bannerlord.ButterLib.SaveSystem.Test
         {
             if (obj.TryGetVariable(name, out T val))
             {
-                value = val;
+                value = val!;
                 return;
             }
 
