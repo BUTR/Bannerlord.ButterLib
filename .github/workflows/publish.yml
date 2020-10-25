@@ -10,7 +10,7 @@ jobs:
 #          NEXUS          #
 ###########################
   build-for-nexusmods:
-    name: Build for NexusMods (Stable)
+    name: Build for NexusMods
     runs-on: ubuntu-latest
     steps:
     - name: Checkout Repository
@@ -35,7 +35,7 @@ jobs:
 
     - name: Build Bannerlord.ButterLib.Implementation (Stable_Release)
       run: >-
-        mkdir $PWD/bannerlord-stable
+        mkdir $PWD/bannerlord-stable;
         dotnet build src/Bannerlord.ButterLib.Implementation/Bannerlord.ButterLib.Implementation.csproj --configuration Stable_Release -p:GameFolder="$PWD/bannerlord-stable";
       env:
         DOTNET_NOLOGO: 1
@@ -44,7 +44,7 @@ jobs:
 
     - name: Build Bannerlord.ButterLib.Implementation (Beta_Release)
       run: >-
-        mkdir $PWD/bannerlord-beta
+        mkdir $PWD/bannerlord-beta;
         dotnet build src/Bannerlord.ButterLib.Implementation/Bannerlord.ButterLib.Implementation.csproj --configuration Beta_Release -p:GameFolder="$PWD/bannerlord-beta";
       env:
         DOTNET_NOLOGO: 1
