@@ -10,7 +10,7 @@ using TaleWorlds.CampaignSystem;
 
 namespace Bannerlord.ButterLib.SaveSystem.Extensions
 {
-    public static class IDataStoreExtensions
+    internal static class IDataStoreExtensions
     {
         private static IEnumerable<string> ToChunks(string str, int maxChunkSize)
         {

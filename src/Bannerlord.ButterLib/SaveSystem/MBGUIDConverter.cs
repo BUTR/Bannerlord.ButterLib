@@ -6,7 +6,7 @@ using TaleWorlds.ObjectSystem;
 
 namespace Bannerlord.ButterLib.SaveSystem
 {
-    public sealed class MBGUIDConverter : JsonConverter
+    internal sealed class MBGUIDConverter : JsonConverter
     {
         public override bool CanConvert(Type objectType) => objectType == typeof(MBGUID) || objectType == typeof(MBGUID?);
 
