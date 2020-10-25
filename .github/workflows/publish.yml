@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      #- dev-publish
 
 jobs:
 ###########################
@@ -33,14 +34,8 @@ jobs:
         DOTNET_NOLOGO: 1
         DOTNET_CLI_TELEMETRY_OPTOUT: 1
 
-    - name: Download Bannerlord binaries (Stable)
-      run: >-
-        dotnet depotdownloader/DepotDownloader.dll -app 261550 -depot 261551 -beta ${{secrets.SYNCED_GAME_STABLE_VERSION}} -username ${{secrets.STEAM_LOGIN}}
-        -password ${{secrets.STEAM_PASSWORD}} -filelist ./.github/resources/FileFilters.regexp -dir bannerlord-stable
-      env:
-        DOTNET_NOLOGO: 1
-        DOTNET_CLI_TELEMETRY_OPTOUT: 1
-      shell: pwsh
+    - name: Create bannerlord-beta folder
+      run: mkdir $PWD/bannerlord-stable
 
     - name: Build Bannerlord.ButterLib.Implementation (Stable_Release)
       run: >-
@@ -79,14 +74,8 @@ jobs:
         DOTNET_NOLOGO: 1
         DOTNET_CLI_TELEMETRY_OPTOUT: 1
 
-    - name: Download Bannerlord binaries (Beta)
-      run: >-
-        dotnet depotdownloader/DepotDownloader.dll -app 261550 -depot 261551 -beta ${{secrets.SYNCED_GAME_BETA_VERSION}} -username ${{secrets.STEAM_LOGIN}}
-        -password ${{secrets.STEAM_PASSWORD}} -filelist ./.github/resources/FileFilters.regexp -dir bannerlord-beta
-      env:
-        DOTNET_NOLOGO: 1
-        DOTNET_CLI_TELEMETRY_OPTOUT: 1
-      shell: pwsh
+    - name: Create bannerlord-beta folder
+      run: mkdir $PWD/bannerlord-beta
 
     - name: Build Bannerlord.ButterLib.Implementation (Beta_Release)
       run: >-
