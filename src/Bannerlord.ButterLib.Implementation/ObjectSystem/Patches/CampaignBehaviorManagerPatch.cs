@@ -60,11 +60,13 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem.Patches
 
         private static readonly MethodInfo? OnGameLoadedTargetMI = AccessTools.Method(typeof(CampaignBehaviorManager), "OnGameLoaded");
 
-        private static readonly MethodInfo? OnGameLoadedPatchMI = AccessTools.Method(typeof(CampaignBehaviorManagerPatch), nameof(OnGameLoadedPrefix));
-
         private static readonly MethodInfo? OnBeforeSaveTargetMI = AccessTools.Method(typeof(CampaignBehaviorManager), "OnBeforeSave");
 
-        private static readonly MethodInfo? OnBeforeSavePatchMI = AccessTools.Method(typeof(CampaignBehaviorManagerPatch), nameof(OnBeforeSavePostfix));
+        private static readonly MethodInfo? OnGameLoadedPatchMI =
+            AccessTools.Method(typeof(CampaignBehaviorManagerPatch), nameof(OnGameLoadedPrefix));
+
+        private static readonly MethodInfo? OnBeforeSavePatchMI =
+            AccessTools.Method(typeof(CampaignBehaviorManagerPatch), nameof(OnBeforeSavePostfix));
 
         // Necessary reflection:
 

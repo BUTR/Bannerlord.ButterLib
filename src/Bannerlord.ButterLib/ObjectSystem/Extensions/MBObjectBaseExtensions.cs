@@ -11,7 +11,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Extensions
     /// <summary>
     /// <see cref="MBObjectBase"/> extension methods for dynamic variable / flag storage
     /// </summary>
-    internal static class MBObjectBaseExtensions
+    public static class MBObjectBaseExtensions
     {
         private static IMBObjectVariableStorage? _instance;
 

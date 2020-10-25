@@ -7,7 +7,7 @@ namespace Bannerlord.ButterLib.ObjectSystem
     /// <summary>
     /// Interface to <see cref="MBObjectBase"/>-associated dynamic variable / flag storage
     /// </summary>
-    internal interface IMBObjectVariableStorage
+    public interface IMBObjectVariableStorage
     {
         /* Variables */
 
