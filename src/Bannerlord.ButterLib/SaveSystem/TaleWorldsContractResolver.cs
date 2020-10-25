@@ -14,7 +14,7 @@ using TaleWorlds.SaveSystem;
 
 namespace Bannerlord.ButterLib.SaveSystem
 {
-    internal class TaleWorldsContractResolver : DefaultContractResolver
+    public class TaleWorldsContractResolver : DefaultContractResolver
     {
         private delegate bool IsContainerDelegate(Type type);
         private static readonly IsContainerDelegate? _isContainerDelegate =
