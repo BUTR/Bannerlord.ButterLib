@@ -1,4 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using Bannerlord.ButterLib.Common.Helpers;
+
+using HarmonyLib;
+
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
 using System;
@@ -10,10 +14,38 @@ using TaleWorlds.SaveSystem;
 
 namespace Bannerlord.ButterLib.SaveSystem
 {
-    public class TaleWorldsContractResolver : DefaultContractResolver
+    internal class TaleWorldsContractResolver : DefaultContractResolver
     {
+        private delegate bool IsContainerDelegate(Type type);
+        private static readonly IsContainerDelegate? _isContainerDelegate =
+            AccessTools2.GetDelegate<IsContainerDelegate>(
+                AccessTools.Method(
+                    typeof(SaveableRootClassAttribute).Assembly.GetType("TaleWorlds.SaveSystem.TypeExtensions"), "IsContainer", new [] { typeof(Type) }));
+
+        private static bool IsContainerFallback(Type type)
+        {
+            if (type.IsGenericType && !type.IsGenericTypeDefinition)
+            {
+                var genericTypeDefinition = type.GetGenericTypeDefinition();
+                if (genericTypeDefinition == typeof(Dictionary<,>))
+                    return true;
+                if (genericTypeDefinition == typeof(List<>))
+                    return true;
+                if (genericTypeDefinition == typeof(Queue<>))
+                    return true;
+            }
+            else if (type.IsArray)
+                return true;
+
+            return false;
+        }
+
         protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
         {
+            // Container are an exception.
+            if ((_isContainerDelegate != null && _isContainerDelegate(type)) || (_isContainerDelegate == null && IsContainerFallback(type)))
+                return base.CreateProperties(type, memberSerialization);
+
             // SaveableRootClassAttribute is not needed
             // SaveableInterfaceAttribute is not used by the game
             if (type.GetCustomAttributes(true).All(a =>

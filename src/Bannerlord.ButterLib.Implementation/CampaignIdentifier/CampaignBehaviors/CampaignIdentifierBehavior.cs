@@ -23,7 +23,7 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehavio
 
         public override void RegisterEvents()
         {
-            CampaignIdentifierEvents.OnDescriptorRelatedDataChangedEvent.AddNonSerializedListener(this, UpdateCampaignDescriptorOnCharacterOrClanModified);
+            CampaignIdentifierEvents.OnDescriptorRelatedDataChangedEvent?.AddNonSerializedListener(this, UpdateCampaignDescriptorOnCharacterOrClanModified);
             StoryModeEvents.OnCharacterCreationIsOverEvent.AddNonSerializedListener(this, UpdateCampaignDescriptorOnCharacterOrClanModified);
             CampaignEvents.OnNewGameCreatedEvent.AddNonSerializedListener(this, InitializeCampaignDescriptorOnCreate);
             CampaignEvents.OnGameLoadedEvent.AddNonSerializedListener(this, UpdateCampaignDescriptorOnLoad);

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using HarmonyLib;
+
+using System;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -6,6 +8,19 @@ namespace Bannerlord.ButterLib.Common.Helpers
 {
     public static class SymbolExtensions2
     {
+        public static AccessTools.FieldRef<TObject, TField>? FieldRefAccess<TObject, TField>(Expression<Func<TObject, TField>> expression)
+        {
+            return FieldRefAccess<TObject, TField>((LambdaExpression)expression);
+        }
+        public static AccessTools.FieldRef<TObject, TField>? FieldRefAccess<TObject, TField>(LambdaExpression expression)
+        {
+            if (!(expression.Body is MemberExpression body) || !(body.Member is FieldInfo fieldInfo))
+                throw new ArgumentException("Invalid Expression. Expression should consist of a Field return only.");
+
+            return fieldInfo == null ? null : AccessTools.FieldRefAccess<TObject, TField>(fieldInfo);
+        }
+
+
        public static ConstructorInfo GetConstructorInfo<T>(Expression<Func<T>> expression)
         {
             return GetConstructorInfo((LambdaExpression)expression);

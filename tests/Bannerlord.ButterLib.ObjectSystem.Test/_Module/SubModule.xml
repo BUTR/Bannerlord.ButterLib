@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+  <Name value="ButterLib SaveSystem Test" />
+  <Id value="Bannerlord.ButterLib.SaveSystem.Test" />
+  <Version value="v$version$" />
+  <Official value="false" />
+  <DefaultModule value="false" />
+  <SingleplayerModule value="true" />
+  <MultiplayerModule value="false" />
+  <DependedModules>
+    <DependedModule Id="Bannerlord.Harmony" />
+    <DependedModule Id="Bannerlord.ButterLib" />
+  </DependedModules>
+  <!-- Prototype -->
+  <DependedModuleMetadatas>
+    <DependedModuleMetadata id="Bannerlord.Harmony" order="LoadBeforeThis" version="v$harmonyversion$" />
+    <DependedModuleMetadata id="Bannerlord.ButterLib" order="LoadBeforeThis" version="v$version$" />
+
+    <DependedModuleMetadata id="Native" order="LoadAfterThis" />
+    <DependedModuleMetadata id="SandBoxCore" order="LoadAfterThis" optional="true" />
+    <DependedModuleMetadata id="Sandbox" order="LoadAfterThis" optional="true" />
+    <DependedModuleMetadata id="StoryMode" order="LoadAfterThis" />
+    <DependedModuleMetadata id="CustomBattle" order="LoadAfterThis" optional="true" />
+  </DependedModuleMetadatas>
+  <!-- Prototype -->
+  <SubModules>
+    <SubModule>
+      <Name value="ButterLib SaveSystem Test" />
+      <DLLName value="Bannerlord.ButterLib.SaveSystem.Test.dll" />
+      <SubModuleClassType value="Bannerlord.ButterLib.SaveSystem.Test.SubModule" />
+      <Tags />
+    </SubModule>
+  </SubModules>
+</Module>

@@ -1,8 +1,6 @@
 - name: Dependency Injection
   href: DependencyInjection/toc.yml
   homepage: DependencyInjection/Overview.md
-  
 - name: Logging
   href: Logging/toc.yml
   homepage: Logging/Overview.md
-  

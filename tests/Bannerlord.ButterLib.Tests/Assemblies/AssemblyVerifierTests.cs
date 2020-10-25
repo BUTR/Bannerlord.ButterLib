@@ -6,6 +6,7 @@ using NUnit.Framework;
 
 using System;
 using System.IO;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 
 using TaleWorlds.Engine;
@@ -68,6 +69,20 @@ namespace Bannerlord.ButterLib.Tests.Assemblies
             Assert.NotNull(loader);
             loader!.LoadFile(NewBaseLibrary);
             var result = loader.LoadFileAndTest(ImplementationLibrary);
+            Assert.False(result);
+        }
+
+        [Test]
+        public void LoadWithOutExceptionIncompatibleAssembly_Test()
+        {
+            using var verifier = new AssemblyVerifier("Test");
+            var loader = verifier.GetLoader(out var exception);
+            Assert.Null(exception);
+            Assert.NotNull(loader);
+            loader!.LoadFile(NewBaseLibrary);
+            var result = loader.LoadFileAndTest(ImplementationLibrary, out var testException);
+            Assert.NotNull(testException);
+            Assert.IsInstanceOf<ReflectionTypeLoadException>(testException);
             Assert.False(result);
         }
     }

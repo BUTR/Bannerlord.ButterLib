@@ -1,37 +1,30 @@
 ﻿using Bannerlord.ButterLib.CampaignIdentifier;
 using Bannerlord.ButterLib.Common.Extensions;
-using Bannerlord.ButterLib.DelayedSubModule;
 using Bannerlord.ButterLib.DistanceMatrix;
 using Bannerlord.ButterLib.Implementation.CampaignIdentifier;
 using Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehaviors;
+using Bannerlord.ButterLib.Implementation.CampaignIdentifier.Patches;
 using Bannerlord.ButterLib.Implementation.Common.Extensions;
 using Bannerlord.ButterLib.Implementation.DistanceMatrix;
 using Bannerlord.ButterLib.Implementation.Logging;
+using Bannerlord.ButterLib.Implementation.ObjectSystem;
+using Bannerlord.ButterLib.Implementation.ObjectSystem.Patches;
+using Bannerlord.ButterLib.ObjectSystem;
 
 using HarmonyLib;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-using StoryMode;
-
-using System;
-
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
-using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
-using TaleWorlds.MountAndBlade.GauntletUI;
 
 namespace Bannerlord.ButterLib.Implementation
 {
     public sealed class SubModule : MBSubModuleBase
     {
-        private const string SErrorLoading = "{=PZthBmJc9B}ButterLib Campaign Identifier failed to load! See details in the mod log.";
-
-        public Harmony? CampaignIdentifierHarmonyInstance { get; private set; }
-        internal bool Patched { get; private set; }
         private bool FirstInit { get; set; } = true;
 
         internal static ILogger? Logger { get; private set; }
@@ -53,10 +46,7 @@ namespace Bannerlord.ButterLib.Implementation
             services.AddSingleton<DistanceMatrixStatic, DistanceMatrixStaticImplementation>();
             services.AddSingleton<ICampaignExtensions, CampaignExtensionsImplementation>();
             services.AddTransient<ICampaignDescriptorProvider, JsonCampaignDescriptorProvider>();
-
-            DelayedSubModuleManager.Register<StoryModeSubModule>();
-            DelayedSubModuleManager.Subscribe<StoryModeSubModule, SubModule>(
-                nameof(OnSubModuleLoad), SubscriptionType.AfterMethod, InitializeCampaignIdentifier);
+            services.AddScoped<IMBObjectVariableStorage, MBObjectVariableStorageBehavior>();
 
             Logger.LogTrace("OnSubModuleLoad() finished.");
         }
@@ -83,9 +73,13 @@ namespace Bannerlord.ButterLib.Implementation
                     Debug.DebugManager = new DebugManagerWrapper(Debug.DebugManager, serviceProvider!);
                 }
 
-                DelayedSubModuleManager.Register<GauntletUISubModule>();
-                DelayedSubModuleManager.Subscribe<GauntletUISubModule, SubModule>(
-                    nameof(OnBeforeInitialModuleScreenSetAsRoot), SubscriptionType.AfterMethod, WarnNotPatched);
+                var campaignIdentifierHarmony = new Harmony("Bannerlord.ButterLib.CampaignIdentifier");
+                CharacterCreationContentApplyCulturePatch.Apply(campaignIdentifierHarmony);
+                ClanInitializeClanPatch.Apply(campaignIdentifierHarmony);
+
+                // Selectively apply Harmony patches for MBObjectVariableStorageBehavior load/save
+                // Moved to OnBeforeInitialModuleScreenSetAsRoot so we'll get a final logger
+                CampaignBehaviorManagerPatch.Apply(new Harmony("Bannerlord.ButterLib.MBObjectVariableStorage"));
             }
 
             Logger.LogTrace("OnBeforeInitialModuleScreenSetAsRoot() finished.");
@@ -98,43 +92,27 @@ namespace Bannerlord.ButterLib.Implementation
 
             if (game.GameType is Campaign)
             {
-                //CampaignGameStarter
-                CampaignGameStarter gameStarter = (CampaignGameStarter) gameStarterObject;
-                //Behaviors
+                var gameStarter = (CampaignGameStarter)gameStarterObject;
+
+                // Behaviors
                 gameStarter.AddBehavior(new CampaignIdentifierBehavior());
                 gameStarter.AddBehavior(new GeopoliticsCachingBehavior());
             }
+
             Logger.LogTrace("OnGameStart(Game, IGameStarter) finished.");
         }
 
-        private void InitializeCampaignIdentifier(object s, SubscriptionEventArgs e)
+        public override void OnGameEnd(Game game)
         {
-            if (!e.IsBase)
-                return;
+            base.OnGameEnd(game);
+            Logger.LogTrace("OnGameEnd(Game) started.");
 
-            try
+            if (game.GameType is Campaign)
             {
-                CampaignIdentifierHarmonyInstance ??= new Harmony("Bannerlord.ButterLib.CampaignIdentifier");
-                CampaignIdentifierHarmonyInstance.PatchAll();
-                Patched = true;
+                CampaignIdentifierEvents.Instance = null;
             }
-            catch (Exception ex)
-            {
-                Patched = false;
-                Logger.LogError(ex, "Error in OnSubModuleLoad while initializing CampaignIdentifier.");
-            }
-        }
 
-        private void WarnNotPatched(object s, SubscriptionEventArgs e)
-        {
-            if (e.IsBase)
-                return;
-
-            if (!Patched)
-            {
-                Logger.LogError("Failed to execute patches!");
-                InformationManager.DisplayMessage(new InformationMessage(new TextObject(SErrorLoading).ToString(), Colors.Red));
-            }
+            Logger.LogTrace("OnGameEnd(Game) finished.");
         }
     }
 }
