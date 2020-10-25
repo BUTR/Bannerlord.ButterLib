@@ -33,9 +33,18 @@ jobs:
         DOTNET_NOLOGO: 1
         DOTNET_CLI_TELEMETRY_OPTOUT: 1
 
+    - name: Download Bannerlord binaries (Stable)
+      run: >-
+        dotnet depotdownloader/DepotDownloader.dll -app 261550 -depot 261551 -beta ${{secrets.SYNCED_GAME_STABLE_VERSION}} -username ${{secrets.STEAM_LOGIN}}
+        -password ${{secrets.STEAM_PASSWORD}} -filelist ./.github/resources/FileFilters.regexp -dir bannerlord-stable
+      env:
+        DOTNET_NOLOGO: 1
+        DOTNET_CLI_TELEMETRY_OPTOUT: 1
+      shell: pwsh
+
     - name: Build Bannerlord.ButterLib.Implementation (Stable_Release)
       run: >-
-        dotnet build src/Bannerlord.ButterLib.Implementation/Bannerlord.ButterLib.Implementation.csproj --configuration Stable_Release -p:GameFolder="$PWD/bannerlord";
+        dotnet build src/Bannerlord.ButterLib.Implementation/Bannerlord.ButterLib.Implementation.csproj --configuration Stable_Release -p:GameFolder="$PWD/bannerlord-stable";
       env:
         DOTNET_NOLOGO: 1
         DOTNET_CLI_TELEMETRY_OPTOUT: 1
@@ -44,7 +53,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: bannerlord-stable
-        path: ./bannerlord/
+        path: ./bannerlord-stable/
 
   build-for-nexusmods-beta:
     name: Build for NexusMods (Beta)
@@ -70,9 +79,18 @@ jobs:
         DOTNET_NOLOGO: 1
         DOTNET_CLI_TELEMETRY_OPTOUT: 1
 
+    - name: Download Bannerlord binaries (Beta)
+      run: >-
+        dotnet depotdownloader/DepotDownloader.dll -app 261550 -depot 261551 -beta ${{secrets.SYNCED_GAME_BETA_VERSION}} -username ${{secrets.STEAM_LOGIN}}
+        -password ${{secrets.STEAM_PASSWORD}} -filelist ./.github/resources/FileFilters.regexp -dir bannerlord-beta
+      env:
+        DOTNET_NOLOGO: 1
+        DOTNET_CLI_TELEMETRY_OPTOUT: 1
+      shell: pwsh
+
     - name: Build Bannerlord.ButterLib.Implementation (Beta_Release)
       run: >-
-        dotnet build src/Bannerlord.ButterLib.Implementation/Bannerlord.ButterLib.Implementation.csproj --configuration Beta_Release -p:GameFolder="$PWD/bannerlord";
+        dotnet build src/Bannerlord.ButterLib.Implementation/Bannerlord.ButterLib.Implementation.csproj --configuration Beta_Release -p:GameFolder="$PWD/bannerlord-beta";
       env:
         DOTNET_NOLOGO: 1
         DOTNET_CLI_TELEMETRY_OPTOUT: 1
@@ -81,7 +99,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: bannerlord-beta
-        path: ./bannerlord/
+        path: ./bannerlord-beta/
 
   publish-on-nexusmods:
     name: Publish on NexusMods
