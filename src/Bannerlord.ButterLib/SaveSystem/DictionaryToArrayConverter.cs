@@ -45,7 +45,7 @@ namespace Bannerlord.ButterLib.SaveSystem
             {
                 reader.Read();
                 var genericArguments = objectType.GetGenericArguments();
-                do
+                while (reader.TokenType != JsonToken.EndArray)
                 {
                     var key = serializer.Deserialize(reader, genericArguments[0]);
                     reader.Read();
@@ -59,7 +59,7 @@ namespace Bannerlord.ButterLib.SaveSystem
                         else
                             dict.Add(key, value);
                     }
-                } while (reader.TokenType != JsonToken.EndArray);
+                }
             }
             else if (reader.TokenType == JsonToken.StartObject)
             {
