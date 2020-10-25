@@ -1,4 +1,4 @@
-<!--EXTERNAL_PROPERTIES: Version;GameVersion;ModuleName;GameFolder;HarmonyVersion-->
+<!--EXTERNAL_PROPERTIES: Version;GameVersion;ModuleName;GameFolder;HarmonyVersion;GITHUB_ACTIONS-->
 <Project>
 
   <Target Name="AddGameVersionMetadaAssemblyAttributes" BeforeTargets="CoreGenerateAssemblyInfo">
@@ -27,7 +27,7 @@
   </Target>
 
   <Target Name="PostBuildCheckForGameFolder" BeforeTargets="PostBuildCopyToModules" Condition="$(ModuleName) != ''">
-    <Warning Condition="!Exists($(GameFolder)) AND NOT '$(GITHUB_ACTIONS)' == 'true'" Text="'GameFolder' property links to a non existing folder! No modules will be copied to the game's Module folder! Check '/build/commpn.props'!"/>
+    <Warning Condition="!Exists($(GameFolder)) AND '$(GITHUB_ACTIONS)' != 'true'" Text="'GameFolder' property links to a non existing folder! No modules will be copied to the game's Module folder! Check '/build/commpn.props'!"/>
   </Target>
 
   <Target Name="PostBuildCopyToModules" AfterTargets="PostBuildEvent" Condition="$(ModuleName) != '' AND Exists($(GameFolder))">
