@@ -9,7 +9,7 @@ jobs:
 ###########################
 #          NEXUS          #
 ###########################
-  build-for-nexusmods-stable:
+  build-for-nexusmods:
     name: Build for NexusMods (Stable)
     runs-on: ubuntu-latest
     steps:
@@ -33,69 +33,30 @@ jobs:
         DOTNET_NOLOGO: 1
         DOTNET_CLI_TELEMETRY_OPTOUT: 1
 
-    - name: Download Bannerlord binaries (Stable)
-      run: >-
-        dotnet depotdownloader/DepotDownloader.dll -app 261550 -depot 261551 -beta ${{secrets.SYNCED_GAME_STABLE_VERSION}} -username ${{secrets.STEAM_LOGIN}}
-        -password ${{secrets.STEAM_PASSWORD}} -filelist ./.github/resources/FileFilters.regexp -dir bannerlord-stable
-      env:
-        DOTNET_NOLOGO: 1
-        DOTNET_CLI_TELEMETRY_OPTOUT: 1
-      shell: pwsh
-
     - name: Build Bannerlord.ButterLib.Implementation (Stable_Release)
       run: >-
+        mkdir $PWD/bannerlord-stable
         dotnet build src/Bannerlord.ButterLib.Implementation/Bannerlord.ButterLib.Implementation.csproj --configuration Stable_Release -p:GameFolder="$PWD/bannerlord-stable";
       env:
         DOTNET_NOLOGO: 1
         DOTNET_CLI_TELEMETRY_OPTOUT: 1
 
-    - name: Upload Bannerlord folder
-      uses: actions/upload-artifact@v2
-      with:
-        name: bannerlord-stable
-        path: ./bannerlord-stable/
-
-  build-for-nexusmods-beta:
-    name: Build for NexusMods (Beta)
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
-
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@master
-      with:
-        dotnet-version: 3.1.x
-      env:
-        DOTNET_NOLOGO: 1
-        DOTNET_CLI_TELEMETRY_OPTOUT: 1
-
-    - name: Setup BUTR GPR
-      uses: actions/setup-dotnet@master
-      with:
-        source-url: https://nuget.pkg.github.com/BUTR/index.json
-      env:
-        NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        DOTNET_NOLOGO: 1
-        DOTNET_CLI_TELEMETRY_OPTOUT: 1
-
-    - name: Download Bannerlord binaries (Beta)
-      run: >-
-        dotnet depotdownloader/DepotDownloader.dll -app 261550 -depot 261551 -beta ${{secrets.SYNCED_GAME_BETA_VERSION}} -username ${{secrets.STEAM_LOGIN}}
-        -password ${{secrets.STEAM_PASSWORD}} -filelist ./.github/resources/FileFilters.regexp -dir bannerlord-beta
-      env:
-        DOTNET_NOLOGO: 1
-        DOTNET_CLI_TELEMETRY_OPTOUT: 1
-      shell: pwsh
 
     - name: Build Bannerlord.ButterLib.Implementation (Beta_Release)
       run: >-
+        mkdir $PWD/bannerlord-beta
         dotnet build src/Bannerlord.ButterLib.Implementation/Bannerlord.ButterLib.Implementation.csproj --configuration Beta_Release -p:GameFolder="$PWD/bannerlord-beta";
       env:
         DOTNET_NOLOGO: 1
         DOTNET_CLI_TELEMETRY_OPTOUT: 1
 
-    - name: Upload Bannerlord folder
+    - name: Upload Bannerlord Stable folder
+      uses: actions/upload-artifact@v2
+      with:
+        name: bannerlord-stable
+        path: ./bannerlord-stable/
+
+    - name: Upload Bannerlord Beta folder
       uses: actions/upload-artifact@v2
       with:
         name: bannerlord-beta
@@ -103,7 +64,7 @@ jobs:
 
   publish-on-nexusmods:
     name: Publish on NexusMods
-    needs: ["build-for-nexusmods-stable", "build-for-nexusmods-beta"]
+    needs: build-for-nexusmods
     runs-on: ubuntu-latest
     steps:
     - name: Checkout Repository
