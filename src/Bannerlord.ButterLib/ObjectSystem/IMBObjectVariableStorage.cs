@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-using TaleWorlds.ObjectSystem;
+﻿using TaleWorlds.ObjectSystem;
 
 namespace Bannerlord.ButterLib.ObjectSystem
 {
@@ -23,7 +21,7 @@ namespace Bannerlord.ButterLib.ObjectSystem
          * <param name="object">A game object.</param>
          * <param name="name">The variable's name.</param>
          */
-        public bool TryGetVariable<T>(MBObjectBase @object, string name, [MaybeNull] out T value);
+        public bool TryGetVariable<T>(MBObjectBase @object, string name, out T value);
 
         /**
          * <summary>

@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using TaleWorlds.CampaignSystem;
+using TaleWorlds.ObjectSystem;
 using TaleWorlds.SaveSystem;
 
 namespace Bannerlord.ButterLib.SaveSystem.Test
@@ -38,9 +39,11 @@ namespace Bannerlord.ButterLib.SaveSystem.Test
 
             foreach (var h in Hero.All)
             {
-                if (!SetOrValidateHeroVars(h, true))
+                SetOrValidateHeroVars(h, true);
+
+                if (_stopAfter)
                 {
-                    _logger.LogTrace($"Errant Hero: {GetHeroTrace(h)}");
+                    _logger.LogTrace($"Errant Hero: {GetObjectTrace(h)}");
                     _logger.LogError("Halting execution due to error(s).");
                     _logger.LogWarningAndDisplay("<<<<<  STORE FAILED!  >>>>>");
                     return;
@@ -56,9 +59,11 @@ namespace Bannerlord.ButterLib.SaveSystem.Test
 
             foreach (var h in Hero.All)
             {
-                if (!SetOrValidateHeroVars(h, false))
+                SetOrValidateHeroVars(h, false);
+
+                if (_stopAfter)
                 {
-                    _logger.LogTrace($"Errant Hero: {GetHeroTrace(h)}");
+                    _logger.LogTrace($"Errant Hero: {GetObjectTrace(h)}");
                     _logger.LogError("Halting execution due to error(s).");
                     _logger.LogWarningAndDisplay("<<<<<  TEST FAILED!  >>>>>");
                     return;
@@ -68,17 +73,15 @@ namespace Bannerlord.ButterLib.SaveSystem.Test
             _logger.LogWarningAndDisplay("<<<<<  TEST PASSED!  >>>>>");
         }
 
-        private bool SetOrValidateHeroVars(Hero h, bool store)
+        private void SetOrValidateHeroVars(Hero h, bool store)
         {
-            int age = (int)h.Age;
-            Hero? spouse = h.Spouse;
-            Kingdom? kingdom = h.Clan?.Kingdom;
-            Hero? topLiege = kingdom?.Ruler;
-            List<Hero> children = h.Children!;
-            char gender = h.IsFemale ? 'F' : 'M';
-            Clan[]? fellowClans = kingdom?.Clans.Where(c => c != h.Clan).ToArray();
-
-            bool stopAfterHero = false;
+            var age = (int)h.Age;
+            var spouse = h.Spouse;
+            var kingdom = h.Clan?.Kingdom;
+            var topLiege = kingdom?.Ruler;
+            var children = h.Children!;
+            var gender = h.IsFemale ? 'F' : 'M';
+            var fellowClans = kingdom?.Clans.Where(c => c != h.Clan).ToArray();
 
             if (store)
             {
@@ -95,100 +98,94 @@ namespace Bannerlord.ButterLib.SaveSystem.Test
                 h.SetVariable("Gender", gender);
                 h.SetVariable("FellowClans", fellowClans);
 
-                if (h.GetVariable<TestHeroClass>("THC") != thc)
-                {
-                    _logger.LogError("ERROR: Set THC != Get");
-                    stopAfterHero = true;
-                }
+                if (h.TryGetVariable("THC", out TestHeroClass? thc2) && thc2 != thc)
+                    Error("Set THC != Get THC");
 
-                if (h.GetVariable<char>("Gender") != gender)
-                {
-                    _logger.LogError($"ERROR: Set Gender '{gender}' != Get");
-                    stopAfterHero = true;
-                }
+                if (h.TryGetVariable("Gender", out char gender2) && gender2 != gender)
+                    Error($"Set Gender '{gender}' != Get Gender '{((gender2 == default) ? "<default>" : gender2.ToString())}'");
 
-                if (h.GetVariable<Clan[]>("FellowClans") != fellowClans)
-                {
-                    _logger.LogError("ERROR: Set fellowClans != Get");
-                    stopAfterHero = true;
-                }
+                if (h.TryGetVariable("FellowClans", out Clan[]? fellowClans2) && fellowClans2 != fellowClans)
+                    Error("Set FellowClans != Get FellowClans");
             }
             else
             {
-                TestHeroClass? gotThc = h.GetVariable<TestHeroClass>("THC");
+                LoadVar(h, "THC", out TestHeroClass? gotThc);
+                LoadVar(h, "Gender", out char gotGender);
+                LoadVar(h, "FellowClans", out Clan[]? gotFellowClans);
 
-                char gotGender = h.GetVariable<char>("Gender");
-                Clan[]? gotFellowClans = h.GetVariable<Clan[]>("FellowClans");
-
-                if (gotThc == null)
+                if (gotThc != null)
                 {
-                    stopAfterHero = true;
-                    _logger.LogError("ERROR: gotThc null!");
-                }
-                else
-                {
-                    if (gotThc.Age != age)
-                    {
-                        stopAfterHero = true;
-                        _logger.LogError($"ERROR: gotThc.Age ({gotThc.Age}) != age ({age})");
-                    }
-
-                    if (spouse != null && gotThc.Spouse != null && gotThc.Spouse != spouse)
-                    {
-                        stopAfterHero = true;
-                        _logger.LogError($"ERROR: gotThc.Spouse ({gotThc.Spouse.Name}) != spouse ({spouse.Name})");
-                    }
-
-                    if (kingdom != null && gotThc.Kingdom != null && gotThc.Kingdom != kingdom)
-                    {
-                        stopAfterHero = true;
-                        _logger.LogError($"ERROR: gotThc.Kingdom ({gotThc.Kingdom.Name}) != kingdom ({kingdom.Name})");
-                    }
-
-                    if (topLiege != null && gotThc.TopLiege != null && gotThc.TopLiege != topLiege)
-                    {
-                        stopAfterHero = true;
-                        _logger.LogError($"ERROR: gotThc.TopLiege ({gotThc.TopLiege.Name}) != topLiege ({topLiege.Name})");
-                    }
-
-                    if (children != null && gotThc.Children == null)
-                    {
-                        stopAfterHero = true;
-                        _logger.LogError("ERROR: gotThc.Children null!");
-                        _logger.LogTrace($"children: [{string.Join(", ", children)}]");
-                    }
-                    else if (children != null && !children.SequenceEqual(gotThc.Children))
-                    {
-                        stopAfterHero = true;
-                        _logger.LogError("ERROR: gotThc.Children sequence != children sequence!");
-                        _logger.LogTrace($"gotThc.Children: [{string.Join(", ", gotThc.Children)}]");
-                        _logger.LogTrace($"children: [{string.Join(", ", children)}]");
-                    }
+                    TestValVar("gotThc.Age", age, gotThc.Age);
+                    TestRefVar("gotThc.Spouse", spouse, gotThc.Spouse);
+                    TestRefVar("gotThc.Kingdom", kingdom, gotThc.Kingdom);
+                    TestRefVar("gotThc.TopLiege", topLiege, gotThc.TopLiege);
+                    TestSeqVar("gotThc.Children", children, gotThc.Children);
                 }
 
-                if (gotFellowClans == null && fellowClans != null)
-                {
-                    stopAfterHero = true;
-                    _logger.LogError("ERROR: gotFellowClans null!");
-                    _logger.LogTrace($"fellowClans: [{string.Join<Clan>(", ", fellowClans)}]");
-                }
-                else if (fellowClans != null && gotFellowClans != null && !fellowClans.SequenceEqual(gotFellowClans))
-                {
-                    stopAfterHero = true;
-                    _logger.LogError("ERROR: gotFellowClans sequence != fellowClans sequence!");
-                    _logger.LogTrace($"gotFellowClans: [{string.Join<Clan>(", ", gotFellowClans)}]");
-                    _logger.LogTrace($"fellowClans: [{string.Join<Clan>(", ", fellowClans)}]");
-                }
+                TestSeqVar("gotFellowClans", fellowClans, gotFellowClans);
+                TestValVar("gotGender", gender, gotGender);
+            }
+        }
 
-                if (gotGender != gender)
-                {
-                    stopAfterHero = true;
-                    _logger.LogError($"ERROR: gotGender should be '{gender}' but gotGender == '{gotGender}'");
-                }
+        private void LoadVar<T>(MBObjectBase obj, string name, out T value)
+        {
+            if (obj.TryGetVariable(name, out T val))
+            {
+                value = val;
+                return;
             }
 
-            return !stopAfterHero;
+            value = default!;
+            Error($"Variable \"{name}\" not found!");
         }
+
+        private void TestValVar<T>(string name, T want, T got) where T : struct
+        {
+            static string ValOrDefault(T val) => val.Equals(default(T)) ? "<default>" : val.ToString();
+
+            if (!want.Equals(got))
+                Error($"{name} is incorrect! Got: {ValOrDefault(got)} | Want: {ValOrDefault(want)}");
+        }
+
+        private void TestRefVar<T>(string name, T want, T got) where T : class?
+        {
+            if (want == null && got == null)
+                return;
+
+            if (want != null && got == null)
+                Error($"{name} is null!");
+            else if (want == null && got != null)
+                Error($"{name} is NOT null!");
+            else if (want != got)
+                Error($"{name} is incorrect! Got: {got} | Want: {want}");
+        }
+
+        private void TestSeqVar<T>(string name, IEnumerable<T>? want, IEnumerable<T>? got)
+        {
+            if (want == null && got == null)
+                return;
+
+            if (want != null && got == null)
+            {
+                Error($"{name} is null!");
+                _logger.LogTrace($"\tWant: [{string.Join(",", want)}]");
+            }
+            else if (want == null && got != null)
+                Error($"{name} is NOT null!");
+            else if (!want.SequenceEqual(got))
+            {
+                Error($"{name} sequence is incorrect!");
+                _logger.LogTrace($"Got: [{string.Join(",", got)}]\n\tWant: [{string.Join(",", want)}]");
+            }
+        }
+
+        private void Error(string msg)
+        {
+            _stopAfter = true;
+            _logger.LogError("ERROR: " + msg);
+        }
+
+        private string GetObjectTrace(MBObjectBase obj) => $"{obj.GetType().Name}[{obj.Id.InternalValue}]: {obj.GetName()}";
 
         private string GetHeroTrace(Hero h)
         {
@@ -221,5 +218,7 @@ namespace Bannerlord.ButterLib.SaveSystem.Test
             [SaveableField(5)]
             internal List<Hero> Children = new List<Hero>();
         }
+
+        private bool _stopAfter = false;
     }
 }

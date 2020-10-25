@@ -2,8 +2,6 @@
 
 using Microsoft.Extensions.DependencyInjection;
 
-using System.Diagnostics.CodeAnalysis;
-
 using TaleWorlds.ObjectSystem;
 
 namespace Bannerlord.ButterLib.ObjectSystem.Extensions
@@ -41,7 +39,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Extensions
          * <param name="object">A game object.</param>
          * <param name="name">The variable's name.</param>
          */
-        public static bool TryGetVariable<T>(this MBObjectBase @object, string name, [MaybeNull] out T value)
+        public static bool TryGetVariable<T>(this MBObjectBase @object, string name, out T value)
         {
             if (Instance is { } instance && instance.TryGetVariable(@object, name, out T val) && val is T typedVal)
             {
@@ -49,7 +47,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Extensions
                 return true;
             }
 
-            value = default;
+            value = default!;
             return false;
         }
 

@@ -6,7 +6,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.ObjectSystem;
@@ -52,7 +51,7 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
 
         /* Variables Implementation */
 
-        public bool TryGetVariable<T>(MBObjectBase @object, string key, [MaybeNull] out T value)
+        public bool TryGetVariable<T>(MBObjectBase @object, string key, out T value)
         {
             if (_variables.TryGetValue(StorageKey.Make(@object, key), out var val) && val is T typedVal)
             {
@@ -60,7 +59,7 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
                 return true;
             }
 
-            value = default;
+            value = default!;
             return false;
         }
 
