@@ -8,9 +8,9 @@
     <!--Harmony Version-->
     <HarmonyVersion>2.0.2</HarmonyVersion>
     <!--Current Bannerlord Stable Version-->
-    <StableVersion>1.5.2</StableVersion>
+    <StableVersion>1.5.3</StableVersion>
     <!--Current Bannerlord Beta Version-->
-    <BetaVersion>1.5.3</BetaVersion>
+    <BetaVersion>1.5.4</BetaVersion>
     <!--Bannerlord's Root Folder. Leave empty if you want it to be tried to be autoresolved.-->
     <GameFolder Condition="$(Configuration) == 'Stable_Debug' OR $(Configuration) == 'Stable_Release'">$(BANNERLORD_STABLE_DIR)</GameFolder>
     <GameFolder Condition="$(Configuration) == 'Beta_Debug' OR $(Configuration) == 'Beta_Release'">$(BANNERLORD_BETA_DIR)</GameFolder>

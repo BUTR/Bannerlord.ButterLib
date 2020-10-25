@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Text;
 
 using TaleWorlds.CampaignSystem;
 
@@ -15,6 +16,21 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
         {
             for (var i = 0; i < str.Length; i += maxChunkSize)
                 yield return str.Substring(i, Math.Min(maxChunkSize, str.Length-i));
+        }
+
+        private static string ChunksToString(string[] chunks)
+        {
+            if (chunks.Length == 0)
+                return string.Empty;
+            else if (chunks.Length == 1)
+                return chunks[0];
+
+            var strBuilder = new StringBuilder(short.MaxValue);
+
+            foreach (var chunk in chunks)
+                strBuilder.Append(chunk);
+
+            return strBuilder.ToString();
         }
 
         [return: MaybeNull]
@@ -44,8 +60,8 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
                     // The game's save system limits the string to be of size of short.MaxValue
                     // We avoid this limitation by splitting the string into chunks.
                     var jsonDataChunks = Array.Empty<string>();
-                    var result = dataStore.SyncData(key, ref jsonDataChunks); // try to get as JSON string
-                    var jsonData = JsonConvert.DeserializeObject<JsonData>(string.Concat(jsonDataChunks ?? Array.Empty<string>()), settings);
+                    var result = dataStore.SyncData(key, ref jsonDataChunks); // try to get as array of JSON string(s)
+                    var jsonData = JsonConvert.DeserializeObject<JsonData>(ChunksToString(jsonDataChunks ?? Array.Empty<string>()), settings);
                     data = jsonData.Format switch
                     {
                         2 => JsonConvert.DeserializeObject<T>(jsonData.Data, settings),
