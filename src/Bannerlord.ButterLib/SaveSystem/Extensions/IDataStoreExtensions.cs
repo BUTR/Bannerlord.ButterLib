@@ -34,6 +34,13 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
 
         public static bool SyncDataAsJson<T>(this IDataStore dataStore, string key, ref T data, JsonSerializerSettings? settings = null)
         {
+            // If the type we're synchronizing is a string or string array, then it's ambiguous
+            // with our own internal storage types, which imply that the strings contain valid
+            // JSON. Standard binary serialization can handle these types just fine, so we avoid
+            // the ambiguity by passing this data straight to the game's binary serializer.
+            if (typeof(T) == typeof(string) || typeof(T) == typeof(string[]))
+                return dataStore.SyncData(key, ref data);
+
             settings ??= new JsonSerializerSettings
             {
                 ContractResolver = new TaleWorldsContractResolver(),
