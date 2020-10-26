@@ -13,8 +13,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{20835E54-40DC-4892-A61A-4A3FBCE97EF1}"
 	ProjectSection(SolutionItems) = preProject
 		..\build\common.props = ..\build\common.props
-		..\build\common.targets = ..\build\common.targets
-		..\build\github-actions.props = ..\build\github-actions.props
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{ADE4D687-B33F-44D5-B27A-E7635AC453A2}"

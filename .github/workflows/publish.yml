@@ -100,6 +100,7 @@ jobs:
 
     - name: Zip Bannerlord.ButterLib
       run: 7z a -tzip Bannerlord.ButterLib.zip ./bannerlord/*
+      shell: pwsh
 
     - name: Install Bannerlord.ChangelogParser and Bannerlord.NexusmodsUploader
       run: >-
@@ -108,6 +109,7 @@ jobs:
       env:
         DOTNET_NOLOGO: 1
         DOTNET_CLI_TELEMETRY_OPTOUT: 1
+      shell: pwsh
 
     - name: Run ChangelogParser
       id: changelog
@@ -122,6 +124,7 @@ jobs:
       env:
         DOTNET_NOLOGO: 1
         DOTNET_CLI_TELEMETRY_OPTOUT: 1
+      shell: pwsh
 
     - name: Start Selenoid
       uses: Xotabu4/selenoid-github-action@v1
@@ -135,9 +138,11 @@ jobs:
         NEXUSMODS_COOKIES_JSON: '${{secrets.NEXUSMODS_COOKIES_JSON}}'
         DOTNET_NOLOGO: 1
         DOTNET_CLI_TELEMETRY_OPTOUT: 1
+      shell: pwsh
 
     - name: Password protect Screenshots
       run: 7z a -p${{secrets.SCREENSHOTS_PASSWORD}} Screenshots.7z ./Screenshots/*
+      shell: pwsh
 
     - name: Upload Screenshots Artifact
       uses: actions/upload-artifact@v2
@@ -177,12 +182,14 @@ jobs:
       env:
         DOTNET_NOLOGO: 1
         DOTNET_CLI_TELEMETRY_OPTOUT: 1
+      shell: pwsh
 
     - name: Install Bannerlord.ChangelogParser
       run: dotnet tool install -g Bannerlord.ChangelogParser;
       env:
         DOTNET_NOLOGO: 1
         DOTNET_CLI_TELEMETRY_OPTOUT: 1
+      shell: pwsh
 
     - name: Run ChangelogParser
       id: changelog
@@ -194,12 +201,14 @@ jobs:
         desc="${desc//$'\n'/'%0A'}"
         desc="${desc//$'\r'/'%0D'}"
         echo "::set-output name=mod_description::$desc"
+      shell: pwsh
 
     - name: Push to NuGet
       run: dotnet nuget push "./packages/*.nupkg" -k ${{secrets.NUGET_API_KEY}} -s https://www.nuget.org
       env:
         DOTNET_NOLOGO: 1
         DOTNET_CLI_TELEMETRY_OPTOUT: 1
+      shell: pwsh
 
     - name: Push to GPR
       run: |
@@ -207,6 +216,7 @@ jobs:
            do
              curl -vX PUT -u "vslee:${{secrets.GITHUB_TOKEN}}" -F package=@$f https://nuget.pkg.github.com/BUTR/
            done
+      shell: bash
 
 ###########################
 #         GITHUB          #
@@ -249,6 +259,7 @@ jobs:
 
     - name: Zip Bannerlord.ButterLib
       run: 7z a -tzip Bannerlord.ButterLib.zip ./bannerlord/*
+      shell: pwsh
 
     - name: Install Bannerlord.ChangelogParser and Bannerlord.NexusmodsUploader
       run: >-
@@ -257,6 +268,7 @@ jobs:
       env:
         DOTNET_NOLOGO: 1
         DOTNET_CLI_TELEMETRY_OPTOUT: 1
+      shell: pwsh
 
     - name: Run ChangelogParser
       id: changelog
@@ -268,6 +280,7 @@ jobs:
         desc="${desc//$'\n'/'%0A'}"
         desc="${desc//$'\r'/'%0D'}"
         echo "::set-output name=mod_description::$desc"
+      shell: pwsh
 
     - name: Create Release
       uses: actions/create-release@v1

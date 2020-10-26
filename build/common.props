@@ -11,6 +11,9 @@
     <StableVersion>1.5.3</StableVersion>
     <!--Current Bannerlord Beta Version-->
     <BetaVersion>1.5.4</BetaVersion>
+    <!-- -->
+    <GameVersion Condition="$(Configuration) == 'Stable_Debug' OR $(Configuration) == 'Stable_Release'">$(StableVersion)</GameVersion>
+    <GameVersion Condition="$(Configuration) == 'Beta_Debug' OR $(Configuration) == 'Beta_Release'">$(BetaVersion)</GameVersion>
     <!--Bannerlord's Root Folder. Leave empty if you want it to be tried to be autoresolved.-->
     <GameFolder Condition="$(Configuration) == 'Stable_Debug' OR $(Configuration) == 'Stable_Release'">$(BANNERLORD_STABLE_DIR)</GameFolder>
     <GameFolder Condition="$(Configuration) == 'Beta_Debug' OR $(Configuration) == 'Beta_Release'">$(BANNERLORD_BETA_DIR)</GameFolder>
@@ -26,28 +29,6 @@
     <!--Unix-->
     <!--Set a default value if registry value is missing-->
     <GameFolder Condition="!Exists($(GameFolder)) AND $(OS) == 'Unix'">~/.steam/root/steamapps/common/Mount &amp; Blade II Bannerlord</GameFolder>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="$(Configuration) == 'Stable_Debug' OR $(Configuration) == 'Beta_Debug'" >
-    <DefineConstants>$(DefineConstants);DEBUG;TRACE</DefineConstants>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="$(Configuration) == 'Stable_Release' OR $(Configuration) == 'Beta_Release'" >
-    <DefineConstants>$(DefineConstants);RELEASE;TRACE</DefineConstants>
-    <DebugSymbols>false</DebugSymbols>
-    <DebugType>portable</DebugType>
-    <Optimize>true</Optimize>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="$(Configuration) == 'Stable_Debug' OR $(Configuration) == 'Stable_Release'" >
-    <DefineConstants>$(DefineConstants);STABLE</DefineConstants>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="$(Configuration) == 'Beta_Debug' OR $(Configuration) == 'Beta_Release'" >
-    <DefineConstants>$(DefineConstants);BETA</DefineConstants>
   </PropertyGroup>
 
 </Project>
