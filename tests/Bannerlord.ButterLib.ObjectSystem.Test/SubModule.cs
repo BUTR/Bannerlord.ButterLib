@@ -1,6 +1,5 @@
 ﻿using Bannerlord.ButterLib.Common.Extensions;
 using Bannerlord.ButterLib.Logger.Extensions;
-
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -8,7 +7,7 @@ using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 
-namespace Bannerlord.ButterLib.SaveSystem.Test
+namespace Bannerlord.ButterLib.ObjectSystem.Test
 {
     public sealed class SubModule : MBSubModuleBase
     {
@@ -43,13 +42,9 @@ namespace Bannerlord.ButterLib.SaveSystem.Test
             if (game.GameType is Campaign)
             {
                 CampaignGameStarter initializer = (CampaignGameStarter)starterObject;
-                AddBehaviors(initializer);
+                initializer.AddBehavior(new TestCampaignBehavior());
+                _logger.LogTrace($"Added campaign behavior: {nameof(TestCampaignBehavior)}");
             }
-        }
-
-        private void AddBehaviors(CampaignGameStarter gameInitializer)
-        {
-            gameInitializer.AddBehavior(new TestCampaignBehavior());
         }
     }
 }
