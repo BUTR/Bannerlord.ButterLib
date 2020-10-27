@@ -1,4 +1,4 @@
-﻿<!--EXTERNAL_PROPERTIES: Version;StableVersion;BetaVersion;HarmonyVersion-->
+﻿<!--EXTERNAL_PROPERTIES: Version;GameVersion;StableVersion;BetaVersion;HarmonyVersion-->
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
