@@ -28,11 +28,9 @@ namespace Bannerlord.ButterLib.SaveSystem
             }
 
             var fields = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                .Where(x => x.GetCustomAttributes(true).Any(a =>
-                    a.GetType() == typeof(SaveableFieldAttribute) || a.GetType() == typeof(SaveablePropertyAttribute)));
+                .Where(x => x.GetCustomAttribute<SaveableFieldAttribute>(true) != null);
             var properties = type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                .Where(x => x.GetCustomAttributes(true).Any(a =>
-                    a.GetType() == typeof(SaveableFieldAttribute) || a.GetType() == typeof(SaveablePropertyAttribute)));
+                .Where(x => x.GetCustomAttribute<SaveablePropertyAttribute>(true) != null);
 
             return fields.Select(p => new JsonProperty
             {
