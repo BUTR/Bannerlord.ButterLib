@@ -1,4 +1,4 @@
-﻿<!--EXTERNAL_PROPERTIES: Version;StableVersion;BetaVersion;HarmonyVersion-->
+﻿<!--EXTERNAL_PROPERTIES: Version;StableVersion;BetaVersion;HarmonyVersion;BuildResourcesVersion-->
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
