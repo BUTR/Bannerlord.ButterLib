@@ -1,4 +1,4 @@
-﻿<!--EXTERNAL_PROPERTIES: GameFolder;GameVersion;HarmonyVersion-->
+﻿<!--EXTERNAL_PROPERTIES: GameFolder;GameVersion;HarmonyVersion;BuildResourcesVersion-->
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
@@ -22,6 +22,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Bannerlord.BuildResources" Version="$(BuildResourcesVersion)">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Lib.Harmony" Version="$(HarmonyVersion)" IncludeAssets="compile" />
     <PackageReference Include="Bannerlord.ReferenceAssemblies.Core.EarlyAccess" Version="$(GameVersion).*" PrivateAssets="All" />
     <PackageReference Include="Bannerlord.ReferenceAssemblies.StoryMode.EarlyAccess" Version="$(GameVersion).*" PrivateAssets="All" />
