@@ -10,13 +10,14 @@ using System.Diagnostics.CodeAnalysis;
 
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.ObjectSystem;
+using TaleWorlds.SaveSystem;
 
 namespace Bannerlord.ButterLib.Implementation.ObjectSystem
 {
     internal sealed class MBObjectVariableStorageBehavior : CampaignBehaviorBase, IMBObjectVariableStorage
     {
         private ConcurrentDictionary<StorageKey, object?> _variables = new ConcurrentDictionary<StorageKey, object?>();
-        private ConcurrentDictionary<StorageKey, uint> _flags = new ConcurrentDictionary<StorageKey, uint>();
+        private ConcurrentDictionary<StorageKey, bool> _flags = new ConcurrentDictionary<StorageKey, bool>();
 
         public override void RegisterEvents() { }
 
@@ -32,8 +33,8 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
                 ReleaseOrphanedEntries(_flags, expiredIdCache);
             }
 
-            dataStore.SyncDataAsJson("ButterLib.MBObjectVariableStorage.Vars", ref _variables);
-            dataStore.SyncDataAsJson("ButterLib.MBObjectVariableStorage.Flags", ref _flags);
+            dataStore.SyncData("Vars", ref _variables);
+            dataStore.SyncData("Flags", ref _flags);
         }
 
         private static void ReleaseOrphanedEntries<TValue>(ConcurrentDictionary<StorageKey, TValue> dict, Dictionary<uint, bool> expiredIds)
@@ -49,6 +50,19 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
                     expiredIds[sk.ObjectId] = true;
                     dict.TryRemove(sk, out _);
                 }
+            }
+        }
+
+        public class CustomSaveableTypeDefiner : SaveableTypeDefiner
+        {
+            public CustomSaveableTypeDefiner() : base(222_444_700) { }
+
+            protected override void DefineStructTypes() => AddStructDefinition(typeof(StorageKey), 1);
+
+            protected override void DefineContainerDefinitions()
+            {
+                ConstructContainerDefinition(typeof(ConcurrentDictionary<StorageKey, object?>));
+                ConstructContainerDefinition(typeof(ConcurrentDictionary<StorageKey, uint>));
             }
         }
 
@@ -76,10 +90,11 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
 
         public void RemoveFlag(MBObjectBase @object, string name) => _flags.TryRemove(StorageKey.Make(@object, name), out _);
 
-        public void SetFlag(MBObjectBase @object, string name) => _flags[StorageKey.Make(@object, name)] = 1;
+        public void SetFlag(MBObjectBase @object, string name) => _flags[StorageKey.Make(@object, name)] = true;
 
         /* StorageKey Implementation */
 
+        #region StorageKeyConverter
         private sealed class StorageKeyConverter : JsonConverter
         {
             public override bool CanConvert(Type objectType) => objectType == typeof(StorageKey) || objectType == typeof(StorageKey?);
@@ -104,13 +119,17 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
                 return null;
             }
         }
+        #endregion StorageKeyConverter
 
         [JsonConverter(typeof(StorageKeyConverter))]
-        private readonly struct StorageKey : IEquatable<StorageKey>
+        private /* readonly */ struct StorageKey : IEquatable<StorageKey>
         {
             public static implicit operator MBGUID(StorageKey sk) => new MBGUID(sk.ObjectId);
 
+            [SaveableField(1)]
             public readonly uint ObjectId;
+
+            [SaveableField(2)]
             public readonly string Key;
 
             internal StorageKey(uint objectId, string key) => (ObjectId, Key) = (objectId, key);

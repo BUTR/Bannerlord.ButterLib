@@ -2,6 +2,8 @@
 using Bannerlord.ButterLib.Logger.Extensions;
 using Bannerlord.ButterLib.ObjectSystem.Extensions;
 
+using Messages.FromLobbyServer.ToClient;
+
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -19,6 +21,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
 {
     internal class TestCampaignBehavior : CampaignBehaviorBase
     {
+        private const bool SimpleMode = true;
         private bool _stopAfter;
         private readonly ILogger _log;
 
@@ -44,18 +47,23 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
         {
             _log.LogInformation(">> STORING VARIABLES...");
 
-            foreach (var h in Hero.All)
+            if (!SimpleMode)
             {
-                SetOrValidateHeroVars(h, true);
-
-                if (_stopAfter)
+                foreach (var h in Hero.All)
                 {
-                    _log.LogTrace($"Errant Hero: {GetHeroTrace(h)} / Object: {GetObjectTrace(h)}");
-                    _log.LogError("Halting execution due to error(s).");
-                    _log.LogWarningAndDisplay("<<<<<  STORE FAILED!  >>>>>");
-                    return;
+                    SetOrValidateHeroVars(h, true);
+
+                    if (_stopAfter)
+                    {
+                        _log.LogTrace($"Errant Hero: {GetHeroTrace(h)} / Object: {GetObjectTrace(h)}");
+                        _log.LogError("Halting execution due to error(s).");
+                        _log.LogWarningAndDisplay("<<<<<  STORE FAILED!  >>>>>");
+                        return;
+                    }
                 }
             }
+            else
+                Hero.MainHero.SetVariable("Identity", GetHeroTrace(Hero.MainHero));
 
             _log.LogWarningAndDisplay("<<<<<  STORE PASSED!  >>>>>");
         }
@@ -63,21 +71,33 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
         protected void OnGameLoaded(CampaignGameStarter starter)
         {
             _log.LogInformation(">> LOADING VARIABLES...");
+            bool fail = false;
 
-            foreach (var h in Hero.All)
+            if (!SimpleMode)
             {
-                SetOrValidateHeroVars(h, false);
-
-                if (_stopAfter)
+                foreach (var h in Hero.All)
                 {
-                    _log.LogTrace($"Errant Hero: {GetHeroTrace(h)} / Object: {GetObjectTrace(h)}");
-                    _log.LogError("Halting execution due to error(s).");
-                    _log.LogWarningAndDisplay("<<<<<  TEST FAILED!  >>>>>");
-                    return;
+                    SetOrValidateHeroVars(h, false);
+
+                    if (_stopAfter)
+                    {
+                        _log.LogTrace($"Errant Hero: {GetHeroTrace(h)} / Object: {GetObjectTrace(h)}");
+                        _log.LogError("Halting execution due to error(s).");
+                        fail = true;
+                        break;
+                    }
                 }
             }
+            else
+            {
+                var name = "Identity";
+                var want = GetHeroTrace(Hero.MainHero);
+                LoadVar(Hero.MainHero, name, out string? got);
+                TestRefVarByValue(name, want, got);
+                fail |= _stopAfter;
+            }
 
-            _log.LogWarningAndDisplay("<<<<<  TEST PASSED!  >>>>>");
+            _log.LogWarningAndDisplay(fail ? "<<<<<  TEST FAILED!  >>>>>" : "<<<<<  TEST PASSED!  >>>>>");
         }
 
         private void SetOrValidateHeroVars(Hero h, bool store)
@@ -113,6 +133,22 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
             }
         }
 
+        public class SaveableTypeDefiner : TaleWorlds.SaveSystem.SaveableTypeDefiner
+        {
+            public SaveableTypeDefiner() : base(222_444_600) { }
+
+            protected override void DefineClassTypes()
+            {
+                AddClassDefinition(typeof(HeroTest), 1);
+                AddClassDefinition(typeof(WrappedDictionary), 3);
+            }
+
+            protected override void DefineEnumTypes()
+            {
+                AddEnumDefinition(typeof(ElectionCandidate), 2);
+            }
+        }
+
         //[SaveableClass(1)]
         private class HeroTest
         {
@@ -128,7 +164,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
                 test.TestRefVar($"{me}.{nameof(Spouse)}", want.Spouse, Spouse);
                 test.TestRefVar($"{me}.{nameof(Kingdom)}", want.Kingdom, Kingdom);
 
-                // disabled for now, because we can't get reference-equality w/ non-MBObjectBase objects
+                // Disabled for now, because we can't get reference-equality w/ non-MBObjectBase objects:
                 // test.TestSeqVar($"{me}.{nameof(EquippedItemUsage)}", want.EquippedItemUsage, EquippedItemUsage);
 
                 test.TestRefVarByValue($"{me}.{nameof(NameLink)}", want.NameLink, NameLink);
@@ -213,22 +249,6 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
         {
             [SaveableProperty(1)]
             public IDictionary<string, string> IDict { get; set; } = new Dictionary<string, string>();
-        }
-
-        public class SaveableTypeDefiner : TaleWorlds.SaveSystem.SaveableTypeDefiner
-        {
-            public SaveableTypeDefiner() : base(222_444_600) { }
-
-            protected override void DefineClassTypes()
-            {
-                AddClassDefinition(typeof(HeroTest), 1);
-                AddClassDefinition(typeof(WrappedDictionary), 3);
-            }
-
-            protected override void DefineEnumTypes()
-            {
-                AddEnumDefinition(typeof(ElectionCandidate), 2);
-            }
         }
 
         #region DisabledCircularReferenceTest
