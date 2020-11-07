@@ -2,8 +2,6 @@
 using Bannerlord.ButterLib.Logger.Extensions;
 using Bannerlord.ButterLib.ObjectSystem.Extensions;
 
-using Messages.FromLobbyServer.ToClient;
-
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
