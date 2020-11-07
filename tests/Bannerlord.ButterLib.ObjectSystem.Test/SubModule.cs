@@ -11,6 +11,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
 {
     public sealed class SubModule : MBSubModuleBase
     {
+        private const string Version = "Rev. 3";
         private bool _hasLoaded;
 
         private ILogger _logger = default!;
@@ -30,7 +31,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
             {
                 _logger = this.GetServiceProvider().GetRequiredService<ILogger<ButterLibSubModule>>();
 
-                _logger.LogInformationAndDisplay($"Loaded {typeof(SubModule).Namespace}");
+                _logger.LogInformationAndDisplay($"Loaded {typeof(SubModule).Namespace}: {Version}");
                 _hasLoaded = true;
             }
         }
