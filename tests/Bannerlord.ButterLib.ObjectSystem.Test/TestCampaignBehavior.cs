@@ -214,6 +214,22 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
             public IDictionary<string, string> IDict { get; set; } = new Dictionary<string, string>();
         }
 
+        public class SaveableTypeDefiner : TaleWorlds.SaveSystem.SaveableTypeDefiner
+        {
+            public SaveableTypeDefiner() : base(222_444_600) { }
+
+            protected override void DefineClassTypes()
+            {
+                AddClassDefinition(typeof(HeroTest), 1);
+                AddClassDefinition(typeof(WrappedDictionary), 3);
+            }
+
+            protected override void DefineEnumTypes()
+            {
+                AddEnumDefinition(typeof(ElectionCandidate), 2);
+            }
+        }
+
         #region DisabledCircularReferenceTest
         //[SaveableClass(4)]
         //private class ItemTest : IEquatable<ItemTest>
