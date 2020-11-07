@@ -62,7 +62,7 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
             protected override void DefineContainerDefinitions()
             {
                 ConstructContainerDefinition(typeof(ConcurrentDictionary<StorageKey, object?>));
-                ConstructContainerDefinition(typeof(ConcurrentDictionary<StorageKey, uint>));
+                ConstructContainerDefinition(typeof(ConcurrentDictionary<StorageKey, bool>));
             }
         }
 
