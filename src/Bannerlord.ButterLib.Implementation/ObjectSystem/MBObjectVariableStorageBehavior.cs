@@ -15,8 +15,10 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
 {
     internal sealed class MBObjectVariableStorageBehavior : CampaignBehaviorBase, IMBObjectVariableStorage
     {
-        private ConcurrentDictionary<StorageKey, object?> _variables = new ConcurrentDictionary<StorageKey, object?>();
-        private ConcurrentDictionary<StorageKey, bool> _flags = new ConcurrentDictionary<StorageKey, bool>();
+        public const int SaveBaseId = 222_444_700; // 10 reserved, should probably base this one the ButterLib range
+
+        private Dictionary<StorageKey, object?> _vars = new Dictionary<StorageKey, object?>();
+        private Dictionary<StorageKey, bool>   _flags = new Dictionary<StorageKey, bool>();
 
         public override void RegisterEvents() { }
 
@@ -28,48 +30,40 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
                 var expiredIdCache = new Dictionary<uint, bool>();
 
                 // Remove entries in data store that refer to now-nonexistent/untracked objects.
-                ReleaseOrphanedEntries(_variables, expiredIdCache);
+                ReleaseOrphanedEntries(_vars, expiredIdCache);
                 ReleaseOrphanedEntries(_flags, expiredIdCache);
             }
 
-            dataStore.SyncData("Vars", ref _variables);
-            dataStore.SyncData("Flags", ref _flags);
+            //dataStore.SyncData("Vars", ref _vars);
+            //dataStore.SyncData("Flags", ref _flags);
         }
 
-        private static void ReleaseOrphanedEntries<TValue>(ConcurrentDictionary<StorageKey, TValue> dict, Dictionary<uint, bool> expiredIds)
+        private static void ReleaseOrphanedEntries<TVal>(IDictionary<StorageKey, TVal> dict, IDictionary<uint, bool> expiredIds)
         {
             foreach (var sk in dict.Keys)
             {
                 if (expiredIds.ContainsKey(sk.ObjectId))
-                {
-                    dict.TryRemove(sk, out _);
-                }
-                else if (MBObjectManager.Instance.GetObject(sk) == default)
+                    dict.Remove(sk); // dict.TryRemove(sk, out _);
+                else if (MBObjectManager.Instance.GetObject(new MBGUID(sk.ObjectId)) == default)
                 {
                     expiredIds[sk.ObjectId] = true;
-                    dict.TryRemove(sk, out _);
+                    dict.Remove(sk); // dict.TryRemove(sk, out _);
                 }
-            }
-        }
-
-        public class CustomSaveableTypeDefiner : SaveableTypeDefiner
-        {
-            public CustomSaveableTypeDefiner() : base(222_444_700) { }
-
-            protected override void DefineStructTypes() => AddStructDefinition(typeof(StorageKey), 1);
-
-            protected override void DefineContainerDefinitions()
-            {
-                ConstructContainerDefinition(typeof(ConcurrentDictionary<StorageKey, object?>));
-                ConstructContainerDefinition(typeof(ConcurrentDictionary<StorageKey, bool>));
             }
         }
 
         /* Variables Implementation */
+        public bool HasVariable(MBObjectBase @object, string name) => _vars.ContainsKey(StorageKey.Make(@object, name));
+
+        // public bool RemoveVariable(MBObjectBase @object, string key) => _vars.TryRemove(StorageKey.Make(@object, key), out _);
+
+        public bool RemoveVariable(MBObjectBase @object, string key) => _vars.Remove(StorageKey.Make(@object, key));
+
+        public void SetVariable(MBObjectBase @object, string key, object? data) => _vars[StorageKey.Make(@object, key)] = data;
 
         public bool TryGetVariable<T>(MBObjectBase @object, string key, [MaybeNull] out T value)
         {
-            if (_variables.TryGetValue(StorageKey.Make(@object, key), out var val) && val is T typedVal)
+            if (_vars.TryGetValue(StorageKey.Make(@object, key), out var val) && val is T typedVal)
             {
                 value = typedVal;
                 return true;
@@ -79,15 +73,13 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
             return false;
         }
 
-        public void RemoveVariable(MBObjectBase @object, string key) => _variables.TryRemove(StorageKey.Make(@object, key), out _);
-
-        public void SetVariable(MBObjectBase @object, string key, object? data) => _variables[StorageKey.Make(@object, key)] = data;
-
         /* Flags Implementation */
 
         public bool HasFlag(MBObjectBase @object, string name) => _flags.ContainsKey(StorageKey.Make(@object, name));
 
-        public void RemoveFlag(MBObjectBase @object, string name) => _flags.TryRemove(StorageKey.Make(@object, name), out _);
+        // public bool RemoveFlag(MBObjectBase @object, string name) => _flags.TryRemove(StorageKey.Make(@object, name), out _);
+
+        public bool RemoveFlag(MBObjectBase @object, string name) => _flags.Remove(StorageKey.Make(@object, name));
 
         public void SetFlag(MBObjectBase @object, string name) => _flags[StorageKey.Make(@object, name)] = true;
 
@@ -120,18 +112,18 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
         }
         #endregion StorageKeyConverter
 
-        [JsonConverter(typeof(StorageKeyConverter))]
-        private /* readonly */ struct StorageKey : IEquatable<StorageKey>
+        //[JsonConverter(typeof(StorageKeyConverter))]
+        public /* readonly */ struct StorageKey : IEquatable<StorageKey>
         {
-            public static implicit operator MBGUID(StorageKey sk) => new MBGUID(sk.ObjectId);
+            //public static implicit operator MBGUID(StorageKey sk) => new MBGUID(sk.ObjectId);
 
-            [SaveableField(1)]
+            [SaveableField(0)]
             public readonly uint ObjectId;
 
-            [SaveableField(2)]
+            [SaveableField(1)]
             public readonly string Key;
 
-            internal StorageKey(uint objectId, string key) => (ObjectId, Key) = (objectId, key);
+            public StorageKey(uint objectId, string key) => (ObjectId, Key) = (objectId, key);
 
             public static StorageKey Make(MBObjectBase obj, string key) => new StorageKey(obj.Id.InternalValue, key);
 
@@ -140,6 +132,28 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
             public override bool Equals(object? obj) => obj is StorageKey sk && Equals(sk);
 
             public override int GetHashCode() => HashCode.Combine(ObjectId, Key);
+        }
+
+        public class SavedTypeDefiner : SaveableCampaignBehaviorTypeDefiner
+        {
+            public SavedTypeDefiner() : base(SaveBaseId) { }
+
+            protected override void DefineStructTypes()
+            {
+                AddStructDefinition(typeof(StorageKey), 1);
+            }
+
+            protected override void DefineGenericStructDefinitions()
+            {
+                ConstructGenericStructDefinition(typeof(KeyValuePair<StorageKey, object>));
+                ConstructGenericStructDefinition(typeof(KeyValuePair<StorageKey, bool>));
+            }
+
+            protected override void DefineContainerDefinitions()
+            {
+                ConstructContainerDefinition(typeof(Dictionary<StorageKey, object>));
+                ConstructContainerDefinition(typeof(Dictionary<StorageKey, bool>));
+            }
         }
     }
 }

@@ -55,7 +55,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
                     {
                         _log.LogTrace($"Errant Hero: {GetHeroTrace(h)} / Object: {GetObjectTrace(h)}");
                         _log.LogError("Halting execution due to error(s).");
-                        _log.LogWarningAndDisplay("<<<<<  STORE FAILED!  >>>>>");
+                        _log.LogInformationAndDisplay("     <<<<<  STORE FAILED!  >>>>>");
                         return;
                     }
                 }
@@ -63,7 +63,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
             else
                 Hero.MainHero.SetVariable("Identity", GetHeroTrace(Hero.MainHero));
 
-            _log.LogWarningAndDisplay("<<<<<  STORE PASSED!  >>>>>");
+            _log.LogInformationAndDisplay("     <<<<<  STORE PASSED!  >>>>>");
         }
 
         protected void OnGameLoaded(CampaignGameStarter starter)
@@ -94,7 +94,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
                 pass &= TestRefVarByValue(name, want, got);
             }
 
-            _log.LogWarningAndDisplay(pass ? "<<<<<  TEST PASSED!  >>>>>" : "<<<<<  TEST FAILED!  >>>>>");
+            _log.LogInformationAndDisplay(pass ? "   <<<<<  TEST PASSED!  >>>>>" : "   <<<<<  TEST FAILED!  >>>>>");
         }
 
         private void SetOrValidateHeroVars(Hero h, bool store)
@@ -130,14 +130,14 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
             }
         }
 
-        public class SaveableTypeDefiner : TaleWorlds.SaveSystem.SaveableTypeDefiner
+        public class SavedTypeDefiner : SaveableCampaignBehaviorTypeDefiner
         {
-            public CustomSaveTypeDefiner() : base(222_444_600) { }
+            public SavedTypeDefiner() : base(222_444_600) { }
 
             protected override void DefineClassTypes()
             {
                 AddClassDefinition(typeof(HeroTest), 1);
-                AddClassDefinition(typeof(WrappedDictionary), 3);
+                //AddClassDefinition(typeof(WrappedDictionary), 3);
             }
 
             protected override void DefineEnumTypes() => AddEnumDefinition(typeof(ElectionCandidate), 2);
@@ -211,28 +211,28 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
                 #endregion DisabledCircularReferenceTest
             }
 
-            [SaveableField(1)]
+            [SaveableField(0)]
             internal readonly Hero Hero; // internal readonly ref
 
-            [SaveableProperty(2)]
+            [SaveableProperty(1)]
             internal int Age { get; set; } // uh, if THIS doesn't work...
 
-            [SaveableField(3)]
+            [SaveableField(2)]
             private readonly Hero? Spouse; // private readonly ref
 
-            [SaveableProperty(4)]
+            [SaveableProperty(3)]
             internal Kingdom? Kingdom { get; private set; } // private setter
 
-            [SaveableField(5)]
+            [SaveableField(4)]
             internal readonly BodyProperties BodyProperties; // a readonly struct
 
-            [SaveableField(6)]
+            [SaveableField(5)]
             internal TextObject NameLink; // a complex ref type that's not MBObjectBase
 
-            [SaveableField(7)]
+            [SaveableField(6)]
             internal Hero.CharacterStates StateEnum; // a game enum
 
-            [SaveableField(8)]
+            [SaveableField(7)]
             internal ElectionCandidate CustomEnum; // custom enum
 
             #region DisabledCircularReferenceTest
@@ -248,11 +248,11 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
         private enum ElectionCandidate { Trump = 0, Biden = 1, Kanye = 2 };
 
         //[SaveableClass(3)]
-        public class WrappedDictionary
-        {
-            [SaveableProperty(1)]
-            public Dictionary<string, string> Dictionary { get; set; } = new Dictionary<string, string>();
-        }
+        //public class WrappedDictionary
+        //{
+        //    [SaveableProperty(0)]
+        //    public Dictionary<string, string> Dictionary { get; set; } = new Dictionary<string, string>();
+        //}
 
         #region DisabledCircularReferenceTest
         //[SaveableClass(4)]

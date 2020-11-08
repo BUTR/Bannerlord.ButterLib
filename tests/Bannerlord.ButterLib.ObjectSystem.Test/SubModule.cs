@@ -11,7 +11,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
 {
     public sealed class SubModule : MBSubModuleBase
     {
-        private const string Version = "Rev. 3";
+        private const string Version = "Rev. 4";
         private bool _hasLoaded;
 
         private ILogger _logger = default!;
