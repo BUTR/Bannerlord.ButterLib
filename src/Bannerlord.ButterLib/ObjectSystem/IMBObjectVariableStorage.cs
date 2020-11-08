@@ -1,15 +1,53 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 using TaleWorlds.ObjectSystem;
 
 namespace Bannerlord.ButterLib.ObjectSystem
 {
-    /// <summary>
-    /// Interface to <see cref="MBObjectBase"/>-associated dynamic variable / flag storage
-    /// </summary>
+    /**
+     * <summary>
+     * Storage interface to <see cref="MBObjectBase"/>-associated Object Extension Data (dynamic variables / flags).
+     * Used primarily by <see cref="Extensions.MBObjectBaseExtensions"/>.
+     * </summary>
+     */
     internal interface IMBObjectVariableStorage
     {
-        /* Variables */
+        /****    V A R I A B L E S    ****/
+
+        /**
+         * <summary>
+         * Check whether a variable <paramref name="name"/> is stored upon <paramref name="object"/>.
+         * </summary>
+         * <returns>
+         * <see langword="true"/> if it exists, else <see langword="false"/>.
+         * </returns>
+         * <param name="object">A game object.</param>
+         * <param name="name">The variable's name.</param>
+         */
+        internal bool HasVariable(MBObjectBase @object, string name);
+
+        /**
+         * <summary>
+         * Remove the variable <paramref name="name"/> from <paramref name="object"/>, if set.
+         * </summary>
+         * <returns>
+         * <see langword="true"/> if it was set prior to removal, else <see langword="false"/>.
+         * </returns>
+         * <param name="object">A game object.</param>
+         * <param name="name">The variable's name.</param>
+         */
+        internal bool RemoveVariable(MBObjectBase @object, string name);
+
+        /**
+         * <summary>
+         * Set the value of the variable <paramref name="name"/> upon <paramref name="object"/> to <paramref name="data"/>.
+         * </summary>
+         * <param name="object">A game object.</param>
+         * <param name="name">The variable's name.</param>
+         * <param name="data">The variable's value.</param>
+         */
+        internal void SetVariable(MBObjectBase @object, string name, object? data);
 
         /**
          * <summary>
@@ -23,44 +61,41 @@ namespace Bannerlord.ButterLib.ObjectSystem
          * <param name="object">A game object.</param>
          * <param name="name">The variable's name.</param>
          */
-        public bool TryGetVariable<T>(MBObjectBase @object, string name, [MaybeNull] out T value);
+        internal bool TryGetVariable<T>(MBObjectBase @object, string name, [NotNullWhen(true)] out T value);
+
+        /****    F L A G S    ****/
 
         /**
          * <summary>
-         * Set the value of the variable <paramref name="name"/> upon <paramref name="object"/>
-         * to <paramref name="data"/>.
+         * Check whether the flag <paramref name="name"/> is set upon <paramref name="object"/>.
+         * </summary>
+         * <returns>
+         * <see langword="true"/> if set, else <see langword="false"/>.
+         * </returns>
+         * <param name="object">A game object.</param>
+         * <param name="name">A string flag.</param>
+         */
+        internal bool HasFlag(MBObjectBase @object, string name);
+
+        /**
+         * <summary>
+         * Remove the flag <paramref name="name"/> from <paramref name="object"/>, if set.
+         * </summary>
+         * <returns>
+         * <see langword="true"/> if it was set prior to removal, else <see langword="false"/>.
+         * </returns>
+         * <param name="object">A game object.</param>
+         * <param name="name">A string flag.</param>
+         */
+        internal bool RemoveFlag(MBObjectBase @object, string name);
+
+        /**
+         * <summary>
+         * Set the flag <paramref name="name"/> upon <paramref name="object"/>.
          * </summary>
          * <param name="object">A game object.</param>
-         * <param name="name">The variable's name.</param>
-         * <param name="data">The variable's value.</param>
+         * <param name="name">A string flag.</param>
          */
-        public void SetVariable(MBObjectBase @object, string name, object? data);
-
-        /// <summary>
-        /// Remove the variable <paramref name="name"/> from <paramref name="object"/>, if set.
-        /// </summary>
-        /// <param name="object">A game object.</param>
-        /// <param name="name">The variable's name.</param>
-        public void RemoveVariable(MBObjectBase @object, string name);
-
-        /* Flags */
-
-        /// <summary>
-        /// Check whether the flag <paramref name="name"/> is set upon <paramref name="object"/>.
-        /// </summary>
-        /// <returns><see langword="true"/> if the flag is set, else <see langword="false"/>.</returns>
-        /// <param name="object">A game object.</param>
-        /// <param name="name">A string flag.</param>
-        public bool HasFlag(MBObjectBase @object, string name);
-
-        /// <summary>Set the flag <paramref name="name"/> upon <paramref name="object"/>.</summary>
-        /// <param name="object">A game object.</param>
-        /// <param name="name">A string flag.</param>
         public void SetFlag(MBObjectBase @object, string name);
-
-        /// <summary>Remove the flag <paramref name="name"/> from <paramref name="object"/>, if set.</summary>
-        /// <param name="object">A game object.</param>
-        /// <param name="name">A string flag.</param>
-        public void RemoveFlag(MBObjectBase @object, string name);
     }
 }
