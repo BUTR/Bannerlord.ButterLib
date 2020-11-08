@@ -1,5 +1,4 @@
 ﻿using Bannerlord.ButterLib.ObjectSystem;
-using Bannerlord.ButterLib.SaveSystem.Extensions;
 
 using Newtonsoft.Json;
 

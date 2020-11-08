@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Module>
-  <Name value="ButterLib SaveSystem Test" />
-  <Id value="Bannerlord.ButterLib.SaveSystem.Test" />
+  <Name value="ButterLib ObjectSystem Test" />
+  <Id value="Bannerlord.ButterLib.ObjectSystem.Test" />
   <Version value="v$version$" />
   <Official value="false" />
   <DefaultModule value="false" />
@@ -25,9 +25,9 @@
   <!-- Prototype -->
   <SubModules>
     <SubModule>
-      <Name value="ButterLib SaveSystem Test" />
-      <DLLName value="Bannerlord.ButterLib.SaveSystem.Test.dll" />
-      <SubModuleClassType value="Bannerlord.ButterLib.SaveSystem.Test.SubModule" />
+      <Name value="ButterLib ObjectSystem Test" />
+      <DLLName value="Bannerlord.ButterLib.ObjectSystem.Test.dll" />
+      <SubModuleClassType value="Bannerlord.ButterLib.ObjectSystem.Test.SubModule" />
       <Tags />
     </SubModule>
   </SubModules>
