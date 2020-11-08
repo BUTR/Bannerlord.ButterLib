@@ -14,13 +14,6 @@
     <ModuleName>Bannerlord.ButterLib.ObjectSystem.Test</ModuleName>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <StartAction>Program</StartAction>
-    <StartProgram>$(GameFolder)\bin\Win64_Shipping_Client\Bannerlord.exe</StartProgram>
-    <StartArguments>/singleplayer _MODULES_*Bannerlord.Harmony*Bannerlord.ButterLib*Native*SandBoxCore*SandBox*StoryMode*CustomBattle*$(ModuleName)*_MODULES_</StartArguments>
-    <StartWorkingDirectory>$(GameFolder)\bin\Win64_Shipping_Client</StartWorkingDirectory>
-  </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Bannerlord.BuildResources" Version="$(BuildResourcesVersion)">
       <PrivateAssets>all</PrivateAssets>

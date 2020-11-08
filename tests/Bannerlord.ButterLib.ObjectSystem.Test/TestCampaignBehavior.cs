@@ -69,7 +69,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
         protected void OnGameLoaded(CampaignGameStarter starter)
         {
             _log.LogInformation(">> LOADING VARIABLES...");
-            bool fail = false;
+            bool pass = true;
 
             if (!SimpleMode)
             {
@@ -81,7 +81,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
                     {
                         _log.LogTrace($"Errant Hero: {GetHeroTrace(h)} / Object: {GetObjectTrace(h)}");
                         _log.LogError("Halting execution due to error(s).");
-                        fail = true;
+                        pass = false;
                         break;
                     }
                 }
@@ -91,11 +91,10 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
                 var name = "Identity";
                 var want = GetHeroTrace(Hero.MainHero);
                 LoadVar(Hero.MainHero, name, out string? got);
-                TestRefVarByValue(name, want, got);
-                fail |= _stopAfter;
+                pass &= TestRefVarByValue(name, want, got);
             }
 
-            _log.LogWarningAndDisplay(fail ? "<<<<<  TEST FAILED!  >>>>>" : "<<<<<  TEST PASSED!  >>>>>");
+            _log.LogWarningAndDisplay(pass ? "<<<<<  TEST PASSED!  >>>>>" : "<<<<<  TEST FAILED!  >>>>>");
         }
 
         private void SetOrValidateHeroVars(Hero h, bool store)
@@ -133,7 +132,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
 
         public class SaveableTypeDefiner : TaleWorlds.SaveSystem.SaveableTypeDefiner
         {
-            public SaveableTypeDefiner() : base(222_444_600) { }
+            public CustomSaveTypeDefiner() : base(222_444_600) { }
 
             protected override void DefineClassTypes()
             {
@@ -141,9 +140,15 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
                 AddClassDefinition(typeof(WrappedDictionary), 3);
             }
 
-            protected override void DefineEnumTypes()
+            protected override void DefineEnumTypes() => AddEnumDefinition(typeof(ElectionCandidate), 2);
+
+            protected override void DefineContainerDefinitions()
             {
-                AddEnumDefinition(typeof(ElectionCandidate), 2);
+                // Apparently this throws a duplicate key exception in one of SaveSystem.DefinitionContext's type dictionaries, because !SaveSystem.IsUserFriendly():
+                // ConstructContainerDefinition(typeof(Clan[]));
+
+                // This has never been uncommented but would've done the same:
+                // ConstructContainerDefinition(typeof(Dictionary<string, string>));
             }
         }
 
@@ -246,7 +251,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
         public class WrappedDictionary
         {
             [SaveableProperty(1)]
-            public IDictionary<string, string> IDict { get; set; } = new Dictionary<string, string>();
+            public Dictionary<string, string> Dictionary { get; set; } = new Dictionary<string, string>();
         }
 
         #region DisabledCircularReferenceTest
@@ -280,77 +285,113 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
         //}
         #endregion DisabledCircularReferenceTest
 
-        private void LoadVar<T>(MBObjectBase obj, string name, out T value)
+        private bool LoadVar<T>(MBObjectBase obj, string name, out T value)
         {
             if (obj.TryGetVariable<T>(name, out var val))
             {
                 value = val!;
-                return;
+                return true;
             }
 
             value = default!;
             Error($"Variable \"{name}\" not found!");
+            return false;
         }
 
-        private void TestValVar<T>(string name, T want, T got) where T : struct
+        private bool TestValVar<T>(string name, T want, T got) where T : struct
         {
             if (!want.Equals(got))
+            {
                 Error($"{name} is incorrect! Got: {ValOrDefault(got)} | Want: {ValOrDefault(want)}");
+                return false;
+            }
+
+            return true;
         }
 
-        private void TestRefVar<T>(string name, T? want, T? got) where T : class
+        private bool TestRefVar<T>(string name, T? want, T? got) where T : class
         {
-            if (want is null && got is null)
-                return;
+                return true;
 
             if (want is not null && got is null)
+			{
                 Error($"{name} is null!");
+                return false;
+            }
             else if (want is null && got is not null)
+            {
                 Error($"{name} is NOT null!");
+                return false;
+            }
             else if (want != got)
+            {
                 Error($"{name} is incorrect! Got: {got} | Want: {want}");
+                return false;
+            }
+
+            return true;
         }
 
-        private void TestRefVarByValue<T>(string name, T? want, T? got) where T : class
+        private bool TestRefVarByValue<T>(string name, T? want, T? got) where T : class
         {
             if (want is null && got is null)
-                return;
+                return true;
 
             if (want is not null && got is null)
                 Error($"{name} is null!");
+                return false;
+            }
             else if (want is null && got is not null)
+            {
                 Error($"{name} is NOT null!");
+                return false;
+            }
             else if (!want!.Equals(got))
+            {
                 Error($"{name} is incorrect! Got: {got} | Want: {want}");
+                return false;
+            }
+
+            return true;
         }
 
-        private void TestSeqVar<T>(string name, IEnumerable<T>? want, IEnumerable<T>? got)
+        private bool TestSeqVar<T>(string name, IEnumerable<T>? want, IEnumerable<T>? got)
         {
-            var wantList = want?.ToList();
-            if (wantList == null)
+            if (want == null && got == null)
+                return true;
+            else if (want == null && got != null)
             {
-                Error($"{want} is null!");
-                return;
+                Error($"{name} is NOT null!");
+                return false;
             }
 
-            var gotList = got?.ToList();
-            if (gotList == null)
+            if (want != null && got == null)
+			{
+                Error($"{name} is null!");
+                _log.LogTrace($"\tWant: [{string.Join(",", want)}]");
+                return false;
+			}
+            else if (want == null && got != null)
             {
-                Error($"{got} is null!");
-                return;
-            }
-
-            if (!wantList.SequenceEqual(gotList))
+                Error($"{name} is NOT null!");
+                _log.LogTrace($"\tGot: [{string.Join(",", got)}]");
+                return false;
+			}
+            else if (!want.SequenceEqual(got))
             {
                 Error($"{name} sequence is incorrect!");
-                _log.LogTrace($"\tGot:  [{string.Join(",", gotList)}]\n\tWant: [{string.Join(",", wantList)}]");
+                _log.LogTrace($"\tGot:  [{string.Join(",", got)}]\n\tWant: [{string.Join(",", want)}]");
+                return false;
             }
+
+            return true;
         }
 
-        private void Error(string msg)
+        private bool Error(string msg)
         {
             _stopAfter = true;
             _log.LogError("ERROR: " + msg);
+            return false;
         }
 
         private static string ValOrDefault<T>(T val) where T : struct => val.Equals(default(T)) ? $"<default({typeof(T).Name})>" : val.ToString() ?? string.Empty;

@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Bannerlord.ButterLib.ObjectSystem.Test": {
+      "commandName": "Executable",
+      "executablePath": "F:\\SteamLibrary\\steamapps\\common\\Mount & Blade II Bannerlord\\bin\\Win64_Shipping_Client\\Bannerlord.exe",
+      "commandLineArgs": "/singleplayer _MODULES_*Bannerlord.Harmony*Bannerlord.ButterLib*Bannerlord.UIExtenderEx*Bannerlord.MBOptionScreen*Native*SandBoxCore*SandBox*StoryMode*CustomBattle*Bannerlord.ButterLib.ObjectSystem.Test*_MODULES_",
+      "workingDirectory": "F:\\SteamLibrary\\steamapps\\common\\Mount & Blade II Bannerlord\\bin\\Win64_Shipping_Client"
+    }
+  }
+}
