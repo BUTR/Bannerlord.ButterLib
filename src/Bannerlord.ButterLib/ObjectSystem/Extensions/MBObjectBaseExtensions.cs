@@ -39,7 +39,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Extensions
          * <typeparam name="T">The type of the variable's value.</typeparam>
          * <param name="object">A game object.</param>
          * <param name="name">The variable's name.</param>
-         * <param name="value">The variable.</param>
+         * <param name="value">The variable value or <see langword="default"> if nonexistent.</param>
          */
         internal static bool TryGetVariable<T>(this MBObjectBase @object, string name, [MaybeNull] out T value)
         {
