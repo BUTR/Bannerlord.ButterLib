@@ -27,45 +27,43 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
             if (dataStore.IsSaving)
             {
                 // Cache known-expired object IDs, as MBObjectManager.GetObject can be slow.
-                var expiredIdCache = new Dictionary<uint, bool>();
-
-                // Remove entries in data store that refer to now-nonexistent/untracked objects.
-                ReleaseOrphanedEntries(_vars, expiredIdCache);
-                ReleaseOrphanedEntries(_flags, expiredIdCache);
+                var cache = new HashSet<MBGUID>();
+                ReleaseOrphanedEntries(_vars, cache);
+                ReleaseOrphanedEntries(_flags, cache);
             }
 
             dataStore.SyncData("Vars", ref _vars);
             dataStore.SyncData("Flags", ref _flags);
         }
 
-        private static void ReleaseOrphanedEntries<TVal>(IDictionary<StorageKey, TVal> dict, IDictionary<uint, bool> expiredIds)
+        private void ReleaseOrphanedEntries<T>(IDictionary<DataKey, T> dict, ISet<MBGUID> cache)
         {
-            foreach (var sk in dict.Keys)
+            foreach (var k in dict.Keys)
             {
-                if (expiredIds.ContainsKey(sk.ObjectId))
-                    dict.Remove(sk); // dict.TryRemove(sk, out _);
-                else if (MBObjectManager.Instance.GetObject(new MBGUID(sk.ObjectId)) == default)
+                if (cache.Contains(k.ObjectId))
+                    dict.Remove(k);
+                else if (MBObjectManager.Instance.GetObject(k.ObjectId) == default)
                 {
-                    expiredIds[sk.ObjectId] = true;
-                    dict.Remove(sk); // dict.TryRemove(sk, out _);
+                    cache.Add(k.ObjectId);
+                    dict.Remove(k);
                 }
             }
         }
 
         /* Variables Implementation */
-        public bool HasVariable(MBObjectBase @object, string name) => _vars.ContainsKey(StorageKey.Make(@object, name));
+        public bool HasVariable(MBObjectBase @object, string name) => _vars.ContainsKey(DataKey.Make(@object, name));
 
-        // public bool RemoveVariable(MBObjectBase @object, string key) => _vars.TryRemove(StorageKey.Make(@object, key), out _);
+        //public bool RemoveVariable(MBObjectBase @object, string name) => _vars.TryRemove(DataKey.Make(@object, name), out _);
 
-        public bool RemoveVariable(MBObjectBase @object, string key) => _vars.Remove(StorageKey.Make(@object, key));
+        public bool RemoveVariable(MBObjectBase @object, string name) => _vars.Remove(DataKey.Make(@object, name));
 
-        public void SetVariable(MBObjectBase @object, string key, object? data) => _vars[StorageKey.Make(@object, key)] = data;
+        public void SetVariable(MBObjectBase @object, string name, object? data) => _vars[DataKey.Make(@object, name)] = data;
 
-        public bool TryGetVariable<T>(MBObjectBase @object, string key, [MaybeNull] out T value)
+        public bool TryGetVariable<T>(MBObjectBase @object, string name, [MaybeNullWhen(false)][NotNullWhen(true)] out T value)
         {
-            if (_vars.TryGetValue(StorageKey.Make(@object, key), out var val) && val is T typedVal)
+            if (_vars.TryGetValue<T>(DataKey.Make(@object, name), out var val))
             {
-                value = typedVal;
+                value = val;
                 return true;
             }
 
@@ -75,61 +73,31 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
 
         /* Flags Implementation */
 
-        public bool HasFlag(MBObjectBase @object, string name) => _flags.ContainsKey(StorageKey.Make(@object, name));
+        public bool HasFlag(MBObjectBase @object, string name) => _flags.ContainsKey(DataKey.Make(@object, name));
 
-        // public bool RemoveFlag(MBObjectBase @object, string name) => _flags.TryRemove(StorageKey.Make(@object, name), out _);
+        //public bool RemoveFlag(MBObjectBase @object, string name) => _flags.TryRemove(DataKey.Make(@object, name), out _);
 
-        public bool RemoveFlag(MBObjectBase @object, string name) => _flags.Remove(StorageKey.Make(@object, name));
+        public bool RemoveFlag(MBObjectBase @object, string name) => _flags.Remove(DataKey.Make(@object, name));
 
-        public void SetFlag(MBObjectBase @object, string name) => _flags[StorageKey.Make(@object, name)] = true;
+        public void SetFlag(MBObjectBase @object, string name) => _flags[DataKey.Make(@object, name)] = true;
 
-        /* StorageKey Implementation */
+        /* DataKey Implementation */
 
-        #region StorageKeyConverter
-        private sealed class StorageKeyConverter : JsonConverter
+        private sealed class DataKey : IEquatable<DataKey>
         {
-            public override bool CanConvert(Type objectType) => objectType == typeof(StorageKey) || objectType == typeof(StorageKey?);
-
-            public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
-            {
-                if (value is StorageKey storageKey)
-                {
-                    serializer.Serialize(writer, storageKey.ObjectId);
-                    serializer.Serialize(writer, storageKey.Key);
-                    return;
-                }
-
-                serializer.Serialize(writer, null);
-            }
-
-            public override object? ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-            {
-                if (serializer.Deserialize<uint?>(reader) is { } objectId && reader.Read() && serializer.Deserialize<string>(reader) is { } key)
-                    return new StorageKey(objectId, key);
-
-                return null;
-            }
-        }
-        #endregion StorageKeyConverter
-
-        //[JsonConverter(typeof(StorageKeyConverter))]
-        public /* readonly */ struct StorageKey : IEquatable<StorageKey>
-        {
-            //public static implicit operator MBGUID(StorageKey sk) => new MBGUID(sk.ObjectId);
-
             [SaveableField(0)]
-            public readonly uint ObjectId;
+            internal readonly MBGUID ObjectId;
 
             [SaveableField(1)]
-            public readonly string Key;
+            internal readonly string Key;
 
-            public StorageKey(uint objectId, string key) => (ObjectId, Key) = (objectId, key);
+            private DataKey(MBGUID objectId, string key) => (ObjectId, Key) = (objectId, key);
 
-            public static StorageKey Make(MBObjectBase obj, string key) => new StorageKey(obj.Id.InternalValue, key);
+            internal static DataKey Make(MBObjectBase obj, string key) => new DataKey(obj.Id, key);
 
             public bool Equals(StorageKey other) => ObjectId == other.ObjectId && Key is not null! && other.Key is not null! && Key.Equals(other.Key);
 
-            public override bool Equals(object? obj) => obj is StorageKey sk && Equals(sk);
+            public override bool Equals(object? obj) => obj is DataKey k && Equals(k);
 
             public override int GetHashCode() => HashCode.Combine(ObjectId, Key);
         }
@@ -137,22 +105,16 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
         public class SavedTypeDefiner : SaveableCampaignBehaviorTypeDefiner
         {
             public SavedTypeDefiner() : base(SaveBaseId) { }
-
-            protected override void DefineStructTypes()
-            {
-                AddStructDefinition(typeof(StorageKey), 1);
-            }
-
-            protected override void DefineGenericStructDefinitions()
-            {
-                ConstructGenericStructDefinition(typeof(KeyValuePair<StorageKey, object>));
-                ConstructGenericStructDefinition(typeof(KeyValuePair<StorageKey, bool>));
-            }
-
+            protected override void DefineClassTypes() => AddClassDefinition(typeof(DataKey), 1);
+            protected override void DefineStructTypes() { }
+            protected override void DefineInterfaceTypes() { }
+            protected override void DefineEnumTypes() { }
+            protected override void DefineGenericClassDefinitions() { }
+            protected override void DefineGenericStructDefinitions() { }
             protected override void DefineContainerDefinitions()
             {
-                ConstructContainerDefinition(typeof(Dictionary<StorageKey, object>));
-                ConstructContainerDefinition(typeof(Dictionary<StorageKey, bool>));
+                ConstructContainerDefinition(typeof(Dictionary<DataKey, object?>));
+                ConstructContainerDefinition(typeof(Dictionary<DataKey, bool>));
             }
         }
     }
