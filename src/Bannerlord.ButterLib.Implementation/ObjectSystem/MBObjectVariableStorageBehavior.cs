@@ -3,7 +3,7 @@
 using Newtonsoft.Json;
 
 using System;
-using System.Collections.Concurrent;
+//using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
@@ -17,8 +17,8 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
     {
         public const int SaveBaseId = 222_444_700; // 10 reserved, should probably base this one the ButterLib range
 
-        private Dictionary<StorageKey, object?> _vars = new Dictionary<StorageKey, object?>();
-        private Dictionary<StorageKey, bool>   _flags = new Dictionary<StorageKey, bool>();
+        private Dictionary<DataKey, object?> _vars = new Dictionary<DataKey, object?>();
+        private Dictionary<DataKey, bool>   _flags = new Dictionary<DataKey, bool>();
 
         public override void RegisterEvents() { }
 
@@ -34,8 +34,8 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
                 ReleaseOrphanedEntries(_flags, expiredIdCache);
             }
 
-            //dataStore.SyncData("Vars", ref _vars);
-            //dataStore.SyncData("Flags", ref _flags);
+            dataStore.SyncData("Vars", ref _vars);
+            dataStore.SyncData("Flags", ref _flags);
         }
 
         private static void ReleaseOrphanedEntries<TVal>(IDictionary<StorageKey, TVal> dict, IDictionary<uint, bool> expiredIds)
