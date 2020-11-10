@@ -20,7 +20,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
     internal class TestCampaignBehavior : CampaignBehaviorBase
     {
         private const bool SimpleMode = true;
-        private bool _stopAfter;
+        private bool _hitError;
         private readonly ILogger _log;
 
         public TestCampaignBehavior()
@@ -41,60 +41,113 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
         {
         }
 
-        protected void OnBeforeSave()
+        private void OnBeforeSave()
         {
             _log.LogInformation(">> STORING VARIABLES...");
 
-            if (!SimpleMode)
+            if (SimpleMode)
             {
-                foreach (var h in Hero.All)
-                {
-                    SetOrValidateHeroVars(h, true);
+                OnBeforeSaveSimple();
+                return;
+            }
 
-                    if (_stopAfter)
-                    {
-                        _log.LogTrace($"Errant Hero: {GetHeroTrace(h)} / Object: {GetObjectTrace(h)}");
-                        _log.LogError("Halting execution due to error(s).");
-                        _log.LogInformationAndDisplay("     <<<<<  STORE FAILED!  >>>>>");
-                        return;
-                    }
+#pragma warning disable CS0162 // Unreachable code detected
+            foreach (var h in Hero.All)
+#pragma warning restore CS0162 // Unreachable code detected
+            {
+                SetOrValidateHeroVars(h, true);
+
+                if (_hitError)
+                {
+                    _log.LogTrace($"Errant Hero: {GetHeroTrace(h)} / Object: {GetObjectTrace(h)}");
+                    _log.LogError("Halting execution due to error(s).");
+                    break;
                 }
             }
-            else
-                Hero.MainHero.SetVariable("Identity", GetHeroTrace(Hero.MainHero));
 
-            _log.LogInformationAndDisplay("     <<<<<  STORE PASSED!  >>>>>");
+            LogAndDisplayOutcome(true);
         }
 
-        protected void OnGameLoaded(CampaignGameStarter starter)
+        private void OnGameLoaded(CampaignGameStarter starter)
         {
             _log.LogInformation(">> LOADING VARIABLES...");
-            bool pass = true;
 
-            if (!SimpleMode)
+            if (SimpleMode)
             {
-                foreach (var h in Hero.All)
-                {
-                    SetOrValidateHeroVars(h, false);
+                OnGameLoadedSimple();
+                return;
+            }
 
-                    if (_stopAfter)
-                    {
-                        _log.LogTrace($"Errant Hero: {GetHeroTrace(h)} / Object: {GetObjectTrace(h)}");
-                        _log.LogError("Halting execution due to error(s).");
-                        pass = false;
-                        break;
-                    }
+#pragma warning disable CS0162 // Unreachable code detected
+            foreach (var h in Hero.All)
+#pragma warning restore CS0162 // Unreachable code detected
+            {
+                SetOrValidateHeroVars(h, false);
+
+                if (_hitError)
+                {
+                    _log.LogTrace($"Errant Hero: {GetHeroTrace(h)} / Object: {GetObjectTrace(h)}");
+                    _log.LogError("Halting execution due to error(s).");
+                    break;
                 }
             }
-            else
-            {
-                var name = "Identity";
-                var want = GetHeroTrace(Hero.MainHero);
-                LoadVar(Hero.MainHero, name, out string? got);
-                pass &= TestRefVarByValue(name, want, got);
-            }
 
-            _log.LogInformationAndDisplay(pass ? "   <<<<<  TEST PASSED!  >>>>>" : "   <<<<<  TEST FAILED!  >>>>>");
+            LogAndDisplayOutcome(false);
+        }
+
+        private const string SimpleId = "vlandia";
+        private const string SimpleKey = "SimpleMode.StringId";
+
+        private void OnBeforeSaveSimple()
+        {
+            //var realm = MBObjectManager.Instance.GetObject<Kingdom>(SimpleId);
+
+            //if (realm is null)
+            //    Error($"Kingdom object \"{SimpleId}\" not found!");
+            //else
+            //{
+            //    realm.SetVariable(SimpleKey, SimpleId);
+
+            //    if (LoadObjectVar(realm, SimpleKey, out string? id2) && id2 is { } && !SimpleId.Equals(id2))
+            //        Error($"Incorrect value for variable \"{SimpleKey}\" immediately after setting it. Got value \"{id2}\".");
+            //}
+
+            var h = Hero.MainHero;
+            h.SetFlag("IsPlayer");
+
+            if (!h.HasFlag("IsPlayer"))
+                Error("Set IsPlayer flag on MainHero but didn't have it immediately afterward!");
+
+            LogAndDisplayOutcome(true);
+        }
+
+        private void OnGameLoadedSimple()
+        {
+            //var realm = MBObjectManager.Instance.GetObject<Kingdom>(SimpleId);
+
+            //if (realm is null)
+            //    Error($"Kingdom object \"{SimpleId}\" not found!");
+            //else if (LoadObjectVar(realm, SimpleKey, out string? id2) && id2 is { } && !SimpleId.Equals(id2))
+            //    Error($"Incorrect value for variable \"{SimpleKey}\" stored upon object {GetObjectTrace(realm)}. Got value \"{id2}\".");
+
+            if (!Hero.MainHero.HasFlag("IsPlayer"))
+                Error("IsPlayer flag not set upon MainHero!");
+
+            LogAndDisplayOutcome(false);
+        }
+
+        private void LogAndDisplayOutcome(bool store, bool? passed = null)
+        {
+            var ok = passed ?? !_hitError;
+            var phase = store ? "STORAGE" : "LOADING";
+            var outcome = ok ? "PASSED" : "FAILED";
+            var simple = SimpleMode ? "SIMPLE-" : string.Empty;
+            var output = $"  <<  {phase} {simple}TEST {outcome}!  >>";
+
+            if (ok)
+                _log.LogInformationAndDisplay(output);
+            else
+                _log.LogErrorAndDisplay(output);
         }
 
         private void SetOrValidateHeroVars(Hero h, bool store)
@@ -120,9 +173,9 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
             }
             else
             {
-                LoadVar(h, "Gender", out char gotGender);
-                LoadVar(h, "FellowClans", out Clan[]? gotFellowClans);
-                LoadVar(h, "HeroTest", out HeroTest? gotHeroTest);
+                LoadObjectVar(h, "Gender", out char gotGender);
+                LoadObjectVar(h, "FellowClans", out Clan[]? gotFellowClans);
+                LoadObjectVar(h, "HeroTest", out HeroTest? gotHeroTest);
 
                 TestSeqVar("FellowClans", fellowClans, gotFellowClans);
                 TestValVar("Gender", gender, gotGender);
@@ -130,27 +183,27 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
             }
         }
 
-        public class SavedTypeDefiner : SaveableCampaignBehaviorTypeDefiner
-        {
-            public SavedTypeDefiner() : base(222_444_600) { }
+        //public class SavedTypeDefiner : SaveableCampaignBehaviorTypeDefiner
+        //{
+        //    public SavedTypeDefiner() : base(222_444_600) { }
 
-            protected override void DefineClassTypes()
-            {
-                AddClassDefinition(typeof(HeroTest), 1);
-                //AddClassDefinition(typeof(WrappedDictionary), 3);
-            }
+        //    protected override void DefineClassTypes()
+        //    {
+        //        AddClassDefinition(typeof(HeroTest), 1);
+        //        //AddClassDefinition(typeof(WrappedDictionary), 3);
+        //    }
 
-            protected override void DefineEnumTypes() => AddEnumDefinition(typeof(ElectionCandidate), 2);
+        //    protected override void DefineEnumTypes() => AddEnumDefinition(typeof(ElectionCandidate), 2);
 
-            protected override void DefineContainerDefinitions()
-            {
-                // Apparently this throws a duplicate key exception in one of SaveSystem.DefinitionContext's type dictionaries, because !SaveSystem.IsUserFriendly():
-                // ConstructContainerDefinition(typeof(Clan[]));
+        //    protected override void DefineContainerDefinitions()
+        //    {
+        //        // Apparently this throws a duplicate key exception in one of SaveSystem.DefinitionContext's type dictionaries, because !SaveSystem.IsUserFriendly():
+        //        // ConstructContainerDefinition(typeof(Clan[]));
 
-                // This has never been uncommented but would've done the same:
-                // ConstructContainerDefinition(typeof(Dictionary<string, string>));
-            }
-        }
+        //        // This has never been uncommented but would've done the same:
+        //        // ConstructContainerDefinition(typeof(Dictionary<string, string>));
+        //    }
+        //}
 
         //[SaveableClass(1)]
         private class HeroTest
@@ -285,116 +338,54 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
         //}
         #endregion DisabledCircularReferenceTest
 
-        private bool LoadVar<T>(MBObjectBase obj, string name, out T value)
+        private bool LoadObjectVar<T>(MBObjectBase obj, string name, out T value)
         {
             if (obj.TryGetVariable<T>(name, out var val))
             {
-                value = val!;
+                value = data!;
                 return true;
             }
 
             value = default!;
-            Error($"Variable \"{name}\" not found!");
+            Error($"Object's variable \"{name}\" not found! Object: {GetObjectTrace(obj)}");
             return false;
         }
 
-        private bool TestValVar<T>(string name, T want, T got) where T : struct
+        private bool TestValVar<T>(string id, T want, T got) where T : struct =>
+            Assert(want.Equals(got), "WRONG VALUE!", id, $"GOT: {ValueToStringOrDefault(got)}  //  WANT: {ValueToStringOrDefault(want)}");
+
+        private bool TestRefVarNullCases<T>(string id, T? want, T? got) where T : class => AllNull(want, got) || NorNull(want, got) ||
+            AssertNot(OnlyGotIsNull(want, got), "NULL!", id) && AssertNot(OnlyGotIsNotNull(want, got), "NOT NULL!", id);
+
+        private bool TestRefVar<T>(string id, T? want, T? got) where T : class => TestRefVarNullCases(id, want, got) &&
+            Assert(NorNull(want, got) && ReferenceEquals(want, got), "REF-INEQUALITY!", id, $"GOT: {got}  //  WANT: {want}");
+
+        private bool TestRefVarByValue<T>(string id, T? want, T? got) where T : class => TestRefVarNullCases(id, want, got) &&
+            Assert(NorNull(want, got) && want!.Equals(got), "WRONG VALUE!", id, $"GOT: {got}  //  WANT: {want}");
+
+        private bool TestSeqVar<T>(string id, IEnumerable<T>? want, IEnumerable<T>? got) => TestRefVarNullCases(id, want, got) &&
+            Assert(NorNull(want, got) && want.SequenceEqual(got), "WRONG SEQUENCE!", id, $"GOT: [{string.Join(" | ", got)}]  //  WANT: [{string.Join(" | ", want)}]");
+
+        private bool AssertNot(bool condition, string msg, string? id = null, string? trace = null) => !condition || Error(msg, id, trace);
+        private bool Assert(bool condition, string msg, string? id = null, string? trace = null) => condition || Error(msg, id, trace);
+
+        private bool Error(string msg, string? id = null, string? trace = null)
         {
-            if (!want.Equals(got))
-            {
-                Error($"{name} is incorrect! Got: {ValOrDefault(got)} | Want: {ValOrDefault(want)}");
-                return false;
-            }
+            _log.LogError($"ERROR: {(id is null ? msg : $"{id}: {msg}")}");
 
-            return true;
-        }
+            if (trace != null)
+                _log.LogTrace(trace);
 
-        private bool TestRefVar<T>(string name, T? want, T? got) where T : class
-        {
-                return true;
-
-            if (want is not null && got is null)
-			{
-                Error($"{name} is null!");
-                return false;
-            }
-            else if (want is null && got is not null)
-            {
-                Error($"{name} is NOT null!");
-                return false;
-            }
-            else if (want != got)
-            {
-                Error($"{name} is incorrect! Got: {got} | Want: {want}");
-                return false;
-            }
-
-            return true;
-        }
-
-        private bool TestRefVarByValue<T>(string name, T? want, T? got) where T : class
-        {
-            if (want is null && got is null)
-                return true;
-
-            if (want is not null && got is null)
-                Error($"{name} is null!");
-                return false;
-            }
-            else if (want is null && got is not null)
-            {
-                Error($"{name} is NOT null!");
-                return false;
-            }
-            else if (!want!.Equals(got))
-            {
-                Error($"{name} is incorrect! Got: {got} | Want: {want}");
-                return false;
-            }
-
-            return true;
-        }
-
-        private bool TestSeqVar<T>(string name, IEnumerable<T>? want, IEnumerable<T>? got)
-        {
-            if (want == null && got == null)
-                return true;
-            else if (want == null && got != null)
-            {
-                Error($"{name} is NOT null!");
-                return false;
-            }
-
-            if (want != null && got == null)
-			{
-                Error($"{name} is null!");
-                _log.LogTrace($"\tWant: [{string.Join(",", want)}]");
-                return false;
-			}
-            else if (want == null && got != null)
-            {
-                Error($"{name} is NOT null!");
-                _log.LogTrace($"\tGot: [{string.Join(",", got)}]");
-                return false;
-			}
-            else if (!want.SequenceEqual(got))
-            {
-                Error($"{name} sequence is incorrect!");
-                _log.LogTrace($"\tGot:  [{string.Join(",", got)}]\n\tWant: [{string.Join(",", want)}]");
-                return false;
-            }
-
-            return true;
-        }
-
-        private bool Error(string msg)
-        {
-            _stopAfter = true;
-            _log.LogError("ERROR: " + msg);
+            _hitError = true;
             return false;
         }
 
-        private static string ValOrDefault<T>(T val) where T : struct => val.Equals(default(T)) ? $"<default({typeof(T).Name})>" : val.ToString() ?? string.Empty;
+        private static bool NorNull<T>(T? a, T? b) where T : class => !(a is null || b is null);
+        private static bool AllNull<T>(T? a, T? b) where T : class => a is null && b is null;
+        private static bool OnlyGotIsNull<T>(T? want, T? got) where T : class => want is { } && got is null;
+        private static bool OnlyGotIsNotNull<T>(T? want, T? got) where T : class => want is null && got is { };
+
+        private static string ValueToStringOrDefault<T>(T val) where T : struct => val.Equals(default(T)) ? $"default({typeof(T).Name})" : val.ToString() ?? string.Empty;
 
         private static string GetObjectTrace(MBObjectBase obj) =>
             $"{obj.GetType().FullName}[\"{obj.StringId}\": {obj.Id.InternalValue}]: {obj.GetName()}";
