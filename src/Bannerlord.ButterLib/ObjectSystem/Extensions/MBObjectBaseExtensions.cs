@@ -2,6 +2,7 @@
 
 using Microsoft.Extensions.DependencyInjection;
 
+using System;
 using System.Diagnostics.CodeAnalysis;
 
 using TaleWorlds.ObjectSystem;
@@ -9,7 +10,7 @@ using TaleWorlds.ObjectSystem;
 namespace Bannerlord.ButterLib.ObjectSystem.Extensions
 {
     /// <summary>
-    /// <see cref="MBObjectBase"/> extension methods for dynamic variable / flag storage
+    /// <see cref="MBObjectBase"/> extension methods for Object Extension Data (dynamic variable / flag storage)
     /// </summary>
     public static class MBObjectBaseExtensions
     {
@@ -21,6 +22,33 @@ namespace Bannerlord.ButterLib.ObjectSystem.Extensions
         internal static void OnGameEnd() => _instance = null;
 
         /* Variables */
+
+        /**
+         * <summary>
+         * Check whether a variable <paramref name="name"/> is stored upon <paramref name="object"/>.
+         * </summary>
+         * <returns>
+         * <see langword="true"/> if it exists, else <see langword="false"/>.
+         * </returns>
+         * <example>
+         * <code>
+         *  foreach (var skill in SkillObject.All)
+         *      if (!skill.HasVariable("CustomModifiers"))
+         *          RecalculateCustomModifiers(skill);
+         * </code>
+         * </example>
+         * <param name="object">A game object.</param>
+         * <param name="name">The variable's name.</param>
+         */
+        public static bool HasVariable(this MBObjectBase @object, string name)
+        {
+            if (name is null)
+                throw new ArgumentNullException(nameof(name));
+            else if (name.Length == 0)
+                throw new ArgumentException(nameof(name), "Variable name cannot be empty.");
+
+            return Instance is { } instance && instance.HasVariable(@object, name);
+        }
 
         /**
          * <summary>
