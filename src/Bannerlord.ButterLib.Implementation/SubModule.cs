@@ -9,6 +9,7 @@ using Bannerlord.ButterLib.Implementation.DistanceMatrix;
 using Bannerlord.ButterLib.Implementation.Logging;
 using Bannerlord.ButterLib.Implementation.ObjectSystem;
 using Bannerlord.ButterLib.Implementation.ObjectSystem.Patches;
+using Bannerlord.ButterLib.Implementation.SaveSystem.Patches;
 using Bannerlord.ButterLib.ObjectSystem;
 
 using HarmonyLib;
@@ -80,6 +81,7 @@ namespace Bannerlord.ButterLib.Implementation
                 // Selectively apply Harmony patches for MBObjectVariableStorageBehavior load/save
                 // Moved to OnBeforeInitialModuleScreenSetAsRoot so we'll get a final logger
                 CampaignBehaviorManagerPatch.Apply(new Harmony("Bannerlord.ButterLib.MBObjectVariableStorage"));
+                TypeExtensionsPatch.Apply(new Harmony("Bannerlord.ButterLib.SaveSystem"));
             }
 
             Logger.LogTrace("OnBeforeInitialModuleScreenSetAsRoot() finished.");
