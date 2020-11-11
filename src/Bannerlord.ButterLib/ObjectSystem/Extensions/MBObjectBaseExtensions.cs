@@ -14,10 +14,10 @@ namespace Bannerlord.ButterLib.ObjectSystem.Extensions
     /// </summary>
     public static class MBObjectBaseExtensions
     {
-        private static IMBObjectVariableStorage? _instance;
+        private static IMBObjectExtensionDataStore? _instance;
 
-        private static IMBObjectVariableStorage? Instance =>
-            _instance ??= ButterLibSubModule.Instance?.GetServiceProvider()?.GetRequiredService<IMBObjectVariableStorage>();
+        private static IMBObjectExtensionDataStore? Instance =>
+            _instance ??= ButterLibSubModule.Instance?.GetServiceProvider()?.GetRequiredService<IMBObjectExtensionDataStore>();
 
         internal static void OnGameEnd() => _instance = null;
 

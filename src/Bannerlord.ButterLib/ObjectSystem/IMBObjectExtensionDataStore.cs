@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 
 using TaleWorlds.ObjectSystem;
 
@@ -11,7 +10,7 @@ namespace Bannerlord.ButterLib.ObjectSystem
      * Used primarily by <see cref="Extensions.MBObjectBaseExtensions"/>.
      * </summary>
      */
-    internal interface IMBObjectVariableStorage
+    internal interface IMBObjectExtensionDataStore
     {
         /****    V A R I A B L E S    ****/
 
