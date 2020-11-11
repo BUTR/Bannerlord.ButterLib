@@ -3,7 +3,7 @@
 using Newtonsoft.Json;
 
 using System;
-//using System.Collections.Concurrent;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
@@ -13,12 +13,12 @@ using TaleWorlds.SaveSystem;
 
 namespace Bannerlord.ButterLib.Implementation.ObjectSystem
 {
-    internal sealed class MBObjectVariableStorageBehavior : CampaignBehaviorBase, IMBObjectVariableStorage
+    internal sealed class MBObjectExtensionDataStore : CampaignBehaviorBase, IMBObjectExtensionDataStore
     {
         public const int SaveBaseId = 222_444_700; // 10 reserved, should probably base this one the ButterLib range
 
-        private Dictionary<DataKey, object?> _vars = new Dictionary<DataKey, object?>();
-        private Dictionary<DataKey, bool>   _flags = new Dictionary<DataKey, bool>();
+        private ConcurrentDictionary<DataKey, object?> _vars = new ConcurrentDictionary<DataKey, object?>();
+        private ConcurrentDictionary<DataKey, bool>   _flags = new ConcurrentDictionary<DataKey, bool>();
 
         public override void RegisterEvents() { }
 
@@ -53,9 +53,9 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
         /* Variables Implementation */
         public bool HasVariable(MBObjectBase @object, string name) => _vars.ContainsKey(DataKey.Make(@object, name));
 
-        //public bool RemoveVariable(MBObjectBase @object, string name) => _vars.TryRemove(DataKey.Make(@object, name), out _);
+        public bool RemoveVariable(MBObjectBase @object, string name) => _vars.TryRemove(DataKey.Make(@object, name), out _);
 
-        public bool RemoveVariable(MBObjectBase @object, string name) => _vars.Remove(DataKey.Make(@object, name));
+        //public bool RemoveVariable(MBObjectBase @object, string name) => _vars.Remove(DataKey.Make(@object, name));
 
         public void SetVariable(MBObjectBase @object, string name, object? data) => _vars[DataKey.Make(@object, name)] = data;
 
@@ -75,9 +75,9 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
 
         public bool HasFlag(MBObjectBase @object, string name) => _flags.ContainsKey(DataKey.Make(@object, name));
 
-        //public bool RemoveFlag(MBObjectBase @object, string name) => _flags.TryRemove(DataKey.Make(@object, name), out _);
+        public bool RemoveFlag(MBObjectBase @object, string name) => _flags.TryRemove(DataKey.Make(@object, name), out _);
 
-        public bool RemoveFlag(MBObjectBase @object, string name) => _flags.Remove(DataKey.Make(@object, name));
+        //public bool RemoveFlag(MBObjectBase @object, string name) => _flags.Remove(DataKey.Make(@object, name));
 
         public void SetFlag(MBObjectBase @object, string name) => _flags[DataKey.Make(@object, name)] = true;
 
@@ -95,7 +95,7 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
 
             internal static DataKey Make(MBObjectBase obj, string key) => new DataKey(obj.Id, key);
 
-            public bool Equals(StorageKey other) => ObjectId == other.ObjectId && Key is not null! && other.Key is not null! && Key.Equals(other.Key);
+            public bool Equals(DataKey other) => ObjectId == other.ObjectId && !(Key is null || other.Key is null) && Key.Equals(other.Key);
 
             public override bool Equals(object? obj) => obj is DataKey k && Equals(k);
 
@@ -113,8 +113,8 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
             protected override void DefineGenericStructDefinitions() { }
             protected override void DefineContainerDefinitions()
             {
-                ConstructContainerDefinition(typeof(Dictionary<DataKey, object?>));
-                ConstructContainerDefinition(typeof(Dictionary<DataKey, bool>));
+                ConstructContainerDefinition(typeof(ConcurrentDictionary<DataKey, object?>));
+                ConstructContainerDefinition(typeof(ConcurrentDictionary<DataKey, bool>));
             }
         }
     }

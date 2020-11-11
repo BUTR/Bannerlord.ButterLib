@@ -47,7 +47,7 @@ namespace Bannerlord.ButterLib.Implementation
             services.AddSingleton<DistanceMatrixStatic, DistanceMatrixStaticImplementation>();
             services.AddSingleton<ICampaignExtensions, CampaignExtensionsImplementation>();
             services.AddTransient<ICampaignDescriptorProvider, JsonCampaignDescriptorProvider>();
-            services.AddScoped<IMBObjectVariableStorage, MBObjectVariableStorageBehavior>();
+            services.AddScoped<IMBObjectExtensionDataStore, MBObjectExtensionDataStore>();
 
             Logger.LogTrace("OnSubModuleLoad() finished.");
         }
@@ -78,9 +78,7 @@ namespace Bannerlord.ButterLib.Implementation
                 CharacterCreationContentApplyCulturePatch.Apply(campaignIdentifierHarmony);
                 ClanInitializeClanPatch.Apply(campaignIdentifierHarmony);
 
-                // Selectively apply Harmony patches for MBObjectVariableStorageBehavior load/save
-                // Moved to OnBeforeInitialModuleScreenSetAsRoot so we'll get a final logger
-                CampaignBehaviorManagerPatch.Apply(new Harmony("Bannerlord.ButterLib.MBObjectVariableStorage"));
+                CampaignBehaviorManagerPatch.Apply(new Harmony("Bannerlord.ButterLib.MBObjectExtensionDataStore"));
                 TypeExtensionsPatch.Apply(new Harmony("Bannerlord.ButterLib.SaveSystem"));
             }
 
