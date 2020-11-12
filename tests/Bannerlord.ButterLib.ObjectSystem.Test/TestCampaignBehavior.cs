@@ -19,7 +19,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
 {
     internal class TestCampaignBehavior : CampaignBehaviorBase
     {
-        private const bool SimpleMode = true;
+        private readonly bool SimpleMode = false; // non-const to prevent annoying unreachable code warnings
         private bool _hitError;
         private readonly ILogger _log;
 
@@ -51,9 +51,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
                 return;
             }
 
-#pragma warning disable CS0162 // Unreachable code detected
             foreach (var h in Hero.All)
-#pragma warning restore CS0162 // Unreachable code detected
             {
                 SetOrValidateHeroVars(h, true);
 
@@ -78,9 +76,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
                 return;
             }
 
-#pragma warning disable CS0162 // Unreachable code detected
             foreach (var h in Hero.All)
-#pragma warning restore CS0162 // Unreachable code detected
             {
                 SetOrValidateHeroVars(h, false);
 
@@ -100,17 +96,17 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
 
         private void OnBeforeSaveSimple()
         {
-            //var realm = MBObjectManager.Instance.GetObject<Kingdom>(SimpleId);
+            var realm = MBObjectManager.Instance.GetObject<Kingdom>(SimpleId);
 
-            //if (realm is null)
-            //    Error($"Kingdom object \"{SimpleId}\" not found!");
-            //else
-            //{
-            //    realm.SetVariable(SimpleKey, SimpleId);
+            if (realm is null)
+                Error($"Kingdom object \"{SimpleId}\" not found!");
+            else
+            {
+                realm.SetVariable(SimpleKey, SimpleId);
 
-            //    if (LoadObjectVar(realm, SimpleKey, out string? id2) && id2 is { } && !SimpleId.Equals(id2))
-            //        Error($"Incorrect value for variable \"{SimpleKey}\" immediately after setting it. Got value \"{id2}\".");
-            //}
+                if (LoadObjectVar(realm, SimpleKey, out string? id2) && id2 is { } && !SimpleId.Equals(id2))
+                    Error($"Incorrect value for variable \"{SimpleKey}\" immediately after setting it. Got value \"{id2}\".");
+            }
 
             var h = Hero.MainHero;
             h.SetFlag("IsPlayer");
@@ -123,12 +119,12 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
 
         private void OnGameLoadedSimple()
         {
-            //var realm = MBObjectManager.Instance.GetObject<Kingdom>(SimpleId);
+            var realm = MBObjectManager.Instance.GetObject<Kingdom>(SimpleId);
 
-            //if (realm is null)
-            //    Error($"Kingdom object \"{SimpleId}\" not found!");
-            //else if (LoadObjectVar(realm, SimpleKey, out string? id2) && id2 is { } && !SimpleId.Equals(id2))
-            //    Error($"Incorrect value for variable \"{SimpleKey}\" stored upon object {GetObjectTrace(realm)}. Got value \"{id2}\".");
+            if (realm is null)
+                Error($"Kingdom object \"{SimpleId}\" not found!");
+            else if (LoadObjectVar(realm, SimpleKey, out string? id2) && id2 is { } && !SimpleId.Equals(id2))
+                Error($"Incorrect value for variable \"{SimpleKey}\" stored upon object {GetObjectTrace(realm)}. Got value \"{id2}\".");
 
             if (!Hero.MainHero.HasFlag("IsPlayer"))
                 Error("IsPlayer flag not set upon MainHero!");
@@ -183,29 +179,28 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
             }
         }
 
-        //public class SavedTypeDefiner : SaveableCampaignBehaviorTypeDefiner
-        //{
-        //    public SavedTypeDefiner() : base(222_444_600) { }
+        public class SavedTypeDefiner : SaveableCampaignBehaviorTypeDefiner
+        {
+            public SavedTypeDefiner() : base(222_444_710) { }
 
-        //    protected override void DefineClassTypes()
-        //    {
-        //        AddClassDefinition(typeof(HeroTest), 1);
-        //        //AddClassDefinition(typeof(WrappedDictionary), 3);
-        //    }
+            protected override void DefineClassTypes()
+            {
+                AddClassDefinition(typeof(HeroTest), 1);
+                //AddClassDefinition(typeof(WrappedDictionary), 3);
+            }
 
-        //    protected override void DefineEnumTypes() => AddEnumDefinition(typeof(ElectionCandidate), 2);
+            protected override void DefineEnumTypes() => AddEnumDefinition(typeof(ElectionCandidate), 2);
 
-        //    protected override void DefineContainerDefinitions()
-        //    {
-        //        // Apparently this throws a duplicate key exception in one of SaveSystem.DefinitionContext's type dictionaries, because !SaveSystem.IsUserFriendly():
-        //        // ConstructContainerDefinition(typeof(Clan[]));
+            protected override void DefineContainerDefinitions()
+            {
+                // Apparently this throws a duplicate key exception in one of SaveSystem.DefinitionContext's type dictionaries, because !SaveSystem.IsUserFriendly():
+                // ConstructContainerDefinition(typeof(Clan[]));
 
-        //        // This has never been uncommented but would've done the same:
-        //        // ConstructContainerDefinition(typeof(Dictionary<string, string>));
-        //    }
-        //}
+                // This has never been uncommented but would've done the same:
+                // ConstructContainerDefinition(typeof(Dictionary<string, string>));
+            }
+        }
 
-        //[SaveableClass(1)]
         private class HeroTest
         {
             internal void Test(TestCampaignBehavior test, string name, HeroTest want)
@@ -297,10 +292,8 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
             #endregion DisabledCircularReferenceTest
         }
 
-        //[SaveableEnum(2)]
         private enum ElectionCandidate { Trump = 0, Biden = 1, Kanye = 2 };
 
-        //[SaveableClass(3)]
         //public class WrappedDictionary
         //{
         //    [SaveableProperty(0)]
@@ -354,8 +347,10 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
         private bool TestValVar<T>(string id, T want, T got) where T : struct =>
             Assert(want.Equals(got), "WRONG VALUE!", id, $"GOT: {ValueToStringOrDefault(got)}  //  WANT: {ValueToStringOrDefault(want)}");
 
-        private bool TestRefVarNullCases<T>(string id, T? want, T? got) where T : class => AllNull(want, got) || NorNull(want, got) ||
-            AssertNot(OnlyGotIsNull(want, got), "NULL!", id) && AssertNot(OnlyGotIsNotNull(want, got), "NOT NULL!", id);
+        private bool TestRefVarNullCases<T>(string id, T? want, T? got) where T : class => AllNull(want, got)
+            || NorNull(want, got)
+            || AssertNot(OnlyGotIsNull(want, got), "NULL!", id, $"GOT: null  //  WANT: {want}")
+            && AssertNot(OnlyGotIsNotNull(want, got), "NOT NULL!", id, $"GOT: {got}  //  WANT: null");
 
         private bool TestRefVar<T>(string id, T? want, T? got) where T : class => TestRefVarNullCases(id, want, got) &&
             Assert(NorNull(want, got) && ReferenceEquals(want, got), "REF-INEQUALITY!", id, $"GOT: {got}  //  WANT: {want}");
