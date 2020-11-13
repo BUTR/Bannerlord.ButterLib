@@ -42,7 +42,7 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
             _log = ButterLibSubModule.Instance?.GetServiceProvider()?.GetRequiredService<ILogger<DefinitionContextPatch>>()
                    ?? NullLogger<DefinitionContextPatch>.Instance;
 
-            return Patch.AllReady(Patches) && Patches.All(p => p.ApplyPrefix(harmony));
+            return Patches.Select(p => p.IsReady).All(ready => ready) && Patches.All(p => p.ApplyPrefix(harmony));
         }
 
 
@@ -53,33 +53,44 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
 
         private static MethodInfo? TargetTypeMethod(string name) => AccessTools.Method(TargetType ?? typeof(NoType), name);
 
-        private static readonly Patch[] Patches = new[]
+        private static readonly Patch[] Patches = new Patch[]
         {
-            new Patch("AddRootClassDefinitionPrefix", TargetTypeMethod("AddRootClassDefinition")),
-            new Patch("AddClassDefinitionPrefix", TargetTypeMethod("AddClassDefinition")),
-            new Patch("AddStructDefinitionPrefix", TargetTypeMethod("AddStructDefinition")),
-            new Patch("AddInterfaceDefinitionPrefix", TargetTypeMethod("AddInterfaceDefinition")),
-            new Patch("AddEnumDefinitionPrefix", TargetTypeMethod("AddEnumDefinition")),
-            new Patch("AddContainerDefinitionPrefix", TargetTypeMethod("AddContainerDefinition")),
-            new Patch("AddBasicTypeDefinitionPrefix", TargetTypeMethod("AddBasicTypeDefinition")),
-            new Patch("AddGenericClassDefinitionPrefix", TargetTypeMethod("AddGenericClassDefinition")),
-            new Patch("AddGenericStructDefinitionPrefix", TargetTypeMethod("AddGenericStructDefinition")),
+            new("AddRootClassDefinitionPrefix",     TargetTypeMethod("AddRootClassDefinition")),
+            new("AddClassDefinitionPrefix",         TargetTypeMethod("AddClassDefinition")),
+            new("AddStructDefinitionPrefix",        TargetTypeMethod("AddStructDefinition")),
+            new("AddInterfaceDefinitionPrefix",     TargetTypeMethod("AddInterfaceDefinition")),
+            new("AddEnumDefinitionPrefix",          TargetTypeMethod("AddEnumDefinition")),
+            new("AddContainerDefinitionPrefix",     TargetTypeMethod("AddContainerDefinition")),
+            new("AddBasicTypeDefinitionPrefix",     TargetTypeMethod("AddBasicTypeDefinition")),
+            new("AddGenericClassDefinitionPrefix",  TargetTypeMethod("AddGenericClassDefinition")),
+            new("AddGenericStructDefinitionPrefix", TargetTypeMethod("AddGenericStructDefinition")),
         };
 
         // PATCH METHODS
 
-        private static bool CanAddTypeDefinition(TypeDefinitionBase? typeDef, Dictionary<Type, TypeDefinitionBase> typeDict) =>
-            typeDef is { } && typeDict.ContainsKey(typeDef.Type);
+        private static bool CanAddTypeDefinition(TypeDefinitionBase? typeDef, Dictionary<Type, TypeDefinitionBase> typeDict)
+        {
+            if (typeDef is null)
+                return false;
 
-        private static bool AddRootClassDefinitionPrefix(TypeDefinition? rootClassDefinition,
+            if (typeDict.ContainsKey(typeDef.Type))
+            {
+                _log.LogTrace("Suppressed duplicate SaveSystem registration of type {type}", typeDef.Type.FullName);
+                return false;
+            }
+
+            return true;
+        }
+
+        private static bool AddRootClassDefinitionPrefix(TypeDefinitionBase? rootClassDefinition,
                                                          Dictionary<Type, TypeDefinitionBase> ____allTypeDefinitions) =>
             CanAddTypeDefinition(rootClassDefinition, ____allTypeDefinitions);
 
-        private static bool AddClassDefinitionPrefix(TypeDefinition? classDefinition,
+        private static bool AddClassDefinitionPrefix(TypeDefinitionBase? classDefinition,
                                                      Dictionary<Type, TypeDefinitionBase> ____allTypeDefinitions) =>
             CanAddTypeDefinition(classDefinition, ____allTypeDefinitions);
 
-        private static bool AddStructDefinitionPrefix(TypeDefinition? structDefinition,
+        private static bool AddStructDefinitionPrefix(TypeDefinitionBase? structDefinition,
                                                       Dictionary<Type, TypeDefinitionBase> ____allTypeDefinitions) =>
             CanAddTypeDefinition(structDefinition, ____allTypeDefinitions);
 
@@ -91,7 +102,7 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
                                                     Dictionary<Type, TypeDefinitionBase> ____allTypeDefinitions) =>
             CanAddTypeDefinition(enumDefinition, ____allTypeDefinitions);
 
-        private static bool AddContainerDefinitionPrefix(ContainerDefinition? containerDefinition,
+        private static bool AddContainerDefinitionPrefix(TypeDefinitionBase? containerDefinition,
                                                          Dictionary<Type, TypeDefinitionBase> ____allTypeDefinitions) =>
             CanAddTypeDefinition(containerDefinition, ____allTypeDefinitions);
 
@@ -122,11 +133,9 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
                 TargetMethod = targetMethod;
             }
 
-            internal bool ApplyPrefix(Harmony harmony) => harmony.Patch(TargetMethod, prefix: new HarmonyMethod(PatchMethod)) is { };
+            internal bool ApplyPrefix(Harmony harmony) => harmony.Patch(TargetMethod, prefix: new HarmonyMethod(PatchMethod)) is not null;
 
-            internal bool IsReady() => MethodNotNull(PatchMethod, nameof(PatchMethod)) & MethodNotNull(TargetMethod, nameof(TargetMethod));
-
-            internal static bool AllReady(IEnumerable<Patch> patches) => patches.Select(p => p.IsReady()).All(ready => ready);
+            internal bool IsReady => MethodNotNull(PatchMethod, nameof(PatchMethod)) & MethodNotNull(TargetMethod, nameof(TargetMethod));
 
             private bool MethodNotNull(MethodInfo? method, string methodName) => NotNull(method, methodName, $"Patch {PatchMethodName}: ");
         }
