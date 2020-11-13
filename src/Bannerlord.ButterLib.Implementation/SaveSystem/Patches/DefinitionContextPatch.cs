@@ -145,7 +145,7 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
             if (obj is null)
             {
                 var prefix = errPrefix is null ? string.Empty : errPrefix;
-                _log.LogError($"{errPrefix}{name} is null!");
+                _log.LogError($"{prefix}{name} is null!");
                 return false;
             }
 
