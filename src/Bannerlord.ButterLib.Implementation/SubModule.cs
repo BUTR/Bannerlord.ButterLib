@@ -35,7 +35,7 @@ namespace Bannerlord.ButterLib.Implementation
             base.OnSubModuleLoad();
 
             Logger = this.GetTempServiceProvider().GetRequiredService<ILogger<SubModule>>();
-            Logger.LogTrace("OnSubModuleLoad() started tracking.");
+            Logger.LogTrace("ButterLib.Implementation: OnSubModuleLoad");
 
             Logger.LogInformation("Wrapping DebugManager of type {type} with DebugManagerWrapper.", Debug.DebugManager.GetType());
             Debug.DebugManager = new DebugManagerWrapper(Debug.DebugManager, this.GetTempServiceProvider()!);
@@ -49,13 +49,13 @@ namespace Bannerlord.ButterLib.Implementation
             services.AddTransient<ICampaignDescriptorProvider, JsonCampaignDescriptorProvider>();
             services.AddScoped<IMBObjectExtensionDataStore, MBObjectExtensionDataStore>();
 
-            Logger.LogTrace("OnSubModuleLoad() finished.");
+            Logger.LogTrace("ButterLib.Implementation: OnSubModuleLoad: Done");
         }
 
         protected override void OnBeforeInitialModuleScreenSetAsRoot()
         {
             base.OnBeforeInitialModuleScreenSetAsRoot();
-            Logger.LogTrace("OnBeforeInitialModuleScreenSetAsRoot() started.");
+            Logger.LogTrace("ButterLib.Implementation: OnBeforeInitialModuleScreenSetAsRoot");
 
             if (FirstInit)
             {
@@ -85,13 +85,13 @@ namespace Bannerlord.ButterLib.Implementation
                 DefinitionContextPatch.Apply(saveSystemHarmony); // Fixes save corruption & crashes when duplicate types are defined
             }
 
-            Logger.LogTrace("OnBeforeInitialModuleScreenSetAsRoot() finished.");
+            Logger.LogTrace("ButterLib.Implementation: OnBeforeInitialModuleScreenSetAsRoot: Done");
         }
 
         protected override void OnGameStart(Game game, IGameStarter gameStarterObject)
         {
             base.OnGameStart(game, gameStarterObject);
-            Logger.LogTrace("OnGameStart(Game, IGameStarter) started.");
+            Logger.LogTrace("ButterLib.Implementation: OnGameStart");
 
             if (game.GameType is Campaign)
             {
@@ -102,20 +102,20 @@ namespace Bannerlord.ButterLib.Implementation
                 gameStarter.AddBehavior(new GeopoliticsCachingBehavior());
             }
 
-            Logger.LogTrace("OnGameStart(Game, IGameStarter) finished.");
+            Logger.LogTrace("ButterLib.Implementation: OnGameStart: Done");
         }
 
         public override void OnGameEnd(Game game)
         {
             base.OnGameEnd(game);
-            Logger.LogTrace("OnGameEnd(Game) started.");
+            Logger.LogTrace("ButterLib.Implementation: OnGameEnd");
 
             if (game.GameType is Campaign)
             {
                 CampaignIdentifierEvents.Instance = null;
             }
 
-            Logger.LogTrace("OnGameEnd(Game) finished.");
+            Logger.LogTrace("ButterLib.Implementation: OnGameEnd: Done");
         }
     }
 }
