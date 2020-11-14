@@ -17,7 +17,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// <typeparam name="TField">The type of the field</typeparam>
         /// <param name="fieldInfo">The field</param>
         /// <returns>A read and writable <see cref="T:HarmonyLib.AccessTools.FieldRef`1" /> delegate</returns>
-        public static FieldRef<TField>? StaticFieldRefAccess<TField>(FieldInfo fieldInfo)
+        public static FieldRef<TField>? StaticFieldRefAccess<TField>(FieldInfo? fieldInfo)
         {
             return fieldInfo == null ? null : AccessTools.StaticFieldRefAccess<TField>(fieldInfo);
         }
@@ -45,8 +45,9 @@ namespace Bannerlord.ButterLib.Common.Helpers
         }
 
 
-        public static TDelegate? GetDelegate<TDelegate>(ConstructorInfo constructorInfo) where TDelegate : Delegate
+        public static TDelegate? GetDelegate<TDelegate>(ConstructorInfo? constructorInfo) where TDelegate : Delegate
         {
+            if (constructorInfo == null) return null;
             var parameters = constructorInfo.GetParameters().Select((p, i) => Expression.Parameter(p.ParameterType, $"p{i}")).ToList();
             var newExpression = Expression.New(constructorInfo, parameters);
             return Expression.Lambda<TDelegate>(newExpression, parameters).Compile();
@@ -88,7 +89,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// <summary>Allows to use object as Delegate's instance type.</summary>
         /// <param name="methodInfo">The method's <see cref="MethodInfo"/></param>
         /// <returns>A delegate or null when the method is null</returns>
-        public static TDelegate? GetDelegateObjectInstance<TDelegate>(MethodInfo methodInfo) where TDelegate : Delegate
+        public static TDelegate? GetDelegateObjectInstance<TDelegate>(MethodInfo? methodInfo) where TDelegate : Delegate
         {
             if (methodInfo == null) return null;
 
@@ -126,7 +127,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// <summary>Gets the delegate for a method</summary>
         /// <param name="methodInfo">The method's <see cref="MethodInfo"/></param>
         /// <returns>A delegate or null when the method is null</returns>
-        public static TDelegate? GetDelegate<TDelegate>(MethodInfo methodInfo) where TDelegate : Delegate
+        public static TDelegate? GetDelegate<TDelegate>(MethodInfo? methodInfo) where TDelegate : Delegate
         {
             if (methodInfo == null) return null;
             return Delegate.CreateDelegate(typeof(TDelegate), methodInfo) as TDelegate;
@@ -157,13 +158,14 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// <param name="instance">The instance where the method is declared</param>
         /// <param name="methodInfo">The method's <see cref="MethodInfo"/></param>
         /// <returns>A delegate or null when type/name is null or when the method cannot be found</returns>
-        public static TDelegate? GetDelegate<TDelegate, TInstance>(TInstance instance, MethodInfo methodInfo) where TDelegate : Delegate where TInstance : notnull
+        public static TDelegate? GetDelegate<TDelegate, TInstance>(TInstance instance, MethodInfo? methodInfo) where TDelegate : Delegate where TInstance : notnull
         {
             return GetDelegate<TDelegate>(instance, methodInfo);
         }
 
-        public static TDelegate? GetDelegate<TDelegate>(object instance, MethodInfo methodInfo) where TDelegate : Delegate
+        public static TDelegate? GetDelegate<TDelegate>(object instance, MethodInfo? methodInfo) where TDelegate : Delegate
         {
+            if (methodInfo == null) return null;
             return Delegate.CreateDelegate(typeof(TDelegate), instance, methodInfo.Name) as TDelegate;
         }
     }
