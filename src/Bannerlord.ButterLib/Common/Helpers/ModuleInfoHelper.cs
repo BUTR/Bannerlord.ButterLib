@@ -13,16 +13,18 @@ namespace Bannerlord.ButterLib.Common.Helpers
 {
     public static class ModuleInfoHelper
     {
-        private static List<ModuleInfo>? LoadedModules { get; set; }
+        private static List<ExtendedModuleInfo>? LoadedModules { get; set; }
 
         // We can cache it because it is not expected for the game to change Module\Module order
-        public static List<ModuleInfo> GetLoadedModules() => LoadedModules ??= GetLoadedModulesEnumerable().ToList();
-        private static IEnumerable<ModuleInfo> GetLoadedModulesEnumerable()
+        public static List<ModuleInfo> GetLoadedModules() => (LoadedModules ??= GetLoadedModulesEnumerable().ToList()).Cast<ModuleInfo>().ToList();
+        public static List<ExtendedModuleInfo> GetExtendedLoadedModules() => LoadedModules ??= GetLoadedModulesEnumerable().ToList();
+
+        private static IEnumerable<ExtendedModuleInfo> GetLoadedModulesEnumerable()
         {
             var modulesNames = Utilities.GetModulesNames();
             for (var i = 0; i < modulesNames.Length; i++)
             {
-                var moduleInfo = new ModuleInfo();
+                var moduleInfo = new ExtendedModuleInfo();
                 moduleInfo.Load(modulesNames[i]);
                 yield return moduleInfo;
             }
