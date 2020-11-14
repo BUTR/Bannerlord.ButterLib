@@ -17,7 +17,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
         public static void BuildAndShow(CrashReport crashReport)
         {
             var html = Build(crashReport);
-            var form = new CrashReportForm(html);
+            using var form = new HtmlCrashReportForm(html);
             form.ShowDialog();
         }
 
@@ -82,10 +82,10 @@ namespace Bannerlord.ButterLib.ExceptionHandler
         private static string GetRecursiveExceptionHtml(Exception ex) => new StringBuilder()
             .Append("Exception information")
             .Append($"</br>Type: {ex.GetType().FullName}")
-            .Append(!string.IsNullOrWhiteSpace(ex.Message) ? $"</br>Message: {ex.Message}" : "")
-            .Append(!string.IsNullOrWhiteSpace(ex.Source) ? $"</br>Source: {ex.Source}" : "")
-            .Append(!string.IsNullOrWhiteSpace(ex.StackTrace) ? $"</br>CallStack:</br>{ex.StackTrace}" : "")
-            .Append(ex.InnerException != null ? $"</br></br>Inner {GetRecursiveExceptionHtml(ex.InnerException)}" : "")
+            .Append(!string.IsNullOrWhiteSpace(ex.Message) ? $"</br>Message: {ex.Message}" : string.Empty)
+            .Append(!string.IsNullOrWhiteSpace(ex.Source) ? $"</br>Source: {ex.Source}" : string.Empty)
+            .Append(!string.IsNullOrWhiteSpace(ex.StackTrace) ? $"</br>CallStack:</br><ol><li>{string.Join("<li></li>", ex.StackTrace.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries))}</li></ol>" : string.Empty)
+            .Append(ex.InnerException != null ? $"</br></br>Inner {GetRecursiveExceptionHtml(ex.InnerException)}" : string.Empty)
             .ToString();
 
         private static string GetModuleListHtml(CrashReport crashReport)

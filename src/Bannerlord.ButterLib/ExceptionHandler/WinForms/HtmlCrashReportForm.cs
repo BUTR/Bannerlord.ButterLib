@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace Bannerlord.ButterLib.ExceptionHandler.WinForms
 {
-    public partial class CrashReportForm : Form
+    public partial class HtmlCrashReportForm : Form
     {
         // https://gist.github.com/eikes/2299607
         // Copyright: Eike Send http://eike.se/nd
@@ -54,7 +54,7 @@ if (!document.getElementsByClassName) {
 
         private string ReportInHtml { get; }
 
-        public CrashReportForm(string reportInHtml)
+        public HtmlCrashReportForm(string reportInHtml)
         {
             ReportInHtml = reportInHtml;
 

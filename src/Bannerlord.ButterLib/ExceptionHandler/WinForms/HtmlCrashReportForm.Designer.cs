@@ -1,6 +1,6 @@
 ﻿namespace Bannerlord.ButterLib.ExceptionHandler.WinForms
 {
-    partial class CrashReportForm
+    partial class HtmlCrashReportForm
     {
         /// <summary>
         /// Required designer variable.
@@ -62,4 +62,3 @@
         private System.Windows.Forms.WebBrowser HtmlRender;
     }
 }
-
