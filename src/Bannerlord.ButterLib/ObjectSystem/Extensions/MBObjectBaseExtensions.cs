@@ -74,7 +74,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Extensions
             if (name is null)
                 throw new ArgumentNullException(nameof(name));
             else if (name.Length == 0)
-                throw new ArgumentException(nameof(name), "Variable name cannot be empty.");
+                throw new ArgumentException("Variable name cannot be empty.", nameof(name));
 
             if (Instance is { } instance && instance.TryGetVariable<T>(@object, name, out var val))
             {
@@ -148,7 +148,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Extensions
             if (name is null)
                 throw new ArgumentNullException(nameof(name));
             else if (name.Length == 0)
-                throw new ArgumentException(nameof(name), "Variable name cannot be empty.");
+                throw new ArgumentException("Variable name cannot be empty.", nameof(name));
 
             if (Instance is { } instance)
             {
@@ -174,7 +174,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Extensions
             if (name is null)
                 throw new ArgumentNullException(nameof(name));
             else if (name.Length == 0)
-                throw new ArgumentException(nameof(name), "Variable name cannot be empty.");
+                throw new ArgumentException("Variable name cannot be empty.", nameof(name));
 
             if (Instance is { } instance)
                 instance.RemoveVariable(@object, name);
@@ -199,7 +199,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Extensions
             if (name is null)
                 throw new ArgumentNullException(nameof(name));
             else if (name.Length == 0)
-                throw new ArgumentException(nameof(name), "Flag name cannot be empty.");
+                throw new ArgumentException("Flag name cannot be empty.", nameof(name));
 
             return Instance is { } instance && instance.HasFlag(@object, name);
         }
@@ -217,7 +217,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Extensions
             if (name is null)
                 throw new ArgumentNullException(nameof(name));
             else if (name.Length == 0)
-                throw new ArgumentException(nameof(name), "Flag name cannot be empty.");
+                throw new ArgumentException("Flag name cannot be empty.", nameof(name));
 
             if (Instance is { } instance)
                 instance.SetFlag(@object, name);
@@ -236,7 +236,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Extensions
             if (name is null)
                 throw new ArgumentNullException(nameof(name));
             else if (name.Length == 0)
-                throw new ArgumentException(nameof(name), "Flag name cannot be empty.");
+                throw new ArgumentException("Flag name cannot be empty.", nameof(name));
 
             if (Instance is { } instance)
                 instance.RemoveFlag(@object, name);
