@@ -42,10 +42,10 @@ namespace Bannerlord.ButterLib.ObjectSystem.Extensions
          */
         public static bool HasVariable(this MBObjectBase @object, string name)
         {
-            if (name is null)
+            if (name is null!)
                 throw new ArgumentNullException(nameof(name));
             else if (name.Length == 0)
-                throw new ArgumentException(nameof(name), "Variable name cannot be empty.");
+                throw new ArgumentException("Variable name cannot be empty.", nameof(name));
 
             return Instance is { } instance && instance.HasVariable(@object, name);
         }
@@ -71,7 +71,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Extensions
          */
         internal static bool TryGetVariable<T>(this MBObjectBase @object, string name, [MaybeNullWhen(false)][NotNullWhen(true)] out T value)
         {
-            if (name is null)
+            if (name is null!)
                 throw new ArgumentNullException(nameof(name));
             else if (name.Length == 0)
                 throw new ArgumentException("Variable name cannot be empty.", nameof(name));
@@ -145,7 +145,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Extensions
          */
         internal static void SetVariable<T>(this MBObjectBase @object, string name, T data)
         {
-            if (name is null)
+            if (name is null!)
                 throw new ArgumentNullException(nameof(name));
             else if (name.Length == 0)
                 throw new ArgumentException("Variable name cannot be empty.", nameof(name));
@@ -171,7 +171,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Extensions
         /// <param name="name">The variable's name.</param>
         internal static void RemoveVariable(this MBObjectBase @object, string name)
         {
-            if (name is null)
+            if (name is null!)
                 throw new ArgumentNullException(nameof(name));
             else if (name.Length == 0)
                 throw new ArgumentException("Variable name cannot be empty.", nameof(name));
@@ -196,7 +196,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Extensions
         /// <param name="name">A string flag.</param>
         public static bool HasFlag(this MBObjectBase @object, string name)
         {
-            if (name is null)
+            if (name is null!)
                 throw new ArgumentNullException(nameof(name));
             else if (name.Length == 0)
                 throw new ArgumentException("Flag name cannot be empty.", nameof(name));
@@ -214,7 +214,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Extensions
         /// <param name="name">A string flag.</param>
         public static void SetFlag(this MBObjectBase @object, string name)
         {
-            if (name is null)
+            if (name is null!)
                 throw new ArgumentNullException(nameof(name));
             else if (name.Length == 0)
                 throw new ArgumentException("Flag name cannot be empty.", nameof(name));
@@ -233,7 +233,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Extensions
         /// <param name="name">A string flag.</param>
         public static void RemoveFlag(this MBObjectBase @object, string name)
         {
-            if (name is null)
+            if (name is null!)
                 throw new ArgumentNullException(nameof(name));
             else if (name.Length == 0)
                 throw new ArgumentException("Flag name cannot be empty.", nameof(name));
