@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Windows.Forms;
 
 namespace Bannerlord.ButterLib.ExceptionHandler.WinForms
@@ -43,8 +44,8 @@ if (!document.getElementsByClassName) {
       <h1>Intercepted an exception!</h1>
     </td>
     <td>
-      <button style='float:right; margin-left:10px;' class='button' onclick='window.external.Close()'>Close Report</button>
-      <button style='float:right; margin-left:10px;' class='button' onclick='window.external.SaveReport()'>Save Report</button>
+      <button style='float:right; margin-left:10px;' onclick='window.external.Close()'>Close Report</button>
+      <button style='float:right; margin-left:10px;' onclick='window.external.SaveReport()'>Save Report</button>
     </td>
   </tr>
   </tbody>
@@ -81,7 +82,25 @@ if (!document.getElementsByClassName) {
 
         public void SaveReport()
         {
-            // TODO:
+            using var saveFileDialog = new SaveFileDialog
+            {
+                Filter = "HTML files|*.html;*.htm|All files (*.*)|*.*",
+                RestoreDirectory = true,
+                AddExtension = true,
+                CheckPathExists = true,
+                ValidateNames = true,
+                FileName = "crashreport",
+                CreatePrompt = true,
+                OverwritePrompt = true
+            };
+            if (saveFileDialog.ShowDialog() == DialogResult.OK && saveFileDialog.OpenFile() is { } fileStream)
+            {
+                using (fileStream)
+                using (var streamWriter = new StreamWriter(fileStream))
+                {
+                    streamWriter.Write(ReportInHtml);
+                }
+            }
         }
 
         private void HtmlRender_Navigating(object sender, WebBrowserNavigatingEventArgs e)
