@@ -297,6 +297,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
             return methodInfo is null ? null : GetDelegate<TDelegate, TInstance>(instance, methodInfo);
         }
 
+
         /// <summary>
         /// Get a delegate for an instance method directly declared by <paramref name="instance"/>'s type.
         /// Choose the overload with the given <paramref name="parameters"/> if not <see langword="null"/>
