@@ -147,7 +147,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// <returns>A delegate or <see langword="null"/> when <paramref name="methodInfo"/> is <see langword="null"/>.</returns>
         public static TDelegate? GetDelegateObjectInstance<TDelegate>(MethodInfo? methodInfo) where TDelegate : Delegate
         {
-            if (methodInfo is null) return null;
+            if (methodInfo is null || methodInfo.DeclaringType is null) return null;
 
             var instance = Expression.Parameter(typeof(object), "instance");
             var parameters = methodInfo.GetParameters().Select((t2, i) => Expression.Parameter(t2.ParameterType, $"p{i}")).ToList();
@@ -250,8 +250,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// A delegate or <see langword="null"/> when <paramref name="instance"/> or <paramref name="method"/>
         /// is <see langword="null"/> or when the method cannot be found.
         /// </returns>
-        public static TDelegate? GetDelegate<TDelegate, TInstance>(TInstance instance,
-                                                                   string method) where TDelegate : Delegate where TInstance : notnull
+        public static TDelegate? GetDelegate<TDelegate, TInstance>(TInstance instance, string method) where TDelegate : Delegate
         {
             if (instance is null) return null;
             var methodInfo = Method(instance.GetType(), method);
@@ -274,7 +273,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
         public static TDelegate? GetDelegate<TDelegate, TInstance>(TInstance instance,
                                                                    string method,
                                                                    Type[]? parameters,
-                                                                   Type[]? generics = null) where TDelegate : Delegate where TInstance : notnull
+                                                                   Type[]? generics = null) where TDelegate : Delegate
         {
             if (instance is null) return null;
             var methodInfo = Method(instance.GetType(), method, parameters, generics);
@@ -291,7 +290,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// is <see langword="null"/> or when the method cannot be found.
         /// </returns>
         public static TDelegate? GetDeclaredDelegate<TDelegate, TInstance>(TInstance instance,
-                                                                           string method) where TDelegate : Delegate where TInstance : notnull
+                                                                           string method) where TDelegate : Delegate
         {
             if (instance is null) return null;
             var methodInfo = DeclaredMethod(instance.GetType(), method);
@@ -314,7 +313,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
         public static TDelegate? GetDeclaredDelegate<TDelegate, TInstance>(TInstance instance,
                                                                            string method,
                                                                            Type[]? parameters,
-                                                                           Type[]? generics = null) where TDelegate : Delegate where TInstance : notnull
+                                                                           Type[]? generics = null) where TDelegate : Delegate
         {
             if (instance is null) return null;
             var methodInfo = DeclaredMethod(instance.GetType(), method, parameters, generics);
@@ -330,9 +329,8 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// A delegate or <see langword="null"/> when <paramref name="instance"/> or <paramref name="methodInfo"/>
         /// is <see langword="null"/> or when the method cannot be found.
         /// </returns>
-        public static TDelegate? GetDelegate<TDelegate, TInstance>(TInstance instance,
-                                                                   MethodInfo? methodInfo) where TDelegate : Delegate where TInstance : notnull
-            => (instance is null || methodInfo is null) ? null : GetDelegate<TDelegate>(instance, methodInfo);
+        public static TDelegate? GetDelegate<TDelegate, TInstance>(TInstance instance, MethodInfo? methodInfo) where TDelegate : Delegate
+            => instance is null || methodInfo is null ? null : GetDelegate<TDelegate>(instance, methodInfo);
 
         /// <summary>
         /// Get a delegate for an instance method described by <paramref name="methodInfo"/> and bound to <paramref name="instance"/>.
@@ -343,7 +341,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// A delegate or <see langword="null"/> when <paramref name="instance"/> or <paramref name="methodInfo"/>
         /// is <see langword="null"/> or when the method cannot be found.
         /// </returns>
-        public static TDelegate? GetDelegate<TDelegate>(object instance, MethodInfo? methodInfo) where TDelegate : Delegate
-            => (instance is null || methodInfo is null) ? null : Delegate.CreateDelegate(typeof(TDelegate), instance, methodInfo.Name) as TDelegate;
+        public static TDelegate? GetDelegate<TDelegate>(object? instance, MethodInfo? methodInfo) where TDelegate : Delegate
+            => instance is null || methodInfo is null ? null : Delegate.CreateDelegate(typeof(TDelegate), instance, methodInfo.Name) as TDelegate;
     }
 }

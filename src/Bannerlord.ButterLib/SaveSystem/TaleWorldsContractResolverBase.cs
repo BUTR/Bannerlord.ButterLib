@@ -32,7 +32,9 @@ namespace Bannerlord.ButterLib.SaveSystem
                     return true;
             }
             else if (type.IsArray)
+            {
                 return true;
+            }
 
             return false;
         }

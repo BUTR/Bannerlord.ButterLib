@@ -31,22 +31,12 @@ namespace Bannerlord.ButterLib.Common.Helpers
         private static string GetFullPathWithEndingSlashes(string input) =>
             $"{Path.GetFullPath(input).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)}{Path.DirectorySeparatorChar}";
 
-        private static string GetPath(Assembly assembly)
-        {
-            var codeBase = assembly.CodeBase;
-            var uri = new UriBuilder(codeBase);
-            var path = Uri.UnescapeDataString(uri.Path);
-            return path;
-        }
-
         public static ModuleInfo? GetModuleInfo(Type type)
         {
-            if (!typeof(MBSubModuleBase).IsAssignableFrom(type))
+            if (!typeof(MBSubModuleBase).IsAssignableFrom(type) || string.IsNullOrWhiteSpace(type.Assembly.Location))
                 return null;
 
-            var assemblyPath = GetPath(type.Assembly);
-
-            var fullAssemblyPath= Path.GetFullPath(assemblyPath);
+            var fullAssemblyPath= Path.GetFullPath(type.Assembly.Location);
             foreach (var loadedModule in GetLoadedModules())
             {
                 var loadedModuleDirectory = Path.GetFullPath(Path.Combine(Utilities.GetBasePath(), "Modules", loadedModule.Id));

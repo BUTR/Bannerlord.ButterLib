@@ -5,6 +5,7 @@ using Bannerlord.ButterLib.ObjectSystem.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+
 using System.Collections.Generic;
 using System.Linq;
 
@@ -95,7 +96,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
                     Error("Set != Get: HeroTest");
 
                 if (h.TryGetVariable("Gender", out char gender2) && gender2 != gender)
-                    Error($"Set != Get: Gender");
+                    Error("Set != Get: Gender");
 
                 if (h.TryGetVariable("FellowClans", out Clan[]? fellowClans2) && fellowClans2 != fellowClans)
                     Error("Set != Get: FellowClans");
@@ -113,7 +114,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
         }
 
         //[SaveableClass(1)]
-        class HeroTest
+        private class HeroTest
         {
             internal void Test(TestCampaignBehavior test, string name, HeroTest want)
             {
@@ -263,7 +264,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
 
         private void LoadVar<T>(MBObjectBase obj, string name, out T value)
         {
-            if (obj.TryGetVariable(name, out T val))
+            if (obj.TryGetVariable<T>(name, out var val))
             {
                 value = val!;
                 return;
@@ -307,20 +308,24 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
 
         private void TestSeqVar<T>(string name, IEnumerable<T>? want, IEnumerable<T>? got)
         {
-            if (want is null && got is null)
-                return;
-
-            if (want is not null && got is null)
+            var wantList = want?.ToList();
+            if (wantList == null)
             {
-                Error($"{name} is null!");
-                _log.LogTrace($"\tWant: [{string.Join(",", want)}]");
+                Error($"{want} is null!");
+                return;
             }
-            else if (want is null && got is not null)
-                Error($"{name} is NOT null!");
-            else if (!want.SequenceEqual(got))
+
+            var gotList = got?.ToList();
+            if (gotList == null)
+            {
+                Error($"{got} is null!");
+                return;
+            }
+
+            if (!wantList.SequenceEqual(gotList))
             {
                 Error($"{name} sequence is incorrect!");
-                _log.LogTrace($"\tGot:  [{string.Join(",", got)}]\n\tWant: [{string.Join(",", want)}]");
+                _log.LogTrace($"\tGot:  [{string.Join(",", gotList)}]\n\tWant: [{string.Join(",", wantList)}]");
             }
         }
 
@@ -330,7 +335,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
             _log.LogError("ERROR: " + msg);
         }
 
-        private static string ValOrDefault<T>(T val) where T : struct => val.Equals(default(T)) ? $"<default({typeof(T).Name})>" : val.ToString();
+        private static string ValOrDefault<T>(T val) where T : struct => val.Equals(default(T)) ? $"<default({typeof(T).Name})>" : val.ToString() ?? string.Empty;
 
         private static string GetObjectTrace(MBObjectBase obj) =>
             $"{obj.GetType().FullName}[\"{obj.StringId}\": {obj.Id.InternalValue}]: {obj.GetName()}";

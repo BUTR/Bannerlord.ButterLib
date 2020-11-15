@@ -41,7 +41,9 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
             foreach (var sk in dict.Keys)
             {
                 if (expiredIds.ContainsKey(sk.ObjectId))
+                {
                     dict.TryRemove(sk, out _);
+                }
                 else if (MBObjectManager.Instance.GetObject(sk) == default)
                 {
                     expiredIds[sk.ObjectId] = true;

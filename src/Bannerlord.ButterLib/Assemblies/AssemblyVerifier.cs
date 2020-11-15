@@ -36,10 +36,10 @@ namespace Bannerlord.ButterLib.Assemblies
                     AppDomainManagerAssembly = typeof(AssemblyVerifier).Assembly.FullName,
                     AppDomainManagerType = typeof(EmptyAppDomainManager).FullName
                 });
-
             try
             {
-                _assemblyLoader = _domain.CreateInstanceAndUnwrap(typeof(AssemblyLoaderProxy).Assembly.FullName, typeof(AssemblyLoaderProxy).FullName) as AssemblyLoaderProxy;
+                if (typeof(AssemblyLoaderProxy).Assembly.FullName is { } str && typeof(AssemblyLoaderProxy).FullName is { } str2)
+                    _assemblyLoader = _domain?.CreateInstanceAndUnwrap(str, str2) as AssemblyLoaderProxy;
             }
             catch (Exception e)
             {

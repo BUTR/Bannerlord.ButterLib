@@ -18,7 +18,7 @@ namespace Bannerlord.ButterLib.Assemblies
             AppDomain.CurrentDomain.AssemblyResolve -= OnAssemblyResolve;
         }
 
-        private static Assembly? OnAssemblyResolve(object sender, ResolveEventArgs args)
+        private static Assembly? OnAssemblyResolve(object? sender, ResolveEventArgs args)
         {
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {

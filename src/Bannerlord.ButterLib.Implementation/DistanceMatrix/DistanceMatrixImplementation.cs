@@ -57,9 +57,17 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
         /// <remarks>Used exclusively for deserialization.</remarks>
         private DistanceMatrixImplementation(SerializationInfo info, StreamingContext context)
         {
-            var type = Type.GetType(info.GetString("ObjectTypeName"))!;
-            _distanceMatrix = (Dictionary<ulong, float>)info.GetValue(type.Name + "DistanceMatrix", typeof(Dictionary<ulong, float>));
-            _distanceMatrix.OnDeserialization(this);
+            if (info.GetString("ObjectTypeName") is { } typeStr && Type.GetType(typeStr) is { } type &&
+                info.GetValue(type.Name + "DistanceMatrix", typeof(Dictionary<ulong, float>)) is Dictionary<ulong, float> dict)
+            {
+                _distanceMatrix = dict;
+                _distanceMatrix.OnDeserialization(this);
+            }
+            else
+            {
+                _distanceMatrix = new Dictionary<ulong, float>();
+            }
+
             _typedDistanceMatrix = GetTypedDistanceMatrix();
         }
 

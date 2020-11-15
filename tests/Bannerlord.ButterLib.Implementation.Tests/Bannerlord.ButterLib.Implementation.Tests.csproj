@@ -1,4 +1,4 @@
-<!--EXTERNAL_PROPERTIES: GameFolder;GameVersion-->
+﻿<!--EXTERNAL_PROPERTIES: GameFolder;GameVersion-->
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>

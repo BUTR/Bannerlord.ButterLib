@@ -10,7 +10,7 @@ namespace Bannerlord.ButterLib.Logger.Extensions
 {
     public static class LoggerExtensions
     {
-        private static string MessageFormatter(object state, Exception error) => state.ToString();
+        private static string MessageFormatter(object state, Exception error) => state.ToString() ?? string.Empty;
 
         public static void LogAndDisplay(this ILogger logger, LogLevel logLevel, string message, params object[] args) =>
             LogAndDisplay(logger, logLevel, null!, message, args );

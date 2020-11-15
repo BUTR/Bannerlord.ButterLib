@@ -50,7 +50,9 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem.Patches
                 OnGameLoadedPatchMI is null  || OnBeforeSavePatchMI is null  ||
                 LoadBehaviorDataMI is null   || SaveBehaviorDataMI is null   ||
                 CampaignBehaviorDataStoreT is null)
+            {
                 return;
+            }
 
             harmony.Patch(OnGameLoadedTargetMI, prefix: new HarmonyMethod(OnGameLoadedPatchMI));
             harmony.Patch(OnBeforeSaveTargetMI, postfix: new HarmonyMethod(OnBeforeSavePatchMI));

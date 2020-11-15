@@ -60,7 +60,7 @@ namespace Bannerlord.ButterLib.Tests.SaveSystem
                 })
                 .ToList();
 
-            var saveableClassInstances = saveableClassTypes.Select(FormatterServices.GetUninitializedObject).ToList();
+            var saveableClassInstances = saveableClassTypes.ConvertAll(FormatterServices.GetUninitializedObject);
 
             var unsupportedTypes = new List<Type>();
             foreach (var saveableClassInstance in saveableClassInstances)

@@ -36,14 +36,14 @@ namespace Bannerlord.ButterLib.SaveSystem
 
             return fields.Select(tuple => new JsonProperty
             {
-                PropertyName = $"M{tuple.Attribute.LocalSaveId}",
+                PropertyName = $"M{tuple.Attribute!.LocalSaveId}",
                 PropertyType = tuple.FieldInfo.FieldType,
                 Readable = true,
                 Writable = true,
                 ValueProvider = base.CreateMemberValueProvider(tuple.FieldInfo)
             }).Concat(properties.Select(tuple => new JsonProperty
             {
-                PropertyName = $"M{tuple.Attribute.LocalSaveId}",
+                PropertyName = $"M{tuple.Attribute!.LocalSaveId}",
                 PropertyType = tuple.PropertyInfo.PropertyType,
                 Readable = true,
                 Writable = true,

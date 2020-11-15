@@ -39,12 +39,13 @@ namespace Bannerlord.ButterLib.ObjectSystem.Extensions
          * <typeparam name="T">The type of the variable's value.</typeparam>
          * <param name="object">A game object.</param>
          * <param name="name">The variable's name.</param>
+         * <param name="value">The variable.</param>
          */
-        public static bool TryGetVariable<T>(this MBObjectBase @object, string name, [MaybeNull] out T value)
+        internal static bool TryGetVariable<T>(this MBObjectBase @object, string name, [MaybeNull] out T value)
         {
-            if (Instance is { } instance && instance.TryGetVariable(@object, name, out T val) && val is T typedVal)
+            if (Instance is { } instance && instance.TryGetVariable<T>(@object, name, out var val))
             {
-                value = typedVal;
+                value = val;
                 return true;
             }
 
@@ -65,7 +66,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Extensions
         /// <param name="object">A game object.</param>
         /// <param name="name">The variable's name.</param>
         /// <param name="data">The variable's value.</param>
-        public static void SetVariable<T>(this MBObjectBase @object, string name, T data)
+        internal static void SetVariable<T>(this MBObjectBase @object, string name, T data)
         {
             if (Instance is { } instance)
             {
@@ -89,7 +90,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Extensions
         /// </example>
         /// <param name="object">A game object.</param>
         /// <param name="name">The variable's name.</param>
-        public static void RemoveVariable(this MBObjectBase @object, string name)
+        internal static void RemoveVariable(this MBObjectBase @object, string name)
         {
             if (Instance is { } instance)
                 instance.RemoveVariable(@object, name);
@@ -109,7 +110,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Extensions
         /// </example>
         /// <param name="object">A game object.</param>
         /// <param name="name">A string flag.</param>
-        public static bool HasFlag(MBObjectBase @object, string name) => (Instance is { } instance) && instance.HasFlag(@object, name);
+        public static bool HasFlag(this MBObjectBase @object, string name) => Instance is { } instance && instance.HasFlag(@object, name);
 
         /// <summary>Set the flag <paramref name="name"/> upon <paramref name="object"/>.</summary>
         /// <example>
@@ -119,7 +120,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Extensions
         /// </example>
         /// <param name="object">A game object.</param>
         /// <param name="name">A string flag.</param>
-        public static void SetFlag(MBObjectBase @object, string name)
+        public static void SetFlag(this MBObjectBase @object, string name)
         {
             if (Instance is { } instance)
                 instance.SetFlag(@object, name);
@@ -133,7 +134,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Extensions
         /// </example>
         /// <param name="object">A game object.</param>
         /// <param name="name">A string flag.</param>
-        public static void RemoveFlag(MBObjectBase @object, string name)
+        public static void RemoveFlag(this MBObjectBase @object, string name)
         {
             if (Instance is { } instance)
                 instance.RemoveFlag(@object, name);

@@ -83,7 +83,9 @@ namespace Bannerlord.ButterLib
 
                 var loadedModules = ModuleInfoHelper.GetLoadedModules();
                 var butterLibModule = loadedModules.SingleOrDefault(x => x.Id == "Bannerlord.ButterLib");
-                var butterLibModuleIndex = loadedModules.IndexOf(butterLibModule);
+                var butterLibModuleIndex = butterLibModule is not null ? loadedModules.IndexOf(butterLibModule) : -1;
+                if (butterLibModuleIndex == -1)
+                    _logger.LogError("ButterLib module was not found!");
                 var officialModules = loadedModules.Where(x => x.IsOfficial).Select(x => (Module: x, Index: loadedModules.IndexOf(x)));
                 var modulesLoadedBeforeButterLib = officialModules.Where(tuple => tuple.Index < butterLibModuleIndex).ToList();
 

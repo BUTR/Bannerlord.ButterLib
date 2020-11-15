@@ -99,9 +99,19 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier
 
         private CampaignDescriptorImplementation(SerializationInfo info, StreamingContext context)
         {
-            _value = info.GetString(nameof(KeyValue));
             // Do not fix typo
-            _attributes = (Dictionary<DescriptorAttribute, object>) info.GetValue("DecriptorAttributes", typeof(Dictionary<DescriptorAttribute, object>));
+            if (info.GetString(nameof(KeyValue)) is { } val &&
+                info.GetValue("DecriptorAttributes", typeof(Dictionary<DescriptorAttribute, object>)) is Dictionary<DescriptorAttribute, object> dict)
+            {
+                _value = val;
+                _attributes = dict;
+            }
+            else
+            {
+                _value = string.Empty; // Might be a bad idea
+                _attributes = new Dictionary<DescriptorAttribute, object>();
+            }
+
             _baseHero = null!; // Serialization will do it's thing.
         }
 
