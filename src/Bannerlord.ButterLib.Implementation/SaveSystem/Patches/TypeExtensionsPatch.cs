@@ -34,12 +34,13 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
                    ?? NullLogger<TypeExtensionsPatch>.Instance;
 
             return NotNull(TargetType, nameof(TargetType))
-                && NotNull(TargetMethod, nameof(TargetMethod))
-                && NotNull(PatchMethod, nameof(PatchMethod))
-                && harmony.Patch(TargetMethod, prefix: new HarmonyMethod(PatchMethod)) is { };
+                 & NotNull(TargetMethod, nameof(TargetMethod))
+                 & NotNull(PatchMethod, nameof(PatchMethod))
+                && harmony.Patch(TargetMethod, prefix: new HarmonyMethod(PatchMethod)) is not null;
         }
 
         private class NoType { }
+
         private static readonly Type? TargetType = typeof(MetaData).Assembly.GetType("TaleWorlds.SaveSystem.TypeExtensions");
         private static readonly Type[] TargetMethodParams = new[] { typeof(Type), typeof(ContainerType).MakeByRefType() };
         private static readonly MethodInfo? TargetMethod = AccessTools.Method(TargetType ?? typeof(NoType), "IsContainer", TargetMethodParams);
