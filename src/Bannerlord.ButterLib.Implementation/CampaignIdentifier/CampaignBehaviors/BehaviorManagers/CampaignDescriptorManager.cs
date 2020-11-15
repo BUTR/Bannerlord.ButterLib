@@ -144,7 +144,7 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehavio
 
         internal void Sync()
         {
-            if (_descriptorToBeAssigned != null && _campaignDescriptor != null! && _descriptorToBeAssigned == _campaignDescriptor)
+            if (_descriptorToBeAssigned is not null && _campaignDescriptor is not null! && _descriptorToBeAssigned == _campaignDescriptor)
             {
                 UpdateSavedDescriptors();
             }

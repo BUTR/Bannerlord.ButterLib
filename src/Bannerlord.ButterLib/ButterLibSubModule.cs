@@ -70,7 +70,7 @@ namespace Bannerlord.ButterLib
             base.OnBeforeInitialModuleScreenSetAsRoot();
             _logger.LogTrace("OnBeforeInitialModuleScreenSetAsRoot() started.");
 
-            if (Services != null!) // First init.
+            if (Services is not null) // First init.
             {
                 GlobalServiceProvider = Services.BuildServiceProvider();
                 _logger.LogTrace("Created GlobalServiceProvider.");

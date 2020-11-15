@@ -30,13 +30,13 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
             var (mobileParty2, settlement2) = GetMapPosition(hero2);
 
             return
-              settlement1 != null && settlement2 != null
+              settlement1 is not null && settlement2 is not null
               ? Campaign.Current.Models.MapDistanceModel.GetDistance(settlement1, settlement2)
-              : mobileParty1 != null && mobileParty2 != null
+              : mobileParty1 is not null && mobileParty2 is not null
               ? Campaign.Current.Models.MapDistanceModel.GetDistance(mobileParty1, mobileParty2)
-              : settlement1 != null && mobileParty2 != null
+              : settlement1 is not null && mobileParty2 is not null
               ? Campaign.Current.Models.MapDistanceModel.GetDistance(mobileParty2, settlement1)
-              : mobileParty1 != null && settlement2 != null
+              : mobileParty1 is not null && settlement2 is not null
               ? Campaign.Current.Models.MapDistanceModel.GetDistance(mobileParty1, settlement2)
               : float.NaN;
         }
@@ -77,11 +77,11 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
         }
 
         private static (MobileParty? mobileParty, Settlement? settlement) GetMapPosition(Hero hero) =>
-            hero.IsPrisoner && hero.PartyBelongedToAsPrisoner != null
+            hero.IsPrisoner && hero.PartyBelongedToAsPrisoner is not null
                 ? hero.PartyBelongedToAsPrisoner.IsSettlement ? ((MobileParty?)null, hero.PartyBelongedToAsPrisoner.Settlement) : (hero.PartyBelongedToAsPrisoner.MobileParty, null)
-                : hero.CurrentSettlement != null && !hero.IsFugitive
+                : hero.CurrentSettlement is not null && !hero.IsFugitive
                     ? ((MobileParty?)null, hero.CurrentSettlement)
-                    : hero.PartyBelongedTo != null ? (hero.PartyBelongedTo, (Settlement?)null) : (null, null);
+                    : hero.PartyBelongedTo is not null ? (hero.PartyBelongedTo, (Settlement?)null) : (null, null);
 
         private static float GetWeightedMeanDistance(IReadOnlyCollection<(float Distance, float Weight)> settlementDistances) =>
             settlementDistances.Any(x => x.Weight > 0)

@@ -39,7 +39,7 @@ namespace Bannerlord.ButterLib.DynamicAPI
 
         public static TDelegate? RequestAPIMethod<TDelegate>(string method, params Type[] types) where TDelegate : Delegate
         {
-            if (method == null) throw new ArgumentNullException(nameof(method));
+            if (method is null) throw new ArgumentNullException(nameof(method));
             return null;
         }
     }
@@ -54,7 +54,7 @@ namespace Bannerlord.ButterLib.DynamicAPI
 
         public TDelegate? RequestMethod<TDelegate>(string method, params Type[] types) where TDelegate : Delegate
         {
-            if (method == null) throw new ArgumentNullException(nameof(method));
+            if (method is null) throw new ArgumentNullException(nameof(method));
             return null;
         }
     }

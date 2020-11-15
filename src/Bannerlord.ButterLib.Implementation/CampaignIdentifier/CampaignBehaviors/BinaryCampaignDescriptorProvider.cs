@@ -64,7 +64,7 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehavio
                     return typeof(ButterLibSerializationBinder).Assembly.GetType(typeName);
 
                 var type = Type.GetType($"{typeName}, {assemblyName}");
-                if (type != null)
+                if (type is not null)
                     return type;
 
                 var tokens = typeName.Split(new []  {"[[", "]]", "],["}, StringSplitOptions.RemoveEmptyEntries);

@@ -12,7 +12,7 @@ namespace Bannerlord.ButterLib.Tests.DelayedSubModule
         {
             get
             {
-                if (_moduleInfoCaller == null)
+                if (_moduleInfoCaller is null)
                 {
                     _moduleInfoCaller = new ModuleInfo();
                     SymbolExtensions2.GetPropertyInfo((ModuleInfo m) => m.Id).SetValue(_moduleInfoCaller, nameof(TestSubModuleCaller));
@@ -28,7 +28,7 @@ namespace Bannerlord.ButterLib.Tests.DelayedSubModule
         {
             get
             {
-                if (_moduleInfoTarget == null)
+                if (_moduleInfoTarget is null)
                 {
                     _moduleInfoTarget = new ModuleInfo();
                     SymbolExtensions2.GetPropertyInfo((ModuleInfo m) => m.Id).SetValue(_moduleInfoTarget, nameof(TestSubModuleTarget));

@@ -87,7 +87,7 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
         /// <exception cref="T:System.ArgumentException"></exception>
         private Dictionary<ulong, float> CalculateDistanceMatrix()
         {
-            if (_entityListGetter != null && _distanceCalculator != null)
+            if (_entityListGetter is not null && _distanceCalculator is not null)
             {
                 var entities = _entityListGetter().ToList();
                 return entities.SelectMany(_ => entities, (X, Y) => (X, Y)).Where(tuple => tuple.X.Id < tuple.Y.Id)

@@ -15,7 +15,7 @@ namespace Bannerlord.ButterLib.SaveSystem
         protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
         {
             // Container are an exception.
-            if ((_isContainerDelegate != null && _isContainerDelegate(type)) || (_isContainerDelegate == null && IsContainerFallback(type)))
+            if ((_isContainerDelegate is not null && _isContainerDelegate(type)) || (_isContainerDelegate is null && IsContainerFallback(type)))
                 return base.CreateProperties(type, memberSerialization);
 
             // SaveableRootClassAttribute is not needed
@@ -28,9 +28,9 @@ namespace Bannerlord.ButterLib.SaveSystem
             }
 
             var fields = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                .Where(x => x.GetCustomAttribute<SaveableFieldAttribute>(true) != null);
+                .Where(x => x.GetCustomAttribute<SaveableFieldAttribute>(true) is not null);
             var properties = type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                .Where(x => x.GetCustomAttribute<SaveablePropertyAttribute>(true) != null);
+                .Where(x => x.GetCustomAttribute<SaveablePropertyAttribute>(true) is not null);
 
             return fields.Select(p => new JsonProperty
             {

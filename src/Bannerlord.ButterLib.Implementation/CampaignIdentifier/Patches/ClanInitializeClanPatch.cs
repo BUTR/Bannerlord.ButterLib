@@ -26,12 +26,12 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.Patches
             _logger = ButterLibSubModule.Instance?.GetServiceProvider()?.GetRequiredService<ILogger<ClanInitializeClanPatch>>() ??
                       NullLogger<ClanInitializeClanPatch>.Instance;
 
-            if (InitializeClanTargetMethod == null)
+            if (InitializeClanTargetMethod is null)
                 _logger.LogError("InitializeClanTargetMethod is null");
-            if (InitializeClanPatchMethod == null)
+            if (InitializeClanPatchMethod is null)
                 _logger.LogError("InitializeClanPatchMethod is null");
 
-            if (InitializeClanTargetMethod == null || InitializeClanPatchMethod == null)
+            if (InitializeClanTargetMethod is null || InitializeClanPatchMethod is null)
             {
                 return;
             }
@@ -49,7 +49,7 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.Patches
 
         public static void InitializeClanPostfix(Clan? __instance)
         {
-            if (__instance == null)
+            if (__instance is null)
             {
                 _logger.LogError("InitializeClanPostfix: __instance is null");
                 return;
@@ -57,7 +57,7 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.Patches
 
             if (__instance == Clan.PlayerClan)
             {
-                if (CampaignIdentifierEvents.Instance == null)
+                if (CampaignIdentifierEvents.Instance is null)
                 {
                     _logger.LogError("InitializeClanPostfix: CampaignIdentifierEvents.Instance is null");
                     return;

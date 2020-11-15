@@ -86,7 +86,7 @@ namespace Bannerlord.ButterLib.Common.Extensions
             var filterList = filter.ToList();
 
             var services = subModule.GetServices();
-            if (services == null)
+            if (services is null)
                 throw new Exception("Past Configuration stage.");
 
             var builder = new LoggerConfiguration()
@@ -106,8 +106,8 @@ namespace Bannerlord.ButterLib.Common.Extensions
 
         public static Func<LogEvent, bool> FromSources(IEnumerable<string> sources)
         {
-            if (sources == null) throw new ArgumentNullException(nameof(sources));
-            return Matching.WithProperty<string>(Constants.SourceContextPropertyName, s => s != null && sources.Any(x => MatchWildcardString(x, s)));
+            if (sources is null) throw new ArgumentNullException(nameof(sources));
+            return Matching.WithProperty<string>(Constants.SourceContextPropertyName, s => s is not null && sources.Any(x => MatchWildcardString(x, s)));
         }
         private static bool MatchWildcardString(string pattern, string input)
         {

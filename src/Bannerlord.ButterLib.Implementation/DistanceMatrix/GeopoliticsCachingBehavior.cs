@@ -43,14 +43,14 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
         private void UpdateOnSettlementOwnerChanged(Settlement settlement, bool openToClaim, Hero newOwner, Hero oldOwner, Hero capturerHero, ChangeOwnerOfSettlementAction.ChangeOwnerOfSettlementDetail detail)
         {
             var lst = ButterLib.DistanceMatrix.DistanceMatrix.GetSettlementOwnersPairedList(SettlementDistanceMatrix!);
-            if (lst == null)
+            if (lst is null)
                 return;
 
-            if ((newOwner.Clan != null || oldOwner.Clan != null) && newOwner.Clan != oldOwner.Clan)
+            if ((newOwner.Clan is not null || oldOwner.Clan is not null) && newOwner.Clan != oldOwner.Clan)
             {
                 var clans = Clan.All.Where(c => c.IsInitialized && c.Fortifications.Count > 0).ToList();
 
-                if (oldOwner.Clan != null)
+                if (oldOwner.Clan is not null)
                 {
                     foreach (Clan clan in clans)
                     {
@@ -61,7 +61,7 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
                         }
                     }
                 }
-                if (newOwner.Clan != null)
+                if (newOwner.Clan is not null)
                 {
                     foreach (Clan clan in clans)
                     {
@@ -74,7 +74,7 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
                 }
             }
 
-            if ((newOwner.Clan?.Kingdom != null || oldOwner.Clan?.Kingdom != null) && newOwner.Clan?.Kingdom != oldOwner.Clan?.Kingdom)
+            if ((newOwner.Clan?.Kingdom is not null || oldOwner.Clan?.Kingdom is not null) && newOwner.Clan?.Kingdom != oldOwner.Clan?.Kingdom)
             {
                 KingdomDistanceMatrix = new DistanceMatrixImplementation<Kingdom>();
             }

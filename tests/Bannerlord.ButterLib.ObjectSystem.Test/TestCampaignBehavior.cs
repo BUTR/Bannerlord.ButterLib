@@ -154,7 +154,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
                 //    {
                 //        var item = equipment[i].Item;
 
-                //        if (item == null)
+                //        if (item is null)
                 //            continue;
 
                 //        if (item.TryGetVariable("ItemTest", out ItemTest? itemTest))
@@ -281,12 +281,12 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
 
         private void TestRefVar<T>(string name, T? want, T? got) where T : class
         {
-            if (want == null && got == null)
+            if (want is null && got is null)
                 return;
 
-            if (want != null && got == null)
+            if (want is not null && got is null)
                 Error($"{name} is null!");
-            else if (want == null && got != null)
+            else if (want is null && got is not null)
                 Error($"{name} is NOT null!");
             else if (want != got)
                 Error($"{name} is incorrect! Got: {got} | Want: {want}");
@@ -294,12 +294,12 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
 
         private void TestRefVarByValue<T>(string name, T? want, T? got) where T : class
         {
-            if (want == null && got == null)
+            if (want is null && got is null)
                 return;
 
-            if (want != null && got == null)
+            if (want is not null && got is null)
                 Error($"{name} is null!");
-            else if (want == null && got != null)
+            else if (want is null && got is not null)
                 Error($"{name} is NOT null!");
             else if (!want!.Equals(got))
                 Error($"{name} is incorrect! Got: {got} | Want: {want}");
@@ -307,15 +307,15 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
 
         private void TestSeqVar<T>(string name, IEnumerable<T>? want, IEnumerable<T>? got)
         {
-            if (want == null && got == null)
+            if (want is null && got is null)
                 return;
 
-            if (want != null && got == null)
+            if (want is not null && got is null)
             {
                 Error($"{name} is null!");
                 _log.LogTrace($"\tWant: [{string.Join(",", want)}]");
             }
-            else if (want == null && got != null)
+            else if (want is null && got is not null)
                 Error($"{name} is NOT null!");
             else if (!want.SequenceEqual(got))
             {
@@ -336,6 +336,6 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
             $"{obj.GetType().FullName}[\"{obj.StringId}\": {obj.Id.InternalValue}]: {obj.GetName()}";
 
         private static string GetHeroTrace(Hero h)
-            => $"{h.Name}{((h.Clan != null) ? $" {h.Clan.Name}" : "")}{((h.Clan?.Kingdom != null) ? $" of {h.Clan.Kingdom.Name}" : "")}";
+            => $"{h.Name}{((h.Clan is not null) ? $" {h.Clan.Name}" : "")}{((h.Clan?.Kingdom is not null) ? $" of {h.Clan.Kingdom.Name}" : "")}";
     }
 }

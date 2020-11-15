@@ -115,7 +115,7 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
 
             public static StorageKey Make(MBObjectBase obj, string key) => new StorageKey(obj.Id.InternalValue, key);
 
-            public bool Equals(StorageKey other) => ObjectId == other.ObjectId && Key != null! && other.Key != null! && Key.Equals(other.Key);
+            public bool Equals(StorageKey other) => ObjectId == other.ObjectId && Key is not null! && other.Key is not null! && Key.Equals(other.Key);
 
             public override bool Equals(object? obj) => obj is StorageKey sk && Equals(sk);
 

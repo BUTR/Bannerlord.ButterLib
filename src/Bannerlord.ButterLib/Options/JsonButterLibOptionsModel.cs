@@ -22,7 +22,7 @@ namespace Bannerlord.ButterLib.Options
         {
             var file = new FileInfo(Path);
 
-            if (file.Directory == null)
+            if (file.Directory is null)
                 throw new NullReferenceException($"Directory for path {Path} is null!");
 
             if (!file.Directory.Exists)
