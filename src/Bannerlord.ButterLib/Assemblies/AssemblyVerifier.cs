@@ -16,7 +16,7 @@ namespace Bannerlord.ButterLib.Assemblies
     /// </remarks>
     public sealed class AssemblyVerifier : IDisposable
     {
-        private readonly AppDomain _domain;
+        private readonly AppDomain? _domain;
 
         private readonly Exception? _assemblyLoaderException;
         private readonly IAssemblyLoader? _assemblyLoader;
