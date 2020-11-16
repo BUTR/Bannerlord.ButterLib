@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 using TaleWorlds.CampaignSystem;
@@ -331,15 +332,15 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
         //}
         #endregion DisabledCircularReferenceTest
 
-        private bool LoadObjectVar<T>(MBObjectBase obj, string name, out T value)
+        private bool LoadObjectVar<T>(MBObjectBase obj, string name, [MaybeNullWhen(false)][NotNullWhen(true)] out T value)
         {
             if (obj.TryGetVariable<T>(name, out var val))
             {
-                value = data!;
+                value = val;
                 return true;
             }
 
-            value = default!;
+            value = default;
             Error($"Object's variable \"{name}\" not found! Object: {GetObjectTrace(obj)}");
             return false;
         }
