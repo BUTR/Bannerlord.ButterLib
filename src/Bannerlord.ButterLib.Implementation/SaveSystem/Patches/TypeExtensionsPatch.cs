@@ -39,11 +39,9 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
                 && harmony.Patch(TargetMethod, prefix: new HarmonyMethod(PatchMethod)) is not null;
         }
 
-        private class NoType { }
-
         private static readonly Type? TargetType = typeof(MetaData).Assembly.GetType("TaleWorlds.SaveSystem.TypeExtensions");
         private static readonly Type[] TargetMethodParams = new[] { typeof(Type), typeof(ContainerType).MakeByRefType() };
-        private static readonly MethodInfo? TargetMethod = AccessTools.Method(TargetType ?? typeof(NoType), "IsContainer", TargetMethodParams);
+        private static readonly MethodInfo? TargetMethod = AccessTools.Method(TargetType, "IsContainer", TargetMethodParams);
         private static readonly MethodInfo? PatchMethod = AccessTools.Method(typeof(TypeExtensionsPatch), "IsContainerPrefix");
 
         private static bool IsContainerPrefix(Type type, out ContainerType containerType, ref bool __result)

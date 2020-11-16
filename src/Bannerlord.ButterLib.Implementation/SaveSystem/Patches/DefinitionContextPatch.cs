@@ -48,16 +48,15 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
 
         // PATCH DEFINITIONS
 
-        private class NoType { }
-
         private delegate bool IsContainerDelegate(Type type);
+
         private static readonly Assembly TargetAssembly = typeof(ContainerType).Assembly;
         private static readonly Type? TargetType = TargetAssembly.GetType("TaleWorlds.SaveSystem.Definition.DefinitionContext");
         private static readonly Type? TypeExtensionsType = TargetAssembly.GetType("TaleWorlds.SaveSystem.TypeExtensions");
-        private static readonly MethodInfo? IsContainerMethod = AccessTools.Method(TypeExtensionsType ?? typeof(NoType), "IsContainer", new[] { typeof(Type) });
+        private static readonly MethodInfo? IsContainerMethod = AccessTools.Method(TypeExtensionsType, "IsContainer", new[] { typeof(Type) });
         private static readonly IsContainerDelegate? IsContainer = AccessTools2.GetDelegate<IsContainerDelegate>(IsContainerMethod);
 
-        private static MethodInfo? TargetTypeMethod(string name) => AccessTools.Method(TargetType ?? typeof(NoType), name);
+        private static MethodInfo? TargetTypeMethod(string name) => AccessTools.Method(TargetType, name);
 
         private sealed class ConstructContainerDefinitionPrefixPatch : PrefixPatch
         {
