@@ -107,7 +107,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// <returns>
         /// <see langword="true"/> if the delegate was successfully resolved and created, else <see langword="false"/>.
         /// </returns>
-        public static bool TryGetDelegateObjectInstance<TDelegate>([MaybeNullWhen(false)][NotNullWhen(true)] out TDelegate? outDelegate,
+        public static bool TryGetDelegateObjectInstance<TDelegate>([NotNullWhen(true)] out TDelegate? outDelegate,
                                                                    Type type,
                                                                    string method,
                                                                    Type[]? parameters = null,
@@ -164,7 +164,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// <returns>
         /// <see langword="true"/> if the delegate was successfully resolved and created, else <see langword="false"/>.
         /// </returns>
-        public static bool TryGetDeclaredDelegateObjectInstance<TDelegate>([MaybeNullWhen(false)][NotNullWhen(true)] out TDelegate? outDelegate,
+        public static bool TryGetDeclaredDelegateObjectInstance<TDelegate>([NotNullWhen(true)] out TDelegate? outDelegate,
                                                                            Type type,
                                                                            string method,
                                                                            Type[]? parameters = null,
@@ -237,7 +237,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// <returns>
         /// <see langword="true"/> if the delegate was successfully resolved and created, else <see langword="false"/>.
         /// </returns>
-        public static bool TryGetDelegate<TDelegate>([MaybeNullWhen(false)][NotNullWhen(true)] out TDelegate? outDelegate,
+        public static bool TryGetDelegate<TDelegate>([NotNullWhen(true)] out TDelegate? outDelegate,
                                                      Type type,
                                                      string method,
                                                      Type[]? parameters = null,
@@ -291,7 +291,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// <returns>
         /// <see langword="true"/> if the delegate was successfully resolved and created, else <see langword="false"/>.
         /// </returns>
-        public static bool TryGetDeclaredDelegate<TDelegate>([MaybeNullWhen(false)][NotNullWhen(true)] out TDelegate? outDelegate,
+        public static bool TryGetDeclaredDelegate<TDelegate>([NotNullWhen(true)] out TDelegate? outDelegate,
                                                              Type type,
                                                              string method,
                                                              Type[]? parameters = null,
@@ -352,7 +352,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// <returns>
         /// <see langword="true"/> if the delegate was successfully resolved and created, else <see langword="false"/>.
         /// </returns>
-        public static bool TryGetDelegate<TDelegate, TInstance>([MaybeNullWhen(false)][NotNullWhen(true)] out TDelegate? outDelegate,
+        public static bool TryGetDelegate<TDelegate, TInstance>([NotNullWhen(true)] out TDelegate? outDelegate,
                                                                 TInstance instance,
                                                                 string method,
                                                                 Type[]? parameters = null,
@@ -409,7 +409,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// <returns>
         /// <see langword="true"/> if the delegate was successfully resolved and created, else <see langword="false"/>.
         /// </returns>
-        public static bool TryGetDeclaredDelegate<TDelegate, TInstance>([MaybeNullWhen(false)][NotNullWhen(true)] out TDelegate? outDelegate,
+        public static bool TryGetDeclaredDelegate<TDelegate, TInstance>([NotNullWhen(true)] out TDelegate? outDelegate,
                                                                         TInstance instance,
                                                                         string method,
                                                                         Type[]? parameters = null,
