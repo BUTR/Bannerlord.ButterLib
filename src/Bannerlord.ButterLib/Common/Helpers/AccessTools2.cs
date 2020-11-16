@@ -110,7 +110,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
         public static bool TryGetDelegateObjectInstance<TDelegate>([MaybeNullWhen(false)][NotNullWhen(true)] out TDelegate? outDelegate,
                                                                    Type type,
                                                                    string method,
-                                                                   Type[]? parameters,
+                                                                   Type[]? parameters = null,
                                                                    Type[]? generics = null) where TDelegate : Delegate
             => (outDelegate = GetDelegateObjectInstance<TDelegate>(Method(type, method, parameters, generics))) is not null;
 
@@ -167,7 +167,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
         public static bool TryGetDeclaredDelegateObjectInstance<TDelegate>([MaybeNullWhen(false)][NotNullWhen(true)] out TDelegate? outDelegate,
                                                                            Type type,
                                                                            string method,
-                                                                           Type[]? parameters,
+                                                                           Type[]? parameters = null,
                                                                            Type[]? generics = null) where TDelegate : Delegate
             => (outDelegate = GetDelegateObjectInstance<TDelegate>(DeclaredMethod(type, method, parameters, generics))) is not null;
 
@@ -240,7 +240,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
         public static bool TryGetDelegate<TDelegate>([MaybeNullWhen(false)][NotNullWhen(true)] out TDelegate? outDelegate,
                                                      Type type,
                                                      string method,
-                                                     Type[]? parameters,
+                                                     Type[]? parameters = null,
                                                      Type[]? generics = null) where TDelegate : Delegate
             => (outDelegate = GetDelegate<TDelegate>(Method(type, method, parameters, generics))) is not null;
 
@@ -294,7 +294,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
         public static bool TryGetDeclaredDelegate<TDelegate>([MaybeNullWhen(false)][NotNullWhen(true)] out TDelegate? outDelegate,
                                                              Type type,
                                                              string method,
-                                                             Type[]? parameters,
+                                                             Type[]? parameters = null,
                                                              Type[]? generics = null) where TDelegate : Delegate
             => (outDelegate = GetDelegate<TDelegate>(DeclaredMethod(type, method, parameters, generics))) is not null;
 
@@ -355,7 +355,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
         public static bool TryGetDelegate<TDelegate, TInstance>([MaybeNullWhen(false)][NotNullWhen(true)] out TDelegate? outDelegate,
                                                                 TInstance instance,
                                                                 string method,
-                                                                Type[]? parameters,
+                                                                Type[]? parameters = null,
                                                                 Type[]? generics = null) where TDelegate : Delegate
             => (outDelegate = instance is null
                 ? null : GetDelegate<TDelegate, TInstance>(instance, Method(instance.GetType(), method, parameters, generics))) is not null;
@@ -412,7 +412,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
         public static bool TryGetDeclaredDelegate<TDelegate, TInstance>([MaybeNullWhen(false)][NotNullWhen(true)] out TDelegate? outDelegate,
                                                                         TInstance instance,
                                                                         string method,
-                                                                        Type[]? parameters,
+                                                                        Type[]? parameters = null,
                                                                         Type[]? generics = null) where TDelegate : Delegate
             => (outDelegate = instance is null
                 ? null : GetDelegate<TDelegate, TInstance>(instance, DeclaredMethod(instance.GetType(), method, parameters, generics))) is not null;
