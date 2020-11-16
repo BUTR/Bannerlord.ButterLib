@@ -59,9 +59,9 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
 
         public bool TryGetVariable<T>(MBObjectBase @object, string name, [MaybeNullWhen(false)][NotNullWhen(true)] out T value)
         {
-            if (_vars.TryGetValue<T>(DataKey.Make(@object, name), out var val))
+            if (_vars.TryGetValue(DataKey.Make(@object, name), out var val) && val is T concreteVal)
             {
-                value = val;
+                value = concreteVal;
                 return true;
             }
 

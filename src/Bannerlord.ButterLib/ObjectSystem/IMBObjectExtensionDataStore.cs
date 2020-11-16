@@ -24,7 +24,7 @@ namespace Bannerlord.ButterLib.ObjectSystem
          * <param name="object">A game object.</param>
          * <param name="name">The variable's name.</param>
          */
-        internal bool HasVariable(MBObjectBase @object, string name);
+        public bool HasVariable(MBObjectBase @object, string name);
 
         /**
          * <summary>
@@ -36,7 +36,7 @@ namespace Bannerlord.ButterLib.ObjectSystem
          * <param name="object">A game object.</param>
          * <param name="name">The variable's name.</param>
          */
-        internal bool RemoveVariable(MBObjectBase @object, string name);
+        public bool RemoveVariable(MBObjectBase @object, string name);
 
         /**
          * <summary>
@@ -46,7 +46,7 @@ namespace Bannerlord.ButterLib.ObjectSystem
          * <param name="name">The variable's name.</param>
          * <param name="data">The variable's value.</param>
          */
-        internal void SetVariable(MBObjectBase @object, string name, object? data);
+        public void SetVariable(MBObjectBase @object, string name, object? data);
 
         /**
          * <summary>
@@ -60,7 +60,7 @@ namespace Bannerlord.ButterLib.ObjectSystem
          * <param name="object">A game object.</param>
          * <param name="name">The variable's name.</param>
          */
-        internal bool TryGetVariable<T>(MBObjectBase @object, string name, [NotNullWhen(true)] out T value);
+        public bool TryGetVariable<T>(MBObjectBase @object, string name, [NotNullWhen(true)] out T value);
 
         /****    F L A G S    ****/
 
@@ -74,7 +74,7 @@ namespace Bannerlord.ButterLib.ObjectSystem
          * <param name="object">A game object.</param>
          * <param name="name">A string flag.</param>
          */
-        internal bool HasFlag(MBObjectBase @object, string name);
+        public bool HasFlag(MBObjectBase @object, string name);
 
         /**
          * <summary>
@@ -86,7 +86,7 @@ namespace Bannerlord.ButterLib.ObjectSystem
          * <param name="object">A game object.</param>
          * <param name="name">A string flag.</param>
          */
-        internal bool RemoveFlag(MBObjectBase @object, string name);
+        public bool RemoveFlag(MBObjectBase @object, string name);
 
         /**
          * <summary>
