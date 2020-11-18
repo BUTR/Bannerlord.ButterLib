@@ -66,17 +66,17 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
             internal override bool IsReady => base.IsReady & ThisNotNull(IsContainer, $"{nameof(IsContainer)} delegate");
         }
 
-        private static readonly Patch[] Patches = new PrefixPatch[]
+        private static readonly Patch[] Patches = new Patch[]
         {
-            new(nameof(AddBasicTypeDefinitionPrefix),     TargetTypeMethod("AddBasicTypeDefinition")),
-            new(nameof(AddClassDefinitionPrefix),         TargetTypeMethod("AddClassDefinition")),
-            new(nameof(AddStructDefinitionPrefix),        TargetTypeMethod("AddStructDefinition")),
-            new(nameof(AddInterfaceDefinitionPrefix),     TargetTypeMethod("AddInterfaceDefinition")),
-            new(nameof(AddEnumDefinitionPrefix),          TargetTypeMethod("AddEnumDefinition")),
-            new(nameof(AddRootClassDefinitionPrefix),     TargetTypeMethod("AddRootClassDefinition")),
-            new(nameof(AddGenericClassDefinitionPrefix),  TargetTypeMethod("AddGenericClassDefinition")),
-            new(nameof(AddGenericStructDefinitionPrefix), TargetTypeMethod("AddGenericStructDefinition")),
-            new(nameof(AddContainerDefinitionPrefix),     TargetTypeMethod("AddContainerDefinition")),
+            new PrefixPatch(nameof(AddBasicTypeDefinitionPrefix),     TargetTypeMethod("AddBasicTypeDefinition")),
+            new PrefixPatch(nameof(AddClassDefinitionPrefix),         TargetTypeMethod("AddClassDefinition")),
+            new PrefixPatch(nameof(AddStructDefinitionPrefix),        TargetTypeMethod("AddStructDefinition")),
+            new PrefixPatch(nameof(AddInterfaceDefinitionPrefix),     TargetTypeMethod("AddInterfaceDefinition")),
+            new PrefixPatch(nameof(AddEnumDefinitionPrefix),          TargetTypeMethod("AddEnumDefinition")),
+            new PrefixPatch(nameof(AddRootClassDefinitionPrefix),     TargetTypeMethod("AddRootClassDefinition")),
+            new PrefixPatch(nameof(AddGenericClassDefinitionPrefix),  TargetTypeMethod("AddGenericClassDefinition")),
+            new PrefixPatch(nameof(AddGenericStructDefinitionPrefix), TargetTypeMethod("AddGenericStructDefinition")),
+            new PrefixPatch(nameof(AddContainerDefinitionPrefix),     TargetTypeMethod("AddContainerDefinition")),
             new ConstructContainerDefinitionPrefixPatch(),
         };
 
