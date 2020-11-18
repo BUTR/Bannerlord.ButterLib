@@ -31,6 +31,7 @@
     </PackageReference>
     <PackageReference Include="Lib.Harmony" Version="$(HarmonyVersion)" IncludeAssets="compile" />
     <PackageReference Include="Bannerlord.ReferenceAssemblies.Core.EarlyAccess" Version="$(StableVersion).*" PrivateAssets="All" />
+    <PackageReference Include="Bannerlord.ReferenceAssemblies.Native.EarlyAccess" Version="$(StableVersion).*" PrivateAssets="All" />
     <PackageReference Include="Bannerlord.ReferenceAssemblies.StoryMode.EarlyAccess" Version="$(StableVersion).*" PrivateAssets="All" />
     <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="$(ExtensionVersion)" />
@@ -44,6 +45,11 @@
     <PackageReference Include="Serilog.Sinks.File" Version="4.1.0" />
   </ItemGroup>
   <!--NuGet References-->
+
+  <!--Windows Forms-->
+  <ItemGroup>
+    <_SDKImplicitReference Include="System.Windows.Forms" />
+  </ItemGroup>
 
   <ItemGroup>
     <InternalsVisibleTo Include="Bannerlord.ButterLib.Implementation.$(StableVersion)" />

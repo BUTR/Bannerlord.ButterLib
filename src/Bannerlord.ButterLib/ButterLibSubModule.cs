@@ -1,13 +1,18 @@
 ﻿using Bannerlord.ButterLib.CampaignIdentifier;
-using Bannerlord.ButterLib.Common.Helpers;
 using Bannerlord.ButterLib.Common.Extensions;
+using Bannerlord.ButterLib.Common.Helpers;
+using Bannerlord.ButterLib.ExceptionHandler;
+using Bannerlord.ButterLib.ExceptionHandler.Patches;
 using Bannerlord.ButterLib.Logger.Extensions;
 using Bannerlord.ButterLib.ObjectSystem.Extensions;
 using Bannerlord.ButterLib.Options;
 
+using HarmonyLib;
+
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
+using System;
 using System.Linq;
 
 using TaleWorlds.CampaignSystem;
@@ -51,6 +56,14 @@ namespace Bannerlord.ButterLib
             _logger = this.GetTempServiceProvider().GetRequiredService<ILogger<ButterLibSubModule>>();
             _logger.LogTrace("OnSubModuleLoad() started tracking.");
 
+            if (true) // TODO: Check if Better Exception Window is enabled
+            {
+                var harmony = new Harmony("butterlib.exceptionhandler");
+                MissionPatch.Apply(harmony);
+                MissionViewPatch.Apply(harmony);
+                ModulePatch.Apply(harmony);
+                ScreenManagerPatch.Apply(harmony);
+            }
 
             _logger.LogTrace("OnSubModuleLoad() finished.");
         }
@@ -95,6 +108,18 @@ namespace Bannerlord.ButterLib
                 foreach (var (module, _) in modulesLoadedBeforeButterLib)
                     _logger.LogError("ButterLib is loaded after an official module: {module}!", module.Id);
             }
+
+            try
+            {
+                throw new Exception("Test123");
+            }
+            catch (Exception e)
+            {
+                HtmlBuilder.BuildAndShow(new CrashReport(e));
+                ;
+            }
+
+
 
             _logger.LogTrace("OnBeforeInitialModuleScreenSetAsRoot() finished.");
         }
