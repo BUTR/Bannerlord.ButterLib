@@ -3,8 +3,16 @@ using Bannerlord.ButterLib.ExceptionHandler.Patches;
 
 using HarmonyLib;
 
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
 using System;
+using System.IO;
 using System.Linq;
+
+using TaleWorlds.Engine;
+
+using Path = System.IO.Path;
 
 namespace Bannerlord.ButterLib.ExceptionHandler
 {
@@ -21,7 +29,25 @@ namespace Bannerlord.ButterLib.ExceptionHandler
 
             if (ModuleInfoHelper.GetLoadedModules().Any(m => string.Equals(m.Id, "BetterExceptionWindow", StringComparison.InvariantCultureIgnoreCase)))
             {
-                // Disable it's crash reporter?
+                var betterExceptionWindowModulePath = Path.Combine(Utilities.GetBasePath(), "Modules", "BetterExceptionWindow");
+                var configPath = Path.Combine(betterExceptionWindowModulePath, "config.json");
+                if (!File.Exists(configPath))
+                    return;
+
+                File.Copy(configPath, $"{configPath}.bl.bak", true);
+                var configFile = File.ReadAllText(configPath);
+                if (JsonConvert.DeserializeObject(configFile) is JObject config)
+                {
+                    config["CatchOnApplicationTick"] = false;
+                    config["CatchOnMissionScreenTick"] = false;
+                    config["CatchOnFrameTick"] = false;
+                    config["CatchTick"] = false;
+
+                    configFile = JsonConvert.SerializeObject(config);
+                    File.WriteAllText(configPath, configFile);
+
+                    ReloadBetterExceptionWindow();
+                }
             }
         }
 
@@ -34,8 +60,26 @@ namespace Bannerlord.ButterLib.ExceptionHandler
 
             if (ModuleInfoHelper.GetLoadedModules().Any(m => string.Equals(m.Id, "BetterExceptionWindow", StringComparison.InvariantCultureIgnoreCase)))
             {
-                // Enable it's crash reporter?
+                var betterExceptionWindowModulePath = Path.Combine(Utilities.GetBasePath(), "Modules", "BetterExceptionWindow");
+                var configPath = Path.Combine(betterExceptionWindowModulePath, "config.json");
+
+                if (!File.Exists($"{configPath}.bl.bak"))
+                    return;
+
+                File.Copy($"{configPath}.bl.bak", configPath, true);
+
+                ReloadBetterExceptionWindow();
             }
+        }
+
+        private static void ReloadBetterExceptionWindow()
+        {
+            var assembly = AppDomain.CurrentDomain.GetAssemblies()
+                .Where(a => !a.IsDynamic)
+                .FirstOrDefault(a => string.Equals(Path.GetFileNameWithoutExtension(a.Location), "BetterExceptionWindow", StringComparison.InvariantCultureIgnoreCase));
+            var utils = assembly?.GetTypes().FirstOrDefault(t => string.Equals(t.FullName, "BetterExceptionWindow.Util", StringComparison.InvariantCultureIgnoreCase));
+            var reloadMethod = AccessTools.Method(utils, "ReadConfig");
+            reloadMethod?.Invoke(null, Array.Empty<object>());
         }
     }
 }
