@@ -10,6 +10,8 @@ using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 
+using TWCommon = TaleWorlds.Library.Common;
+
 namespace Bannerlord.ButterLib.ExceptionHandler
 {
     internal static class HtmlBuilder
@@ -140,7 +142,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                     return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
                 }
 
-                var isTW = !assembly.IsDynamic && assembly.Location.IndexOf("Mount & Blade II Bannerlord\\bin\\Win64_Shipping_Client\\", StringComparison.InvariantCultureIgnoreCase) >= 0;
+                var isTW = !assembly.IsDynamic && assembly.Location.IndexOf($"Mount & Blade II Bannerlord\\bin\\{TWCommon.ConfigName}\\", StringComparison.InvariantCultureIgnoreCase) >= 0;
                 var isSystem = !assembly.IsDynamic && assembly.Location.IndexOf("Windows\\Microsoft.NET\\", StringComparison.InvariantCultureIgnoreCase) >= 0;
 
                 var assemblyName = assembly.GetName();

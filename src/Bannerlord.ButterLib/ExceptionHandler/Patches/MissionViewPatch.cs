@@ -35,6 +35,11 @@ namespace Bannerlord.ButterLib.ExceptionHandler.Patches
             harmony.Patch(OnMissionScreenTickMethod, finalizer: new HarmonyMethod(OnMissionScreenTickFinalizerMethod));
         }
 
+        internal static void Deapply(Harmony harmony)
+        {
+            harmony.Unpatch(OnMissionScreenTickMethod, OnMissionScreenTickFinalizerMethod);
+        }
+
         private static readonly MethodInfo? OnMissionScreenTickMethod =
             Method(typeof(MissionView), "OnMissionScreenTick");
 

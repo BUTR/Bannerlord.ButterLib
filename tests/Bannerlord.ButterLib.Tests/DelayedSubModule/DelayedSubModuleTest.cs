@@ -47,16 +47,7 @@ namespace Bannerlord.ButterLib.Tests.DelayedSubModule
         public void SubscribeBeforeTargetLoad_Test()
         {
             // Initialization
-            [MethodImpl(MethodImplOptions.NoInlining)]
-            static bool MockedGetLoadedModules(ref List<ModuleInfo> __result)
-            {
-                __result = new List<ModuleInfo> { TestHelper.ModuleInfoCaller, TestHelper.ModuleInfoTarget };
-                return false;
-            }
-
-            using var harmony = new HarmonyDisposable($"{nameof(DelayedSubModuleTest)}.{nameof(SubscribeAfterTargetLoad_Test)}");
-            harmony.Patch(SymbolExtensions.GetMethodInfo(() => ModuleInfoHelper.GetLoadedModules()),
-                prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetLoadedModules)));
+            ModuleInfoHelper.LoadedModules = new List<ExtendedModuleInfo> { TestHelper.ModuleInfoCaller, TestHelper.ModuleInfoTarget };
             // Initialization
 
             // Because the Target SubModule loads after Caller, Subscribe should not instacall the delegate
@@ -70,16 +61,7 @@ namespace Bannerlord.ButterLib.Tests.DelayedSubModule
         public void SubscribeBeforeTargetLoad_CallTargetManually_Test()
         {
             // Initialization
-            [MethodImpl(MethodImplOptions.NoInlining)]
-            static bool MockedGetLoadedModules(ref List<ModuleInfo> __result)
-            {
-                __result = new List<ModuleInfo> { TestHelper.ModuleInfoCaller, TestHelper.ModuleInfoTarget };
-                return false;
-            }
-
-            using var harmony = new HarmonyDisposable($"{nameof(DelayedSubModuleTest)}.{nameof(SubscribeBeforeTargetLoad_CallTargetManually_Test)}");
-            harmony.Patch(SymbolExtensions.GetMethodInfo(() => ModuleInfoHelper.GetLoadedModules()),
-                prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetLoadedModules)));
+            ModuleInfoHelper.LoadedModules = new List<ExtendedModuleInfo> { TestHelper.ModuleInfoCaller, TestHelper.ModuleInfoTarget };
             // Initialization
 
             // Because the Target SubModule loads after Caller, Subscribe should not instacall the delegate
@@ -98,16 +80,7 @@ namespace Bannerlord.ButterLib.Tests.DelayedSubModule
         public void SubscribeAfterTargetLoad_Test()
         {
             // Initialization
-            [MethodImpl(MethodImplOptions.NoInlining)]
-            static bool MockedGetLoadedModules(ref List<ModuleInfo> __result)
-            {
-                __result = new List<ModuleInfo> { TestHelper.ModuleInfoTarget, TestHelper.ModuleInfoCaller };
-                return false;
-            }
-
-            using var harmony = new HarmonyDisposable($"{nameof(DelayedSubModuleTest)}.{nameof(SubscribeAfterTargetLoad_Test)}");
-            harmony.Patch(SymbolExtensions.GetMethodInfo(() => ModuleInfoHelper.GetLoadedModules()),
-                prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetLoadedModules)));
+            ModuleInfoHelper.LoadedModules = new List<ExtendedModuleInfo> { TestHelper.ModuleInfoTarget, TestHelper.ModuleInfoCaller };
             // Initialization
 
             // Because the Target SubModule loads before Caller, Subscribe should instacall the delegate

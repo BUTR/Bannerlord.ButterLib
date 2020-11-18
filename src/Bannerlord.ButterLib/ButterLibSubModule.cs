@@ -99,18 +99,6 @@ namespace Bannerlord.ButterLib
                     _logger.LogError("ButterLib is loaded after an official module: {module}!", module.Id);
             }
 
-            try
-            {
-                throw new Exception("Test123");
-            }
-            catch (Exception e)
-            {
-                HtmlBuilder.BuildAndShow(new CrashReport(e));
-                ;
-            }
-
-
-
             _logger.LogTrace("OnBeforeInitialModuleScreenSetAsRoot() finished.");
         }
 

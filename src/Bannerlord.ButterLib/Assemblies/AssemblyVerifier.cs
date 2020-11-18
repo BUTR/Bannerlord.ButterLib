@@ -32,7 +32,7 @@ namespace Bannerlord.ButterLib.Assemblies
                 new AppDomainSetup
                 {
                     ApplicationName = domainName,
-                    ApplicationBase = Path.Combine(Utilities.GetBasePath(), "Modules", "Bannerlord.ButterLib", "bin", "Win64_Shipping_Client"),
+                    ApplicationBase = Path.Combine(Utilities.GetBasePath(), "Modules", "Bannerlord.ButterLib", "bin", TaleWorlds.Library.Common.ConfigName),
                     AppDomainManagerAssembly = typeof(AssemblyVerifier).Assembly.FullName,
                     AppDomainManagerType = typeof(EmptyAppDomainManager).FullName
                 });

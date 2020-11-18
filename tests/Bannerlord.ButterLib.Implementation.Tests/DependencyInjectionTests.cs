@@ -17,13 +17,15 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
-
+using Bannerlord.ButterLib.ExceptionHandler;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
 using TaleWorlds.Engine;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
 using TaleWorlds.ObjectSystem;
+
+using TWCommon = TaleWorlds.Library.Common;
 
 namespace Bannerlord.ButterLib.Implementation.Tests
 {
@@ -51,9 +53,9 @@ namespace Bannerlord.ButterLib.Implementation.Tests
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        private static bool MockedGetLoadedModules(ref List<ModuleInfo> __result)
+        private static bool MockedGetConfigName(ref string __result)
         {
-            __result = new List<ModuleInfo>();
+            __result = "Win64_Shipping_Client";
             return false;
         }
 
@@ -76,12 +78,14 @@ namespace Bannerlord.ButterLib.Implementation.Tests
             var harmony = new Harmony($"{nameof(DependencyInjectionTests)}.{nameof(Setup)}");
             harmony.Patch(SymbolExtensions.GetMethodInfo(() => Utilities.GetConfigsPath()),
                 prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetConfigsPath)));
-            harmony.Patch(SymbolExtensions.GetMethodInfo(() => ModuleInfoHelper.GetLoadedModules()),
-                prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetLoadedModules)));
+            harmony.Patch(SymbolExtensions2.GetPropertyInfo(() => TWCommon.ConfigName).GetMethod,
+                prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetConfigName)));
+            ModuleInfoHelper.LoadedModules = new List<ExtendedModuleInfo>();
 
             var subModule = new ButterLibSubModule();
             var subModuleWrapper = new MBSubModuleBaseWrapper(subModule);
             subModuleWrapper.SubModuleLoad();
+            ExceptionHandlerSubSystem.Disable();
 
             var services = ButterLibSubModule.Instance!.GetServices()!;
             services.AddScoped<CampaignDescriptor, CampaignDescriptorImplementation>();

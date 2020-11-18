@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Reflection;
 
 using TaleWorlds.CampaignSystem;
@@ -17,9 +16,6 @@ namespace Bannerlord.ButterLib.Implementation.Tests
 
         public delegate bool MockedGetBasePathDelegate(ref string __result);
         public static MethodInfo GetMethodInfo(this MockedGetBasePathDelegate @delegate) => @delegate.Method;
-
-        public delegate bool MockedGetLoadedModulesDelegate(ref List<ModuleInfo> list);
-        public static MethodInfo GetMethodInfo(MockedGetLoadedModulesDelegate @delegate) => @delegate.Method;
 
         public delegate bool MockedGetSettlementAllDelegate(ref MBReadOnlyList<Settlement> __result);
         public static MethodInfo GetMethodInfo(this MockedGetSettlementAllDelegate @delegate) => @delegate.Method;
