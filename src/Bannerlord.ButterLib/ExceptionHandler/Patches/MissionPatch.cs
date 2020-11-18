@@ -35,6 +35,11 @@ namespace Bannerlord.ButterLib.ExceptionHandler.Patches
             harmony.Patch(TickMethod, finalizer: new HarmonyMethod(TickFinalizerMethod));
         }
 
+        internal static void Deapply(Harmony harmony)
+        {
+            harmony.Unpatch(TickMethod, TickFinalizerMethod);
+        }
+
         private static readonly MethodInfo? TickMethod =
             Method(typeof(Mission), "Tick");
 

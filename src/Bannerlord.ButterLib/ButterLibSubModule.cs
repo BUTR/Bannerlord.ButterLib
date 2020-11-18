@@ -2,12 +2,9 @@
 using Bannerlord.ButterLib.Common.Extensions;
 using Bannerlord.ButterLib.Common.Helpers;
 using Bannerlord.ButterLib.ExceptionHandler;
-using Bannerlord.ButterLib.ExceptionHandler.Patches;
 using Bannerlord.ButterLib.Logger.Extensions;
 using Bannerlord.ButterLib.ObjectSystem.Extensions;
 using Bannerlord.ButterLib.Options;
-
-using HarmonyLib;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -56,14 +53,7 @@ namespace Bannerlord.ButterLib
             _logger = this.GetTempServiceProvider().GetRequiredService<ILogger<ButterLibSubModule>>();
             _logger.LogTrace("OnSubModuleLoad() started tracking.");
 
-            if (true) // TODO: Check if Better Exception Window is enabled
-            {
-                var harmony = new Harmony("butterlib.exceptionhandler");
-                MissionPatch.Apply(harmony);
-                MissionViewPatch.Apply(harmony);
-                ModulePatch.Apply(harmony);
-                ScreenManagerPatch.Apply(harmony);
-            }
+            ExceptionHandlerSubSystem.Enable();
 
             _logger.LogTrace("OnSubModuleLoad() finished.");
         }

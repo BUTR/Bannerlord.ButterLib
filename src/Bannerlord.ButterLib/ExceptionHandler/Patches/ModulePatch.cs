@@ -33,6 +33,11 @@ namespace Bannerlord.ButterLib.ExceptionHandler.Patches
             harmony.Patch(OnApplicationTickMethod, finalizer: new HarmonyMethod(OnApplicationTickFinalizerMethod));
         }
 
+        internal static void Deapply(Harmony harmony)
+        {
+            harmony.Unpatch(OnApplicationTickMethod, OnApplicationTickFinalizerMethod);
+        }
+
         private static readonly MethodInfo? OnApplicationTickMethod =
             Method(typeof(TaleWorlds.MountAndBlade.Module), "OnApplicationTick");
 
