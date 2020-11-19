@@ -82,7 +82,7 @@ namespace Bannerlord.ButterLib.Implementation
 
                 var saveSystemHarmony = new Harmony("Bannerlord.ButterLib.SaveSystem");
                 TypeExtensionsPatch.Apply(saveSystemHarmony); // Adds support for saving many more container types
-                DefinitionContextPatch.Apply(saveSystemHarmony); // Fixes save corruption & crashes when duplicate types are defined
+                //DefinitionContextPatch.Apply(saveSystemHarmony); // Fixes save corruption & crashes when duplicate types are defined
             }
 
             Logger.LogTrace("ButterLib.Implementation: OnBeforeInitialModuleScreenSetAsRoot: Done");
