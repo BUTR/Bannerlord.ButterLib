@@ -20,18 +20,18 @@ namespace Bannerlord.ModuleLoader
     {
         private const string SWarningTitle =
 @"{=yu4cP89RWb}Warning from Bannerlord.ModuleLoader!";
-
         private const string SErrorHarmonyNotFound =
 @"{=EEVJa5azpB}Bannerlord.Harmony module was not found!";
-        private const string SErrorHarmonyNotFirst =
-@"{=NxkNTUUV32}Bannerlord.Harmony is not first in loading order!
-This is not recommended. Expect issues!";
-
         private const string SErrorModuleLoaderNotFound =
 @"{=YjsGP3mUaj}Bannerlord.ModuleLoader module was not found!";
         private const string SErrorModuleLoaderNotFirst =
 @"{=m8XpFLx9Q7}Bannerlord.ModuleLoader is not second in loading order!
 It should load right after Harmony!";
+        private const string SErrorOfficialModulesLoadedBefore =
+@"{=5tDjYVah2q}ModuleLoader is loaded after the official modules!
+Make sure ModuleLoader is loaded before them!";
+        private const string SErrorOfficialModules =
+@"{=3ys4VQT7CQ}The following modules were loaded before ModuleLoader:";
 
         private delegate void OnSubModuleLoadDelegate(MBSubModuleBase instance);
         private delegate void OnServiceRegistrationDelegate();
@@ -122,11 +122,21 @@ It should load right after Harmony!";
                 sb.AppendLine(new TextObject(SErrorModuleLoaderNotFirst).ToString());
             }
 
+            var officialModules = loadedModules.Where(x => x.IsOfficial).Select(x => (Module: x, Index: loadedModules.IndexOf(x)));
+            var modulesLoadedBefore = officialModules.Where(tuple => tuple.Index < moduleLoaderModuleIndex).ToList();
+            if (modulesLoadedBefore.Count > 0)
+            {
+                if (sb.Length != 0) sb.AppendLine();
+                sb.AppendLine(new TextObject(SErrorOfficialModulesLoadedBefore).ToString());
+                sb.AppendLine(new TextObject(SErrorOfficialModules).ToString());
+                foreach (var (module, _) in modulesLoadedBefore)
+                    sb.AppendLine(module.Id);
+            }
+
             if (sb.Length > 0)
             {
                 MessageBox.Show(sb.ToString(), new TextObject(SWarningTitle).ToString(), MessageBoxButtons.OK);
                 Environment.Exit(1);
-                //Utilities.QuitGame();
             }
         }
     }

@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
@@ -24,10 +25,14 @@ namespace Bannerlord.ButterLib
     /// </summary>
     public sealed partial class ButterLibSubModule : MBSubModuleBase
     {
+        private const string SWarningTitle =
+@"{=BguqytVG3q}Warning from Bannerlord.ButterLib!";
         private const string SErrorHarmonyNotFound =
 @"{=EEVJa5azpB}Bannerlord.Harmony module was not found!";
         private const string SErrorModuleLoaderNotFound =
 @"{=j3DZ87zFMB}Bannerlord.ModuleLoader module was not found!";
+        private const string SErrorButterLibNotFound =
+@"{=5EDzm7u4mS}Bannerlord.ButterLib module was not found!";
         private const string SErrorOfficialModulesLoadedBeforeButterLib =
 @"{=GDkjThJcH6}ButterLib is loaded after the official modules!
 Make sure ButterLib is loaded before them!";
@@ -153,6 +158,14 @@ Make sure ButterLib is loaded before them!";
 
             var sb = new StringBuilder();
 
+            var harmonyModule = loadedModules.SingleOrDefault(x => x.Id == "Bannerlord.Harmony");
+            var harmonyModuleIndex = harmonyModule is not null ? loadedModules.IndexOf(harmonyModule) : -1;
+            if (harmonyModuleIndex == -1)
+            {
+                if (sb.Length != 0) sb.AppendLine();
+                sb.AppendLine(new TextObject(SErrorHarmonyNotFound).ToString());
+            }
+
             var moduleLoaderModule = loadedModules.SingleOrDefault(x => x.Id == "Bannerlord.ModuleLoader");
             var moduleLoaderIndex = moduleLoaderModule is not null ? loadedModules.IndexOf(moduleLoaderModule) : -1;
             if (moduleLoaderIndex == -1)
@@ -166,7 +179,7 @@ Make sure ButterLib is loaded before them!";
             if (butterLibModuleIndex == -1)
             {
                 if (sb.Length != 0) sb.AppendLine();
-                sb.AppendLine(new TextObject(SErrorHarmonyNotFound).ToString());
+                sb.AppendLine(new TextObject(SErrorButterLibNotFound).ToString());
             }
 
             var officialModules = loadedModules.Where(x => x.IsOfficial).Select(x => (Module: x, Index: loadedModules.IndexOf(x)));
@@ -178,6 +191,12 @@ Make sure ButterLib is loaded before them!";
                 sb.AppendLine(new TextObject(SErrorOfficialModules).ToString());
                 foreach (var (module, _) in modulesLoadedBeforeButterLib)
                     sb.AppendLine(module.Id);
+            }
+
+            if (sb.Length > 0)
+            {
+                MessageBox.Show(sb.ToString(), new TextObject(SWarningTitle).ToString(), MessageBoxButtons.OK);
+                Environment.Exit(1);
             }
         }
 

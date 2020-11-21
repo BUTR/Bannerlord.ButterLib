@@ -16,6 +16,8 @@
     <!--Current Bannerlord Beta Version-->
     <BetaVersion>1.5.4</BetaVersion>
     <!-- -->
+    <Deterministic>true</Deterministic>
+    <!-- -->
     <GameVersion Condition="$(Configuration) == 'Stable_Debug' OR $(Configuration) == 'Stable_Release'">$(StableVersion)</GameVersion>
     <GameVersion Condition="$(Configuration) == 'Beta_Debug' OR $(Configuration) == 'Beta_Release'">$(BetaVersion)</GameVersion>
     <!--Bannerlord's Root Folder. Leave empty if you want it to be tried to be autoresolved.-->

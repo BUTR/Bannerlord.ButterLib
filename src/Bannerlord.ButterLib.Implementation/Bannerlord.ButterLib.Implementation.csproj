@@ -1,4 +1,4 @@
-﻿<!--EXTERNAL_PROPERTIES: Version;StableVersion;BetaVersion;HarmonyVersion;BuildResourcesVersion-->
+﻿<!--EXTERNAL_PROPERTIES: Version;GameVersion;StableVersion;BetaVersion;HarmonyVersion;BuildResourcesVersion-->
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
@@ -9,8 +9,6 @@
     <Configurations>Stable_Debug;Stable_Release;Beta_Debug;Beta_Release</Configurations>
 
     <AssemblyName>Bannerlord.ButterLib.Implementation.$(GameVersion)</AssemblyName>
-
-    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <!--Module Creation-->
