@@ -5,6 +5,7 @@ using Bannerlord.ButterLib.ExceptionHandler;
 using Bannerlord.ButterLib.Logger.Extensions;
 using Bannerlord.ButterLib.ObjectSystem.Extensions;
 using Bannerlord.ButterLib.Options;
+using Bannerlord.ButterLib.SubModuleWrappers;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -31,11 +32,13 @@ namespace Bannerlord.ButterLib
 
         private ILogger _logger = default!;
 
-        protected override void OnSubModuleLoad()
+        public ButterLibSubModule()
         {
-            base.OnSubModuleLoad();
-
             Instance = this;
+        }
+
+        public void OnServiceRegistration()
+        {
             CanBeConfigured = false;
 
             Services = new ServiceCollection();
@@ -51,31 +54,24 @@ namespace Bannerlord.ButterLib
 
             this.AddDefaultSerilogLogger();
             this.AddSerilogLoggerProvider("butterlib.txt", new[] { "Bannerlord.ButterLib.*" });
+        }
+
+        protected override void OnSubModuleLoad()
+        {
+            base.OnSubModuleLoad();
 
             _logger = this.GetTempServiceProvider().GetRequiredService<ILogger<ButterLibSubModule>>();
             _logger.LogTrace("OnSubModuleLoad() started tracking.");
+
+            InitializeServices();
 
             ExceptionHandlerSubSystem.Enable();
 
             _logger.LogTrace("OnSubModuleLoad() finished.");
         }
-
-        protected override void OnSubModuleUnloaded()
+        private void InitializeServices()
         {
-            base.OnSubModuleUnloaded();
-            _logger.LogTrace("OnSubModuleUnloaded() started.");
-
-            Instance = null!;
-
-            _logger.LogTrace("OnSubModuleUnloaded() finished.");
-        }
-
-        protected override void OnBeforeInitialModuleScreenSetAsRoot()
-        {
-            base.OnBeforeInitialModuleScreenSetAsRoot();
-            _logger.LogTrace("OnBeforeInitialModuleScreenSetAsRoot() started.");
-
-            if (Services is not null) // First init.
+            if (Services is not null)
             {
                 GlobalServiceProvider = Services.BuildServiceProvider();
                 _logger.LogTrace("Created GlobalServiceProvider.");
@@ -100,6 +96,22 @@ namespace Bannerlord.ButterLib
                 foreach (var (module, _) in modulesLoadedBeforeButterLib)
                     _logger.LogError("ButterLib is loaded after an official module: {module}!", module.Id);
             }
+        }
+
+        protected override void OnSubModuleUnloaded()
+        {
+            base.OnSubModuleUnloaded();
+            _logger.LogTrace("OnSubModuleUnloaded() started.");
+
+            Instance = null!;
+
+            _logger.LogTrace("OnSubModuleUnloaded() finished.");
+        }
+
+        protected override void OnBeforeInitialModuleScreenSetAsRoot()
+        {
+            base.OnBeforeInitialModuleScreenSetAsRoot();
+            _logger.LogTrace("OnBeforeInitialModuleScreenSetAsRoot() started.");
 
             _logger.LogTrace("OnBeforeInitialModuleScreenSetAsRoot() finished.");
         }

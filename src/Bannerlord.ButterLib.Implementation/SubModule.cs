@@ -32,16 +32,8 @@ namespace Bannerlord.ButterLib.Implementation
 
         internal static ILogger? Logger { get; private set; }
 
-        protected override void OnSubModuleLoad()
+        public void OnServiceRegistration()
         {
-            base.OnSubModuleLoad();
-
-            Logger = this.GetTempServiceProvider().GetRequiredService<ILogger<SubModule>>();
-            Logger.LogTrace("ButterLib.Implementation: OnSubModuleLoad");
-
-            Logger.LogInformation("Wrapping DebugManager of type {type} with DebugManagerWrapper.", Debug.DebugManager.GetType());
-            Debug.DebugManager = new DebugManagerWrapper(Debug.DebugManager, this.GetTempServiceProvider()!);
-
             var services = this.GetServices();
             services.AddScoped<CampaignDescriptor, CampaignDescriptorImplementation>();
             services.AddSingleton<ICampaignDescriptorStatic, CampaignDescriptorStaticImplementation>();
@@ -52,6 +44,17 @@ namespace Bannerlord.ButterLib.Implementation
             services.AddScoped<IMBObjectExtensionDataStore, MBObjectExtensionDataStore>();
             services.AddScoped<HotKeyManager, HotKeyManagerImplementation>();
             services.AddSingleton<IHotKeyManagerStatic, HotKeyManagerStaticImplementation>();
+        }
+
+        protected override void OnSubModuleLoad()
+        {
+            base.OnSubModuleLoad();
+
+            Logger = this.GetServiceProvider().GetRequiredService<ILogger<SubModule>>();
+            Logger.LogTrace("ButterLib.Implementation: OnSubModuleLoad");
+
+            Logger.LogInformation("Wrapping DebugManager of type {type} with DebugManagerWrapper.", Debug.DebugManager.GetType());
+            Debug.DebugManager = new DebugManagerWrapper(Debug.DebugManager, this.GetServiceProvider()!);
 
             HotKeySubSystem.Enable();
 
@@ -67,17 +70,10 @@ namespace Bannerlord.ButterLib.Implementation
             {
                 FirstInit = false;
 
-                var serviceProvider = this.GetServiceProvider();
-                Logger = serviceProvider.GetRequiredService<ILogger<SubModule>>();
-
-                if (Debug.DebugManager is DebugManagerWrapper debugManagerWrapper)
-                {
-                    Debug.DebugManager = new DebugManagerWrapper(debugManagerWrapper.OriginalDebugManager, serviceProvider!);
-                }
-                else
+                if (Debug.DebugManager is not DebugManagerWrapper)
                 {
                     Logger.LogWarning("DebugManagerWrapper was replaced with {type}! Wrapping it with DebugManagerWrapper.", Debug.DebugManager.GetType());
-                    Debug.DebugManager = new DebugManagerWrapper(Debug.DebugManager, serviceProvider!);
+                    Debug.DebugManager = new DebugManagerWrapper(Debug.DebugManager, this.GetServiceProvider()!);
                 }
 
                 var campaignIdentifierHarmony = new Harmony("Bannerlord.ButterLib.CampaignIdentifier");
