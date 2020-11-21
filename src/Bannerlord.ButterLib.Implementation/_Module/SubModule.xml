@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Module>
   <Name value="ButterLib" />
-  <Id value="Bannerlord.ButterLib" />
+  <Id value="$modulename$" />
   <Version value="v$version$" />
   <Official value="false" />
   <DefaultModule value="false" />
@@ -10,10 +10,12 @@
   <Url value="https://www.nexusmods.com/mountandblade2bannerlord/mods/2018" />
   <DependedModules>
     <DependedModule Id="Bannerlord.Harmony" />
+    <DependedModule Id="Bannerlord.ModuleLoader" />
   </DependedModules>
   <!-- Prototype -->
   <DependedModuleMetadatas>
     <DependedModuleMetadata id="Bannerlord.Harmony" order="LoadBeforeThis" version="v$harmonyversion$" />
+    <DependedModuleMetadata id="Bannerlord.ModuleLoader" order="LoadBeforeThis" />
 
     <DependedModuleMetadata id="Native" order="LoadAfterThis" />
     <DependedModuleMetadata id="SandBoxCore" order="LoadAfterThis" optional="true" />
@@ -25,8 +27,8 @@
   <SubModules>
     <SubModule>
       <Name value="ButterLib" />
-      <DLLName value="Bannerlord.ButterLib.dll" />
-      <SubModuleClassType value="Bannerlord.ButterLib.ButterLibSubModule" />
+      <DLLName value="$modulename$.dll" />
+      <SubModuleClassType value="$modulename$.ButterLibSubModule" />
       <Assemblies>
         <!--Microsoft Abstractions-->
         <Assembly value="Microsoft.Extensions.DependencyInjection.Abstractions.dll" />
@@ -48,8 +50,8 @@
     </SubModule>
     <SubModule>
       <Name value="ButterLib Implementation Loader" />
-      <DLLName value="Bannerlord.ButterLib.dll" />
-      <SubModuleClassType value="Bannerlord.ButterLib.ImplementationLoaderSubModule" />
+      <DLLName value="$modulename$.dll" />
+      <SubModuleClassType value="$modulename$.ImplementationLoaderSubModule" />
       <Tags />
     </SubModule>
   </SubModules>

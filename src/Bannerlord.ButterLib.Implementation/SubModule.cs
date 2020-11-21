@@ -28,27 +28,35 @@ namespace Bannerlord.ButterLib.Implementation
 {
     public sealed class SubModule : MBSubModuleBase
     {
-        private bool FirstInit { get; set; } = true;
-
         internal static ILogger? Logger { get; private set; }
+
+        private bool ServiceRegistrationWasCalled { get; set; }
+        private bool OnBeforeInitialModuleScreenSetAsRootWasCalled { get; set; }
 
         public void OnServiceRegistration()
         {
-            var services = this.GetServices();
-            services.AddScoped<CampaignDescriptor, CampaignDescriptorImplementation>();
-            services.AddSingleton<ICampaignDescriptorStatic, CampaignDescriptorStaticImplementation>();
-            services.AddScoped(typeof(DistanceMatrix<>), typeof(DistanceMatrixImplementation<>));
-            services.AddSingleton<IDistanceMatrixStatic, DistanceMatrixStaticImplementation>();
-            services.AddSingleton<ICampaignExtensions, CampaignExtensionsImplementation>();
-            services.AddTransient<ICampaignDescriptorProvider, JsonCampaignDescriptorProvider>();
-            services.AddScoped<IMBObjectExtensionDataStore, MBObjectExtensionDataStore>();
-            services.AddScoped<HotKeyManager, HotKeyManagerImplementation>();
-            services.AddSingleton<IHotKeyManagerStatic, HotKeyManagerStaticImplementation>();
+            ServiceRegistrationWasCalled = true;
+
+            if (this.GetServices() is { } services)
+            {
+                services.AddScoped<CampaignDescriptor, CampaignDescriptorImplementation>();
+                services.AddSingleton<ICampaignDescriptorStatic, CampaignDescriptorStaticImplementation>();
+                services.AddScoped(typeof(DistanceMatrix<>), typeof(DistanceMatrixImplementation<>));
+                services.AddSingleton<IDistanceMatrixStatic, DistanceMatrixStaticImplementation>();
+                services.AddSingleton<ICampaignExtensions, CampaignExtensionsImplementation>();
+                services.AddTransient<ICampaignDescriptorProvider, JsonCampaignDescriptorProvider>();
+                services.AddScoped<IMBObjectExtensionDataStore, MBObjectExtensionDataStore>();
+                services.AddScoped<HotKeyManager, HotKeyManagerImplementation>();
+                services.AddSingleton<IHotKeyManagerStatic, HotKeyManagerStaticImplementation>();
+            }
         }
 
         protected override void OnSubModuleLoad()
         {
             base.OnSubModuleLoad();
+
+            if (!ServiceRegistrationWasCalled)
+                OnServiceRegistration();
 
             Logger = this.GetServiceProvider().GetRequiredService<ILogger<SubModule>>();
             Logger.LogTrace("ButterLib.Implementation: OnSubModuleLoad");
@@ -66,9 +74,9 @@ namespace Bannerlord.ButterLib.Implementation
             base.OnBeforeInitialModuleScreenSetAsRoot();
             Logger.LogTrace("ButterLib.Implementation: OnBeforeInitialModuleScreenSetAsRoot");
 
-            if (FirstInit)
+            if (!OnBeforeInitialModuleScreenSetAsRootWasCalled)
             {
-                FirstInit = false;
+                OnBeforeInitialModuleScreenSetAsRootWasCalled = true;
 
                 if (Debug.DebugManager is not DebugManagerWrapper)
                 {

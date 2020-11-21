@@ -10,7 +10,7 @@
     <!--Microsoft Extension Libraries Version-->
     <ExtensionVersion>2.0.0</ExtensionVersion>
     <!--BuildResources Version-->
-    <BuildResourcesVersion>1.0.0.20</BuildResourcesVersion>
+    <BuildResourcesVersion>1.0.0.23</BuildResourcesVersion>
     <!--Current Bannerlord Stable Version-->
     <StableVersion>1.5.3</StableVersion>
     <!--Current Bannerlord Beta Version-->
