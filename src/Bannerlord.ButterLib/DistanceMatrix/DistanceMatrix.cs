@@ -17,9 +17,9 @@ namespace Bannerlord.ButterLib.DistanceMatrix
     /// </summary>
     public abstract class DistanceMatrix
     {
-        private static DistanceMatrixStatic? _staticInstance;
-        internal static DistanceMatrixStatic? StaticInstance =>
-            _staticInstance ??= ButterLibSubModule.Instance?.GetServiceProvider()?.GetRequiredService<DistanceMatrixStatic>();
+        private static IDistanceMatrixStatic? _staticInstance;
+        internal static IDistanceMatrixStatic? StaticInstance =>
+            _staticInstance ??= ButterLibSubModule.Instance?.GetServiceProvider()?.GetRequiredService<IDistanceMatrixStatic>();
 
 
         /// <summary>

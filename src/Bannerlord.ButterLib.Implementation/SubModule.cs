@@ -1,11 +1,13 @@
 ﻿using Bannerlord.ButterLib.CampaignIdentifier;
 using Bannerlord.ButterLib.Common.Extensions;
 using Bannerlord.ButterLib.DistanceMatrix;
+using Bannerlord.ButterLib.HotKeys;
 using Bannerlord.ButterLib.Implementation.CampaignIdentifier;
 using Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehaviors;
 using Bannerlord.ButterLib.Implementation.CampaignIdentifier.Patches;
 using Bannerlord.ButterLib.Implementation.Common.Extensions;
 using Bannerlord.ButterLib.Implementation.DistanceMatrix;
+using Bannerlord.ButterLib.Implementation.HotKeys;
 using Bannerlord.ButterLib.Implementation.Logging;
 using Bannerlord.ButterLib.Implementation.ObjectSystem;
 using Bannerlord.ButterLib.Implementation.ObjectSystem.Patches;
@@ -42,12 +44,16 @@ namespace Bannerlord.ButterLib.Implementation
 
             var services = this.GetServices();
             services.AddScoped<CampaignDescriptor, CampaignDescriptorImplementation>();
-            services.AddSingleton<CampaignDescriptorStatic, CampaignDescriptorStaticImplementation>();
+            services.AddSingleton<ICampaignDescriptorStatic, CampaignDescriptorStaticImplementation>();
             services.AddScoped(typeof(DistanceMatrix<>), typeof(DistanceMatrixImplementation<>));
-            services.AddSingleton<DistanceMatrixStatic, DistanceMatrixStaticImplementation>();
+            services.AddSingleton<IDistanceMatrixStatic, DistanceMatrixStaticImplementation>();
             services.AddSingleton<ICampaignExtensions, CampaignExtensionsImplementation>();
             services.AddTransient<ICampaignDescriptorProvider, JsonCampaignDescriptorProvider>();
             services.AddScoped<IMBObjectExtensionDataStore, MBObjectExtensionDataStore>();
+            services.AddScoped<HotKeyManager, HotKeyManagerImplementation>();
+            services.AddSingleton<IHotKeyManagerStatic, HotKeyManagerStaticImplementation>();
+
+            HotKeySubSystem.Enable();
 
             Logger.LogTrace("ButterLib.Implementation: OnSubModuleLoad: Done");
         }

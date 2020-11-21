@@ -27,6 +27,8 @@ namespace Bannerlord.ButterLib
         private const string SErrorOfficialLoadedBeforeButterLib = "{=GDkjThJcH6}ButterLib is loaded after the official modules! " +
             "Make sure ButterLib is loaded before them!";
 
+        internal event Action<float>? OnApplicationTickEvent;
+
         private ILogger _logger = default!;
 
         protected override void OnSubModuleLoad()
@@ -101,6 +103,8 @@ namespace Bannerlord.ButterLib
 
             _logger.LogTrace("OnBeforeInitialModuleScreenSetAsRoot() finished.");
         }
+
+        protected override void OnApplicationTick(float dt) => OnApplicationTickEvent?.Invoke(dt);
 
         protected override void OnGameStart(Game game, IGameStarter gameStarterObject)
         {

@@ -14,17 +14,17 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
     /// A static class, containing accordant members of the
     /// <see cref="T:Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix`1" /> class.
     /// </summary>
-    internal sealed class DistanceMatrixStaticImplementation : DistanceMatrixStatic
+    internal sealed class DistanceMatrixStaticImplementation : IDistanceMatrixStatic
     {
         /// <inheritdoc/>
-        public override DistanceMatrix<T> Create<T>() => new DistanceMatrixImplementation<T>();
+        public DistanceMatrix<T> Create<T>() where T : MBObjectBase => new DistanceMatrixImplementation<T>();
 
         /// <inheritdoc/>
-        public override DistanceMatrix<T> Create<T>(Func<IEnumerable<T>> customListGetter, Func<T, T, float> customDistanceCalculator) =>
+        public DistanceMatrix<T> Create<T>(Func<IEnumerable<T>> customListGetter, Func<T, T, float> customDistanceCalculator) where T : MBObjectBase =>
             new DistanceMatrixImplementation<T>(customListGetter, customDistanceCalculator);
 
         /// <inheritdoc/>
-        public override float CalculateDistanceBetweenHeroes(Hero hero1, Hero hero2)
+        public float CalculateDistanceBetweenHeroes(Hero hero1, Hero hero2)
         {
             var (mobileParty1, settlement1) = GetMapPosition(hero1);
             var (mobileParty2, settlement2) = GetMapPosition(hero2);
@@ -42,7 +42,7 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
         }
 
         /// <inheritdoc/>
-        public override float CalculateDistanceBetweenClans(Clan clan1, Clan clan2, IEnumerable<(ulong Owners, float Distance, float Weight)> settlementOwnersPairedList)
+        public float CalculateDistanceBetweenClans(Clan clan1, Clan clan2, IEnumerable<(ulong Owners, float Distance, float Weight)> settlementOwnersPairedList)
         {
             var pair = clan1.Id > clan2.Id ? ElegantPairHelper.Pair(clan2.Id, clan1.Id) : ElegantPairHelper.Pair(clan1.Id, clan2.Id);
             var settlementDistances = settlementOwnersPairedList.Where(tuple => tuple.Owners == pair && !float.IsNaN(tuple.Distance))
@@ -51,7 +51,7 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
         }
 
         /// <inheritdoc/>
-        public override float CalculateDistanceBetweenKingdoms(Kingdom kingdom1, Kingdom kingdom2, DistanceMatrix<Settlement> settlementDistanceMatrix)
+        public float CalculateDistanceBetweenKingdoms(Kingdom kingdom1, Kingdom kingdom2, DistanceMatrix<Settlement> settlementDistanceMatrix)
         {
             bool Predicate(KeyValuePair<(Settlement object1, Settlement object2), float> x) =>
               !float.IsNaN(x.Value) && ((x.Key.object1.MapFaction == kingdom1 && x.Key.object2.MapFaction == kingdom2) ||
@@ -65,7 +65,7 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
         }
 
         /// <inheritdoc/>
-        public override List<(ulong Owners, float Distance, float Weight)> GetSettlementOwnersPairedList(DistanceMatrix<Settlement> settlementDistanceMatrix)
+        public List<(ulong Owners, float Distance, float Weight)> GetSettlementOwnersPairedList(DistanceMatrix<Settlement> settlementDistanceMatrix)
         {
             static (MBGUID OwnerId1, MBGUID OwnerId2, float Distance, float Weight) FirstSelector(KeyValuePair<(Settlement Object1, Settlement Object2), float> kvp) =>
               (OwnerId1: kvp.Key.Object1.OwnerClan.Id, OwnerId2: kvp.Key.Object2.OwnerClan.Id, Distance: kvp.Value, Weight: GetSettlementWeight(kvp.Key.Object1) + GetSettlementWeight(kvp.Key.Object2));

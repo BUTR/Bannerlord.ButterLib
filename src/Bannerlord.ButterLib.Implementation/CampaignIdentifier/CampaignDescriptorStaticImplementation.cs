@@ -4,8 +4,8 @@ using TaleWorlds.CampaignSystem;
 
 namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier
 {
-    internal sealed class CampaignDescriptorStaticImplementation : CampaignDescriptorStatic
+    internal sealed class CampaignDescriptorStaticImplementation : ICampaignDescriptorStatic
     {
-        public override CampaignDescriptor Create(Hero hero) => new CampaignDescriptorImplementation(hero);
+        public CampaignDescriptor Create(Hero hero) => new CampaignDescriptorImplementation(hero);
     }
 }

@@ -89,9 +89,9 @@ namespace Bannerlord.ButterLib.Implementation.Tests
 
             var services = ButterLibSubModule.Instance!.GetServices()!;
             services.AddScoped<CampaignDescriptor, CampaignDescriptorImplementation>();
-            services.AddSingleton<CampaignDescriptorStatic, CampaignDescriptorStaticImplementation>();
+            services.AddSingleton<ICampaignDescriptorStatic, CampaignDescriptorStaticImplementation>();
             services.AddScoped(typeof(DistanceMatrix<>), typeof(DistanceMatrixImplementation<>));
-            services.AddSingleton<DistanceMatrixStatic, DistanceMatrixStaticImplementation>();
+            services.AddSingleton<IDistanceMatrixStatic, DistanceMatrixStaticImplementation>();
             services.AddSingleton<ICampaignExtensions, CampaignExtensionsImplementation>();
             subModuleWrapper.BeforeInitialModuleScreenSetAsRoot();
         }
