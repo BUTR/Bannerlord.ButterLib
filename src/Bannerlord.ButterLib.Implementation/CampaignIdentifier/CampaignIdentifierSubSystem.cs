@@ -10,14 +10,14 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier
 
         public static void Enable()
         {
-            CharacterCreationContentApplyCulturePatch.Apply(_harmony);
-            ClanInitializeClanPatch.Apply(_harmony);
+            CharacterCreationContentApplyCulturePatch.Enable(_harmony);
+            ClanInitializeClanPatch.Enable(_harmony);
         }
 
         public static void Disable()
         {
-            //CharacterCreationContentApplyCulturePatch.Deapply(_harmony);
-            //ClanInitializeClanPatch.Deapply(_harmony);
+            //CharacterCreationContentApplyCulturePatch.Disable(_harmony);
+            //ClanInitializeClanPatch.Disable(_harmony);
         }
     }
 }

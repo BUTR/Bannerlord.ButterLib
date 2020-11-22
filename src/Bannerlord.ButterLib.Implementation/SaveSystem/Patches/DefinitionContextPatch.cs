@@ -38,15 +38,15 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
     {
         private static ILogger _log = default!;
 
-        internal static bool Apply(Harmony harmony)
+        internal static bool Enable(Harmony harmony)
         {
             _log = ButterLibSubModule.Instance?.GetServiceProvider()?.GetRequiredService<ILogger<DefinitionContextPatch>>()
                    ?? NullLogger<DefinitionContextPatch>.Instance;
 
-            return Patches.Select(p => p.IsReady).All(ready => ready) && Patches.All(p => p.Apply(harmony));
+            return Patches.Select(p => p.IsReady).All(ready => ready) && Patches.All(p => p.Enable(harmony));
         }
 
-        internal static bool Deapply(Harmony harmony)
+        internal static bool Disable(Harmony harmony)
         {
             // TODO:
             return false;
@@ -167,7 +167,7 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
                 TargetMethod = targetMethod;
             }
 
-            internal abstract bool Apply(Harmony harmony);
+            internal abstract bool Enable(Harmony harmony);
 
             internal virtual bool IsReady => ThisNotNull(PatchMethod, nameof(PatchMethod)) & ThisNotNull(TargetMethod, nameof(TargetMethod));
 
@@ -180,7 +180,7 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
         {
             internal PrefixPatch(string patchMethodName, MethodInfo? targetMethod) : base(patchMethodName, targetMethod) { }
 
-            internal override bool Apply(Harmony harmony) => harmony.Patch(TargetMethod, prefix: new HarmonyMethod(PatchMethod)) is not null;
+            internal override bool Enable(Harmony harmony) => harmony.Patch(TargetMethod, prefix: new HarmonyMethod(PatchMethod)) is not null;
         }
 
         private static bool NotNull<T>(T obj, string name, string? errPrefix = null) where T : class?

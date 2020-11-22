@@ -26,7 +26,7 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem.Patches
 
         // Application:
 
-        internal static void Apply(Harmony harmony)
+        internal static void Enable(Harmony harmony)
         {
             _log = ButterLibSubModule.Instance?.GetServiceProvider()?.GetRequiredService<ILogger<CampaignBehaviorManagerPatch>>() ??
                 NullLogger<CampaignBehaviorManagerPatch>.Instance;

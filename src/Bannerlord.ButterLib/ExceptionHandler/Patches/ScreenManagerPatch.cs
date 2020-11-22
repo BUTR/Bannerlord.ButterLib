@@ -19,7 +19,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler.Patches
     {
         private static ILogger _logger = default!;
 
-        internal static void Apply(Harmony harmony)
+        internal static void Enable(Harmony harmony)
         {
             _logger = ButterLibSubModule.Instance?.GetServiceProvider()?.GetRequiredService<ILogger<ScreenManagerPatch>>() ??
                       NullLogger<ScreenManagerPatch>.Instance;
@@ -35,7 +35,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler.Patches
             harmony.Patch(TickMethod, finalizer: new HarmonyMethod(TickFinalizerMethod));
         }
 
-        internal static void Deapply(Harmony harmony)
+        internal static void Disable(Harmony harmony)
         {
             harmony.Unpatch(TickMethod, TickFinalizerMethod);
         }

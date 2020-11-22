@@ -21,7 +21,7 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.Patches
 
         // Application:
 
-        internal static void Apply(Harmony harmony)
+        internal static void Enable(Harmony harmony)
         {
             _logger = ButterLibSubModule.Instance?.GetServiceProvider()?.GetRequiredService<ILogger<ClanInitializeClanPatch>>() ??
                       NullLogger<ClanInitializeClanPatch>.Instance;

@@ -10,12 +10,12 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
 
         public static void Enable()
         {
-            CampaignBehaviorManagerPatch.Apply(_harmony);
+            CampaignBehaviorManagerPatch.Enable(_harmony);
         }
 
         public static void Disable()
         {
-            //CampaignBehaviorManagerPatch.Deapply(_harmony);
+            //CampaignBehaviorManagerPatch.Disable(_harmony);
         }
     }
 }

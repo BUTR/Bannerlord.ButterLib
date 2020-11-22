@@ -10,14 +10,14 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem
 
         public static void Enable()
         {
-            TypeExtensionsPatch.Apply(_harmony); // Adds support for saving many more container types
-            //DefinitionContextPatch.Apply(_harmony); // Fixes save corruption & crashes when duplicate types are defined
+            TypeExtensionsPatch.Enable(_harmony); // Adds support for saving many more container types
+            //DefinitionContextPatch.Enable(_harmony); // Fixes save corruption & crashes when duplicate types are defined
         }
 
         public static void Disable()
         {
-            TypeExtensionsPatch.Deapply(_harmony);
-            //DefinitionContextPatch.Deapply(_harmony);
+            TypeExtensionsPatch.Disable(_harmony);
+            //DefinitionContextPatch.Disable(_harmony);
         }
     }
 }

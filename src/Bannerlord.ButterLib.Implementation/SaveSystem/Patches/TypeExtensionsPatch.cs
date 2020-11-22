@@ -28,7 +28,7 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
     {
         private static ILogger _log = default!;
 
-        internal static bool Apply(Harmony harmony)
+        internal static bool Enable(Harmony harmony)
         {
             _log = ButterLibSubModule.Instance?.GetServiceProvider()?.GetRequiredService<ILogger<TypeExtensionsPatch>>()
                    ?? NullLogger<TypeExtensionsPatch>.Instance;
@@ -39,7 +39,7 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
                    && harmony.Patch(TargetMethod, prefix: new HarmonyMethod(PatchMethod)) is not null;
         }
 
-        internal static bool Deapply(Harmony harmony)
+        internal static bool Disable(Harmony harmony)
         {
             if (NotNull(TargetType, nameof(TargetType))
                 & NotNull(TargetMethod, nameof(TargetMethod))

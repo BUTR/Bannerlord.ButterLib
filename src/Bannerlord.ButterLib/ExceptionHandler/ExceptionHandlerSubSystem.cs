@@ -22,10 +22,10 @@ namespace Bannerlord.ButterLib.ExceptionHandler
 
         public static void Enable()
         {
-            MissionPatch.Apply(Harmony);
-            MissionViewPatch.Apply(Harmony);
-            ModulePatch.Apply(Harmony);
-            ScreenManagerPatch.Apply(Harmony);
+            MissionPatch.Enable(Harmony);
+            MissionViewPatch.Enable(Harmony);
+            ModulePatch.Enable(Harmony);
+            ScreenManagerPatch.Enable(Harmony);
 
             if (ModuleInfoHelper.GetLoadedModules().Any(m => string.Equals(m.Id, "BetterExceptionWindow", StringComparison.InvariantCultureIgnoreCase)))
             {
@@ -53,10 +53,10 @@ namespace Bannerlord.ButterLib.ExceptionHandler
 
         public static void Disable()
         {
-            MissionPatch.Deapply(Harmony);
-            MissionViewPatch.Deapply(Harmony);
-            ModulePatch.Deapply(Harmony);
-            ScreenManagerPatch.Deapply(Harmony);
+            MissionPatch.Disable(Harmony);
+            MissionViewPatch.Disable(Harmony);
+            ModulePatch.Disable(Harmony);
+            ScreenManagerPatch.Disable(Harmony);
 
             if (ModuleInfoHelper.GetLoadedModules().Any(m => string.Equals(m.Id, "BetterExceptionWindow", StringComparison.InvariantCultureIgnoreCase)))
             {
