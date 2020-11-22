@@ -38,6 +38,8 @@ namespace Bannerlord.ButterLib
 Make sure ButterLib is loaded before them!";
         private const string SErrorOfficialModules =
 @"{=5k4Eqevh53}The following modules were loaded before ButterLib:";
+        private const string SMessageContinue =
+@"{=eXs6FLm5DP}It's strongly recommended to terminate the game now. Do you wish to terminate it?";
 
         internal event Action<float>? OnApplicationTickEvent;
 
@@ -174,6 +176,8 @@ Make sure ButterLib is loaded before them!";
                 sb.AppendLine(new TextObject(SErrorHarmonyNotFound).ToString());
             }
 
+            // TODO: Keep it optional for now
+            /*
             var moduleLoaderModule = loadedModules.SingleOrDefault(x => x.Id == "Bannerlord.ModuleLoader");
             var moduleLoaderIndex = moduleLoaderModule is not null ? loadedModules.IndexOf(moduleLoaderModule) : -1;
             if (moduleLoaderIndex == -1)
@@ -181,6 +185,7 @@ Make sure ButterLib is loaded before them!";
                 if (sb.Length != 0) sb.AppendLine();
                 sb.AppendLine(new TextObject(SErrorModuleLoaderNotFound).ToString());
             }
+            */
 
             var butterLibModule = loadedModules.SingleOrDefault(x => x.Id == "Bannerlord.ButterLib");
             var butterLibModuleIndex = butterLibModule is not null ? loadedModules.IndexOf(butterLibModule) : -1;
@@ -203,8 +208,15 @@ Make sure ButterLib is loaded before them!";
 
             if (sb.Length > 0)
             {
-                MessageBox.Show(sb.ToString(), new TextObject(SWarningTitle).ToString(), MessageBoxButtons.OK);
-                //Environment.Exit(1);
+                sb.AppendLine();
+                sb.AppendLine(new TextObject(SMessageContinue).ToString());
+
+                switch (MessageBox.Show(sb.ToString(), new TextObject(SWarningTitle).ToString(), MessageBoxButtons.YesNo))
+                {
+                    case DialogResult.Yes:
+                        Environment.Exit(1);
+                        break;
+                }
             }
         }
 
