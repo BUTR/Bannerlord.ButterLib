@@ -55,14 +55,16 @@ namespace Bannerlord.ButterLib.Implementation
         {
             base.OnSubModuleLoad();
 
+            var serviceProvider = ServiceRegistrationWasCalled ? this.GetServiceProvider() : this.GetTempServiceProvider();
+
             if (!ServiceRegistrationWasCalled)
                 OnServiceRegistration();
 
-            Logger = this.GetServiceProvider().GetRequiredService<ILogger<SubModule>>();
+            Logger = serviceProvider.GetRequiredService<ILogger<SubModule>>();
             Logger.LogTrace("ButterLib.Implementation: OnSubModuleLoad");
 
             Logger.LogInformation("Wrapping DebugManager of type {type} with DebugManagerWrapper.", Debug.DebugManager.GetType());
-            Debug.DebugManager = new DebugManagerWrapper(Debug.DebugManager, this.GetServiceProvider()!);
+            Debug.DebugManager = new DebugManagerWrapper(Debug.DebugManager, serviceProvider!);
 
             HotKeySubSystem.Enable();
 
@@ -77,6 +79,8 @@ namespace Bannerlord.ButterLib.Implementation
             if (!OnBeforeInitialModuleScreenSetAsRootWasCalled)
             {
                 OnBeforeInitialModuleScreenSetAsRootWasCalled = true;
+
+                Logger = this.GetServiceProvider().GetRequiredService<ILogger<SubModule>>();
 
                 if (Debug.DebugManager is not DebugManagerWrapper)
                 {

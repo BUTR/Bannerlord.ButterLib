@@ -10,11 +10,11 @@
     <!--Microsoft Extension Libraries Version-->
     <ExtensionVersion>2.0.0</ExtensionVersion>
     <!--BuildResources Version-->
-    <BuildResourcesVersion>1.0.0.23</BuildResourcesVersion>
+    <BuildResourcesVersion>1.0.0.25</BuildResourcesVersion>
     <!--Current Bannerlord Stable Version-->
-    <StableVersion>1.5.3</StableVersion>
+    <StableVersion>1.5.4</StableVersion>
     <!--Current Bannerlord Beta Version-->
-    <BetaVersion>1.5.4</BetaVersion>
+    <BetaVersion>1.5.5</BetaVersion>
     <!-- -->
     <GameVersion Condition="$(Configuration) == 'Stable_Debug' OR $(Configuration) == 'Stable_Release'">$(StableVersion)</GameVersion>
     <GameVersion Condition="$(Configuration) == 'Beta_Debug' OR $(Configuration) == 'Beta_Release'">$(BetaVersion)</GameVersion>

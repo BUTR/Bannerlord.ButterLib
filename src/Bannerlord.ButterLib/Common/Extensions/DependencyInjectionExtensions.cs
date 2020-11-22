@@ -46,7 +46,7 @@ namespace Bannerlord.ButterLib.Common.Extensions
         /// <summary>
         /// For Stage 2.
         /// </summary>
-        public static IServiceProvider? GetTempServiceProvider(this MBSubModuleBase _) => ButterLibSubModule.ServiceProvider ?? ButterLibSubModule.Services?.BuildServiceProvider();
+        public static IServiceProvider? GetTempServiceProvider(this MBSubModuleBase _) => ButterLibSubModule.Services?.BuildServiceProvider();
 
         private static readonly string ModLogsPath = Path.Combine(Utilities.GetConfigsPath(), "ModLogs");
         private static readonly string OutputTemplate = "[{Timestamp:HH:mm:ss.fff}] [{SourceContext}] [{Level:u3}]: {Message:lj}{NewLine}{Exception}";

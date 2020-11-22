@@ -27,9 +27,10 @@ namespace Bannerlord.ButterLib.Implementation.HotKeys
                     idMax = gameKey.Id + 1;
                 }
             }
-            // There's a sneaky extra key in here for unclear reasons.
-            if (idMax == 69) idMax++;
-            return new HotKeyManagerImplementation(idMax,modName);
+            if (idMax < 73)
+                idMax = 73;
+
+            return new HotKeyManagerImplementation(idMax, modName);
         }
     }
 }
