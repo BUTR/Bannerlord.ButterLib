@@ -32,6 +32,8 @@ It should load right after Harmony!";
 Make sure ModuleLoader is loaded before them!";
         private const string SErrorOfficialModules =
 @"{=3ys4VQT7CQ}The following modules were loaded before ModuleLoader:";
+        private const string SMessageContinue =
+@"{=eXs6FLm5DP}It's strongly recommended to terminate the game now. Do you wish to terminate it?";
 
         private delegate void OnSubModuleLoadDelegate(MBSubModuleBase instance);
         private delegate void OnServiceRegistrationDelegate();
@@ -135,8 +137,15 @@ Make sure ModuleLoader is loaded before them!";
 
             if (sb.Length > 0)
             {
-                MessageBox.Show(sb.ToString(), new TextObject(SWarningTitle).ToString(), MessageBoxButtons.OK);
-                Environment.Exit(1);
+                sb.AppendLine();
+                sb.AppendLine(new TextObject(SMessageContinue).ToString());
+
+                switch (MessageBox.Show(sb.ToString(), new TextObject(SWarningTitle).ToString(), MessageBoxButtons.YesNo))
+                {
+                    case DialogResult.Yes:
+                        Environment.Exit(1);
+                        break;
+                }
             }
         }
     }
