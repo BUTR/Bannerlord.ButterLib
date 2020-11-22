@@ -10,12 +10,12 @@
   <Url value="https://www.nexusmods.com/mountandblade2bannerlord/mods/2018" />
   <DependedModules>
     <DependedModule Id="Bannerlord.Harmony" />
-    <DependedModule Id="Bannerlord.ModuleLoader" />
+    <!--<DependedModule Id="Bannerlord.ModuleLoader" />-->
   </DependedModules>
   <!-- Prototype -->
   <DependedModuleMetadatas>
     <DependedModuleMetadata id="Bannerlord.Harmony" order="LoadBeforeThis" version="v$harmonyversion$" />
-    <DependedModuleMetadata id="Bannerlord.ModuleLoader" order="LoadBeforeThis" />
+    <!--<DependedModuleMetadata id="Bannerlord.ModuleLoader" order="LoadBeforeThis" />-->
 
     <DependedModuleMetadata id="Native" order="LoadAfterThis" />
     <DependedModuleMetadata id="SandBoxCore" order="LoadAfterThis" optional="true" />
