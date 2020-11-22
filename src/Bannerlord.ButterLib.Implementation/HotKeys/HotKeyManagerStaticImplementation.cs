@@ -17,20 +17,11 @@ namespace Bannerlord.ButterLib.Implementation.HotKeys
         {
             var doesModAlreadyHaveRegisteredKeys = TaleWorlds.InputSystem.HotKeyManager.GetAllCategories()
                 .Any(x => string.Equals(x.GameKeyCategoryId, modName, StringComparison.OrdinalIgnoreCase));
+
             if (doesModAlreadyHaveRegisteredKeys)
                 throw new ArgumentException("Hotkeys For Mod With This Name Already Exists.", nameof(modName));
-            var idMax = 0;
-            foreach (var category in TaleWorlds.InputSystem.HotKeyManager.GetAllCategories())
-            {
-                foreach (var gameKey in category.RegisteredGameKeys.Where(gameKey => gameKey is not null && gameKey.Id > idMax))
-                {
-                    idMax = gameKey.Id + 1;
-                }
-            }
-            if (idMax < 73)
-                idMax = 73;
 
-            return new HotKeyManagerImplementation(idMax, modName);
+            return new HotKeyManagerImplementation(modName);
         }
     }
 }

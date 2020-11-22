@@ -22,14 +22,13 @@ namespace Bannerlord.ButterLib.Implementation.HotKeys
     {
         internal static readonly List<HotKeyBase> HotKeys = new List<HotKeyBase>();
 
-        private int _currentId;
+        private int _currentId = 150; // should be enough no prevent collision with the game
         private readonly string _subModName;
         private readonly List<HotKeyBase> _hotKeys = new List<HotKeyBase>();
 
-        internal HotKeyManagerImplementation(int startId, string subModName)
+        internal HotKeyManagerImplementation(string subModName)
         {
             _subModName = subModName;
-            _currentId = startId;
         }
 
         public override T Add<T>(T hotkey)
@@ -46,7 +45,7 @@ namespace Bannerlord.ButterLib.Implementation.HotKeys
 
         public override IReadOnlyList<HotKeyBase> Build()
         {
-            var hotKeyCategoryContainer = new HotKeyCategoryContainer(_subModName, _currentId + 1, _hotKeys);
+            var hotKeyCategoryContainer = new HotKeyCategoryContainer(_subModName, _hotKeys);
             TWHotKeyManager.Initialize("Bannerlord", Utilities.GetConfigsPath() + "BannerlordGameKeys.xml", new List<GameKeyContext> { hotKeyCategoryContainer }, true);
             var keys = hotKeyCategoryContainer.RegisteredGameKeys;
             foreach (var hotKey in _hotKeys)
