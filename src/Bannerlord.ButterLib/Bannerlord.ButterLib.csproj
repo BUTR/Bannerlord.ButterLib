@@ -53,6 +53,11 @@
   <!--NuGet References-->
 
   <ItemGroup>
+    <InternalsVisibleTo Include="Bannerlord.ButterLib.Implementation.1.4.3" />
+    <InternalsVisibleTo Include="Bannerlord.ButterLib.Implementation.1.5.0" />
+    <InternalsVisibleTo Include="Bannerlord.ButterLib.Implementation.1.5.1" />
+    <InternalsVisibleTo Include="Bannerlord.ButterLib.Implementation.1.5.2" />
+    <InternalsVisibleTo Include="Bannerlord.ButterLib.Implementation.1.5.3" />
     <InternalsVisibleTo Include="Bannerlord.ButterLib.Implementation.$(StableVersion)" />
     <InternalsVisibleTo Include="Bannerlord.ButterLib.Implementation.$(BetaVersion)" />
     <InternalsVisibleTo Include="Bannerlord.ButterLib.Tests" />
