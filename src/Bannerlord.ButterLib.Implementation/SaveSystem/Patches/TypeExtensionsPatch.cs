@@ -34,9 +34,21 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
                    ?? NullLogger<TypeExtensionsPatch>.Instance;
 
             return NotNull(TargetType, nameof(TargetType))
-                 & NotNull(TargetMethod, nameof(TargetMethod))
-                 & NotNull(PatchMethod, nameof(PatchMethod))
-                && harmony.Patch(TargetMethod, prefix: new HarmonyMethod(PatchMethod)) is not null;
+                   & NotNull(TargetMethod, nameof(TargetMethod))
+                   & NotNull(PatchMethod, nameof(PatchMethod))
+                   && harmony.Patch(TargetMethod, prefix: new HarmonyMethod(PatchMethod)) is not null;
+        }
+
+        internal static bool Deapply(Harmony harmony)
+        {
+            if (NotNull(TargetType, nameof(TargetType))
+                & NotNull(TargetMethod, nameof(TargetMethod))
+                & NotNull(PatchMethod, nameof(PatchMethod)))
+            {
+                harmony.Unpatch(TargetMethod, PatchMethod);
+            }
+
+            return true;
         }
 
         private static readonly Type? TargetType = typeof(MetaData).Assembly.GetType("TaleWorlds.SaveSystem.TypeExtensions");

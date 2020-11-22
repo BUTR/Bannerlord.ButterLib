@@ -46,6 +46,12 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
             return Patches.Select(p => p.IsReady).All(ready => ready) && Patches.All(p => p.Apply(harmony));
         }
 
+        internal static bool Deapply(Harmony harmony)
+        {
+            // TODO:
+            return false;
+        }
+
         // PATCH DEFINITIONS
 
         private delegate bool IsContainerDelegate(Type type);

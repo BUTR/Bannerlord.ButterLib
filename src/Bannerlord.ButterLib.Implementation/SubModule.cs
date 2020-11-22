@@ -4,17 +4,13 @@ using Bannerlord.ButterLib.DistanceMatrix;
 using Bannerlord.ButterLib.HotKeys;
 using Bannerlord.ButterLib.Implementation.CampaignIdentifier;
 using Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehaviors;
-using Bannerlord.ButterLib.Implementation.CampaignIdentifier.Patches;
 using Bannerlord.ButterLib.Implementation.Common.Extensions;
 using Bannerlord.ButterLib.Implementation.DistanceMatrix;
 using Bannerlord.ButterLib.Implementation.HotKeys;
 using Bannerlord.ButterLib.Implementation.Logging;
 using Bannerlord.ButterLib.Implementation.ObjectSystem;
-using Bannerlord.ButterLib.Implementation.ObjectSystem.Patches;
-using Bannerlord.ButterLib.Implementation.SaveSystem.Patches;
+using Bannerlord.ButterLib.Implementation.SaveSystem;
 using Bannerlord.ButterLib.ObjectSystem;
-
-using HarmonyLib;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -88,15 +84,7 @@ namespace Bannerlord.ButterLib.Implementation
                     Debug.DebugManager = new DebugManagerWrapper(Debug.DebugManager, this.GetServiceProvider()!);
                 }
 
-                var campaignIdentifierHarmony = new Harmony("Bannerlord.ButterLib.CampaignIdentifier");
-                CharacterCreationContentApplyCulturePatch.Apply(campaignIdentifierHarmony);
-                ClanInitializeClanPatch.Apply(campaignIdentifierHarmony);
-
-                CampaignBehaviorManagerPatch.Apply(new Harmony("Bannerlord.ButterLib.MBObjectExtensionDataStore"));
-
-                var saveSystemHarmony = new Harmony("Bannerlord.ButterLib.SaveSystem");
-                TypeExtensionsPatch.Apply(saveSystemHarmony); // Adds support for saving many more container types
-                //DefinitionContextPatch.Apply(saveSystemHarmony); // Fixes save corruption & crashes when duplicate types are defined
+                SaveSystemSubSystem.Enable();
             }
 
             Logger.LogTrace("ButterLib.Implementation: OnBeforeInitialModuleScreenSetAsRoot: Done");

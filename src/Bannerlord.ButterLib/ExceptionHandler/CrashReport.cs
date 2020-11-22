@@ -12,11 +12,11 @@ namespace Bannerlord.ButterLib.ExceptionHandler
 {
     public class CrashReport
     {
-        public Exception Exception { get; set; }
-        public List<ExtendedModuleInfo> LoadedModules { get; set; } = ModuleInfoHelper.GetExtendedLoadedModules();
-        public List<Assembly> ModuleLoadedAssemblies { get; set; } = new List<Assembly>();
-        public List<Assembly> ExternalLoadedAssemblies { get; set; } = new List<Assembly>();
-        public Dictionary<MethodBase, HarmonyLib.Patches> LoadedHarmonyPatches { get; set; } = new Dictionary<MethodBase, HarmonyLib.Patches>();
+        public Exception Exception { get; }
+        public List<ExtendedModuleInfo> LoadedModules { get; } = ModuleInfoHelper.GetExtendedLoadedModules();
+        public List<Assembly> ModuleLoadedAssemblies { get; } = new List<Assembly>();
+        public List<Assembly> ExternalLoadedAssemblies { get; } = new List<Assembly>();
+        public Dictionary<MethodBase, HarmonyLib.Patches> LoadedHarmonyPatches { get; } = new Dictionary<MethodBase, HarmonyLib.Patches>();
 
         public CrashReport(Exception exception)
         {

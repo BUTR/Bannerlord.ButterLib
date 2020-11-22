@@ -40,7 +40,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Extensions
          * <param name="object">A game object.</param>
          * <param name="name">The variable's name.</param>
          */
-        public static bool HasVariable(this MBObjectBase @object, string name)
+        internal static bool HasVariable(this MBObjectBase @object, string name)
         {
             if (name is null!)
                 throw new ArgumentNullException(nameof(name));
