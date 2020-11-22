@@ -46,6 +46,7 @@ if (!document.getElementsByClassName) {
     <td>
       <button style='float:right; margin-left:10px;' onclick='window.external.Close()'>Close Report</button>
       <button style='float:right; margin-left:10px;' onclick='window.external.SaveReport()'>Save Report</button>
+      <button style='float:right; margin-left:10px;' onclick='window.external.CopyAsHTML()'>Copy as HTML</button>
     </td>
   </tr>
   </tbody>
@@ -78,6 +79,11 @@ if (!document.getElementsByClassName) {
                     }
                 }
             };
+        }
+
+        public void CopyAsHTML()
+        {
+            Clipboard.SetText(ReportInHtml);
         }
 
         public void SaveReport()

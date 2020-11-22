@@ -6,6 +6,7 @@ using HarmonyLib;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
@@ -16,6 +17,8 @@ namespace Bannerlord.ButterLib.ExceptionHandler
 {
     internal static class HtmlBuilder
     {
+        private static string NL = Environment.NewLine;
+
         public static void BuildAndShow(CrashReport crashReport)
         {
             var html = Build(crashReport);
@@ -29,27 +32,42 @@ namespace Bannerlord.ButterLib.ExceptionHandler
     <meta charset='utf-8'>
   </head>
   <body>
-    <p>
-	  <b>Bannerlord has encountered a problem and will close itself.</b>
-	  <br/>
-	  This is a community Crash Report. Please save it and use it for reporting the error.
-	  <br/>
-	  Most likely this error was caused by a custom installed module.
-	  <br/>
-	  <br/>
-      If you were in the middle of something, the progress might be lost.
-	  <br/>
-    </p>
-    <h2><a href='javascript:;' style='font-family: ""Consolas""' onclick='showHideById(this, ""exception"")'>+ Exception</a></h2>
-    <div id='exception' style='display: none'>
+     <table style='width: 100%;'>
+      <tbody>
+        <tr>
+          <td style='width: 80%;'>
+            <p>
+              <b>Bannerlord has encountered a problem and will close itself.</b>
+              <br/>
+              This is a community Crash Report. Please save it and use it for reporting the error.
+              <br/>
+              Most likely this error was caused by a custom installed module.
+              <br/>
+              <br/>
+              If you were in the middle of something, the progress might be lost.
+              <br/>
+            </p>
+          </td>
+          <td>
+            <select style='float:right; margin-left:10px;' class=""input"" onchange=""changeFontSize(this);"">
+              <option value=""1.0em"" selected=""selected"">Standard</option>
+			  <option value=""0.9em"">Medium</option>
+              <option value=""0.8em"">Small</option>
+            </select>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h2><a href='javascript:;' onclick='showHideById(this, ""exception"")'>+ Exception</a></h2>
+    <div id='exception' style='font-family: ""Consolas""; font-size: small; display: none'>
     {GetRecursiveExceptionHtml(crashReport.Exception)}
     </div>
-    <h2><a href='javascript:;' style='font-family: ""Consolas""' onclick='showHideById(this, ""installed-modules"")'>+ Installed Modules</a></h2>
-    <div id='installed-modules' style='display: none'>
+    <h2><a href='javascript:;' onclick='showHideById(this, ""installed-modules"")'>+ Installed Modules</a></h2>
+    <div id='installed-modules' style='font-family: ""Consolas""; font-size: small; display: none'>
     {GetModuleListHtml(crashReport)}
     </div>
-    <h2><a href='javascript:;' style='font-family: ""Consolas""' onclick='showHideById(this, ""assemblies"")'>+ Assemblies</a></h2>
-    <div id='assemblies' style='display: none'>
+    <h2><a href='javascript:;' onclick='showHideById(this, ""assemblies"")'>+ Assemblies</a></h2>
+    <div id='assemblies' style='font-family: ""Consolas""; font-size: small; display: none'>
     <label>Hide: </label>
     <label><input type='checkbox' onclick='showHideByClassName(this, ""tw_assembly"")'> TaleWorlds</label>
     <label><input type='checkbox' onclick='showHideByClassName(this, ""sys_assembly"")'> System</label>
@@ -57,8 +75,8 @@ namespace Bannerlord.ButterLib.ExceptionHandler
     <label><input type='checkbox' onclick='showHideByClassName(this, ""unclas_assembly"")'> Unclassified</label>
     {GetAssemblyListHtml(crashReport)}
     </div>
-    <h2><a href='javascript:;' style='font-family: ""Consolas""' onclick='showHideById(this, ""harmony-patches"")'>+ Harmony Patches</a></h2>
-    <div id='harmony-patches' style='display: none'>
+    <h2><a href='javascript:;' onclick='showHideById(this, ""harmony-patches"")'>+ Harmony Patches</a></h2>
+    <div id='harmony-patches' style='font-family: ""Consolas""; font-size: small; display: none'>
     {GetHarmonyPatchesListHtml(crashReport)}
     </div>
     <script>
@@ -77,17 +95,23 @@ namespace Bannerlord.ButterLib.ExceptionHandler
               list[i].style.display = (element.checked) ? 'none' : 'list-item';
           }}
       }}
+       function changeFontSize(fontSize) {{
+          document.getElementById(""exception"").style.fontSize = fontSize.value;
+          document.getElementById(""installed-modules"").style.fontSize = fontSize.value;
+          document.getElementById(""assemblies"").style.fontSize = fontSize.value;
+          document.getElementById(""harmony-patches"").style.fontSize = fontSize.value;
+      }}
     </script>
   </body>
 </html>";
 
         private static string GetRecursiveExceptionHtml(Exception ex) => new StringBuilder()
-            .Append("Exception information")
-            .Append($"</br>Type: {ex.GetType().FullName}")
-            .Append(!string.IsNullOrWhiteSpace(ex.Message) ? $"</br>Message: {ex.Message}" : string.Empty)
-            .Append(!string.IsNullOrWhiteSpace(ex.Source) ? $"</br>Source: {ex.Source}" : string.Empty)
-            .Append(!string.IsNullOrWhiteSpace(ex.StackTrace) ? $"</br>CallStack:</br><ol><li>{string.Join("<li></li>", ex.StackTrace.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries))}</li></ol>" : string.Empty)
-            .Append(ex.InnerException != null ? $"</br></br>Inner {GetRecursiveExceptionHtml(ex.InnerException)}" : string.Empty)
+            .AppendLine("Exception information")
+            .AppendLine($"<br/>{NL}Type: {ex.GetType().FullName}")
+            .AppendLine(!string.IsNullOrWhiteSpace(ex.Message) ? $"</br>{NL}Message: {ex.Message}" : string.Empty)
+            .AppendLine(!string.IsNullOrWhiteSpace(ex.Source) ? $"</br>{NL}Source: {ex.Source}" : string.Empty)
+            .AppendLine(!string.IsNullOrWhiteSpace(ex.StackTrace) ? $"</br>{NL}CallStack:{NL}</br>{NL}<ol>{NL}<li>{string.Join($"</li>{NL}<li>", ex.StackTrace.Split(new[] { NL }, StringSplitOptions.RemoveEmptyEntries))}</li>{NL}</ol>" : string.Empty)
+            .AppendLine(ex.InnerException != null ? $"<br/>{NL}<br/>{NL}Inner {GetRecursiveExceptionHtml(ex.InnerException)}" : string.Empty)
             .ToString();
 
         private static string GetModuleListHtml(CrashReport crashReport)
@@ -176,7 +200,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             var sb1 = new StringBuilder();
             var sb2 = new StringBuilder();
 
-            void AppendPatches(string name, IEnumerable<Patch> patches)
+            void AppendPatches(string name, IReadOnlyCollection<Patch> patches)
             {
                 sb2.Clear();
                 foreach (var patch in patches)
@@ -191,28 +215,34 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                         .AppendLine("</li>");
                 }
 
-                sb1.AppendLine("<li>")
-                    .AppendLine(name)
-                    .AppendLine("<ul>")
-                    .AppendLine(sb2.ToString())
-                    .AppendLine("</ul>")
-                    .AppendLine("</li>");
+                if (patches.Count > 0)
+                {
+                    sb1.AppendLine("<li>")
+                        .AppendLine(name)
+                        .AppendLine("<ul>")
+                        .AppendLine(sb2.ToString())
+                        .AppendLine("</ul>")
+                        .AppendLine("</li>");
+                }
             }
 
             sb0.AppendLine("<ul>");
             foreach (var (originalMethod, patches) in crashReport.LoadedHarmonyPatches)
             {
+                sb1.Clear();
+
                 AppendPatches(nameof(patches.Prefixes), patches.Prefixes);
                 AppendPatches(nameof(patches.Postfixes), patches.Postfixes);
                 AppendPatches(nameof(patches.Finalizers), patches.Finalizers);
                 AppendPatches(nameof(patches.Transpilers), patches.Transpilers);
 
                 sb0.AppendLine("<li>")
-                    .Append(originalMethod!.DeclaringType!.FullName).AppendLine(originalMethod.Name)
+                    .Append(originalMethod!.DeclaringType!.FullName).Append(".").AppendLine(originalMethod.Name)
                     .AppendLine("<ul>")
                     .AppendLine(sb1.ToString())
                     .AppendLine("</ul>")
-                    .AppendLine("</li>");
+                    .AppendLine("</li>")
+                    .AppendLine("<br/>");
             }
             sb0.AppendLine("</ul>");
 
