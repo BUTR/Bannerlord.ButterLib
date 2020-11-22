@@ -23,6 +23,12 @@
   </ItemGroup>
   <!--NuGet Package-->
 
+  <!--Windows Forms-->
+  <ItemGroup>
+    <_SDKImplicitReference Include="System.Windows.Forms" />
+  </ItemGroup>
+  <!--Windows Forms-->
+
   <!--NuGet References-->
   <ItemGroup>
     <PackageReference Include="Bannerlord.BuildResources" Version="$(BuildResourcesVersion)">
@@ -45,11 +51,6 @@
     <PackageReference Include="Serilog.Sinks.File" Version="4.1.0" />
   </ItemGroup>
   <!--NuGet References-->
-
-  <!--Windows Forms-->
-  <ItemGroup>
-    <_SDKImplicitReference Include="System.Windows.Forms" />
-  </ItemGroup>
 
   <ItemGroup>
     <InternalsVisibleTo Include="Bannerlord.ButterLib.Implementation.$(StableVersion)" />

@@ -14,6 +14,11 @@ namespace Bannerlord.ButterLib.SubModuleWrappers
     {
         protected List<MBSubModuleBaseWrapper> SubModules { get; } = new List<MBSubModuleBaseWrapper>();
 
+        public virtual void OnServiceRegistration()
+        {
+            foreach (var subModule in SubModules)
+                subModule.OnServiceRegistration();
+        }
         protected override void OnSubModuleLoad()
         {
             base.OnSubModuleLoad();
@@ -50,6 +55,16 @@ namespace Bannerlord.ButterLib.SubModuleWrappers
                 subModule.GameStart(game, gameStarterObject);
         }
 
+        /// <exclude/>
+        public void SubModuleLoad() => OnSubModuleLoad();
+        /// <exclude/>
+        public void SubModuleUnloaded() => OnSubModuleUnloaded();
+        /// <exclude/>
+        public void ApplicationTick(float dt) => OnApplicationTick(dt);
+        /// <exclude/>
+        public void BeforeInitialModuleScreenSetAsRoot() => OnBeforeInitialModuleScreenSetAsRoot();
+        /// <exclude/>
+        public void GameStart(Game game, IGameStarter gameStarterObject) => OnGameStart(game, gameStarterObject);
         /// <exclude/>
         public override bool DoLoading(Game game)
         {

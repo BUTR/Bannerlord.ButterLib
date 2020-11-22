@@ -8,7 +8,7 @@ The `HotKeyManager` type and associated views and functionality inside of Banner
 public class MySubModule : MBSubModuleBase
 {
     private bool _campaignIsStarted;
-    protected override void OnSubModuleLoad()
+    protected override void OnBeforeInitialModuleScreenSetAsRoot()
     {
         // Create a new HotKeyManager for your mod.
         var hkm = HotKeyManager.Create("MyMod");
@@ -36,10 +36,10 @@ public class MySubModule : MBSubModuleBase
 
 public class TestKey1 : HotKeyBase
 {
-    protected internal override string DisplayName { get; }
-    protected internal override string Description { get; }
-    protected internal override InputKey DefaultKey { get; }
-    protected internal override string Category { get; }
+    protected override string DisplayName { get; }
+    protected override string Description { get; }
+    protected override InputKey DefaultKey { get; }
+    protected override string Category { get; }
 
     public TestKey1() : base(nameof(TestKey1))
     {

@@ -17,7 +17,9 @@ namespace Bannerlord.ButterLib.Implementation.HotKeys
 {
     internal sealed class HotKeyCategoryContainer : GameKeyContext
     {
-        public HotKeyCategoryContainer(string categoryId, int gameKeysCount, IEnumerable<HotKeyBase> keys) : base(categoryId, gameKeysCount)
+        private static int ListCapacity = 300;
+
+        public HotKeyCategoryContainer(string categoryId, IEnumerable<HotKeyBase> keys) : base(categoryId, ListCapacity)
         {
             var keyName = Module.CurrentModule.GlobalTextManager.AddGameText("str_key_name");
             var keyDesc = Module.CurrentModule.GlobalTextManager.AddGameText("str_key_description");

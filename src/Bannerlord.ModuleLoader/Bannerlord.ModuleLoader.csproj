@@ -1,0 +1,43 @@
+<!--EXTERNAL_PROPERTIES: GameVersion;BuildResourcesVersion;HarmonyVersion-->
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>9.0</LangVersion>
+    <Nullable>enable</Nullable>
+
+    <Configurations>Stable_Debug;Stable_Release;Beta_Debug;Beta_Release</Configurations>
+  </PropertyGroup>
+
+  <!--Module Creation-->
+  <PropertyGroup>
+    <ModuleName>$(MSBuildProjectName)</ModuleName>
+  </PropertyGroup>
+  <!--Module Creation-->
+
+  <ItemGroup>
+    <Compile Include="..\Bannerlord.ButterLib\Common\Extensions\DictionaryExtensions.cs" Link="ButterLib\DictionaryExtensions.cs" />
+    <Compile Include="..\Bannerlord.ButterLib\Common\Helpers\AccessTools2.cs" Link="ButterLib\AccessTools2.cs" />
+    <Compile Include="..\Bannerlord.ButterLib\Common\Helpers\ExtendedModuleInfo.cs" Link="ButterLib\ExtendedModuleInfo.cs" />
+    <Compile Include="..\Bannerlord.ButterLib\Common\Helpers\ExtendedSubModuleInfo.cs" Link="ButterLib\ExtendedSubModuleInfo.cs" />
+    <Compile Include="..\Bannerlord.ButterLib\Common\Helpers\ModuleInfoHelper.cs" Link="ButterLib\ModuleInfoHelper.cs" />
+    <Compile Include="..\Bannerlord.ButterLib\Internal\NullableAttributes.cs" Link="ButterLib\NullableAttributes.cs" />
+    <Compile Include="..\Bannerlord.ButterLib\SubModuleWrappers\MBSubModuleBaseWrapper.cs" Link="ButterLib\MBSubModuleBaseWrapper.cs" />
+  </ItemGroup>
+
+  <!--Windows Forms-->
+  <ItemGroup>
+    <_SDKImplicitReference Include="System.Windows.Forms" />
+  </ItemGroup>
+  <!--Windows Forms-->
+
+  <ItemGroup>
+    <PackageReference Include="Bannerlord.BuildResources" Version="$(BuildResourcesVersion)">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Bannerlord.ReferenceAssemblies.Core.EarlyAccess" Version="$(GameVersion).*" PrivateAssets="All" />
+    <PackageReference Include="Lib.Harmony" Version="$(HarmonyVersion)" IncludeAssets="compile" />
+  </ItemGroup>
+
+</Project>

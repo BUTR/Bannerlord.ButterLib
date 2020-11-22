@@ -234,13 +234,25 @@ namespace Bannerlord.ButterLib
         }
 
 
-        private ILogger _logger = default!;
+        private bool ServiceRegistrationWasCalled { get; set; }
+
+        public override void OnServiceRegistration()
+        {
+            ServiceRegistrationWasCalled = true;
+
+            var logger = this.GetTempServiceProvider()?.GetRequiredService<ILogger<ImplementationLoaderSubModule>>() ?? NullLogger<ImplementationLoaderSubModule>.Instance;
+            SubModules.AddRange(LoadAllImplementations(logger).Select(x => new MBSubModuleBaseWrapper(x)).ToList());
+
+            base.OnServiceRegistration();
+        }
 
         protected override void OnSubModuleLoad()
         {
-            _logger = ButterLibSubModule.Instance?.GetTempServiceProvider()?.GetRequiredService<ILogger<ImplementationLoaderSubModule>>() ?? NullLogger<ImplementationLoaderSubModule>.Instance;
-
-            SubModules.AddRange(LoadAllImplementations(_logger).Select(x => new MBSubModuleBaseWrapper(x)).ToList());
+            if (!ServiceRegistrationWasCalled)
+            {
+                var logger = this.GetTempServiceProvider()?.GetRequiredService<ILogger<ImplementationLoaderSubModule>>() ?? NullLogger<ImplementationLoaderSubModule>.Instance;
+                SubModules.AddRange(LoadAllImplementations(logger).Select(x => new MBSubModuleBaseWrapper(x)).ToList());
+            }
 
             base.OnSubModuleLoad();
         }
