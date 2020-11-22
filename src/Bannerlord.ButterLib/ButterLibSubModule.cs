@@ -90,6 +90,10 @@ Make sure ButterLib is loaded before them!";
             }
             else
             {
+                // ModuleInfoHelper will give false info if using flow without ModuleLoader
+                // ServiceRegistrationWasCalled is a good indicator if ModuleLoader is used
+                ModuleInfoHelper.PastInitialization = true;
+
                 serviceProvider = this.GetServiceProvider()!;
             }
 
@@ -124,7 +128,13 @@ Make sure ButterLib is loaded before them!";
                 OnBeforeInitialModuleScreenSetAsRootWasCalled = true;
 
                 if (DelayedServiceCreation)
+                {
+                    // ModuleInfoHelper will give false info if using flow without ModuleLoader
+                    // DelayedServiceCreation is a good indicator if ModuleLoader is used
+                    ModuleInfoHelper.PastInitialization = true;
+
                     InitializeServices();
+                }
             }
 
             Logger.LogTrace("OnBeforeInitialModuleScreenSetAsRoot() finished.");

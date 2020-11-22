@@ -20,8 +20,8 @@ namespace Bannerlord.ButterLib.Common.Helpers
             xmlDocument.Load(GetPath(alias));
             var xmlNodeModule = xmlDocument.SelectSingleNode("Module");
             Url = xmlNodeModule?.SelectSingleNode("Url")?.Attributes?["value"]?.InnerText;
-            var xmlNodeSubModule = xmlNodeModule.SelectNodes("SubModule");
-            for (var i = 0; i < xmlNodeSubModule.Count; i++)
+            var xmlNodeSubModule = xmlNodeModule?.SelectNodes("SubModule");
+            for (var i = 0; i < xmlNodeSubModule?.Count; i++)
             {
                 var subModuleInfo = new ExtendedSubModuleInfo();
                 subModuleInfo.LoadFrom(xmlNodeSubModule[i], System.IO.Path.Combine(Utilities.GetBasePath(), "Modules", alias));
