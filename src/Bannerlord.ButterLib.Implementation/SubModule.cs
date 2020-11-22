@@ -84,6 +84,10 @@ namespace Bannerlord.ButterLib.Implementation
                     Debug.DebugManager = new DebugManagerWrapper(Debug.DebugManager, this.GetServiceProvider()!);
                 }
 
+                CampaignIdentifierSubSystem.Enable();
+
+                ObjectSystemSubSystem.Enable();
+
                 SaveSystemSubSystem.Enable();
             }
 
