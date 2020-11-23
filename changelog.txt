@@ -1,4 +1,15 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.0.16
+Game Versions: e1.4.3,e1.5.0,e1.5.1,e1.5.2,e1.5.3,e1.5.4,e1.5.5
+* Fixed Harmony Patch report tree
+* Added "Copy As HTML" button for the report
+* Added switchable font sizes in the report for better readability
+---------------------------------------------------------------------------------------------------
+Version: 1.0.15
+Game Versions: e1.4.3,e1.5.0,e1.5.1,e1.5.2,e1.5.3,e1.5.4,e1.5.5
+* Added HotKeys from BannerLib
+* Added a better ExceptionHandler inspired by BetterExceptionWindow
+---------------------------------------------------------------------------------------------------
 Version: 1.0.14
 Game Versions: e1.4.3,e1.5.0,e1.5.1,e1.5.2,e1.5.3,e1.5.4
  * Fixed serialization issue
