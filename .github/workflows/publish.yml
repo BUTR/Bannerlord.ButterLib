@@ -38,11 +38,11 @@ jobs:
 
     - name: Build Bannerlord.ButterLib.Implementation (Stable_Release)
       run: >-
-        mkdir $PWD/bannerlord-stable
+        mkdir $PWD/bannerlord-stable;
         dotnet build src/Bannerlord.ButterLib.Implementation/Bannerlord.ButterLib.Implementation.csproj --configuration Stable_Release -p:GameFolder="$PWD/bannerlord-stable";
     - name: Build Bannerlord.ButterLib.Implementation (Beta_Release)
       run: >-
-        mkdir $PWD/bannerlord-beta
+        mkdir $PWD/bannerlord-beta;
         dotnet build src/Bannerlord.ButterLib.Implementation/Bannerlord.ButterLib.Implementation.csproj --configuration Beta_Release -p:GameFolder="$PWD/bannerlord-beta";
 
     - name: Upload Bannerlord Stable folder
