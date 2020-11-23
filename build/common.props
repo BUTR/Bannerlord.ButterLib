@@ -37,6 +37,10 @@
   </PropertyGroup>
 
 
+  <!--GitHub Actions-->
+  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup>
   <!--NuGet SorceLink-->
   <PropertyGroup>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
