@@ -3,7 +3,7 @@ name: Publish
 on:
   push:
     branches:
-      - master
+      - dev-1.0.15
 
 env:
   # Disable the .NET logo in the console output.
@@ -108,7 +108,7 @@ jobs:
         desc="${desc//$'\n'/'%0A'}"
         desc="${desc//$'\r'/'%0D'}"
         echo "::set-output name=mod_description::$desc"
-      shell: pwsh
+      shell: bash
 
     - name: Start Selenoid
       uses: Xotabu4/selenoid-github-action@v1
@@ -172,7 +172,7 @@ jobs:
         desc="${desc//$'\n'/'%0A'}"
         desc="${desc//$'\r'/'%0D'}"
         echo "::set-output name=mod_description::$desc"
-      shell: pwsh
+      shell: bash
 
     - name: Push to NuGet
       run: dotnet nuget push "./packages/*.nupkg" -k ${{secrets.NUGET_API_KEY}} -s https://www.nuget.org
@@ -240,7 +240,7 @@ jobs:
         desc="${desc//$'\n'/'%0A'}"
         desc="${desc//$'\r'/'%0D'}"
         echo "::set-output name=mod_description::$desc"
-      shell: pwsh
+      shell: bash
 
     - name: Create Release
       uses: actions/create-release@v1
