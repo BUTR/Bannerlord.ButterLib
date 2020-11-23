@@ -137,6 +137,7 @@ jobs:
 ###########################
   publish-on-nuget:
     name: Publish on NuGet (Stable)
+    needs: build-for-nexusmods
     runs-on: ubuntu-latest
     steps:
     - name: Checkout Repository
