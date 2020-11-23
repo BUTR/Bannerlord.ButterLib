@@ -58,7 +58,7 @@ namespace Bannerlord.ButterLib
             }
 
             var gameVersion = ApplicationVersionUtils.TryParse(ApplicationVersionUtils.GameVersionStr(), out var v) ? v : (ApplicationVersion?)null;
-            if (gameVersion == null)
+            if (gameVersion is null)
             {
                 logger?.LogError("Failed to get Game version!");
                 yield break;
@@ -132,14 +132,14 @@ namespace Bannerlord.ButterLib
             foreach (var subModuleType in subModules)
             {
                 var constructor = subModuleType.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.CreateInstance, null, Type.EmptyTypes, null);
-                if (constructor == null)
+                if (constructor is null)
                 {
                     logger?.LogError("SubModule {subModuleType} is missing a default constructor!", subModuleType);
                     continue;
                 }
 
                 var constructorFunc = AccessTools2.GetDelegate<ConstructorDelegate>(constructor);
-                if (constructorFunc == null)
+                if (constructorFunc is null)
                 {
                     logger?.LogError("SubModule {subModuleType}'s default constructor could not be converted to a delegate!", subModuleType);
                     continue;
@@ -155,9 +155,9 @@ namespace Bannerlord.ButterLib
         {
             using var assemblyVerifier = new AssemblyVerifier("ButterLib");
             var assemblyLoader = assemblyVerifier.GetLoader(out var exception);
-            if (assemblyLoader == null)
+            if (assemblyLoader is null)
             {
-                if (exception != null)
+                if (exception is not null)
                     logger?.LogError(0, exception, "AssemblyLoadProxy could not be initialized.");
                 else
                     logger?.LogError("AssemblyLoadProxy could not be initialized.");
@@ -166,7 +166,7 @@ namespace Bannerlord.ButterLib
             }
 
             // Load all current assemblies
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies().Where(a => !a.FullName.StartsWith("mscorlib") && !a.IsDynamic && !string.IsNullOrEmpty(a.Location)))
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies().Where(a => a.FullName?.StartsWith("mscorlib") == false && !a.IsDynamic && !string.IsNullOrEmpty(a.Location)))
                 assemblyLoader.LoadFile(assembly.Location);
 
             foreach (var implementation in implementations)
@@ -234,13 +234,25 @@ namespace Bannerlord.ButterLib
         }
 
 
-        private ILogger _logger = default!;
+        private bool ServiceRegistrationWasCalled { get; set; }
+
+        public override void OnServiceRegistration()
+        {
+            ServiceRegistrationWasCalled = true;
+
+            var logger = this.GetTempServiceProvider()?.GetRequiredService<ILogger<ImplementationLoaderSubModule>>() ?? NullLogger<ImplementationLoaderSubModule>.Instance;
+            SubModules.AddRange(LoadAllImplementations(logger).Select(x => new MBSubModuleBaseWrapper(x)).ToList());
+
+            base.OnServiceRegistration();
+        }
 
         protected override void OnSubModuleLoad()
         {
-            _logger = ButterLibSubModule.Instance?.GetTempServiceProvider()?.GetRequiredService<ILogger<ImplementationLoaderSubModule>>() ?? NullLogger<ImplementationLoaderSubModule>.Instance;
-
-            SubModules.AddRange(LoadAllImplementations(_logger).Select(x => new MBSubModuleBaseWrapper(x)).ToList());
+            if (!ServiceRegistrationWasCalled)
+            {
+                var logger = this.GetTempServiceProvider()?.GetRequiredService<ILogger<ImplementationLoaderSubModule>>() ?? NullLogger<ImplementationLoaderSubModule>.Instance;
+                SubModules.AddRange(LoadAllImplementations(logger).Select(x => new MBSubModuleBaseWrapper(x)).ToList());
+            }
 
             base.OnSubModuleLoad();
         }

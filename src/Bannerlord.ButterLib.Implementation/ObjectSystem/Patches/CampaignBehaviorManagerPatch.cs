@@ -22,35 +22,37 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem.Patches
         private delegate void SaveBehaviorDataDelegate(CampaignBehaviorBase campaignBehavior);
         private delegate void LoadBehaviorDataDelegate(CampaignBehaviorBase campaignBehavior);
 
-        private static ILogger _logger = default!;
+        private static ILogger _log = default!;
 
         // Application:
 
-        internal static void Apply(Harmony harmony)
+        internal static void Enable(Harmony harmony)
         {
-            _logger = ButterLibSubModule.Instance?.GetServiceProvider()?.GetRequiredService<ILogger<CampaignBehaviorManagerPatch>>() ??
+            _log = ButterLibSubModule.Instance?.GetServiceProvider()?.GetRequiredService<ILogger<CampaignBehaviorManagerPatch>>() ??
                 NullLogger<CampaignBehaviorManagerPatch>.Instance;
 
-            if (OnGameLoadedTargetMI == null)
-                _logger.LogError($"{nameof(OnGameLoadedTargetMI)} is null");
-            if (OnBeforeSaveTargetMI == null)
-                _logger.LogError($"{nameof(OnBeforeSaveTargetMI)} is null");
-            if (OnGameLoadedPatchMI == null)
-                _logger.LogError($"{nameof(OnGameLoadedPatchMI)} is null");
-            if (OnBeforeSavePatchMI == null)
-                _logger.LogError($"{nameof(OnBeforeSavePatchMI)} is null");
-            if (LoadBehaviorDataMI == null)
-                _logger.LogError($"{nameof(LoadBehaviorDataMI)} is null");
-            if (SaveBehaviorDataMI == null)
-                _logger.LogError($"{nameof(SaveBehaviorDataMI)} is null");
-            if (CampaignBehaviorDataStoreT == null)
-                _logger.LogError($"{nameof(CampaignBehaviorDataStoreT)} is null");
+            if (OnGameLoadedTargetMI is null)
+                _log.LogError($"{nameof(OnGameLoadedTargetMI)} is null");
+            if (OnBeforeSaveTargetMI is null)
+                _log.LogError($"{nameof(OnBeforeSaveTargetMI)} is null");
+            if (OnGameLoadedPatchMI is null)
+                _log.LogError($"{nameof(OnGameLoadedPatchMI)} is null");
+            if (OnBeforeSavePatchMI is null)
+                _log.LogError($"{nameof(OnBeforeSavePatchMI)} is null");
+            if (LoadBehaviorDataMI is null)
+                _log.LogError($"{nameof(LoadBehaviorDataMI)} is null");
+            if (SaveBehaviorDataMI is null)
+                _log.LogError($"{nameof(SaveBehaviorDataMI)} is null");
+            if (CampaignBehaviorDataStoreT is null)
+                _log.LogError($"{nameof(CampaignBehaviorDataStoreT)} is null");
 
-            if (OnGameLoadedTargetMI == null || OnBeforeSaveTargetMI == null ||
-                OnGameLoadedPatchMI == null  || OnBeforeSavePatchMI == null  ||
-                LoadBehaviorDataMI == null   || SaveBehaviorDataMI == null   ||
-                CampaignBehaviorDataStoreT == null)
+            if (OnGameLoadedTargetMI is null || OnBeforeSaveTargetMI is null ||
+                OnGameLoadedPatchMI is null  || OnBeforeSavePatchMI is null  ||
+                LoadBehaviorDataMI is null   || SaveBehaviorDataMI is null   ||
+                CampaignBehaviorDataStoreT is null)
+            {
                 return;
+            }
 
             harmony.Patch(OnGameLoadedTargetMI, prefix: new HarmonyMethod(OnGameLoadedPatchMI));
             harmony.Patch(OnBeforeSaveTargetMI, postfix: new HarmonyMethod(OnBeforeSavePatchMI));
@@ -60,11 +62,13 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem.Patches
 
         private static readonly MethodInfo? OnGameLoadedTargetMI = AccessTools.Method(typeof(CampaignBehaviorManager), "OnGameLoaded");
 
-        private static readonly MethodInfo? OnGameLoadedPatchMI = AccessTools.Method(typeof(CampaignBehaviorManagerPatch), nameof(OnGameLoadedPrefix));
-
         private static readonly MethodInfo? OnBeforeSaveTargetMI = AccessTools.Method(typeof(CampaignBehaviorManager), "OnBeforeSave");
 
-        private static readonly MethodInfo? OnBeforeSavePatchMI = AccessTools.Method(typeof(CampaignBehaviorManagerPatch), nameof(OnBeforeSavePostfix));
+        private static readonly MethodInfo? OnGameLoadedPatchMI =
+            AccessTools.Method(typeof(CampaignBehaviorManagerPatch), nameof(OnGameLoadedPrefix));
+
+        private static readonly MethodInfo? OnBeforeSavePatchMI =
+            AccessTools.Method(typeof(CampaignBehaviorManagerPatch), nameof(OnBeforeSavePostfix));
 
         // Necessary reflection:
 
@@ -80,23 +84,23 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem.Patches
         [MethodImpl(MethodImplOptions.NoInlining)]
         private static void OnGameLoadedPrefix(object? ____campaignBehaviorDataStore)
         {
-            var mbObjectVariableStorage = ButterLibSubModule.Instance?.GetServiceProvider()?.GetRequiredService<IMBObjectVariableStorage>();
+            var mbObjectVariableStorage = ButterLibSubModule.Instance?.GetServiceProvider()?.GetRequiredService<IMBObjectExtensionDataStore>();
 
-            if (mbObjectVariableStorage == null)
+            if (mbObjectVariableStorage is null)
             {
-                _logger.LogError($"{nameof(OnGameLoadedPrefix)}: {nameof(mbObjectVariableStorage)} is null");
+                _log.LogError($"{nameof(OnGameLoadedPrefix)}: {nameof(mbObjectVariableStorage)} is null");
                 return;
             }
 
             if (!(mbObjectVariableStorage is CampaignBehaviorBase storageBehavior))
             {
-                _logger.LogError($"{nameof(OnGameLoadedPrefix)}: {nameof(mbObjectVariableStorage)} is not a CampaignBehaviorBase");
+                _log.LogError($"{nameof(OnGameLoadedPrefix)}: {nameof(mbObjectVariableStorage)} is not a CampaignBehaviorBase");
                 return;
             }
 
-            if (____campaignBehaviorDataStore == null)
+            if (____campaignBehaviorDataStore is null)
             {
-                _logger.LogError($"{nameof(OnGameLoadedPrefix)}: {nameof(____campaignBehaviorDataStore)} is null");
+                _log.LogError($"{nameof(OnGameLoadedPrefix)}: {nameof(____campaignBehaviorDataStore)} is null");
                 return;
             }
 
@@ -107,23 +111,23 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem.Patches
         [MethodImpl(MethodImplOptions.NoInlining)]
         private static void OnBeforeSavePostfix(object? ____campaignBehaviorDataStore)
         {
-            var mbObjectVariableStorage = ButterLibSubModule.Instance?.GetServiceProvider()?.GetRequiredService<IMBObjectVariableStorage>();
+            var mbObjectVariableStorage = ButterLibSubModule.Instance?.GetServiceProvider()?.GetRequiredService<IMBObjectExtensionDataStore>();
 
-            if (mbObjectVariableStorage == null)
+            if (mbObjectVariableStorage is null)
             {
-                _logger.LogError($"{nameof(OnBeforeSavePostfix)}: {nameof(mbObjectVariableStorage)} is null");
+                _log.LogError($"{nameof(OnBeforeSavePostfix)}: {nameof(mbObjectVariableStorage)} is null");
                 return;
             }
 
             if (!(mbObjectVariableStorage is CampaignBehaviorBase storageBehavior))
             {
-                _logger.LogError($"{nameof(OnBeforeSavePostfix)}: {nameof(mbObjectVariableStorage)} is not a CampaignBehaviorBase");
+                _log.LogError($"{nameof(OnBeforeSavePostfix)}: {nameof(mbObjectVariableStorage)} is not a CampaignBehaviorBase");
                 return;
             }
 
-            if (____campaignBehaviorDataStore == null)
+            if (____campaignBehaviorDataStore is null)
             {
-                _logger.LogError($"{nameof(OnBeforeSavePostfix)}: {nameof(____campaignBehaviorDataStore)} is null");
+                _log.LogError($"{nameof(OnBeforeSavePostfix)}: {nameof(____campaignBehaviorDataStore)} is null");
                 return;
             }
 

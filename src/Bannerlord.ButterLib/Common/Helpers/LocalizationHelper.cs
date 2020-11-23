@@ -107,7 +107,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
                     {
                         SetEntityProperties(parentTextObject, tag + "_LEADER", clan.Leader, false, RecursiveCaller.Clan);
                     }
-                    if (clan.Kingdom != null)
+                    if (clan.Kingdom is not null)
                     {
                         SetEntityProperties(parentTextObject, tag + "_KINGDOM", clan.Kingdom, addLeaderInfo, GetRecursiveCaller(RecursiveCaller.Clan, recursiveCaller));
                     }

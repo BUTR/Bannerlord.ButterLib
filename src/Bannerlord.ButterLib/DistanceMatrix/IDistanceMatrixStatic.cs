@@ -10,7 +10,7 @@ namespace Bannerlord.ButterLib.DistanceMatrix
     /// An abstrat class, containing static members of the
     /// <see cref="T:Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix`1" /> class.
     /// </summary>
-    internal abstract class DistanceMatrixStatic
+    internal interface IDistanceMatrixStatic
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="T:Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix`1"/> class
@@ -19,7 +19,7 @@ namespace Bannerlord.ButterLib.DistanceMatrix
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
         /// <exception cref="T:System.ArgumentException"></exception>
-        public abstract DistanceMatrix<T> Create<T>() where T : MBObjectBase;
+        DistanceMatrix<T> Create<T>() where T : MBObjectBase;
 
         /// <summary>
         /// Initializes and returns a new instance of the <see cref="T:Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix`1"/> class
@@ -34,7 +34,7 @@ namespace Bannerlord.ButterLib.DistanceMatrix
         /// A delegate to the method that will be used to calculate the distance between two given type <typeparamref name="T"/> objects.
         /// </param>
         /// <exception cref="T:System.ArgumentException"></exception>
-        public abstract DistanceMatrix<T> Create<T>(Func<IEnumerable<T>> customListGetter, Func<T, T, float> customDistanceCalculator) where T : MBObjectBase;
+        DistanceMatrix<T> Create<T>(Func<IEnumerable<T>> customListGetter, Func<T, T, float> customDistanceCalculator) where T : MBObjectBase;
 
         /// <summary>Calculates distance between two given <see cref="Hero"/> objects.</summary>
         /// <param name="hero1">The first of the heroes to calculate distance between.</param>
@@ -43,7 +43,7 @@ namespace Bannerlord.ButterLib.DistanceMatrix
         /// A floating-point number representing the distance between two specified <see cref="Hero"/> objects
         /// or <see cref="float.NaN" /> if distance could not be calculated.
         /// </returns>
-        public abstract float CalculateDistanceBetweenHeroes(Hero hero1, Hero hero2);
+        float CalculateDistanceBetweenHeroes(Hero hero1, Hero hero2);
 
         /// <summary>Calculates distance between two given <see cref="Clan"/> objects.</summary>
         /// <param name="clan1">First of the clans to calculate distance between.</param>
@@ -57,7 +57,7 @@ namespace Bannerlord.ButterLib.DistanceMatrix
         /// or <see cref="float.NaN" /> if distance could not be calculated.
         /// </returns>
         /// <remarks>Calculation is based on the average distance between clans fiefs weighted by the fief type.</remarks>
-        public abstract float CalculateDistanceBetweenClans(Clan clan1, Clan clan2, IEnumerable<(ulong Owners, float Distance, float Weight)> settlementOwnersPairedList);
+        float CalculateDistanceBetweenClans(Clan clan1, Clan clan2, IEnumerable<(ulong Owners, float Distance, float Weight)> settlementOwnersPairedList);
 
         /// <summary>Calculates distance between two given <see cref="Kingdom"/> objects.</summary>
         /// <param name="kingdom1">First of the kingdoms to calculate distance between.</param>
@@ -68,7 +68,7 @@ namespace Bannerlord.ButterLib.DistanceMatrix
         /// or <see cref="float.NaN" /> if distance could not be calculated.
         /// </returns>
         /// <remarks>Calculation is based on the average distance between kingdoms fiefs weighted by the fief type.</remarks>
-        public abstract float CalculateDistanceBetweenKingdoms(Kingdom kingdom1, Kingdom kingdom2, DistanceMatrix<Settlement> settlementDistanceMatrix);
+        float CalculateDistanceBetweenKingdoms(Kingdom kingdom1, Kingdom kingdom2, DistanceMatrix<Settlement> settlementDistanceMatrix);
 
         /// <summary>
         /// Transforms given <see cref="Settlement"/> distance matrix into list of the weighted distances
@@ -84,6 +84,6 @@ namespace Bannerlord.ButterLib.DistanceMatrix
         /// <see cref="DistanceMatrixImplementation{T}.CalculateDistanceBetweenClans(Clan, Clan, List{(ulong Owners, float Distance, float Weight)})"/>
         /// method with required list argument.
         /// </remarks>
-        public abstract List<(ulong Owners, float Distance, float Weight)> GetSettlementOwnersPairedList(DistanceMatrix<Settlement> settlementDistanceMatrix);
+        List<(ulong Owners, float Distance, float Weight)> GetSettlementOwnersPairedList(DistanceMatrix<Settlement> settlementDistanceMatrix);
     }
 }

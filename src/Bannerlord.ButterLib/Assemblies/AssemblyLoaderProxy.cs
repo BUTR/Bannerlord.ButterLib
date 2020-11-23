@@ -18,7 +18,7 @@ namespace Bannerlord.ButterLib.Assemblies
             AppDomain.CurrentDomain.AssemblyResolve -= OnAssemblyResolve;
         }
 
-        private static Assembly? OnAssemblyResolve(object sender, ResolveEventArgs args)
+        private static Assembly? OnAssemblyResolve(object? sender, ResolveEventArgs args)
         {
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
@@ -72,7 +72,7 @@ namespace Bannerlord.ButterLib.Assemblies
 
         private static void ValidatePath(string path)
         {
-            if (path == null) throw new ArgumentNullException(nameof(path));
+            if (path is null) throw new ArgumentNullException(nameof(path));
             if (!File.Exists(path)) throw new ArgumentException($"path \"{path}\" does not exist");
         }
     }

@@ -24,17 +24,17 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.Patches
 
         // Application:
 
-        internal static void Apply(Harmony harmony)
+        internal static void Enable(Harmony harmony)
         {
             _logger = ButterLibSubModule.Instance?.GetServiceProvider()?.GetRequiredService<ILogger<CharacterCreationContentApplyCulturePatch>>() ??
                       NullLogger<CharacterCreationContentApplyCulturePatch>.Instance;
 
-            if (ApplyCultureTargetMethod == null)
+            if (ApplyCultureTargetMethod is null)
                 _logger.LogError("ApplyCultureTargetMethod is null");
-            if (ApplyCulturePatchMethod == null)
+            if (ApplyCulturePatchMethod is null)
                 _logger.LogError("ApplyCulturePatchMethod is null");
 
-            if (ApplyCultureTargetMethod == null || ApplyCulturePatchMethod == null)
+            if (ApplyCultureTargetMethod is null || ApplyCulturePatchMethod is null)
             {
                 return;
             }
@@ -57,7 +57,7 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.Patches
 
         public static void ApplyCulturePostfix()
         {
-            if (ClanHomeSettlementByRef == null)
+            if (ClanHomeSettlementByRef is null)
             {
                 _logger.LogError("ApplyCulturePostfix: ClanHomeSettlementByRef is null");
                 return;

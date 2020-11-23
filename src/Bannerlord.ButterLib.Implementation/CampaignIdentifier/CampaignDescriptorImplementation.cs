@@ -99,9 +99,19 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier
 
         private CampaignDescriptorImplementation(SerializationInfo info, StreamingContext context)
         {
-            _value = info.GetString(nameof(KeyValue));
             // Do not fix typo
-            _attributes = (Dictionary<DescriptorAttribute, object>) info.GetValue("DecriptorAttributes", typeof(Dictionary<DescriptorAttribute, object>));
+            if (info.GetString(nameof(KeyValue)) is { } val &&
+                info.GetValue("DecriptorAttributes", typeof(Dictionary<DescriptorAttribute, object>)) is Dictionary<DescriptorAttribute, object> dict)
+            {
+                _value = val;
+                _attributes = dict;
+            }
+            else
+            {
+                _value = string.Empty; // Might be a bad idea
+                _attributes = new Dictionary<DescriptorAttribute, object>();
+            }
+
             _baseHero = null!; // Serialization will do it's thing.
         }
 
@@ -126,23 +136,23 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier
         private object GetDescriptorInfoPiece(DescriptorAttribute descriptorAttribute) => descriptorAttribute switch
         {
             DescriptorAttribute.HeroName => FieldAccessHelper.TextObjectValueByRef(_baseHero.Name),
-            DescriptorAttribute.HeroFamilyName => _baseHero.Clan != null
+            DescriptorAttribute.HeroFamilyName => _baseHero.Clan is not null
                 ? FieldAccessHelper.TextObjectValueByRef(_baseHero.Clan.Name)
                 : string.Empty,
             DescriptorAttribute.HeroAge => (int) _baseHero.Age,
             DescriptorAttribute.HeroGender => _baseHero.IsFemale
                 ? 1
                 : 0,
-            DescriptorAttribute.HeroCulture => _baseHero.Culture != null
+            DescriptorAttribute.HeroCulture => _baseHero.Culture is not null
                 ? FieldAccessHelper.TextObjectValueByRef(_baseHero.Culture.Name)
                 : string.Empty,
-            DescriptorAttribute.FatherName => _baseHero.Father != null
+            DescriptorAttribute.FatherName => _baseHero.Father is not null
                 ? FieldAccessHelper.TextObjectValueByRef(_baseHero.Father.Name)
                 : string.Empty,
-            DescriptorAttribute.MotherName => _baseHero.Mother != null
+            DescriptorAttribute.MotherName => _baseHero.Mother is not null
                 ? FieldAccessHelper.TextObjectValueByRef(_baseHero.Mother.Name)
                 : string.Empty,
-            DescriptorAttribute.BirthplaceName => _baseHero.BornSettlement != null
+            DescriptorAttribute.BirthplaceName => _baseHero.BornSettlement is not null
                 ? FieldAccessHelper.TextObjectValueByRef(_baseHero.BornSettlement.Name)
                 : string.Empty,
             DescriptorAttribute.CharacterCode => CharacterCode.CreateFrom(_baseHero.CharacterObject).Code,

@@ -1,17 +1,16 @@
 ﻿using Bannerlord.ButterLib.CampaignIdentifier;
 using Bannerlord.ButterLib.Common.Extensions;
 using Bannerlord.ButterLib.DistanceMatrix;
+using Bannerlord.ButterLib.HotKeys;
 using Bannerlord.ButterLib.Implementation.CampaignIdentifier;
 using Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehaviors;
-using Bannerlord.ButterLib.Implementation.CampaignIdentifier.Patches;
 using Bannerlord.ButterLib.Implementation.Common.Extensions;
 using Bannerlord.ButterLib.Implementation.DistanceMatrix;
+using Bannerlord.ButterLib.Implementation.HotKeys;
 using Bannerlord.ButterLib.Implementation.Logging;
 using Bannerlord.ButterLib.Implementation.ObjectSystem;
-using Bannerlord.ButterLib.Implementation.ObjectSystem.Patches;
+using Bannerlord.ButterLib.Implementation.SaveSystem;
 using Bannerlord.ButterLib.ObjectSystem;
-
-using HarmonyLib;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -25,70 +24,80 @@ namespace Bannerlord.ButterLib.Implementation
 {
     public sealed class SubModule : MBSubModuleBase
     {
-        private bool FirstInit { get; set; } = true;
-
         internal static ILogger? Logger { get; private set; }
+
+        private bool ServiceRegistrationWasCalled { get; set; }
+        private bool OnBeforeInitialModuleScreenSetAsRootWasCalled { get; set; }
+
+        public void OnServiceRegistration()
+        {
+            ServiceRegistrationWasCalled = true;
+
+            if (this.GetServices() is { } services)
+            {
+                services.AddScoped<CampaignDescriptor, CampaignDescriptorImplementation>();
+                services.AddSingleton<ICampaignDescriptorStatic, CampaignDescriptorStaticImplementation>();
+                services.AddScoped(typeof(DistanceMatrix<>), typeof(DistanceMatrixImplementation<>));
+                services.AddSingleton<IDistanceMatrixStatic, DistanceMatrixStaticImplementation>();
+                services.AddSingleton<ICampaignExtensions, CampaignExtensionsImplementation>();
+                services.AddTransient<ICampaignDescriptorProvider, JsonCampaignDescriptorProvider>();
+                services.AddScoped<IMBObjectExtensionDataStore, MBObjectExtensionDataStore>();
+                services.AddScoped<HotKeyManager, HotKeyManagerImplementation>();
+                services.AddSingleton<IHotKeyManagerStatic, HotKeyManagerStaticImplementation>();
+            }
+        }
 
         protected override void OnSubModuleLoad()
         {
             base.OnSubModuleLoad();
 
-            Logger = this.GetTempServiceProvider().GetRequiredService<ILogger<SubModule>>();
-            Logger.LogTrace("OnSubModuleLoad() started tracking.");
+            var serviceProvider = ServiceRegistrationWasCalled ? this.GetServiceProvider() : this.GetTempServiceProvider();
+
+            if (!ServiceRegistrationWasCalled)
+                OnServiceRegistration();
+
+            Logger = serviceProvider.GetRequiredService<ILogger<SubModule>>();
+            Logger.LogTrace("ButterLib.Implementation: OnSubModuleLoad");
 
             Logger.LogInformation("Wrapping DebugManager of type {type} with DebugManagerWrapper.", Debug.DebugManager.GetType());
-            Debug.DebugManager = new DebugManagerWrapper(Debug.DebugManager, this.GetTempServiceProvider()!);
+            Debug.DebugManager = new DebugManagerWrapper(Debug.DebugManager, serviceProvider!);
 
-            var services = this.GetServices();
-            services.AddScoped<CampaignDescriptor, CampaignDescriptorImplementation>();
-            services.AddSingleton<CampaignDescriptorStatic, CampaignDescriptorStaticImplementation>();
-            services.AddScoped(typeof(DistanceMatrix<>), typeof(DistanceMatrixImplementation<>));
-            services.AddSingleton<DistanceMatrixStatic, DistanceMatrixStaticImplementation>();
-            services.AddSingleton<ICampaignExtensions, CampaignExtensionsImplementation>();
-            services.AddTransient<ICampaignDescriptorProvider, JsonCampaignDescriptorProvider>();
-            services.AddScoped<IMBObjectVariableStorage, MBObjectVariableStorageBehavior>();
+            HotKeySubSystem.Enable();
 
-            Logger.LogTrace("OnSubModuleLoad() finished.");
+            Logger.LogTrace("ButterLib.Implementation: OnSubModuleLoad: Done");
         }
 
         protected override void OnBeforeInitialModuleScreenSetAsRoot()
         {
             base.OnBeforeInitialModuleScreenSetAsRoot();
-            Logger.LogTrace("OnBeforeInitialModuleScreenSetAsRoot() started.");
+            Logger.LogTrace("ButterLib.Implementation: OnBeforeInitialModuleScreenSetAsRoot");
 
-            if (FirstInit)
+            if (!OnBeforeInitialModuleScreenSetAsRootWasCalled)
             {
-                FirstInit = false;
+                OnBeforeInitialModuleScreenSetAsRootWasCalled = true;
 
-                var serviceProvider = this.GetServiceProvider();
-                Logger = serviceProvider.GetRequiredService<ILogger<SubModule>>();
+                Logger = this.GetServiceProvider().GetRequiredService<ILogger<SubModule>>();
 
-                if (Debug.DebugManager is DebugManagerWrapper debugManagerWrapper)
-                {
-                    Debug.DebugManager = new DebugManagerWrapper(debugManagerWrapper.OriginalDebugManager, serviceProvider!);
-                }
-                else
+                if (Debug.DebugManager is not DebugManagerWrapper)
                 {
                     Logger.LogWarning("DebugManagerWrapper was replaced with {type}! Wrapping it with DebugManagerWrapper.", Debug.DebugManager.GetType());
-                    Debug.DebugManager = new DebugManagerWrapper(Debug.DebugManager, serviceProvider!);
+                    Debug.DebugManager = new DebugManagerWrapper(Debug.DebugManager, this.GetServiceProvider()!);
                 }
 
-                var campaignIdentifierHarmony = new Harmony("Bannerlord.ButterLib.CampaignIdentifier");
-                CharacterCreationContentApplyCulturePatch.Apply(campaignIdentifierHarmony);
-                ClanInitializeClanPatch.Apply(campaignIdentifierHarmony);
+                CampaignIdentifierSubSystem.Enable();
 
-                // Selectively apply Harmony patches for MBObjectVariableStorageBehavior load/save
-                // Moved to OnBeforeInitialModuleScreenSetAsRoot so we'll get a final logger
-                CampaignBehaviorManagerPatch.Apply(new Harmony("Bannerlord.ButterLib.MBObjectVariableStorage"));
+                ObjectSystemSubSystem.Enable();
+
+                SaveSystemSubSystem.Enable();
             }
 
-            Logger.LogTrace("OnBeforeInitialModuleScreenSetAsRoot() finished.");
+            Logger.LogTrace("ButterLib.Implementation: OnBeforeInitialModuleScreenSetAsRoot: Done");
         }
 
         protected override void OnGameStart(Game game, IGameStarter gameStarterObject)
         {
             base.OnGameStart(game, gameStarterObject);
-            Logger.LogTrace("OnGameStart(Game, IGameStarter) started.");
+            Logger.LogTrace("ButterLib.Implementation: OnGameStart");
 
             if (game.GameType is Campaign)
             {
@@ -99,20 +108,20 @@ namespace Bannerlord.ButterLib.Implementation
                 gameStarter.AddBehavior(new GeopoliticsCachingBehavior());
             }
 
-            Logger.LogTrace("OnGameStart(Game, IGameStarter) finished.");
+            Logger.LogTrace("ButterLib.Implementation: OnGameStart: Done");
         }
 
         public override void OnGameEnd(Game game)
         {
             base.OnGameEnd(game);
-            Logger.LogTrace("OnGameEnd(Game) started.");
+            Logger.LogTrace("ButterLib.Implementation: OnGameEnd");
 
             if (game.GameType is Campaign)
             {
                 CampaignIdentifierEvents.Instance = null;
             }
 
-            Logger.LogTrace("OnGameEnd(Game) finished.");
+            Logger.LogTrace("ButterLib.Implementation: OnGameEnd: Done");
         }
     }
 }

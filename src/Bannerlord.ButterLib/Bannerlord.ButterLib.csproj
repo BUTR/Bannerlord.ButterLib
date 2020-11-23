@@ -1,13 +1,10 @@
-﻿<!--EXTERNAL_PROPERTIES: Version;StableVersion;BetaVersion;HarmonyVersion-->
+﻿<!--EXTERNAL_PROPERTIES: Version;GameVersion;StableVersion;BetaVersion;HarmonyVersion;BuildResourcesVersion;ExtensionVersion-->
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net472</TargetFramework>
-    <LangVersion>8.0</LangVersion>
+    <LangVersion>9.0</LangVersion>
     <Nullable>enable</Nullable>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
-    <ExtensionVersion>2.0.0</ExtensionVersion>
   </PropertyGroup>
 
   <!--NuGet Package-->
@@ -26,10 +23,21 @@
   </ItemGroup>
   <!--NuGet Package-->
 
+  <!--Windows Forms-->
+  <ItemGroup>
+    <_SDKImplicitReference Include="System.Windows.Forms" />
+  </ItemGroup>
+  <!--Windows Forms-->
+
   <!--NuGet References-->
   <ItemGroup>
+    <PackageReference Include="Bannerlord.BuildResources" Version="$(BuildResourcesVersion)">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Lib.Harmony" Version="$(HarmonyVersion)" IncludeAssets="compile" />
     <PackageReference Include="Bannerlord.ReferenceAssemblies.Core.EarlyAccess" Version="$(StableVersion).*" PrivateAssets="All" />
+    <PackageReference Include="Bannerlord.ReferenceAssemblies.Native.EarlyAccess" Version="$(StableVersion).*" PrivateAssets="All" />
     <PackageReference Include="Bannerlord.ReferenceAssemblies.StoryMode.EarlyAccess" Version="$(StableVersion).*" PrivateAssets="All" />
     <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="$(ExtensionVersion)" />
@@ -45,10 +53,16 @@
   <!--NuGet References-->
 
   <ItemGroup>
+    <InternalsVisibleTo Include="Bannerlord.ButterLib.Implementation.1.4.3" />
+    <InternalsVisibleTo Include="Bannerlord.ButterLib.Implementation.1.5.0" />
+    <InternalsVisibleTo Include="Bannerlord.ButterLib.Implementation.1.5.1" />
+    <InternalsVisibleTo Include="Bannerlord.ButterLib.Implementation.1.5.2" />
+    <InternalsVisibleTo Include="Bannerlord.ButterLib.Implementation.1.5.3" />
     <InternalsVisibleTo Include="Bannerlord.ButterLib.Implementation.$(StableVersion)" />
     <InternalsVisibleTo Include="Bannerlord.ButterLib.Implementation.$(BetaVersion)" />
     <InternalsVisibleTo Include="Bannerlord.ButterLib.Tests" />
     <InternalsVisibleTo Include="Bannerlord.ButterLib.Implementation.Tests" />
+    <InternalsVisibleTo Include="Bannerlord.ButterLib.ObjectSystem.Test" />
   </ItemGroup>
 
 </Project>

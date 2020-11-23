@@ -51,7 +51,7 @@ namespace Bannerlord.ButterLib.Tests.SaveSystem
                 {
                     try
                     {
-                        return a.GetTypes().Where(t => !t.IsAbstract && !t.IsGenericType && t.GetCustomAttribute<SaveableClassAttribute>(true) != null);
+                        return a.GetTypes().Where(t => !t.IsAbstract && !t.IsGenericType && t.GetCustomAttribute<SaveableClassAttribute>(true) is not null);
                     }
                     catch (Exception)
                     {
@@ -60,13 +60,13 @@ namespace Bannerlord.ButterLib.Tests.SaveSystem
                 })
                 .ToList();
 
-            var saveableClassInstances = saveableClassTypes.Select(FormatterServices.GetUninitializedObject).ToList();
+            var saveableClassInstances = saveableClassTypes.ConvertAll(FormatterServices.GetUninitializedObject);
 
             var unsupportedTypes = new List<Type>();
             foreach (var saveableClassInstance in saveableClassInstances)
             {
                 // Workaround
-                if (saveableClassInstance is FlattenedTroopRoster flattenedTroopRoster && ElementDictionary != null)
+                if (saveableClassInstance is FlattenedTroopRoster flattenedTroopRoster && ElementDictionary is not null)
                     ElementDictionary(flattenedTroopRoster) = new Dictionary<UniqueTroopDescriptor, FlattenedTroopRosterElement>();
 
                 try
@@ -97,7 +97,7 @@ namespace Bannerlord.ButterLib.Tests.SaveSystem
                 {
                     try
                     {
-                        return a.GetTypes().Where(t => !t.IsAbstract && !t.IsGenericType && t.GetCustomAttribute<SaveableClassAttribute>(true) != null);
+                        return a.GetTypes().Where(t => !t.IsAbstract && !t.IsGenericType && t.GetCustomAttribute<SaveableClassAttribute>(true) is not null);
                     }
                     catch (Exception)
                     {
@@ -129,7 +129,7 @@ namespace Bannerlord.ButterLib.Tests.SaveSystem
             foreach (var saveableMemberInstance in saveableMemberInstances)
             {
                 // Workaround
-                if (saveableMemberInstance is FlattenedTroopRoster flattenedTroopRoster && ElementDictionary != null)
+                if (saveableMemberInstance is FlattenedTroopRoster flattenedTroopRoster && ElementDictionary is not null)
                     ElementDictionary(flattenedTroopRoster) = new Dictionary<UniqueTroopDescriptor, FlattenedTroopRosterElement>();
 
                 try

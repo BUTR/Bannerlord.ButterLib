@@ -18,11 +18,11 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// <inheritdoc/>
         public int Compare(string? s1, string? s2)
         {
-            if (s1 == null && s2 == null)
+            if (s1 is null && s2 is null)
                 return 0;
-            if (s1 == null)
+            if (s1 is null)
                 return -1;
-            if (s2 == null)
+            if (s2 is null)
                 return 1;
 
             var len1 = s1.Length;
@@ -83,7 +83,9 @@ namespace Bannerlord.ButterLib.Common.Helpers
                         result = 1;
                 }
                 else
+                {
                     result = string.CompareOrdinal(chunk1.ToString(), chunk2.ToString());
+                }
 
                 if (result != 0)
                     return result;

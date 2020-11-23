@@ -8,10 +8,11 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-
+using Bannerlord.ButterLib.Common.Helpers;
 using TaleWorlds.Engine;
 
 using Path = System.IO.Path;
+using TWCommon = TaleWorlds.Library.Common;
 
 namespace Bannerlord.ButterLib.Tests.Assemblies
 {
@@ -24,9 +25,16 @@ namespace Bannerlord.ButterLib.Tests.Assemblies
             return false;
         }
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private static bool MockedGetConfigName(ref string __result)
+        {
+            __result = "Win64_Shipping_Client";
+            return false;
+        }
+
         private static string BasePath => AppDomain.CurrentDomain.BaseDirectory;
         private static string ButterLib => "Bannerlord.ButterLib.dll";
-        private static string ButterLibModule => Path.Combine(BasePath, "Modules", "Bannerlord.ButterLib", "bin", "Win64_Shipping_Client");
+        private static string ButterLibModule => Path.Combine(BasePath, "Modules", "Bannerlord.ButterLib", "bin", TWCommon.ConfigName);
         private static string ButterLibFile => Path.Combine(ButterLibModule, ButterLib);
         private static string OldBaseLibrary => Path.Combine(BasePath, "_TestData", "BaseLibrary.dll");
         private static string NewBaseLibrary => Path.Combine(BasePath, "_TestData", "BaseLibrary.Incompatible.dll");
@@ -38,6 +46,8 @@ namespace Bannerlord.ButterLib.Tests.Assemblies
             var harmony = new Harmony($"{nameof(AssemblyVerifierTests)}.{nameof(Setup)}");
             harmony.Patch(SymbolExtensions.GetMethodInfo(() => Utilities.GetBasePath()),
                 prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetBasePath)));
+            harmony.Patch(SymbolExtensions2.GetPropertyInfo(() => TWCommon.ConfigName).GetMethod,
+                prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetConfigName)));
 
             // Copy the ButterLib.dll which contains the AssemblyLoaderProxy.
             var directory = new DirectoryInfo(ButterLibModule);

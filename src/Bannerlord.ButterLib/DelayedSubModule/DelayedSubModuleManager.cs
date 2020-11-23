@@ -115,7 +115,7 @@ namespace Bannerlord.ButterLib.DelayedSubModule
 
             var harmony = new Harmony($"butterlib.delayedsubmoduleloader.{subModule.Name.ToLowerInvariant()}");
             var onSubModuleLoad = AccessTools.DeclaredMethod(subModule, "OnSubModuleLoad");
-            if (onSubModuleLoad != null)
+            if (onSubModuleLoad is not null)
             {
                 harmony.Patch(
                     onSubModuleLoad,
@@ -125,7 +125,7 @@ namespace Bannerlord.ButterLib.DelayedSubModule
 
 
             var onSubModuleUnloaded = AccessTools.DeclaredMethod(subModule, "OnSubModuleUnloaded");
-            if (onSubModuleUnloaded != null)
+            if (onSubModuleUnloaded is not null)
             {
                 harmony.Patch(
                     AccessTools.DeclaredMethod(subModule, "OnSubModuleUnloaded"),
@@ -135,7 +135,7 @@ namespace Bannerlord.ButterLib.DelayedSubModule
 
 
             var onBeforeInitialModuleScreenSetAsRoot = AccessTools.DeclaredMethod(subModule, "OnBeforeInitialModuleScreenSetAsRoot");
-            if (onBeforeInitialModuleScreenSetAsRoot != null)
+            if (onBeforeInitialModuleScreenSetAsRoot is not null)
             {
                 harmony.Patch(
                     AccessTools.DeclaredMethod(subModule, "OnBeforeInitialModuleScreenSetAsRoot"),
@@ -144,7 +144,7 @@ namespace Bannerlord.ButterLib.DelayedSubModule
             }
 
             var onGameStart = AccessTools.DeclaredMethod(subModule, "OnGameStart");
-            if (onGameStart != null)
+            if (onGameStart is not null)
             {
                 harmony.Patch(
                     AccessTools.DeclaredMethod(subModule, "OnGameStart"),
@@ -154,7 +154,7 @@ namespace Bannerlord.ButterLib.DelayedSubModule
 
 
             var onGameEnd = AccessTools.DeclaredMethod(subModule, "OnGameEnd");
-            if (onGameEnd != null)
+            if (onGameEnd is not null)
             {
                 harmony.Patch(
                     AccessTools.DeclaredMethod(subModule, "OnGameEnd"),
@@ -289,14 +289,14 @@ namespace Bannerlord.ButterLib.DelayedSubModule
 
             public bool Equals(Key? other)
             {
-                if (ReferenceEquals(null, other)) return false;
+                if (other is null) return false;
                 if (ReferenceEquals(this, other)) return true;
                 return Equals(Type, other.Type) && Equals(Priority, other.Priority) && Equals(Before, other.Before) && Equals(After, other.After);
             }
 
             public override bool Equals(object? obj)
             {
-                if (ReferenceEquals(null, obj)) return false;
+                if (obj is null) return false;
                 if (ReferenceEquals(this, obj)) return true;
                 if (obj.GetType() != GetType()) return false;
                 return Equals((Key) obj);

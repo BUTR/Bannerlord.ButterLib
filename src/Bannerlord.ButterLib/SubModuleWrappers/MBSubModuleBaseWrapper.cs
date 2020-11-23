@@ -16,12 +16,15 @@ namespace Bannerlord.ButterLib.SubModuleWrappers
         private delegate void OnBeforeInitialModuleScreenSetAsRootDelegate();
         private delegate void OnGameStartDelegate(Game game, IGameStarter gameStarterObject);
         private delegate void OnApplicationTickDelegate(float dt);
+        private delegate void OnServiceRegistrationDelegate();
+
 
         private OnSubModuleLoadDelegate? OnSubModuleLoadInstance { get; }
         private OnSubModuleUnloadedDelegate? OnSubModuleUnloadedInstance { get; }
         private OnBeforeInitialModuleScreenSetAsRootDelegate? OnBeforeInitialModuleScreenSetAsRootInstance { get; }
         private OnGameStartDelegate? OnGameStartInstance { get; }
         private OnApplicationTickDelegate? OnApplicationTickInstance { get; }
+        private OnServiceRegistrationDelegate? OnServiceRegistrationInstance { get; }
 
         private MBSubModuleBase SubModule { get; }
 
@@ -34,6 +37,7 @@ namespace Bannerlord.ButterLib.SubModuleWrappers
             OnBeforeInitialModuleScreenSetAsRootInstance = AccessTools2.GetDelegate<OnBeforeInitialModuleScreenSetAsRootDelegate, MBSubModuleBase>(subModule, "OnBeforeInitialModuleScreenSetAsRoot");
             OnGameStartInstance = AccessTools2.GetDelegate<OnGameStartDelegate, MBSubModuleBase>(subModule, "OnGameStart");
             OnApplicationTickInstance = AccessTools2.GetDelegate<OnApplicationTickDelegate, MBSubModuleBase>(subModule, "OnApplicationTick");
+            OnServiceRegistrationInstance = AccessTools2.GetDelegate<OnServiceRegistrationDelegate, MBSubModuleBase>(subModule, "OnServiceRegistration");
         }
 
         protected override void OnSubModuleLoad()
@@ -67,6 +71,8 @@ namespace Bannerlord.ButterLib.SubModuleWrappers
             OnGameStartInstance?.Invoke(game, gameStarterObject);
         }
 
+        /// <exclude/>
+        public void OnServiceRegistration() => OnServiceRegistrationInstance?.Invoke();
         /// <exclude/>
         public void SubModuleLoad() => OnSubModuleLoad();
         /// <exclude/>

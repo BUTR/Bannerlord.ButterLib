@@ -16,7 +16,7 @@ namespace Bannerlord.ButterLib.Assemblies
     /// </remarks>
     public sealed class AssemblyVerifier : IDisposable
     {
-        private readonly AppDomain _domain;
+        private readonly AppDomain? _domain;
 
         private readonly Exception? _assemblyLoaderException;
         private readonly IAssemblyLoader? _assemblyLoader;
@@ -32,14 +32,14 @@ namespace Bannerlord.ButterLib.Assemblies
                 new AppDomainSetup
                 {
                     ApplicationName = domainName,
-                    ApplicationBase = Path.Combine(Utilities.GetBasePath(), "Modules", "Bannerlord.ButterLib", "bin", "Win64_Shipping_Client"),
+                    ApplicationBase = Path.Combine(Utilities.GetBasePath(), "Modules", "Bannerlord.ButterLib", "bin", TaleWorlds.Library.Common.ConfigName),
                     AppDomainManagerAssembly = typeof(AssemblyVerifier).Assembly.FullName,
                     AppDomainManagerType = typeof(EmptyAppDomainManager).FullName
                 });
-
             try
             {
-                _assemblyLoader = _domain.CreateInstanceAndUnwrap(typeof(AssemblyLoaderProxy).Assembly.FullName, typeof(AssemblyLoaderProxy).FullName) as AssemblyLoaderProxy;
+                if (typeof(AssemblyLoaderProxy).Assembly.FullName is { } str && typeof(AssemblyLoaderProxy).FullName is { } str2)
+                    _assemblyLoader = _domain?.CreateInstanceAndUnwrap(str, str2) as AssemblyLoaderProxy;
             }
             catch (Exception e)
             {

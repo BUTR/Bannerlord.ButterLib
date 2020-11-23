@@ -5,6 +5,14 @@ on:
     branches:
       - master
 
+env:
+  # Disable the .NET logo in the console output.
+  DOTNET_NOLOGO: true
+  # Disable the .NET first time experience to skip caching NuGet packages and speed up the build.
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  # Disable sending .NET CLI telemetry to Microsoft.
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
 jobs:
 ###########################
 #          NEXUS          #
@@ -20,9 +28,6 @@ jobs:
       uses: actions/setup-dotnet@master
       with:
         dotnet-version: 3.1.x
-      env:
-        DOTNET_NOLOGO: 1
-        DOTNET_CLI_TELEMETRY_OPTOUT: 1
 
     - name: Setup BUTR GPR
       uses: actions/setup-dotnet@master
@@ -30,25 +35,15 @@ jobs:
         source-url: https://nuget.pkg.github.com/BUTR/index.json
       env:
         NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        DOTNET_NOLOGO: 1
-        DOTNET_CLI_TELEMETRY_OPTOUT: 1
 
     - name: Build Bannerlord.ButterLib.Implementation (Stable_Release)
       run: >-
         mkdir $PWD/bannerlord-stable;
         dotnet build src/Bannerlord.ButterLib.Implementation/Bannerlord.ButterLib.Implementation.csproj --configuration Stable_Release -p:GameFolder="$PWD/bannerlord-stable";
-      env:
-        DOTNET_NOLOGO: 1
-        DOTNET_CLI_TELEMETRY_OPTOUT: 1
-
-
     - name: Build Bannerlord.ButterLib.Implementation (Beta_Release)
       run: >-
         mkdir $PWD/bannerlord-beta;
         dotnet build src/Bannerlord.ButterLib.Implementation/Bannerlord.ButterLib.Implementation.csproj --configuration Beta_Release -p:GameFolder="$PWD/bannerlord-beta";
-      env:
-        DOTNET_NOLOGO: 1
-        DOTNET_CLI_TELEMETRY_OPTOUT: 1
 
     - name: Upload Bannerlord Stable folder
       uses: actions/upload-artifact@v2
@@ -74,9 +69,6 @@ jobs:
       uses: actions/setup-dotnet@master
       with:
         dotnet-version: 3.1.x
-      env:
-        DOTNET_NOLOGO: 1
-        DOTNET_CLI_TELEMETRY_OPTOUT: 1
 
     - name: Setup BUTR GPR
       uses: actions/setup-dotnet@master
@@ -84,8 +76,6 @@ jobs:
         source-url: https://nuget.pkg.github.com/BUTR/index.json
       env:
         NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        DOTNET_NOLOGO: 1
-        DOTNET_CLI_TELEMETRY_OPTOUT: 1
 
     - name: Download stable bannerlord folder
       uses: actions/download-artifact@v2
@@ -100,14 +90,13 @@ jobs:
 
     - name: Zip Bannerlord.ButterLib
       run: 7z a -tzip Bannerlord.ButterLib.zip ./bannerlord/*
+      shell: pwsh
 
     - name: Install Bannerlord.ChangelogParser and Bannerlord.NexusmodsUploader
       run: >-
         dotnet tool install -g Bannerlord.ChangelogParser;
         dotnet tool install -g Bannerlord.NexusmodsUploader;
-      env:
-        DOTNET_NOLOGO: 1
-        DOTNET_CLI_TELEMETRY_OPTOUT: 1
+      shell: pwsh
 
     - name: Run ChangelogParser
       id: changelog
@@ -119,9 +108,7 @@ jobs:
         desc="${desc//$'\n'/'%0A'}"
         desc="${desc//$'\r'/'%0D'}"
         echo "::set-output name=mod_description::$desc"
-      env:
-        DOTNET_NOLOGO: 1
-        DOTNET_CLI_TELEMETRY_OPTOUT: 1
+      shell: bash
 
     - name: Start Selenoid
       uses: Xotabu4/selenoid-github-action@v1
@@ -133,11 +120,11 @@ jobs:
         -p "$PWD/Bannerlord.ButterLib.zip";
       env:
         NEXUSMODS_COOKIES_JSON: '${{secrets.NEXUSMODS_COOKIES_JSON}}'
-        DOTNET_NOLOGO: 1
-        DOTNET_CLI_TELEMETRY_OPTOUT: 1
+      shell: pwsh
 
     - name: Password protect Screenshots
       run: 7z a -p${{secrets.SCREENSHOTS_PASSWORD}} Screenshots.7z ./Screenshots/*
+      shell: pwsh
 
     - name: Upload Screenshots Artifact
       uses: actions/upload-artifact@v2
@@ -150,6 +137,7 @@ jobs:
 ###########################
   publish-on-nuget:
     name: Publish on NuGet (Stable)
+    needs: build-for-nexusmods
     runs-on: ubuntu-latest
     steps:
     - name: Checkout Repository
@@ -159,9 +147,6 @@ jobs:
       uses: actions/setup-dotnet@master
       with:
         dotnet-version: 3.1.x
-      env:
-        DOTNET_NOLOGO: 1
-        DOTNET_CLI_TELEMETRY_OPTOUT: 1
 
     - name: Setup BUTR GPR
       uses: actions/setup-dotnet@master
@@ -169,20 +154,14 @@ jobs:
         source-url: https://nuget.pkg.github.com/BUTR/index.json
       env:
         NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        DOTNET_NOLOGO: 1
-        DOTNET_CLI_TELEMETRY_OPTOUT: 1
 
     - name: Pack Bannerlord.ButterLib (Release)
       run: dotnet pack src/Bannerlord.ButterLib/Bannerlord.ButterLib.csproj --configuration Release -o "./packages"
-      env:
-        DOTNET_NOLOGO: 1
-        DOTNET_CLI_TELEMETRY_OPTOUT: 1
+      shell: pwsh
 
     - name: Install Bannerlord.ChangelogParser
       run: dotnet tool install -g Bannerlord.ChangelogParser;
-      env:
-        DOTNET_NOLOGO: 1
-        DOTNET_CLI_TELEMETRY_OPTOUT: 1
+      shell: pwsh
 
     - name: Run ChangelogParser
       id: changelog
@@ -194,12 +173,11 @@ jobs:
         desc="${desc//$'\n'/'%0A'}"
         desc="${desc//$'\r'/'%0D'}"
         echo "::set-output name=mod_description::$desc"
+      shell: bash
 
     - name: Push to NuGet
       run: dotnet nuget push "./packages/*.nupkg" -k ${{secrets.NUGET_API_KEY}} -s https://www.nuget.org
-      env:
-        DOTNET_NOLOGO: 1
-        DOTNET_CLI_TELEMETRY_OPTOUT: 1
+      shell: pwsh
 
     - name: Push to GPR
       run: |
@@ -207,6 +185,7 @@ jobs:
            do
              curl -vX PUT -u "vslee:${{secrets.GITHUB_TOKEN}}" -F package=@$f https://nuget.pkg.github.com/BUTR/
            done
+      shell: bash
 
 ###########################
 #         GITHUB          #
@@ -223,9 +202,6 @@ jobs:
       uses: actions/setup-dotnet@master
       with:
         dotnet-version: 3.1.x
-      env:
-        DOTNET_NOLOGO: 1
-        DOTNET_CLI_TELEMETRY_OPTOUT: 1
 
     - name: Setup BUTR GPR
       uses: actions/setup-dotnet@master
@@ -233,8 +209,6 @@ jobs:
         source-url: https://nuget.pkg.github.com/BUTR/index.json
       env:
         NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        DOTNET_NOLOGO: 1
-        DOTNET_CLI_TELEMETRY_OPTOUT: 1
 
     - name: Download stable bannerlord folder
       uses: actions/download-artifact@v2
@@ -249,14 +223,13 @@ jobs:
 
     - name: Zip Bannerlord.ButterLib
       run: 7z a -tzip Bannerlord.ButterLib.zip ./bannerlord/*
+      shell: pwsh
 
     - name: Install Bannerlord.ChangelogParser and Bannerlord.NexusmodsUploader
       run: >-
         dotnet tool install -g Bannerlord.ChangelogParser;
         dotnet tool install -g Bannerlord.NexusmodsUploader;
-      env:
-        DOTNET_NOLOGO: 1
-        DOTNET_CLI_TELEMETRY_OPTOUT: 1
+      shell: pwsh
 
     - name: Run ChangelogParser
       id: changelog
@@ -268,6 +241,7 @@ jobs:
         desc="${desc//$'\n'/'%0A'}"
         desc="${desc//$'\r'/'%0D'}"
         echo "::set-output name=mod_description::$desc"
+      shell: bash
 
     - name: Create Release
       uses: actions/create-release@v1

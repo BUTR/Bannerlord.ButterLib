@@ -33,7 +33,9 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehavio
                     AssemblyFormat = FormatterAssemblyStyle.Simple,
                     Binder = new ButterLibSerializationBinder()
                 };
-                return (List<CampaignDescriptorImplementation>) binaryFormatter.Deserialize(fileStream);
+                return binaryFormatter.Deserialize(fileStream) is List<CampaignDescriptorImplementation> list
+                    ? list
+                    : Enumerable.Empty<CampaignDescriptor>();
             }
             catch (Exception e) when (e is SerializationException)
             {
@@ -64,7 +66,7 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehavio
                     return typeof(ButterLibSerializationBinder).Assembly.GetType(typeName);
 
                 var type = Type.GetType($"{typeName}, {assemblyName}");
-                if (type != null)
+                if (type is not null)
                     return type;
 
                 var tokens = typeName.Split(new []  {"[[", "]]", "],["}, StringSplitOptions.RemoveEmptyEntries);
@@ -79,7 +81,8 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehavio
                     var type1 = assemblyName1.StartsWith("Bannerlord.ButterLib.Implementation")
                         ? typeof(ButterLibSerializationBinder).Assembly.GetType(typeName1)
                         : Type.GetType($"{typeName1}, {assemblyName1}", true);
-                    genericTypeArgs.Add(type1.AssemblyQualifiedName);
+                    if (type1 is not null && type1.AssemblyQualifiedName is not null)
+                        genericTypeArgs.Add(type1.AssemblyQualifiedName);
                 }
 
                 return Type.GetType($"{generic}[[{string.Join("],[", genericTypeArgs)}]]", true);

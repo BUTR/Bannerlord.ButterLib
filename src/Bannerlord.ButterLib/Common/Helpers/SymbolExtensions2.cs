@@ -14,10 +14,10 @@ namespace Bannerlord.ButterLib.Common.Helpers
         }
         public static AccessTools.FieldRef<TObject, TField>? FieldRefAccess<TObject, TField>(LambdaExpression expression)
         {
-            if (!(expression.Body is MemberExpression body) || !(body.Member is FieldInfo fieldInfo))
-                throw new ArgumentException("Invalid Expression. Expression should consist of a Field return only.");
+            if (expression.Body is MemberExpression body && body.Member is FieldInfo fieldInfo)
+                return fieldInfo == null ? null : AccessTools.FieldRefAccess<TObject, TField>(fieldInfo);
 
-            return fieldInfo == null ? null : AccessTools.FieldRefAccess<TObject, TField>(fieldInfo);
+            throw new ArgumentException("Invalid Expression. Expression should consist of a Field return only.");
         }
 
 
@@ -31,10 +31,10 @@ namespace Bannerlord.ButterLib.Common.Helpers
         }
         public static ConstructorInfo GetConstructorInfo(LambdaExpression expression)
         {
-            if (!(expression.Body is NewExpression body) || body.Constructor is null)
-                throw new ArgumentException("Invalid Expression. Expression should consist of a Field return only.");
+            if (expression.Body is NewExpression body && body.Constructor is not null)
+                return body.Constructor;
 
-            return body.Constructor;
+            throw new ArgumentException("Invalid Expression. Expression should consist of a Field return only.");
         }
 
         public static FieldInfo GetFieldInfo<T>(Expression<Func<T>> expression)
@@ -47,10 +47,9 @@ namespace Bannerlord.ButterLib.Common.Helpers
         }
         public static FieldInfo GetFieldInfo(LambdaExpression expression)
         {
-            if (!(expression.Body is MemberExpression body) || !(body.Member is FieldInfo fieldInfo))
-                throw new ArgumentException("Invalid Expression. Expression should consist of a Field return only.");
-
-            return fieldInfo;
+            if (expression.Body is MemberExpression body && body.Member is FieldInfo fieldInfo)
+                return fieldInfo;
+            throw new ArgumentException("Invalid Expression. Expression should consist of a Field return only.");
         }
 
         public static PropertyInfo GetPropertyInfo<T>(Expression<Func<T>> expression)
@@ -63,10 +62,10 @@ namespace Bannerlord.ButterLib.Common.Helpers
         }
         public static PropertyInfo GetPropertyInfo(LambdaExpression expression)
         {
-            if (!(expression.Body is MemberExpression body) || !(body.Member is PropertyInfo propertyInfo))
-                throw new ArgumentException("Invalid Expression. Expression should consist of a Property return only.");
+            if (expression.Body is MemberExpression body && body.Member is PropertyInfo propertyInfo)
+                return propertyInfo;
 
-            return propertyInfo;
+            throw new ArgumentException("Invalid Expression. Expression should consist of a Property return only.");
         }
     }
 }

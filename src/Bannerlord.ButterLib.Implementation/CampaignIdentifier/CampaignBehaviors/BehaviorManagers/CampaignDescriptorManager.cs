@@ -74,13 +74,12 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehavio
             if (possiblyMatchingDescriptors.Count > 0)
             {
                 var inquiryElements = possiblyMatchingDescriptors
-                    .Select(existingDescriptor => new InquiryElement(
+                    .ConvertAll(existingDescriptor => new InquiryElement(
                         existingDescriptor,
                         existingDescriptor.FullCharacterName,
                         new ImageIdentifier(existingDescriptor.CharacterCode),
                         true,
-                        string.Join(" - ", existingDescriptor.Descriptor, existingDescriptor.KeyValue)))
-                    .ToList();
+                        string.Join(" - ", existingDescriptor.Descriptor, existingDescriptor.KeyValue)));
 
                 var newIdTextObject = new TextObject("{=wF4qRrhmEu}Assign new ID");
                 var inquiryBody = $"{new TextObject(InquiryUpperBody)}\n \n{new TextObject(InquiryLowerBody, new Dictionary<string, TextObject> {["NEW_ID"] = newIdTextObject})}";
@@ -144,7 +143,7 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehavio
 
         internal void Sync()
         {
-            if (_descriptorToBeAssigned != null && _campaignDescriptor != null! && _descriptorToBeAssigned == _campaignDescriptor)
+            if (_descriptorToBeAssigned is not null && _campaignDescriptor is not null! && _descriptorToBeAssigned == _campaignDescriptor)
             {
                 UpdateSavedDescriptors();
             }

@@ -23,7 +23,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// <returns>A string representation of the game version.</returns>
         public static string GameVersionStr()
         {
-            if (GetVersionStrMethod == null)
+            if (GetVersionStrMethod is null)
                 return "e1.0.0";
 
             var @params = GetVersionStrMethod.GetParameters();
@@ -86,7 +86,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
             typeof(int),
             typeof(int)
         });
-        private static ConstructorV1Delegate? ConstructorV1Func { get; } = ConstructorV1 != null
+        private static ConstructorV1Delegate? ConstructorV1Func { get; } = ConstructorV1 is not null
             ? ConstructorHelper.Delegate<ConstructorV1Delegate>(ConstructorV1)
             : null;
 
@@ -98,7 +98,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
             typeof(int),
             typeof(int)
         });
-        private static ConstructorV2Delegate? ConstructorV2Func { get; } = ConstructorV2 != null
+        private static ConstructorV2Delegate? ConstructorV2Func { get; } = ConstructorV2 is not null
             ? ConstructorHelper.Delegate<ConstructorV2Delegate>(ConstructorV2)
             : null;
 
@@ -112,7 +112,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
             typeof(int),
             typeof(ApplicationVersionGameType)
         });
-        private static ConstructorV3Delegate? ConstructorV3Func { get; } = ConstructorV3 != null
+        private static ConstructorV3Delegate? ConstructorV3Func { get; } = ConstructorV3 is not null
             ? ConstructorHelper.Delegate<ConstructorV3Delegate>(ConstructorV3)
             : null;
 
@@ -129,14 +129,14 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// </summary>
         private static ApplicationVersion Create(ApplicationVersionType applicationVersionType, int major, int minor, int revision, int changeSet)
         {
-            if (ConstructorV1Func != null)
+            if (ConstructorV1Func is not null)
                 return ConstructorV1Func(applicationVersionType, major, minor, revision, changeSet);
 
-            if (ConstructorV2Func != null)
+            if (ConstructorV2Func is not null)
                 return ConstructorV2Func(applicationVersionType, major, minor, revision);
 
             // Can't get the GameType when parsing
-            if (ConstructorV3Func != null)
+            if (ConstructorV3Func is not null)
                 return ConstructorV3Func(applicationVersionType, major, minor, revision, changeSet, ApplicationVersionGameType.Singleplayer);
 
             // Fallback

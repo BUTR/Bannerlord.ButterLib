@@ -57,9 +57,17 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
         /// <remarks>Used exclusively for deserialization.</remarks>
         private DistanceMatrixImplementation(SerializationInfo info, StreamingContext context)
         {
-            var type = Type.GetType(info.GetString("ObjectTypeName"))!;
-            _distanceMatrix = (Dictionary<ulong, float>)info.GetValue(type.Name + "DistanceMatrix", typeof(Dictionary<ulong, float>));
-            _distanceMatrix.OnDeserialization(this);
+            if (info.GetString("ObjectTypeName") is { } typeStr && Type.GetType(typeStr) is { } type &&
+                info.GetValue(type.Name + "DistanceMatrix", typeof(Dictionary<ulong, float>)) is Dictionary<ulong, float> dict)
+            {
+                _distanceMatrix = dict;
+                _distanceMatrix.OnDeserialization(this);
+            }
+            else
+            {
+                _distanceMatrix = new Dictionary<ulong, float>();
+            }
+
             _typedDistanceMatrix = GetTypedDistanceMatrix();
         }
 
@@ -87,7 +95,7 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
         /// <exception cref="T:System.ArgumentException"></exception>
         private Dictionary<ulong, float> CalculateDistanceMatrix()
         {
-            if (_entityListGetter != null && _distanceCalculator != null)
+            if (_entityListGetter is not null && _distanceCalculator is not null)
             {
                 var entities = _entityListGetter().ToList();
                 return entities.SelectMany(_ => entities, (X, Y) => (X, Y)).Where(tuple => tuple.X.Id < tuple.Y.Id)

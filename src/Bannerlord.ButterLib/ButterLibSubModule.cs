@@ -1,14 +1,17 @@
 ﻿using Bannerlord.ButterLib.CampaignIdentifier;
-using Bannerlord.ButterLib.Common.Helpers;
 using Bannerlord.ButterLib.Common.Extensions;
-using Bannerlord.ButterLib.Logger.Extensions;
+using Bannerlord.ButterLib.Common.Helpers;
+using Bannerlord.ButterLib.ExceptionHandler;
 using Bannerlord.ButterLib.ObjectSystem.Extensions;
 using Bannerlord.ButterLib.Options;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
+using System;
 using System.Linq;
+using System.Text;
+using System.Windows.Forms;
 
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
@@ -22,16 +25,40 @@ namespace Bannerlord.ButterLib
     /// </summary>
     public sealed partial class ButterLibSubModule : MBSubModuleBase
     {
-        private const string SErrorOfficialLoadedBeforeButterLib = "{=GDkjThJcH6}ButterLib is loaded after the official modules! " +
-            "Make sure ButterLib is loaded before them!";
+        private const string SWarningTitle =
+@"{=BguqytVG3q}Warning from Bannerlord.ButterLib!";
+        private const string SErrorHarmonyNotFound =
+@"{=EEVJa5azpB}Bannerlord.Harmony module was not found!";
+        private const string SErrorModuleLoaderNotFound =
+@"{=j3DZ87zFMB}Bannerlord.ModuleLoader module was not found!";
+        private const string SErrorButterLibNotFound =
+@"{=5EDzm7u4mS}Bannerlord.ButterLib module was not found!";
+        private const string SErrorOfficialModulesLoadedBeforeButterLib =
+@"{=GDkjThJcH6}ButterLib is loaded after the official modules!
+Make sure ButterLib is loaded before them!";
+        private const string SErrorOfficialModules =
+@"{=5k4Eqevh53}The following modules were loaded before ButterLib:";
+        private const string SMessageContinue =
+@"{=eXs6FLm5DP}It's strongly recommended to terminate the game now. Do you wish to terminate it?";
 
-        private ILogger _logger = default!;
+        internal event Action<float>? OnApplicationTickEvent;
 
-        protected override void OnSubModuleLoad()
+        private ILogger Logger { get; set; } = default!;
+        private bool DelayedServiceCreation { get; set; }
+        private bool ServiceRegistrationWasCalled { get; set; }
+        private bool OnBeforeInitialModuleScreenSetAsRootWasCalled { get; set; }
+
+        public ButterLibSubModule()
         {
-            base.OnSubModuleLoad();
-
             Instance = this;
+
+            CheckLoadOrder();
+        }
+
+        public void OnServiceRegistration()
+        {
+            ServiceRegistrationWasCalled = true;
+
             CanBeConfigured = false;
 
             Services = new ServiceCollection();
@@ -47,74 +74,92 @@ namespace Bannerlord.ButterLib
 
             this.AddDefaultSerilogLogger();
             this.AddSerilogLoggerProvider("butterlib.txt", new[] { "Bannerlord.ButterLib.*" });
+        }
 
-            _logger = this.GetTempServiceProvider().GetRequiredService<ILogger<ButterLibSubModule>>();
-            _logger.LogTrace("OnSubModuleLoad() started tracking.");
+        protected override void OnSubModuleLoad()
+        {
+            base.OnSubModuleLoad();
 
+            IServiceProvider serviceProvider;
 
-            _logger.LogTrace("OnSubModuleLoad() finished.");
+            if (!ServiceRegistrationWasCalled)
+            {
+                OnServiceRegistration();
+                DelayedServiceCreation = true;
+                serviceProvider = this.GetTempServiceProvider()!;
+            }
+            else
+            {
+                // ModuleInfoHelper will give false info if using flow without ModuleLoader
+                // ServiceRegistrationWasCalled is a good indicator if ModuleLoader is used
+                ModuleInfoHelper.PastInitialization = true;
+
+                serviceProvider = this.GetServiceProvider()!;
+            }
+
+            Logger = serviceProvider.GetRequiredService<ILogger<ButterLibSubModule>>();
+            Logger.LogTrace("OnSubModuleLoad() started tracking.");
+
+            if (!DelayedServiceCreation)
+                InitializeServices();
+
+            ExceptionHandlerSubSystem.Enable();
+
+            Logger.LogTrace("OnSubModuleLoad() finished.");
         }
 
         protected override void OnSubModuleUnloaded()
         {
             base.OnSubModuleUnloaded();
-            _logger.LogTrace("OnSubModuleUnloaded() started.");
+            Logger.LogTrace("OnSubModuleUnloaded() started.");
 
             Instance = null!;
 
-            _logger.LogTrace("OnSubModuleUnloaded() finished.");
+            Logger.LogTrace("OnSubModuleUnloaded() finished.");
         }
 
         protected override void OnBeforeInitialModuleScreenSetAsRoot()
         {
             base.OnBeforeInitialModuleScreenSetAsRoot();
-            _logger.LogTrace("OnBeforeInitialModuleScreenSetAsRoot() started.");
+            Logger.LogTrace("OnBeforeInitialModuleScreenSetAsRoot() started.");
 
-            if (Services != null!) // First init.
+            if (!OnBeforeInitialModuleScreenSetAsRootWasCalled)
             {
-                GlobalServiceProvider = Services.BuildServiceProvider();
-                _logger.LogTrace("Created GlobalServiceProvider.");
-                Services = null!;
-                _logger.LogTrace("Set Services to null.");
+                OnBeforeInitialModuleScreenSetAsRootWasCalled = true;
 
-                _logger = ServiceProvider.GetRequiredService<ILogger<ButterLibSubModule>>();
-                _logger.LogTrace("Assigned new _logger from GlobalServiceProvider.");
+                if (DelayedServiceCreation)
+                {
+                    // ModuleInfoHelper will give false info if using flow without ModuleLoader
+                    // DelayedServiceCreation is a good indicator if ModuleLoader is used
+                    ModuleInfoHelper.PastInitialization = true;
 
-
-                var loadedModules = ModuleInfoHelper.GetLoadedModules();
-                var butterLibModule = loadedModules.SingleOrDefault(x => x.Id == "Bannerlord.ButterLib");
-                var butterLibModuleIndex = loadedModules.IndexOf(butterLibModule);
-                var officialModules = loadedModules.Where(x => x.IsOfficial).Select(x => (Module: x, Index: loadedModules.IndexOf(x)));
-                var modulesLoadedBeforeButterLib = officialModules.Where(tuple => tuple.Index < butterLibModuleIndex).ToList();
-
-                if (modulesLoadedBeforeButterLib.Count > 0)
-                    _logger.LogErrorAndDisplay(new TextObject(SErrorOfficialLoadedBeforeButterLib).ToString());
-
-                foreach (var (module, _) in modulesLoadedBeforeButterLib)
-                    _logger.LogError("ButterLib is loaded after an official module: {module}!", module.Id);
+                    InitializeServices();
+                }
             }
 
-            _logger.LogTrace("OnBeforeInitialModuleScreenSetAsRoot() finished.");
+            Logger.LogTrace("OnBeforeInitialModuleScreenSetAsRoot() finished.");
         }
+
+        protected override void OnApplicationTick(float dt) => OnApplicationTickEvent?.Invoke(dt);
 
         protected override void OnGameStart(Game game, IGameStarter gameStarterObject)
         {
             base.OnGameStart(game, gameStarterObject);
-            _logger.LogTrace("OnGameStart(Game, IGameStarter) started.");
+            Logger.LogTrace("OnGameStart(Game, IGameStarter) started.");
 
             GameScope = ServiceProvider.CreateScope();
-            _logger.LogInformation("Created GameScope...");
+            Logger.LogInformation("Created GameScope...");
 
             if (game.GameType is Campaign)
                 CampaignIdentifierEvents.Instance = new CampaignIdentifierEvents();
 
-            _logger.LogTrace("OnGameStart(Game, IGameStarter) finished.");
+            Logger.LogTrace("OnGameStart(Game, IGameStarter) finished.");
         }
 
         public override void OnGameEnd(Game game)
         {
             base.OnGameEnd(game);
-            _logger.LogTrace("OnGameEnd(Game) started.");
+            Logger.LogTrace("OnGameEnd(Game) started.");
 
             GameScope = null;
 
@@ -124,7 +169,79 @@ namespace Bannerlord.ButterLib
                 CampaignIdentifierEvents.Instance = null;
             }
 
-            _logger.LogTrace("OnGameEnd(Game) finished.");
+            Logger.LogTrace("OnGameEnd(Game) finished.");
+        }
+
+        private static void CheckLoadOrder()
+        {
+            var loadedModules = ModuleInfoHelper.GetLoadedModules();
+
+            var sb = new StringBuilder();
+
+            var harmonyModule = loadedModules.SingleOrDefault(x => x.Id == "Bannerlord.Harmony");
+            var harmonyModuleIndex = harmonyModule is not null ? loadedModules.IndexOf(harmonyModule) : -1;
+            if (harmonyModuleIndex == -1)
+            {
+                if (sb.Length != 0) sb.AppendLine();
+                sb.AppendLine(new TextObject(SErrorHarmonyNotFound).ToString());
+            }
+
+            // TODO: Keep it optional for now
+            /*
+            var moduleLoaderModule = loadedModules.SingleOrDefault(x => x.Id == "Bannerlord.ModuleLoader");
+            var moduleLoaderIndex = moduleLoaderModule is not null ? loadedModules.IndexOf(moduleLoaderModule) : -1;
+            if (moduleLoaderIndex == -1)
+            {
+                if (sb.Length != 0) sb.AppendLine();
+                sb.AppendLine(new TextObject(SErrorModuleLoaderNotFound).ToString());
+            }
+            */
+
+            var butterLibModule = loadedModules.SingleOrDefault(x => x.Id == "Bannerlord.ButterLib");
+            var butterLibModuleIndex = butterLibModule is not null ? loadedModules.IndexOf(butterLibModule) : -1;
+            if (butterLibModuleIndex == -1)
+            {
+                if (sb.Length != 0) sb.AppendLine();
+                sb.AppendLine(new TextObject(SErrorButterLibNotFound).ToString());
+            }
+
+            var officialModules = loadedModules.Where(x => x.IsOfficial).Select(x => (Module: x, Index: loadedModules.IndexOf(x)));
+            var modulesLoadedBeforeButterLib = officialModules.Where(tuple => tuple.Index < butterLibModuleIndex).ToList();
+            if (modulesLoadedBeforeButterLib.Count > 0)
+            {
+                if (sb.Length != 0) sb.AppendLine();
+                sb.AppendLine(new TextObject(SErrorOfficialModulesLoadedBeforeButterLib).ToString());
+                sb.AppendLine(new TextObject(SErrorOfficialModules).ToString());
+                foreach (var (module, _) in modulesLoadedBeforeButterLib)
+                    sb.AppendLine(module.Id);
+            }
+
+            if (sb.Length > 0)
+            {
+                sb.AppendLine();
+                sb.AppendLine(new TextObject(SMessageContinue).ToString());
+
+                switch (MessageBox.Show(sb.ToString(), new TextObject(SWarningTitle).ToString(), MessageBoxButtons.YesNo))
+                {
+                    case DialogResult.Yes:
+                        Environment.Exit(1);
+                        break;
+                }
+            }
+        }
+
+        private void InitializeServices()
+        {
+            if (Services is not null)
+            {
+                GlobalServiceProvider = Services.BuildServiceProvider();
+                Logger.LogTrace("Created GlobalServiceProvider.");
+                Services = null!;
+                Logger.LogTrace("Set Services to null.");
+
+                Logger = this.GetServiceProvider().GetRequiredService<ILogger<ButterLibSubModule>>();
+                Logger.LogTrace("Assigned new _logger from GlobalServiceProvider.");
+            }
         }
     }
 }

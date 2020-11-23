@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Bannerlord.ButterLib.SaveSystem
 {
-    internal sealed class DictionaryToArrayConverter : JsonConverter
+    public sealed class DictionaryToArrayConverter : JsonConverter
     {
         public override bool CanConvert(Type objectType) => typeof(IDictionary).IsAssignableFrom(objectType) || TypeImplementsGenericInterface(objectType, typeof(IDictionary<,>));
 
@@ -23,7 +23,7 @@ namespace Bannerlord.ButterLib.SaveSystem
                 foreach (DictionaryEntry dictionaryEntry in dictionary)
                 {
                     // TODO: Return to this
-                    if (dictionaryEntry.Key != null)
+                    if (dictionaryEntry.Key is not null)
                     {
                         serializer.Serialize(writer, dictionaryEntry.Key, genericArguments[0]);
                         serializer.Serialize(writer, dictionaryEntry.Value, genericArguments[1]);
@@ -52,7 +52,7 @@ namespace Bannerlord.ButterLib.SaveSystem
                     var value = serializer.Deserialize(reader, genericArguments[1]);
                     reader.Read();
                     // TODO: Return to this
-                    if (key != null)
+                    if (key is not null)
                     {
                         if (dict.Contains(key))
                             dict[key] = value;

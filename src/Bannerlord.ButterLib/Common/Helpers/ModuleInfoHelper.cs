@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 using TaleWorlds.Engine;
 using TaleWorlds.Library;
@@ -13,16 +12,19 @@ namespace Bannerlord.ButterLib.Common.Helpers
 {
     public static class ModuleInfoHelper
     {
-        private static List<ModuleInfo>? LoadedModules { get; set; }
+        internal static bool PastInitialization = false;
+        internal static List<ExtendedModuleInfo>? LoadedModules { get; set; }
 
         // We can cache it because it is not expected for the game to change Module\Module order
-        public static List<ModuleInfo> GetLoadedModules() => LoadedModules ??= GetLoadedModulesEnumerable().ToList();
-        private static IEnumerable<ModuleInfo> GetLoadedModulesEnumerable()
+        public static List<ModuleInfo> GetLoadedModules() => (PastInitialization ? LoadedModules ??= GetLoadedModulesEnumerable().ToList() : GetLoadedModulesEnumerable().ToList()).Cast<ModuleInfo>().ToList();
+        public static List<ExtendedModuleInfo> GetExtendedLoadedModules() => PastInitialization ? LoadedModules ??= GetLoadedModulesEnumerable().ToList() : GetLoadedModulesEnumerable().ToList();
+
+        internal static IEnumerable<ExtendedModuleInfo> GetLoadedModulesEnumerable()
         {
             var modulesNames = Utilities.GetModulesNames();
             for (var i = 0; i < modulesNames.Length; i++)
             {
-                var moduleInfo = new ModuleInfo();
+                var moduleInfo = new ExtendedModuleInfo();
                 moduleInfo.Load(modulesNames[i]);
                 yield return moduleInfo;
             }
@@ -31,22 +33,12 @@ namespace Bannerlord.ButterLib.Common.Helpers
         private static string GetFullPathWithEndingSlashes(string input) =>
             $"{Path.GetFullPath(input).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)}{Path.DirectorySeparatorChar}";
 
-        private static string GetPath(Assembly assembly)
-        {
-            var codeBase = assembly.CodeBase;
-            var uri = new UriBuilder(codeBase);
-            var path = Uri.UnescapeDataString(uri.Path);
-            return path;
-        }
-
         public static ModuleInfo? GetModuleInfo(Type type)
         {
-            if (!typeof(MBSubModuleBase).IsAssignableFrom(type))
+            if (!typeof(MBSubModuleBase).IsAssignableFrom(type) || string.IsNullOrWhiteSpace(type.Assembly.Location))
                 return null;
 
-            var assemblyPath = GetPath(type.Assembly);
-
-            var fullAssemblyPath= Path.GetFullPath(assemblyPath);
+            var fullAssemblyPath= Path.GetFullPath(type.Assembly.Location);
             foreach (var loadedModule in GetLoadedModules())
             {
                 var loadedModuleDirectory = Path.GetFullPath(Path.Combine(Utilities.GetBasePath(), "Modules", loadedModule.Id));

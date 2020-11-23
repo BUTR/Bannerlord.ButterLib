@@ -76,17 +76,17 @@ namespace Bannerlord.ButterLib.Common.Extensions
         /// Don't forget to get a new ILogger after adding a new ILoggerProvider
         /// </summary>
         public static IServiceCollection AddSerilogLoggerProvider(this MBSubModuleBase subModule, string filename, IEnumerable<Assembly> filter) =>
-            subModule.AddSerilogLoggerProvider(filename, filter.Select(x => x.GetName().Name));
+            subModule.AddSerilogLoggerProvider(filename, filter.Select(x => x.GetName().Name ?? string.Empty));
         /// <summary>
         /// Don't forget to get a new ILogger after adding a new ILoggerProvider
         /// </summary>
         public static IServiceCollection AddSerilogLoggerProvider(this MBSubModuleBase subModule, string filename, IEnumerable<string>? filter = null, Action<LoggerConfiguration>? configure = null)
         {
-            filter ??= new List<string> { subModule.GetType().Assembly.GetName().Name };
+            filter ??= new List<string> { subModule.GetType().Assembly.GetName().Name ?? string.Empty };
             var filterList = filter.ToList();
 
             var services = subModule.GetServices();
-            if (services == null)
+            if (services is null)
                 throw new Exception("Past Configuration stage.");
 
             var builder = new LoggerConfiguration()
@@ -106,8 +106,8 @@ namespace Bannerlord.ButterLib.Common.Extensions
 
         public static Func<LogEvent, bool> FromSources(IEnumerable<string> sources)
         {
-            if (sources == null) throw new ArgumentNullException(nameof(sources));
-            return Matching.WithProperty<string>(Constants.SourceContextPropertyName, s => s != null && sources.Any(x => MatchWildcardString(x, s)));
+            if (sources is null) throw new ArgumentNullException(nameof(sources));
+            return Matching.WithProperty<string>(Constants.SourceContextPropertyName, s => s is not null && sources.Any(x => MatchWildcardString(x, s)));
         }
         private static bool MatchWildcardString(string pattern, string input)
         {
