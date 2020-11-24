@@ -31,7 +31,10 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
             }
 
             dataStore.SyncData("Vars", ref _vars);
+            _vars ??= new();
+
             dataStore.SyncData("Flags", ref _flags);
+            _flags ??= new();
         }
 
         private void ReleaseOrphanedEntries<T>(IDictionary<DataKey, T> dict, ISet<MBGUID> cache)

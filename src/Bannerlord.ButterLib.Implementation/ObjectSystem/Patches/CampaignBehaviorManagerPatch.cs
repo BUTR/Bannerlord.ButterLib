@@ -92,7 +92,7 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem.Patches
                 return;
             }
 
-            if (!(mbObjectVariableStorage is CampaignBehaviorBase storageBehavior))
+            if (mbObjectVariableStorage is not CampaignBehaviorBase storageBehavior)
             {
                 _log.LogError($"{nameof(OnGameLoadedPrefix)}: {nameof(mbObjectVariableStorage)} is not a CampaignBehaviorBase");
                 return;
@@ -119,7 +119,7 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem.Patches
                 return;
             }
 
-            if (!(mbObjectVariableStorage is CampaignBehaviorBase storageBehavior))
+            if (mbObjectVariableStorage is not CampaignBehaviorBase storageBehavior)
             {
                 _log.LogError($"{nameof(OnBeforeSavePostfix)}: {nameof(mbObjectVariableStorage)} is not a CampaignBehaviorBase");
                 return;
