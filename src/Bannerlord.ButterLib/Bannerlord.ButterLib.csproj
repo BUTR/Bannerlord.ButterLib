@@ -5,8 +5,7 @@
     <TargetFramework>net472</TargetFramework>
     <LangVersion>9.0</LangVersion>
     <Nullable>enable</Nullable>
-
-    <Configurations>Minimal_Debug;Minimal_Release</Configurations>
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
 
   <!--NuGet Package-->
@@ -56,17 +55,9 @@
 
   <!--InternalsVisibleTo-->
   <Target Name="SetInternalsVisibleToSupportedVersions" BeforeTargets="BeforeCompile">
-    <!--Read TXT file-->
     <ItemGroup>
-      <SupportedGameVersionsTextFile Include="$(MSBuildThisFileDirectory)/../../supported-game-versions.txt"/>
-    </ItemGroup>
-    <ReadLinesFromFile File="@(SupportedGameVersionsTextFile)" >
-      <Output TaskParameter="Lines" ItemName="SupportedGameVersionsItem"/>
-    </ReadLinesFromFile>
-    <!--Read TXT file-->
-    <ItemGroup Condition="@(SupportedGameVersionsItem-&gt;Count()) &gt; 0">
       <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
-        <_Parameter1>Bannerlord.ButterLib.Implementation.$([System.String]::Copy('%(SupportedGameVersionsItem.Identity)').Substring(1))</_Parameter1>
+        <_Parameter1>Bannerlord.ButterLib.Implementation.$([System.String]::Copy(%(SGVItem.Identity)).Substring(1))</_Parameter1>
       </AssemblyAttribute>
     </ItemGroup>
   </Target>

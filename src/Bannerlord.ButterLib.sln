@@ -28,6 +28,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "root", "root", "{F11F675F-8
 	ProjectSection(SolutionItems) = preProject
 		..\changelog.txt = ..\changelog.txt
 		..\README.md = ..\README.md
+		..\supported-game-versions.txt = ..\supported-game-versions.txt
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bannerlord.ButterLib", "Bannerlord.ButterLib\Bannerlord.ButterLib.csproj", "{17BE8506-B22B-4705-A777-C862888DA1F5}"
@@ -127,14 +128,14 @@ Global
 		{1339A1C0-C2F0-4491-91BB-D49C00332F68}.Stable Debug|Any CPU.Build.0 = Stable_Debug|Any CPU
 		{1339A1C0-C2F0-4491-91BB-D49C00332F68}.Stable Release|Any CPU.ActiveCfg = Stable_Release|Any CPU
 		{1339A1C0-C2F0-4491-91BB-D49C00332F68}.Stable Release|Any CPU.Build.0 = Stable_Release|Any CPU
-		{17BE8506-B22B-4705-A777-C862888DA1F5}.Beta Debug|Any CPU.ActiveCfg = Minimal_Debug|Any CPU
-		{17BE8506-B22B-4705-A777-C862888DA1F5}.Beta Debug|Any CPU.Build.0 = Minimal_Debug|Any CPU
-		{17BE8506-B22B-4705-A777-C862888DA1F5}.Beta Release|Any CPU.ActiveCfg = Minimal_Release|Any CPU
-		{17BE8506-B22B-4705-A777-C862888DA1F5}.Beta Release|Any CPU.Build.0 = Minimal_Release|Any CPU
-		{17BE8506-B22B-4705-A777-C862888DA1F5}.Stable Debug|Any CPU.ActiveCfg = Minimal_Debug|Any CPU
-		{17BE8506-B22B-4705-A777-C862888DA1F5}.Stable Debug|Any CPU.Build.0 = Minimal_Debug|Any CPU
-		{17BE8506-B22B-4705-A777-C862888DA1F5}.Stable Release|Any CPU.ActiveCfg = Minimal_Release|Any CPU
-		{17BE8506-B22B-4705-A777-C862888DA1F5}.Stable Release|Any CPU.Build.0 = Minimal_Release|Any CPU
+		{17BE8506-B22B-4705-A777-C862888DA1F5}.Beta Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17BE8506-B22B-4705-A777-C862888DA1F5}.Beta Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17BE8506-B22B-4705-A777-C862888DA1F5}.Beta Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17BE8506-B22B-4705-A777-C862888DA1F5}.Beta Release|Any CPU.Build.0 = Release|Any CPU
+		{17BE8506-B22B-4705-A777-C862888DA1F5}.Stable Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17BE8506-B22B-4705-A777-C862888DA1F5}.Stable Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17BE8506-B22B-4705-A777-C862888DA1F5}.Stable Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17BE8506-B22B-4705-A777-C862888DA1F5}.Stable Release|Any CPU.Build.0 = Release|Any CPU
 		{C2FEF2CB-356C-4045-948D-F0755ABA6378}.Beta Debug|Any CPU.ActiveCfg = Beta_Debug|Any CPU
 		{C2FEF2CB-356C-4045-948D-F0755ABA6378}.Beta Debug|Any CPU.Build.0 = Beta_Debug|Any CPU
 		{C2FEF2CB-356C-4045-948D-F0755ABA6378}.Beta Release|Any CPU.ActiveCfg = Beta_Release|Any CPU
