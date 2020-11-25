@@ -48,7 +48,7 @@
     <ConstGameVersionWithPrefix>$([System.String]::Copy('$(GameVersionWithPrefix)').Replace('.',''))</ConstGameVersionWithPrefix>
     <DefineConstants Condition="$(IsStable) OR $(IsBeta)">$(DefineConstants);$(ConstGameVersionWithPrefix)</DefineConstants>
     <!-- -->
-    <SupportedVersions>$(MinimalVersion);$(StableVersion);$(BetaVersion);$(GameVersion)</SupportedVersions>
+    <SupportedVersions Condition="$(SupportedVersions) == ''">$(MinimalVersion);$(StableVersion);$(BetaVersion);$(GameVersion)</SupportedVersions>
   </PropertyGroup>
 
   <!--Automatic Path Resolution-->

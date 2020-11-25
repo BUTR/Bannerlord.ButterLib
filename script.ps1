@@ -24,11 +24,11 @@ For ($i = 0; $i -le $gameversions.Length - 2; $i++)
     Copy-Item $ppdb $impl/;
 }
 #
-$supportedVersions = [system.String]::Join(";", ($gameversions | ForEach-Object { $_.substring(1) }));
+$supportedVersions = '\"' + [system.String]::Join(";", ($gameversions | ForEach-Object { $_.substring(1) })) + '\"';
 # Build the minimal version. We will use Bannerlord.ButterLib.dll from there
 $gameversion = $gameversions[-1];
 $version = $gameversion.substring(1);
-dotnet build $proj --configuration Release --force --% -p:SupportedVersions="$supportedVersions" -p:GameVersion=$version -p:GameFolder="$path";
+dotnet build $proj --configuration Release --force -p:GameVersion=$version -p:GameFolder="$path" -p:SupportedVersions=$supportedVersions
 
 # Copy Implementations to the Module
 Copy-Item $impl/* $final;

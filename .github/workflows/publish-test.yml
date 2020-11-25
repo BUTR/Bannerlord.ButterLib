@@ -1,0 +1,84 @@
+name: Publish
+
+on:
+  push:
+    branches:
+      - dev-test1
+
+env:
+  # Disable the .NET logo in the console output.
+  DOTNET_NOLOGO: true
+  # Disable the .NET first time experience to skip caching NuGet packages and speed up the build.
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  # Disable sending .NET CLI telemetry to Microsoft.
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+jobs:
+###########################
+#          NEXUS          #
+###########################
+  build-for-nexusmods:
+    name: Build for NexusMods (Stable)
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@master
+      with:
+        dotnet-version: 3.1.x
+
+    - name: Setup BUTR GPR
+      uses: actions/setup-dotnet@master
+      with:
+        source-url: https://nuget.pkg.github.com/BUTR/index.json
+      env:
+        NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+    - name: Build Bannerlord.ButterLib.Implementation (Stable_Release)
+      run: >-
+        $impl = $PWD.Path + '/bannerlord-implementations';
+        $path = $PWD.Path + '/bannerlord';
+        $fzip = $PWD.Path + '/bannerlord.zip';
+        $final = $path + '/Modules/Bannerlord.ButterLib/bin/Win64_Shipping_Client/';
+
+        $proj = 'src/Bannerlord.ButterLib.Implementation/Bannerlord.ButterLib.Implementation.csproj';
+        $pdll = $path + '/Modules/Bannerlord.ButterLib/bin/Win64_Shipping_Client/Bannerlord.ButterLib.Implementation.*.dll';
+        $ppdb = $path + '/Modules/Bannerlord.ButterLib/bin/Win64_Shipping_Client/Bannerlord.ButterLib.Implementation.*.pdb';
+
+        # The folders are required to be created before executing the script
+        New-Item -ItemType directory -Force -Path $impl;
+        New-Item -ItemType directory -Force -Path $path;
+
+        $gameversions = Get-Content -Raw -Path supported-game-versions.json | ConvertFrom-Json;
+        # Get all implementations except the minimal version (last element)
+        For ($i = 0; $i -le $gameversions.Length - 2; $i++)
+        {
+            $gameversion = $gameversions[$i];
+            $version = $gameversion.substring(1);
+            dotnet build $proj --configuration Release -p:GameVersion=$version -p:GameFolder="$path";
+
+            # Copy Implementations to the Implementations folder
+            Copy-Item $pdll $impl/;
+            Copy-Item $ppdb $impl/;
+        }
+        #
+        $supportedVersions = '\"' + [system.String]::Join(";", ($gameversions | ForEach-Object { $_.substring(1) })) + '\"';
+        # Build the minimal version. We will use Bannerlord.ButterLib.dll from there
+        $gameversion = $gameversions[-1];
+        $version = $gameversion.substring(1);
+        dotnet build $proj --configuration Release --force -p:GameVersion=$version -p:GameFolder="$path" -p:SupportedVersions=$supportedVersions
+
+        # Copy Implementations to the Module
+        Copy-Item $impl/* $final;
+
+        # Delete Implementations folder
+        Remove-Item -Recurse $impl;
+      shell: pwsh
+
+    - name: Upload Bannerlord Beta folder
+      uses: actions/upload-artifact@v2
+      with:
+        name: bannerlord
+        path: ./bannerlord/
