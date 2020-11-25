@@ -37,7 +37,7 @@ jobs:
         NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
     - name: Build Bannerlord.ButterLib.Implementation (Stable_Release)
-      run: >-
+      run: |
         $impl = $PWD.Path + '/bannerlord-implementations';
         $path = $PWD.Path + '/bannerlord';
         $fzip = $PWD.Path + '/bannerlord.zip';
