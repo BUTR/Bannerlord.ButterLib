@@ -1,5 +1,18 @@
-<!--EXTERNAL_PROPERTIES: BANNERLORD_GAME_DIR;BANNERLORD_STABLE_DIR;BANNERLORD_BETA_DIR-->
+<!--EXTERNAL_PROPERTIES: TargetFramework;BANNERLORD_GAME_DIR;BANNERLORD_STABLE_DIR;BANNERLORD_BETA_DIR;GITHUB_ACTIONS-->
 <Project>
+
+  <PropertyGroup>
+    <IsMinimal>false</IsMinimal>
+    <IsMinimal Condition="$(Configuration.Contains('Minimal'))">true</IsMinimal>
+    <IsDebug>false</IsDebug>
+    <IsDebug Condition="$(Configuration.Contains('Debug'))">true</IsDebug>
+    <IsRelease>false</IsRelease>
+    <IsRelease Condition="$(Configuration.Contains('Release'))">true</IsRelease>
+    <IsStable>false</IsStable>
+    <IsStable Condition="$(Configuration.Contains('Stable'))">true</IsStable>
+    <IsBeta>false</IsBeta>
+    <IsBeta Condition="$(Configuration.Contains('Beta'))">true</IsBeta>
+  </PropertyGroup>
 
   <!--Development Variables-->
   <PropertyGroup>
@@ -11,17 +24,28 @@
     <ExtensionVersion>2.0.0</ExtensionVersion>
     <!--BuildResources Version-->
     <BuildResourcesVersion>1.0.0.25</BuildResourcesVersion>
-    <!--Current Bannerlord Stable Version-->
+    <!--Bannerlord Version-->
+    <MinimalVersion>1.4.3</MinimalVersion>
     <StableVersion>1.5.4</StableVersion>
-    <!--Current Bannerlord Beta Version-->
     <BetaVersion>1.5.5</BetaVersion>
+    <GamePrefix>e</GamePrefix>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <!-- -->
-    <GameVersion Condition="$(Configuration) == 'Stable_Debug' OR $(Configuration) == 'Stable_Release'">$(StableVersion)</GameVersion>
-    <GameVersion Condition="$(Configuration) == 'Beta_Debug' OR $(Configuration) == 'Beta_Release'">$(BetaVersion)</GameVersion>
+    <GameVersion Condition="$(IsMinimal)">$(MinimalVersion)</GameVersion>
+    <GameVersion Condition="$(IsStable)">$(StableVersion)</GameVersion>
+    <GameVersion Condition="$(IsBeta)">$(BetaVersion)</GameVersion>
     <!--Bannerlord's Root Folder. Leave empty if you want it to be tried to be autoresolved.-->
-    <GameFolder Condition="$(Configuration) == 'Stable_Debug' OR $(Configuration) == 'Stable_Release'">$(BANNERLORD_STABLE_DIR)</GameFolder>
-    <GameFolder Condition="$(Configuration) == 'Beta_Debug' OR $(Configuration) == 'Beta_Release'">$(BANNERLORD_BETA_DIR)</GameFolder>
-    <GameFolder Condition="$(BANNERLORD_STABLE_DIR) == '' AND $(BANNERLORD_BETA_DIR) == ''">$(BANNERLORD_GAME_DIR)</GameFolder>
+    <GameFolder>$(BANNERLORD_GAME_DIR)</GameFolder>
+    <GameFolder Condition="$(IsStable)">$(BANNERLORD_STABLE_DIR)</GameFolder>
+    <GameFolder Condition="$(IsBeta)">$(BANNERLORD_BETA_DIR)</GameFolder>
+    <!-- -->
+    <GameVersionWithPrefix>$(GamePrefix)$(GameVersion)</GameVersionWithPrefix>
+    <ConstGameVersionWithPrefix>$([System.String]::Copy('$(GameVersionWithPrefix)').Replace('.',''))</ConstGameVersionWithPrefix>
+    <DefineConstants Condition="$(IsStable) OR $(IsBeta)">$(DefineConstants);$(ConstGameVersionWithPrefix)</DefineConstants>
+    <!-- -->
+    <SupportedVersions>$(MinimalVersion);$(StableVersion);$(BetaVersion);$(GameVersion)</SupportedVersions>
   </PropertyGroup>
 
   <!--Automatic Path Resolution-->
@@ -32,13 +56,23 @@
     <!--Set a default value if registry value is missing-->
     <GameFolder Condition="!Exists($(GameFolder)) AND $(OS) == 'Windows_NT'">C:\Program Files (x86)\Steam\steamapps\common\Mount &amp; Blade II Bannerlord</GameFolder>
     <!--Unix-->
-    <!--Set a default value if registry value is missing-->
     <GameFolder Condition="!Exists($(GameFolder)) AND $(OS) == 'Unix'">~/.steam/root/steamapps/common/Mount &amp; Blade II Bannerlord</GameFolder>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(IsDebug)" >
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>portable</DebugType>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(IsRelease)" >
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>portable</DebugType>
+    <Optimize>true</Optimize>
   </PropertyGroup>
 
 
   <!--GitHub Actions-->
-  <PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+  <PropertyGroup Condition="$(GITHUB_ACTIONS) == 'true'">
     <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
   </PropertyGroup>
   <!--NuGet SorceLink-->

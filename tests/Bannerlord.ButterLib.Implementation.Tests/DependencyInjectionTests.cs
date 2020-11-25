@@ -81,6 +81,7 @@ namespace Bannerlord.ButterLib.Implementation.Tests
             harmony.Patch(SymbolExtensions2.GetPropertyInfo(() => TWCommon.ConfigName).GetMethod,
                 prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetConfigName)));
             ModuleInfoHelper.LoadedModules = new List<ExtendedModuleInfo>();
+            ModuleInfoHelper.PastInitialization = true;
 
             var subModule = new ButterLibSubModule();
             var subModuleWrapper = new MBSubModuleBaseWrapper(subModule);

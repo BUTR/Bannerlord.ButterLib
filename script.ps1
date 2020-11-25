@@ -1,24 +1,39 @@
-
-$temp = $PWD.Path + '/bannerlord-temp';
 $impl = $PWD.Path + '/bannerlord-implementations';
 $path = $PWD.Path + '/bannerlord';
+$fzip = $PWD.Path + '/bannerlord.zip';
+$final = $path + '/Modules/Bannerlord.ButterLib/bin/Win64_Shipping_Client/';
 
-New-Item -ItemType directory -Force -Path $temp;
+$proj = 'src/Bannerlord.ButterLib.Implementation/Bannerlord.ButterLib.Implementation.csproj';
+$pdll = $path + '/Modules/Bannerlord.ButterLib/bin/Win64_Shipping_Client/Bannerlord.ButterLib.Implementation.*.dll';
+$ppdb = $path + '/Modules/Bannerlord.ButterLib/bin/Win64_Shipping_Client/Bannerlord.ButterLib.Implementation.*.pdb';
+
+# The folders are required to be created before executing the script
 New-Item -ItemType directory -Force -Path $impl;
-$array = Get-Content -Raw -Path test.json | ConvertFrom-Json;
-ForEach ($entry in $array) 
+New-Item -ItemType directory -Force -Path $path;
+
+$gameversions = Get-Content -Raw -Path supported-game-versions.json | ConvertFrom-Json;
+# Get all implementations except the minimal version (last element)
+For ($i=0; $i -le $gameversions.Length - 2; $i++)
 {
-    $gameversion = $entry.version;
+    $gameversion = $gameversions[$i];
     $version = $gameversion.substring(1);
-    dotnet build src/Bannerlord.ButterLib.Implementation/Bannerlord.ButterLib.Implementation.csproj --configuration Stable_Release -p:GameVersion=$version -p:GameFolder="$temp";
-    Copy-Item $temp/Modules/Bannerlord.ButterLib/bin/Win64_Shipping_Client/Bannerlord.ButterLib.Implementation.$version.dll $impl/;
-    Copy-Item $temp/Modules/Bannerlord.ButterLib/bin/Win64_Shipping_Client/Bannerlord.ButterLib.Implementation.$version.pdb $impl/;
+    dotnet build $proj --configuration Release -p:GameVersion=$version -p:GameFolder="$path";
+
+    # Copy Implementations to the Implementations folder
+    Copy-Item $pdll $impl/;
+    Copy-Item $ppdb $impl/;
 }
+#
+$supportedVersions = [system.String]::Join(";", ($gameversions | ForEach-Object { $_.substring(1) }));
+# Build the minimal version. We will use Bannerlord.ButterLib.dll from there
+$gameversion = $gameversions[-1];
+$version = $gameversion.substring(1);
+dotnet build $proj --configuration Release --force --% -p:SupportedVersions="$supportedVersions" -p:GameVersion=$version -p:GameFolder="$path";
 
-dotnet build src/Bannerlord.ButterLib.Implementation/Bannerlord.ButterLib.Implementation.csproj --configuration Beta_Release -p:GameFolder="$temp";
-Copy-Item $temp/Modules/Bannerlord.ButterLib/bin/Win64_Shipping_Client/Bannerlord.ButterLib.Implementation.$version.dll $impl/;
-Copy-Item $temp/Modules/Bannerlord.ButterLib/bin/Win64_Shipping_Client/Bannerlord.ButterLib.Implementation.$version.pdb $impl/;
+# Copy Implementations to the Module
+Copy-Item $impl/* $final;
 
-dotnet build src/Bannerlord.ButterLib.Implementation/Bannerlord.ButterLib.Implementation.csproj --configuration Stable_Release -p:GameFolder="$path";
+# Delete Implementations folder
+Remove-Item -Recurse $impl;
 
-Copy-Item $impl/ $path/Modules/Bannerlord.ButterLib/bin/Win64_Shipping_Client/;
+Compress-Archive -Path "$path/*" -DestinationPath "$fzip" -Force

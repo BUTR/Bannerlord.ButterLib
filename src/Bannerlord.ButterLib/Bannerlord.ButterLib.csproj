@@ -1,16 +1,18 @@
-﻿<!--EXTERNAL_PROPERTIES: Version;GameVersion;StableVersion;BetaVersion;HarmonyVersion;BuildResourcesVersion;ExtensionVersion-->
+﻿<!--EXTERNAL_PROPERTIES: Version;GameVersion;HarmonyVersion;BuildResourcesVersion;ExtensionVersion;SupportedVersions-->
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net472</TargetFramework>
     <LangVersion>9.0</LangVersion>
     <Nullable>enable</Nullable>
+
+    <Configurations>Minimal_Debug;Minimal_Release</Configurations>
   </PropertyGroup>
 
   <!--NuGet Package-->
   <PropertyGroup>
     <PackageId>Bannerlord.ButterLib</PackageId>
-    <PackageDescription>A library containing common functions for modification development. Built against e$(StableVersion).</PackageDescription>
+    <PackageDescription>A library containing common functions for modification development. Built against e$(GameVersion).</PackageDescription>
     <Title>ButterLib</Title>
     <Authors>BUTR</Authors>
     <DevelopmentDependency>true</DevelopmentDependency>
@@ -36,9 +38,9 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Lib.Harmony" Version="$(HarmonyVersion)" IncludeAssets="compile" />
-    <PackageReference Include="Bannerlord.ReferenceAssemblies.Core.EarlyAccess" Version="$(StableVersion).*" PrivateAssets="All" />
-    <PackageReference Include="Bannerlord.ReferenceAssemblies.Native.EarlyAccess" Version="$(StableVersion).*" PrivateAssets="All" />
-    <PackageReference Include="Bannerlord.ReferenceAssemblies.StoryMode.EarlyAccess" Version="$(StableVersion).*" PrivateAssets="All" />
+    <PackageReference Include="Bannerlord.ReferenceAssemblies.Core.EarlyAccess" Version="$(GameVersion).*" PrivateAssets="All" />
+    <PackageReference Include="Bannerlord.ReferenceAssemblies.Native.EarlyAccess" Version="$(GameVersion).*" PrivateAssets="All" />
+    <PackageReference Include="Bannerlord.ReferenceAssemblies.StoryMode.EarlyAccess" Version="$(GameVersion).*" PrivateAssets="All" />
     <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="$(ExtensionVersion)" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="$(ExtensionVersion)" />
@@ -52,14 +54,21 @@
   </ItemGroup>
   <!--NuGet References-->
 
+  <Target Name="Demo1" BeforeTargets="BeforeCompile">
+    <ItemGroup>
+      <SupportedVersionsItem Include="$(SupportedVersions)" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'@(SupportedVersionsItem->Count())' &gt; 0">
+      <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+        <_Parameter1>Bannerlord.ButterLib.Implementation.%(SupportedVersionsItem.Identity)</_Parameter1>
+      </AssemblyAttribute>
+    </ItemGroup>
+
+
+  </Target>
+
   <ItemGroup>
-    <InternalsVisibleTo Include="Bannerlord.ButterLib.Implementation.1.4.3" />
-    <InternalsVisibleTo Include="Bannerlord.ButterLib.Implementation.1.5.0" />
-    <InternalsVisibleTo Include="Bannerlord.ButterLib.Implementation.1.5.1" />
-    <InternalsVisibleTo Include="Bannerlord.ButterLib.Implementation.1.5.2" />
-    <InternalsVisibleTo Include="Bannerlord.ButterLib.Implementation.1.5.3" />
-    <InternalsVisibleTo Include="Bannerlord.ButterLib.Implementation.$(StableVersion)" />
-    <InternalsVisibleTo Include="Bannerlord.ButterLib.Implementation.$(BetaVersion)" />
     <InternalsVisibleTo Include="Bannerlord.ButterLib.Tests" />
     <InternalsVisibleTo Include="Bannerlord.ButterLib.Implementation.Tests" />
     <InternalsVisibleTo Include="Bannerlord.ButterLib.ObjectSystem.Test" />

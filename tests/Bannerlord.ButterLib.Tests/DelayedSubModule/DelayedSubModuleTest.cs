@@ -48,6 +48,7 @@ namespace Bannerlord.ButterLib.Tests.DelayedSubModule
         {
             // Initialization
             ModuleInfoHelper.LoadedModules = new List<ExtendedModuleInfo> { TestHelper.ModuleInfoCaller, TestHelper.ModuleInfoTarget };
+            ModuleInfoHelper.PastInitialization = true;
             // Initialization
 
             // Because the Target SubModule loads after Caller, Subscribe should not instacall the delegate
@@ -62,6 +63,7 @@ namespace Bannerlord.ButterLib.Tests.DelayedSubModule
         {
             // Initialization
             ModuleInfoHelper.LoadedModules = new List<ExtendedModuleInfo> { TestHelper.ModuleInfoCaller, TestHelper.ModuleInfoTarget };
+            ModuleInfoHelper.PastInitialization = true;
             // Initialization
 
             // Because the Target SubModule loads after Caller, Subscribe should not instacall the delegate
@@ -81,6 +83,7 @@ namespace Bannerlord.ButterLib.Tests.DelayedSubModule
         {
             // Initialization
             ModuleInfoHelper.LoadedModules = new List<ExtendedModuleInfo> { TestHelper.ModuleInfoTarget, TestHelper.ModuleInfoCaller };
+            ModuleInfoHelper.PastInitialization = true;
             // Initialization
 
             // Because the Target SubModule loads before Caller, Subscribe should instacall the delegate
