@@ -6,10 +6,13 @@
     <LangVersion>9.0</LangVersion>
     <PlatformTarget>x64</PlatformTarget>
     <Nullable>enable</Nullable>
+
+    <Configurations>Stable_Debug;Stable_Release;Beta_Debug;Beta_Release</Configurations>
+
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
-    <Configurations>Stable_Debug;Stable_Release;Beta_Debug;Beta_Release</Configurations>
-    <ModuleName>Bannerlord.ButterLib.ObjectSystem.Test</ModuleName>
+
+    <ModuleName>$(MSBuildProjectName)</ModuleName>
   </PropertyGroup>
 
   <ItemGroup>

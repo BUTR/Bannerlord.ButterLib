@@ -13,7 +13,7 @@ New-Item -ItemType directory -Force -Path $path;
 
 $gameversions = Get-Content -Raw -Path supported-game-versions.json | ConvertFrom-Json;
 # Get all implementations except the minimal version (last element)
-For ($i=0; $i -le $gameversions.Length - 2; $i++)
+For ($i = 0; $i -le $gameversions.Length - 2; $i++)
 {
     $gameversion = $gameversions[$i];
     $version = $gameversion.substring(1);

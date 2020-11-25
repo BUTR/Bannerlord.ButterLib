@@ -1,6 +1,26 @@
 <!--EXTERNAL_PROPERTIES: TargetFramework;BANNERLORD_GAME_DIR;BANNERLORD_STABLE_DIR;BANNERLORD_BETA_DIR;GITHUB_ACTIONS-->
 <Project>
 
+  <!--Development Variables-->
+  <PropertyGroup>
+    <!--Module Version-->
+    <Version>1.0.16</Version>
+    <!--Harmony Version-->
+    <HarmonyVersion>2.0.2</HarmonyVersion>
+    <!--Microsoft Extension Libraries Version-->
+    <ExtensionVersion>2.0.0</ExtensionVersion>
+    <!--BuildResources Version-->
+    <BuildResourcesVersion>1.0.0.25</BuildResourcesVersion>
+    <!--Minimal supported Bannerlord Version-->
+    <MinimalVersion>1.4.3</MinimalVersion>
+    <!--Current Stable Bannerlord Version-->
+    <StableVersion>1.5.4</StableVersion>
+    <!--Current Beta Bannerlord Version-->
+    <BetaVersion>1.5.5</BetaVersion>
+    <!--Current Bannerlord Version Prefix-->
+    <GamePrefix>e</GamePrefix>
+  </PropertyGroup>
+
   <PropertyGroup>
     <IsMinimal>false</IsMinimal>
     <IsMinimal Condition="$(Configuration.Contains('Minimal'))">true</IsMinimal>
@@ -12,23 +32,6 @@
     <IsStable Condition="$(Configuration.Contains('Stable'))">true</IsStable>
     <IsBeta>false</IsBeta>
     <IsBeta Condition="$(Configuration.Contains('Beta'))">true</IsBeta>
-  </PropertyGroup>
-
-  <!--Development Variables-->
-  <PropertyGroup>
-    <!--Module Version-->
-    <Version>1.0.16</Version>
-    <!--Harmony Version-->
-    <HarmonyVersion>2.0.2</HarmonyVersion>
-    <!--Microsoft Extension Libraries Version-->
-    <ExtensionVersion>2.0.0</ExtensionVersion>
-    <!--BuildResources Version-->
-    <BuildResourcesVersion>1.0.0.25</BuildResourcesVersion>
-    <!--Bannerlord Version-->
-    <MinimalVersion>1.4.3</MinimalVersion>
-    <StableVersion>1.5.4</StableVersion>
-    <BetaVersion>1.5.5</BetaVersion>
-    <GamePrefix>e</GamePrefix>
   </PropertyGroup>
 
   <PropertyGroup>
