@@ -54,24 +54,23 @@
   </ItemGroup>
   <!--NuGet References-->
 
-  <Target Name="Demo1" BeforeTargets="BeforeCompile">
+  <!--InternalsVisibleTo-->
+  <Target Name="SetInternalsVisibleToSupportedVersions" BeforeTargets="BeforeCompile">
     <ItemGroup>
       <SupportedVersionsItem Include="$(SupportedVersions)" />
     </ItemGroup>
 
-    <ItemGroup Condition="'@(SupportedVersionsItem->Count())' &gt; 0">
+    <ItemGroup Condition="@(SupportedVersionsItem->Count()) > 0">
       <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
         <_Parameter1>Bannerlord.ButterLib.Implementation.%(SupportedVersionsItem.Identity)</_Parameter1>
       </AssemblyAttribute>
     </ItemGroup>
-
-
   </Target>
-
   <ItemGroup>
     <InternalsVisibleTo Include="Bannerlord.ButterLib.Tests" />
     <InternalsVisibleTo Include="Bannerlord.ButterLib.Implementation.Tests" />
     <InternalsVisibleTo Include="Bannerlord.ButterLib.ObjectSystem.Test" />
   </ItemGroup>
+  <!--InternalsVisibleTo-->
 
 </Project>

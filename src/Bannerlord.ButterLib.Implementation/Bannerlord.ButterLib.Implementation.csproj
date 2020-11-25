@@ -35,9 +35,11 @@
     <ProjectReference Include="..\Bannerlord.ButterLib\Bannerlord.ButterLib.csproj" />
   </ItemGroup>
 
+  <!--InternalsVisibleTo-->
   <ItemGroup>
     <InternalsVisibleTo Include="Bannerlord.ButterLib.Tests" />
     <InternalsVisibleTo Include="Bannerlord.ButterLib.Implementation.Tests" />
   </ItemGroup>
+  <!--InternalsVisibleTo-->
 
 </Project>
