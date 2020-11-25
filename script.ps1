@@ -1,4 +1,3 @@
-$impl = $PWD.Path + '/bannerlord-implementations';
 $path = $PWD.Path + '/bannerlord';
 $fzip = $PWD.Path + '/bannerlord.zip';
 $final = $path + '/Modules/Bannerlord.ButterLib/bin/Win64_Shipping_Client/';
@@ -11,7 +10,7 @@ $ppdb = $path + '/Modules/Bannerlord.ButterLib/bin/Win64_Shipping_Client/Bannerl
 New-Item -ItemType directory -Force -Path $impl;
 New-Item -ItemType directory -Force -Path $path;
 
-$gameversions = Get-Content -Raw -Path supported-game-versions.json | ConvertFrom-Json;
+$gameversions = Get-Content -Path supported-game-versions.txt;
 # Get all implementations except the minimal version (last element)
 For ($i = 0; $i -le $gameversions.Length - 2; $i++)
 {

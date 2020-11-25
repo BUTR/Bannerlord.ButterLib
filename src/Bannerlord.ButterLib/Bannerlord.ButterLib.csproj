@@ -1,4 +1,4 @@
-﻿<!--EXTERNAL_PROPERTIES: Version;GameVersion;HarmonyVersion;BuildResourcesVersion;ExtensionVersion;SupportedVersions-->
+﻿<!--EXTERNAL_PROPERTIES: Version;GameVersion;HarmonyVersion;BuildResourcesVersion;ExtensionVersion;SupportedVersions;MSBuildThisFileDirectory-->
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
@@ -56,13 +56,17 @@
 
   <!--InternalsVisibleTo-->
   <Target Name="SetInternalsVisibleToSupportedVersions" BeforeTargets="BeforeCompile">
+    <!--Read TXT file-->
     <ItemGroup>
-      <SupportedVersionsItem Include="$(SupportedVersions)" />
+      <SupportedGameVersionsTextFile Include="$(MSBuildThisFileDirectory)/../../supported-game-versions.txt"/>
     </ItemGroup>
-
-    <ItemGroup Condition="@(SupportedVersionsItem->Count()) > 0">
+    <ReadLinesFromFile File="@(SupportedGameVersionsTextFile)" >
+      <Output TaskParameter="Lines" ItemName="SupportedGameVersionsItem"/>
+    </ReadLinesFromFile>
+    <!--Read TXT file-->
+    <ItemGroup Condition="@(SupportedGameVersionsItem-&gt;Count()) &gt; 0">
       <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
-        <_Parameter1>Bannerlord.ButterLib.Implementation.%(SupportedVersionsItem.Identity)</_Parameter1>
+        <_Parameter1>Bannerlord.ButterLib.Implementation.$([System.String]::Copy('%(SupportedGameVersionsItem.Identity)').Substring(1))</_Parameter1>
       </AssemblyAttribute>
     </ItemGroup>
   </Target>

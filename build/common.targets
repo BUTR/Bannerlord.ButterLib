@@ -1,4 +1,4 @@
-<!--EXTERNAL_PROPERTIES: GameVersionWithPrefix-->
+<!--EXTERNAL_PROPERTIES: GameVersionWithPrefix;-->
 <Project>
 
   <Target Name="AddGameVersionMetadaAssemblyAttributes" BeforeTargets="CoreGenerateAssemblyInfo">
