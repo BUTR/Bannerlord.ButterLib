@@ -1,7 +1,11 @@
 ﻿using Bannerlord.ButterLib.Common.Extensions;
+using Bannerlord.ButterLib.Common.Helpers;
 using Bannerlord.ButterLib.ExceptionHandler.WinForms;
 
 using HarmonyLib;
+
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 using System;
 using System.Collections.Generic;
@@ -30,6 +34,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
 <html>
   <head>
     <meta charset='utf-8'>
+    <game version='{ApplicationVersionUtils.GameVersionStr()}'>
   </head>
   <body>
      <table style='width: 100%;'>

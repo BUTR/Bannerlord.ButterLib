@@ -1,12 +1,19 @@
-﻿using System;
+﻿using Bannerlord.ButterLib.Common.Helpers;
+
+using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Bannerlord.ButterLib.ExceptionHandler.WinForms
 {
     public partial class HtmlCrashReportForm : Form
     {
+        private static bool HasBetterExceptionWindow =>
+            ModuleInfoHelper.GetLoadedModules().Any(m => string.Equals(m.Id, "BetterExceptionWindow", StringComparison.InvariantCultureIgnoreCase));
+
+
         // https://gist.github.com/eikes/2299607
         // Copyright: Eike Send http://eike.se/nd
         // License: MIT License
@@ -36,7 +43,7 @@ if (!document.getElementsByClassName) {
   }
 }";
 
-        private static string TableText = @"
+        private static string TableText = @$"
 <table style='width: 100%;'>
   <tbody>
   <tr>
@@ -45,12 +52,14 @@ if (!document.getElementsByClassName) {
     </td>
     <td>
       <button style='float:right; margin-left:10px;' onclick='window.external.Close()'>Close Report</button>
+      {(HasBetterExceptionWindow ? "<button style='float:right; margin-left:10px;' onclick='window.external.Close()'>BEW Report</button>" : "")}
       <button style='float:right; margin-left:10px;' onclick='window.external.SaveReport()'>Save Report</button>
       <button style='float:right; margin-left:10px;' onclick='window.external.CopyAsHTML()'>Copy as HTML</button>
     </td>
   </tr>
   </tbody>
 </table>
+{(HasBetterExceptionWindow ? "Click 'BEW Report' to close this report and open the report from Better Exception Window." : "")}
 <hr/>";
 
         private string ReportInHtml { get; }
