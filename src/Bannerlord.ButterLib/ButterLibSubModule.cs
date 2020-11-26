@@ -175,6 +175,7 @@ Make sure ButterLib is loaded before them!";
         private static void CheckLoadOrder()
         {
             var loadedModules = ModuleInfoHelper.GetLoadedModules();
+            if (loadedModules.Count == 0) return;
 
             var sb = new StringBuilder();
 

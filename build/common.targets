@@ -1,0 +1,13 @@
+<!--EXTERNAL_PROPERTIES: GameVersionWithPrefix-->
+<Project>
+
+  <Target Name="AddGameVersionMetadaAssemblyAttributes" BeforeTargets="CoreGenerateAssemblyInfo">
+    <ItemGroup>
+      <AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute" Condition="$(GameVersionWithPrefix) != ''" >
+        <_Parameter1>GameVersion</_Parameter1>
+        <_Parameter2>$(GameVersionWithPrefix)</_Parameter2>
+      </AssemblyAttribute>
+    </ItemGroup>
+  </Target>
+
+</Project>
