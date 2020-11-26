@@ -49,6 +49,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" IncludeAssets="compile" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="3.0.1" />
     <PackageReference Include="Serilog.Sinks.File" Version="4.1.0" />
+    <PackageReference Include="System.Reflection.Metadata" Version="5.0.0" />
   </ItemGroup>
   <!--NuGet References-->
 
