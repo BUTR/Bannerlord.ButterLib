@@ -14,6 +14,12 @@
   </PropertyGroup>
 
   <PropertyGroup>
+    <Authors>BUTR Team</Authors>
+    <Company></Company>
+    <Product>ButterLib Library for Bannerlord</Product>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <IsMinimal>true</IsMinimal>
     <IsMinimal Condition="$(Configuration.Contains('Minimal'))">true</IsMinimal>
     <IsStable>false</IsStable>
@@ -42,9 +48,9 @@
     <GameMinimalVersion>$([System.Text.RegularExpressions.Regex]::Split($(SGVFile), `\r\n|\r|\n`)[$(SGVLastEntryIndex)])</GameMinimalVersion>
     <!-- -->
     <GameVersionWithPrefix>e1.1.0</GameVersionWithPrefix>
-    <GameVersionWithPrefix Condition="$(IsMinimal)">$(GameMinimalVersion)</GameVersionWithPrefix>
-    <GameVersionWithPrefix Condition="$(IsStable)">$(GameStableVersion)</GameVersionWithPrefix>
     <GameVersionWithPrefix Condition="$(IsBeta)">$(GameBetaVersion)</GameVersionWithPrefix>
+    <GameVersionWithPrefix Condition="$(IsStable)">$(GameStableVersion)</GameVersionWithPrefix>
+    <GameVersionWithPrefix Condition="$(IsMinimal)">$(GameMinimalVersion)</GameVersionWithPrefix>
     <!-- -->
     <GameVersion>$(GameVersionWithPrefix.Substring(1))</GameVersion>
   </PropertyGroup>
