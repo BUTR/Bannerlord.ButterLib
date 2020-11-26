@@ -14,11 +14,9 @@ env:
   DOTNET_CLI_TELEMETRY_OPTOUT: true
 
 jobs:
-###########################
-#          NEXUS          #
-###########################
-  build-for-nexusmods:
-    name: Build for NexusMods
+
+  build:
+    name: Build for NexusMods (Stable)
     runs-on: ubuntu-latest
     steps:
     - name: Checkout Repository
@@ -36,31 +34,61 @@ jobs:
       env:
         NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
-    - name: Build Bannerlord.ButterLib.Implementation (Stable_Release)
-      run: >-
-        mkdir $PWD/bannerlord-stable;
-        dotnet build src/Bannerlord.ButterLib.Implementation/Bannerlord.ButterLib.Implementation.csproj --configuration Stable_Release -p:GameFolder="$PWD/bannerlord-stable";
-    - name: Build Bannerlord.ButterLib.Implementation (Beta_Release)
-      run: >-
-        mkdir $PWD/bannerlord-beta;
-        dotnet build src/Bannerlord.ButterLib.Implementation/Bannerlord.ButterLib.Implementation.csproj --configuration Beta_Release -p:GameFolder="$PWD/bannerlord-beta";
+    - name: Build Bannerlord.ButterLib Module
+      run: |
+        $impl = $PWD.Path + '/bannerlord-implementations';
+        $path = $PWD.Path + '/bannerlord';
+        $fzip = $PWD.Path + '/bannerlord.zip';
+        $final = $path + '/Modules/Bannerlord.ButterLib/bin/Win64_Shipping_Client/';
 
-    - name: Upload Bannerlord Stable folder
+        $proj = 'src/Bannerlord.ButterLib.Implementation/Bannerlord.ButterLib.Implementation.csproj';
+        $pdll = $path + '/Modules/Bannerlord.ButterLib/bin/Win64_Shipping_Client/Bannerlord.ButterLib.Implementation.*.dll';
+        $ppdb = $path + '/Modules/Bannerlord.ButterLib/bin/Win64_Shipping_Client/Bannerlord.ButterLib.Implementation.*.pdb';
+
+        # The folders are required to be created before executing the script
+        New-Item -ItemType directory -Force -Path $impl;
+        New-Item -ItemType directory -Force -Path $path;
+
+        $gameversions = Get-Content -Path supported-game-versions.txt;
+        # Get all implementations except the minimal version (last element)
+        For ($i = 0; $i -le $gameversions.Length - 2; $i++)
+        {
+            $gameversion = $gameversions[$i];
+            $version = $gameversion.substring(1);
+            dotnet build $proj --configuration Release -p:GameVersion=$version -p:GameFolder="$path";
+
+            # Copy Implementations to the Implementations folder
+            Copy-Item $pdll $impl/;
+            Copy-Item $ppdb $impl/;
+        }
+        #
+        $supportedVersions = '\"' + [system.String]::Join(";", ($gameversions | ForEach-Object { $_.substring(1) })) + '\"';
+        # Build the minimal version. We will use Bannerlord.ButterLib.dll from there
+        $gameversion = $gameversions[-1];
+        $version = $gameversion.substring(1);
+        dotnet build $proj --configuration Release --force -p:GameVersion=$version -p:GameFolder="$path" -p:SupportedVersions=$supportedVersions
+
+        # Copy Implementations to the Module
+        Copy-Item $impl/* $final;
+
+        # Delete Implementations folder
+        Remove-Item -Recurse $impl;
+      shell: pwsh
+
+    - name: Upload bannerlord folder
       uses: actions/upload-artifact@v2
       with:
-        name: bannerlord-stable
-        path: ./bannerlord-stable/
+        name: bannerlord
+        path: ./bannerlord/
 
-    - name: Upload Bannerlord Beta folder
-      uses: actions/upload-artifact@v2
-      with:
-        name: bannerlord-beta
-        path: ./bannerlord-beta/
-
+###########################
+#          NEXUS          #
+###########################
   publish-on-nexusmods:
     name: Publish on NexusMods
-    needs: build-for-nexusmods
+    needs: build
     runs-on: ubuntu-latest
+    if: ${{false}}
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v2
@@ -80,12 +108,7 @@ jobs:
     - name: Download stable bannerlord folder
       uses: actions/download-artifact@v2
       with:
-        name: bannerlord-stable
-        path: ./bannerlord
-    - name: Download beta bannerlord folder
-      uses: actions/download-artifact@v2
-      with:
-        name: bannerlord-beta
+        name: bannerlord
         path: ./bannerlord
 
     - name: Zip Bannerlord.ButterLib
@@ -137,7 +160,7 @@ jobs:
 ###########################
   publish-on-nuget:
     name: Publish on NuGet (Stable)
-    needs: build-for-nexusmods
+    needs: build
     runs-on: ubuntu-latest
     steps:
     - name: Checkout Repository
@@ -193,7 +216,7 @@ jobs:
   publish-on-github:
     name: Publish on GitHub
     runs-on: ubuntu-latest
-    needs: build-for-nexusmods
+    needs: build
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v2
@@ -213,12 +236,7 @@ jobs:
     - name: Download stable bannerlord folder
       uses: actions/download-artifact@v2
       with:
-        name: bannerlord-stable
-        path: ./bannerlord
-    - name: Download beta bannerlord folder
-      uses: actions/download-artifact@v2
-      with:
-        name: bannerlord-beta
+        name: bannerlord
         path: ./bannerlord
 
     - name: Zip Bannerlord.ButterLib

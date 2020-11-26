@@ -98,30 +98,30 @@ Make sure ButterLib is loaded before them!";
             }
 
             Logger = serviceProvider.GetRequiredService<ILogger<ButterLibSubModule>>();
-            Logger.LogTrace("OnSubModuleLoad() started tracking.");
+            Logger.LogTrace("OnSubModuleLoad: Logging started...");
 
             if (!DelayedServiceCreation)
                 InitializeServices();
 
             ExceptionHandlerSubSystem.Enable();
 
-            Logger.LogTrace("OnSubModuleLoad() finished.");
+            Logger.LogTrace("OnSubModuleLoad: Done");
         }
 
         protected override void OnSubModuleUnloaded()
         {
             base.OnSubModuleUnloaded();
-            Logger.LogTrace("OnSubModuleUnloaded() started.");
+            Logger.LogTrace("OnSubModuleUnloaded: Started...");
 
             Instance = null!;
 
-            Logger.LogTrace("OnSubModuleUnloaded() finished.");
+            Logger.LogTrace("OnSubModuleUnloaded: Done");
         }
 
         protected override void OnBeforeInitialModuleScreenSetAsRoot()
         {
             base.OnBeforeInitialModuleScreenSetAsRoot();
-            Logger.LogTrace("OnBeforeInitialModuleScreenSetAsRoot() started.");
+            Logger.LogTrace("OnBeforeInitialModuleScreenSetAsRoot: Started...");
 
             if (!OnBeforeInitialModuleScreenSetAsRootWasCalled)
             {
@@ -137,7 +137,7 @@ Make sure ButterLib is loaded before them!";
                 }
             }
 
-            Logger.LogTrace("OnBeforeInitialModuleScreenSetAsRoot() finished.");
+            Logger.LogTrace("OnBeforeInitialModuleScreenSetAsRoot: Done");
         }
 
         protected override void OnApplicationTick(float dt) => OnApplicationTickEvent?.Invoke(dt);
@@ -145,7 +145,7 @@ Make sure ButterLib is loaded before them!";
         protected override void OnGameStart(Game game, IGameStarter gameStarterObject)
         {
             base.OnGameStart(game, gameStarterObject);
-            Logger.LogTrace("OnGameStart(Game, IGameStarter) started.");
+            Logger.LogTrace("OnGameStart: Started...");
 
             GameScope = ServiceProvider.CreateScope();
             Logger.LogInformation("Created GameScope...");
@@ -153,13 +153,13 @@ Make sure ButterLib is loaded before them!";
             if (game.GameType is Campaign)
                 CampaignIdentifierEvents.Instance = new CampaignIdentifierEvents();
 
-            Logger.LogTrace("OnGameStart(Game, IGameStarter) finished.");
+            Logger.LogTrace("OnGameStart: Done");
         }
 
         public override void OnGameEnd(Game game)
         {
             base.OnGameEnd(game);
-            Logger.LogTrace("OnGameEnd(Game) started.");
+            Logger.LogTrace("OnGameEnd: Started...");
 
             GameScope = null;
 
@@ -169,12 +169,13 @@ Make sure ButterLib is loaded before them!";
                 CampaignIdentifierEvents.Instance = null;
             }
 
-            Logger.LogTrace("OnGameEnd(Game) finished.");
+            Logger.LogTrace("OnGameEnd: Done");
         }
 
         private static void CheckLoadOrder()
         {
             var loadedModules = ModuleInfoHelper.GetLoadedModules();
+            if (loadedModules.Count == 0) return;
 
             var sb = new StringBuilder();
 

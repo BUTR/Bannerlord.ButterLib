@@ -13,8 +13,6 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
 {
     internal sealed class MBObjectExtensionDataStore : CampaignBehaviorBase, IMBObjectExtensionDataStore
     {
-        public const int SaveBaseId = 222_444_700; // 10 reserved, should probably base this one the ButterLib range
-
         private ConcurrentDictionary<DataKey, object?> _vars = new ConcurrentDictionary<DataKey, object?>();
         private ConcurrentDictionary<DataKey, bool>   _flags = new ConcurrentDictionary<DataKey, bool>();
 
@@ -31,7 +29,10 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
             }
 
             dataStore.SyncData("Vars", ref _vars);
+            _vars ??= new();
+
             dataStore.SyncData("Flags", ref _flags);
+            _flags ??= new();
         }
 
         private void ReleaseOrphanedEntries<T>(IDictionary<DataKey, T> dict, ISet<MBGUID> cache)
@@ -100,15 +101,10 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
             public override int GetHashCode() => HashCode.Combine(ObjectId, Key);
         }
 
-        public class SavedTypeDefiner : SaveableCampaignBehaviorTypeDefiner
+        private sealed class SavedTypeDefiner : SaveableCampaignBehaviorTypeDefiner
         {
-            public SavedTypeDefiner() : base(SaveBaseId) { }
+            public SavedTypeDefiner() : base(222_444_700) { }
             protected override void DefineClassTypes() => AddClassDefinition(typeof(DataKey), 1);
-            protected override void DefineStructTypes() { }
-            protected override void DefineInterfaceTypes() { }
-            protected override void DefineEnumTypes() { }
-            protected override void DefineGenericClassDefinitions() { }
-            protected override void DefineGenericStructDefinitions() { }
             protected override void DefineContainerDefinitions()
             {
                 ConstructContainerDefinition(typeof(ConcurrentDictionary<DataKey, object?>));

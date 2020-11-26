@@ -1,5 +1,4 @@
-﻿using Bannerlord.ButterLib.Assemblies;
-using Bannerlord.ButterLib.Common.Extensions;
+﻿using Bannerlord.ButterLib.Common.Extensions;
 using Bannerlord.ButterLib.Common.Helpers;
 using Bannerlord.ButterLib.SubModuleWrappers;
 
@@ -12,6 +11,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Reflection.Metadata;
+using System.Reflection.PortableExecutable;
 
 using TaleWorlds.Core;
 using TaleWorlds.Library;
@@ -153,58 +154,44 @@ namespace Bannerlord.ButterLib
 
         private static IEnumerable<(FileInfo Implementation, ApplicationVersion Version)> GetImplementations(IEnumerable<FileInfo> implementations, ILogger? logger = null)
         {
-            using var assemblyVerifier = new AssemblyVerifier("ButterLib");
-            var assemblyLoader = assemblyVerifier.GetLoader(out var exception);
-            if (assemblyLoader is null)
-            {
-                if (exception is not null)
-                    logger?.LogError(0, exception, "AssemblyLoadProxy could not be initialized.");
-                else
-                    logger?.LogError("AssemblyLoadProxy could not be initialized.");
-
-                yield break;
-            }
-
-            // Load all current assemblies
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies().Where(a => a.FullName?.StartsWith("mscorlib") == false && !a.IsDynamic && !string.IsNullOrEmpty(a.Location)))
-                assemblyLoader.LoadFile(assembly.Location);
-
             foreach (var implementation in implementations)
             {
+                bool found = false;
                 logger?.LogInformation("Found implementation {name}.", implementation.Name);
 
-                var result = false;
-                Exception? e = null;
-                try
+                using var fs = File.OpenRead(implementation.FullName);
+                using var peReader = new PEReader(fs);
+                var mdReader = peReader.GetMetadataReader(MetadataReaderOptions.None);
+                foreach (var attr in mdReader.GetAssemblyDefinition().GetCustomAttributes().Select(ah => mdReader.GetCustomAttribute(ah)))
                 {
-                    // Will throw the exception outside, we need to catch it.
-                    result = assemblyLoader.LoadFileAndTest(implementation.FullName, out var ex);
-                    e = ex;
-                }
-                catch (Exception ex) { e = ex; }
-                if (!result)
-                {
-                    logger?.LogError(e, "Implementation {name} is not compatible with the current game!", implementation.Name);
-                    continue;
+                    var ctorHandle = attr.Constructor;
+                    if (ctorHandle.Kind != HandleKind.MemberReference) continue;
+
+                    var container = mdReader.GetMemberReference((MemberReferenceHandle) ctorHandle).Parent;
+                    var name = mdReader.GetTypeReference((TypeReferenceHandle) container).Name;
+                    if (!string.Equals(mdReader.GetString(name), "AssemblyMetadataAttribute")) continue;
+
+                    var attributeReader = mdReader.GetBlobReader(attr.Value);
+                    attributeReader.ReadByte();
+                    attributeReader.ReadByte();
+                    var key = attributeReader.ReadSerializedString();
+                    var value = attributeReader.ReadSerializedString();
+                    if (string.Equals(key, "GameVersion"))
+                    {
+                        if (!ApplicationVersionUtils.TryParse(value, out var implementationGameVersion))
+                        {
+                            logger?.LogError("Implementation {name} has invalid GameVersion AssemblyMetadataAttribute!", implementation.Name);
+                            continue;
+                        }
+
+                        found = true;
+                        yield return (implementation, implementationGameVersion);
+                        break;
+                    }
                 }
 
-                var assembly = Assembly.ReflectionOnlyLoadFrom(implementation.FullName);
-
-                var metadataList = assembly.GetCustomAttributesData();
-                var implementationGameVersionStr = (string?) metadataList.FirstOrDefault(x => x.ConstructorArguments.Count == 2 && (string?) x.ConstructorArguments[0].Value == "GameVersion")?.ConstructorArguments[1].Value;
-                if (string.IsNullOrEmpty(implementationGameVersionStr))
-                {
+                if (!found)
                     logger?.LogError("Implementation {name} is missing GameVersion AssemblyMetadataAttribute!", implementation.Name);
-                    continue;
-                }
-
-                if (!ApplicationVersionUtils.TryParse(implementationGameVersionStr, out var implementationGameVersion))
-                {
-                    logger?.LogError("Implementation {name} has invalid GameVersion AssemblyMetadataAttribute!", implementation.Name);
-                    continue;
-                }
-
-                yield return (implementation, implementationGameVersion);
             }
         }
 
