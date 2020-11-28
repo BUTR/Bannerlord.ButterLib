@@ -10,7 +10,7 @@ on:
 #    branches:
 #      - dev
 #    paths:
-#      - '.github/workflows/test.yml'
+#      - '.github/workflows/test-full.yml'
 #      - 'src/**'
 #      - 'tests/**'
 #      - 'build/**'
@@ -20,7 +20,7 @@ on:
     # will be triggereg when undrafting or requesting review
     types: [review_requested, ready_for_review]
     paths:
-      - '.github/workflows/test.yml'
+      - '.github/workflows/test-full.yml'
       - 'src/**'
       - 'tests/**'
       - 'build/**'
