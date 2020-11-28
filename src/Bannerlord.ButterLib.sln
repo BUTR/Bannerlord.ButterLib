@@ -111,6 +111,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{43B4
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bannerlord.ButterLib.HotKeys.Test", "..\tests\Bannerlord.ButterLib.HotKeys.Test\Bannerlord.ButterLib.HotKeys.Test.csproj", "{5C1705E2-CC31-4215-A4CE-7A8AFF6D9BC3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Development", "Development", "{4C1C912A-C043-4BA3-A3A9-95989F1061B2}"
+	ProjectSection(SolutionItems) = preProject
+		..\docs\articles\Development\Overview.md = ..\docs\articles\Development\Overview.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Beta Debug|Any CPU = Beta Debug|Any CPU
@@ -206,6 +211,7 @@ Global
 		{57994B84-CC26-4E97-94FF-912821291AD7} = {1392C229-D932-4592-9B4C-EF8E29E83D16}
 		{43B4A632-B25F-4424-8810-3D60FD54E203} = {AAC60DC8-6952-44D5-B9BD-789902E27273}
 		{5C1705E2-CC31-4215-A4CE-7A8AFF6D9BC3} = {43B4A632-B25F-4424-8810-3D60FD54E203}
+		{4C1C912A-C043-4BA3-A3A9-95989F1061B2} = {98D79DD7-266F-4EB7-915A-31BB67D2A9B8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {368BCFA9-8202-4785-AAD4-E8D3D1913736}

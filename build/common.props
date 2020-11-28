@@ -10,7 +10,7 @@
     <!--Microsoft Extension Libraries Version-->
     <ExtensionVersion>2.0.0</ExtensionVersion>
     <!--BuildResources Version-->
-    <BuildResourcesVersion>1.0.0.25</BuildResourcesVersion>
+    <BuildResourcesVersion>1.0.0.31</BuildResourcesVersion>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -26,10 +26,6 @@
     <IsStable Condition="$(Configuration.Contains('Stable'))">true</IsStable>
     <IsBeta>false</IsBeta>
     <IsBeta Condition="$(Configuration.Contains('Beta'))">true</IsBeta>
-    <IsDebug>false</IsDebug>
-    <IsDebug Condition="$(Configuration.Contains('Debug'))">true</IsDebug>
-    <IsRelease>false</IsRelease>
-    <IsRelease Condition="$(Configuration.Contains('Release'))">true</IsRelease>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -38,6 +34,7 @@
   <ItemGroup>
     <SGVItem Include="$([System.Text.RegularExpressions.Regex]::Split($(SGVFile), `\r\n|\r|\n`))" />
   </ItemGroup>
+
   <PropertyGroup Condition="$(OverrideGameVersion) == ''">
     <!--Parsing  supported-game-versions.txt-->
     <SGVLineCount>$([System.Text.RegularExpressions.Regex]::Split($(SGVFile), `\r\n|\r|\n`).Length)</SGVLineCount>
@@ -79,17 +76,6 @@
     <GameFolder Condition="!Exists($(GameFolder)) AND $(OS) == 'Windows_NT'">C:\Program Files (x86)\Steam\steamapps\common\Mount &amp; Blade II Bannerlord</GameFolder>
     <!--Unix-->
     <GameFolder Condition="!Exists($(GameFolder)) AND $(OS) == 'Unix'">~/.steam/root/steamapps/common/Mount &amp; Blade II Bannerlord</GameFolder>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="$(IsDebug)" >
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>portable</DebugType>
-    <Optimize>false</Optimize>
-  </PropertyGroup>
-  <PropertyGroup Condition="$(IsRelease)" >
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>portable</DebugType>
-    <Optimize>true</Optimize>
   </PropertyGroup>
 
 
