@@ -50,6 +50,8 @@ namespace Bannerlord.ButterLib.Implementation
                 services.AddSingleton<IHotKeyManagerStatic, HotKeyManagerStaticImplementation>();
 
                 services.AddSubSystem<CampaignIdentifierSubSystem>();
+                services.AddSubSystem<DistanceMatrixSubSystem>();
+                services.AddSubSystem<HotKeySubSystem>();
                 services.AddSubSystem<ObjectSystemSubSystem>();
                 services.AddSubSystem<SaveSystemSubSystem>();
             }
