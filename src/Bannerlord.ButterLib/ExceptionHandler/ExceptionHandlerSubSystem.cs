@@ -1,5 +1,6 @@
 ﻿using Bannerlord.ButterLib.Common.Helpers;
 using Bannerlord.ButterLib.ExceptionHandler.Patches;
+using Bannerlord.ButterLib.SubSystems;
 
 using HarmonyLib;
 
@@ -10,22 +11,38 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+
 using TaleWorlds.Engine;
 
 using Path = System.IO.Path;
 
 namespace Bannerlord.ButterLib.ExceptionHandler
 {
-    internal static class ExceptionHandlerSubSystem
+    internal sealed class ExceptionHandlerSubSystem : ISubSystem
     {
-        private static readonly Harmony Harmony = new Harmony("Bannerlord.ButterLib.ExceptionHandler");
+        public static ExceptionHandlerSubSystem? Instance { get; private set; }
 
-        public static void Enable()
+        public string Id => "ExceptionHandler";
+        public string Description => "Captures game crashes and creates reports out of them.";
+        public bool IsEnabled { get; private set; }
+        public bool CanBeDisabled => true;
+        public bool CanBeSwitchedAtRuntime => true;
+
+        private readonly Harmony _harmony = new Harmony("Bannerlord.ButterLib.ExceptionHandler");
+
+        public ExceptionHandlerSubSystem()
         {
-            MissionPatch.Enable(Harmony);
-            MissionViewPatch.Enable(Harmony);
-            ModulePatch.Enable(Harmony);
-            ScreenManagerPatch.Enable(Harmony);
+            Instance = this;
+        }
+
+        public void Enable()
+        {
+            IsEnabled = true;
+
+            MissionPatch.Enable(_harmony);
+            MissionViewPatch.Enable(_harmony);
+            ModulePatch.Enable(_harmony);
+            ScreenManagerPatch.Enable(_harmony);
 
             // re-enable BetterExceptionWindow and keep it as it is. It has now features we have yet to match.
             if (ModuleInfoHelper.GetLoadedModules().Any(m => string.Equals(m.Id, "BetterExceptionWindow", StringComparison.InvariantCultureIgnoreCase)))
@@ -72,12 +89,14 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             */
         }
 
-        public static void Disable()
+        public void Disable()
         {
-            MissionPatch.Disable(Harmony);
-            MissionViewPatch.Disable(Harmony);
-            ModulePatch.Disable(Harmony);
-            ScreenManagerPatch.Disable(Harmony);
+            IsEnabled = false;
+
+            MissionPatch.Disable(_harmony);
+            MissionViewPatch.Disable(_harmony);
+            ModulePatch.Disable(_harmony);
+            ScreenManagerPatch.Disable(_harmony);
 
             /*
             if (ModuleInfoHelper.GetLoadedModules().Any(m => string.Equals(m.Id, "BetterExceptionWindow", StringComparison.InvariantCultureIgnoreCase)))
@@ -94,6 +113,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             }
             */
         }
+
 
         private static Assembly? GetBetterExceptionWindowAssembly() => AppDomain.CurrentDomain.GetAssemblies()
             .Where(a => !a.IsDynamic)

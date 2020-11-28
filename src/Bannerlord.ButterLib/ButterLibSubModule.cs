@@ -74,6 +74,8 @@ Make sure ButterLib is loaded before them!";
 
             this.AddDefaultSerilogLogger();
             this.AddSerilogLoggerProvider("butterlib.txt", new[] { "Bannerlord.ButterLib.*" });
+
+            Services.AddSubSystem<ExceptionHandlerSubSystem>();
         }
 
         protected override void OnSubModuleLoad()
@@ -103,7 +105,7 @@ Make sure ButterLib is loaded before them!";
             if (!DelayedServiceCreation)
                 InitializeServices();
 
-            ExceptionHandlerSubSystem.Enable();
+            ExceptionHandlerSubSystem.Instance?.Enable();
 
             Logger.LogTrace("OnSubModuleLoad: Done");
         }
@@ -171,6 +173,7 @@ Make sure ButterLib is loaded before them!";
 
             Logger.LogTrace("OnGameEnd: Done");
         }
+
 
         private static void CheckLoadOrder()
         {

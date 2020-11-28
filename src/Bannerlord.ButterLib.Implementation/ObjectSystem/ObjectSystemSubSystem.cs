@@ -1,20 +1,38 @@
 ﻿using Bannerlord.ButterLib.Implementation.ObjectSystem.Patches;
+using Bannerlord.ButterLib.SubSystems;
 
 using HarmonyLib;
 
 namespace Bannerlord.ButterLib.Implementation.ObjectSystem
 {
-    internal static class ObjectSystemSubSystem
+    internal class ObjectSystemSubSystem : ISubSystem
     {
-        private static readonly Harmony _harmony = new Harmony("Bannerlord.ButterLib.ObjectSystem");
+        public static ObjectSystemSubSystem? Instance { get; private set; }
 
-        public static void Enable()
+        public string Id => "Object System";
+        public string Description => "";
+        public bool IsEnabled { get; private set; }
+        public bool CanBeDisabled => true;
+        public bool CanBeSwitchedAtRuntime => false;
+
+        private readonly Harmony _harmony = new Harmony("Bannerlord.ButterLib.ObjectSystem");
+
+        public ObjectSystemSubSystem()
         {
+            Instance = this;
+        }
+
+        public void Enable()
+        {
+            IsEnabled = true;
+
             CampaignBehaviorManagerPatch.Enable(_harmony);
         }
 
-        public static void Disable()
+        public void Disable()
         {
+            IsEnabled = false;
+
             //CampaignBehaviorManagerPatch.Disable(_harmony);
         }
     }

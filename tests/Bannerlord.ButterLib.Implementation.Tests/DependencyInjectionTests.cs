@@ -86,7 +86,7 @@ namespace Bannerlord.ButterLib.Implementation.Tests
             var subModule = new ButterLibSubModule();
             var subModuleWrapper = new MBSubModuleBaseWrapper(subModule);
             subModuleWrapper.SubModuleLoad();
-            ExceptionHandlerSubSystem.Disable();
+            ExceptionHandlerSubSystem.Instance?.Disable();
 
             var services = ButterLibSubModule.Instance!.GetServices()!;
             services.AddScoped<CampaignDescriptor, CampaignDescriptorImplementation>();
