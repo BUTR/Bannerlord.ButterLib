@@ -21,7 +21,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
 {
     internal static class HtmlBuilder
     {
-        private static string NL = Environment.NewLine;
+        private static readonly string NL = Environment.NewLine;
 
         public static void BuildAndShow(CrashReport crashReport)
         {
