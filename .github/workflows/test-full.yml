@@ -100,15 +100,15 @@ jobs:
             dotnet depotdownloader/DepotDownloader.dll -app 261550 -depot 261551 -beta $gameversion -filelist "$PWD/.github/resources/FileFilters.regexp" -username "${{secrets.STEAM_LOGIN}}" -password "${{secrets.STEAM_PASSWORD}}" -dir "$gamefolder";
         }
 
-        opencover/OpenCover.Console.exe -register:user -target:"dotnet.exe" -targetargs:"test $testproj --configuration Debug  -p:OverrideGameVersion=$($gameversions[-1]) -p:GameFolder=""$PWD/bannerlord-$($gameversions[-1])""" -filter:"$filter" -output:"coverage_butterlib_$($gameversions[-1])_debug.xml" -mergebyhash;
-        opencover/OpenCover.Console.exe -register:user -target:"dotnet.exe" -targetargs:"test $testproj --configuration Release  -p:OverrideGameVersion=$($gameversions[-1]) -p:GameFolder=""$PWD/bannerlord-$($gameversions[-1])""" -filter:"$filter" -output:"coverage_butterlib_$($gameversions[-1])_release.xml" -mergebyhash;
+        opencover/OpenCover.Console.exe -register -target:"dotnet.exe" -targetargs:"test $testproj --configuration Debug  -p:OverrideGameVersion=$($gameversions[-1]) -p:GameFolder=""$PWD/bannerlord-$($gameversions[-1])""" -filter:"$filter" -output:"coverage_butterlib_$($gameversions[-1])_debug.xml" -mergebyhash;
+        opencover/OpenCover.Console.exe -register -target:"dotnet.exe" -targetargs:"test $testproj --configuration Release  -p:OverrideGameVersion=$($gameversions[-1]) -p:GameFolder=""$PWD/bannerlord-$($gameversions[-1])""" -filter:"$filter" -output:"coverage_butterlib_$($gameversions[-1])_release.xml" -mergebyhash;
         For ($i = 0; $i -le $gameversions.Length - 1; $i++)
         {
             $gameversion = $gameversions[$i];
             $gamefolder = "$PWD/bannerlord-$gameversion";
 
-            opencover/OpenCover.Console.exe -register:user -target:"dotnet.exe" -targetargs:"test $testprojimpl --configuration Debug -p:OverrideGameVersion=$gameversion -p:GameFolder=""$gamefolder""" -filter:"$filter" -output:"coverage_butterlib_impl_$($gameversion)_debug.xml" -mergebyhash;
-            opencover/OpenCover.Console.exe -register:user -target:"dotnet.exe" -targetargs:"test $testprojimpl --configuration Release -p:OverrideGameVersion=$gameversion -p:GameFolder=""$gamefolder""" -filter:"$filter" -output:"coverage_butterlib_impl_$($gameversion)_release.xml" -mergebyhash;
+            opencover/OpenCover.Console.exe -register -target:"dotnet.exe" -targetargs:"test $testprojimpl --configuration Debug -p:OverrideGameVersion=$gameversion -p:GameFolder=""$gamefolder""" -filter:"$filter" -output:"coverage_butterlib_impl_$($gameversion)_debug.xml" -mergebyhash;
+            opencover/OpenCover.Console.exe -register -target:"dotnet.exe" -targetargs:"test $testprojimpl --configuration Release -p:OverrideGameVersion=$gameversion -p:GameFolder=""$gamefolder""" -filter:"$filter" -output:"coverage_butterlib_impl_$($gameversion)_release.xml" -mergebyhash;
         }
       shell: pwsh
 
