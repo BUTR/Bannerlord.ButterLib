@@ -13,7 +13,6 @@
     <PackageId>Bannerlord.ButterLib</PackageId>
     <PackageDescription>A library containing common functions for modification development. Built against e$(GameVersion).</PackageDescription>
     <Title>ButterLib</Title>
-    <Authors>BUTR</Authors>
     <DevelopmentDependency>true</DevelopmentDependency>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>

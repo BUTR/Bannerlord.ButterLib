@@ -4,20 +4,39 @@
  * Authors: sirdoombox, BUTR.
  */
 
+using Bannerlord.ButterLib.SubSystems;
+
 using TaleWorlds.InputSystem;
 
 namespace Bannerlord.ButterLib.Implementation.HotKeys
 {
-    internal static class HotKeySubSystem
+    internal sealed class HotKeySubSystem : ISubSystem
     {
-        public static void Enable()
+        public static HotKeySubSystem? Instance { get; private set; }
+
+        public string Id => "Hot Keys";
+        public string Description => "Provides a better way for mods to create hot`keys";
+        public bool IsEnabled { get; private set; }
+        public bool CanBeDisabled => true;
+        public bool CanBeSwitchedAtRuntime => false;
+
+        public HotKeySubSystem()
         {
+            Instance = this;
+        }
+
+        public void Enable()
+        {
+            IsEnabled = true;
+
             if (ButterLibSubModule.Instance is { } instance)
                 instance.OnApplicationTickEvent += OnApplicationTick;
         }
 
-        public static void Disable()
+        public void Disable()
         {
+            IsEnabled = false;
+
             if (ButterLibSubModule.Instance is { } instance)
                 instance.OnApplicationTickEvent -= OnApplicationTick;
         }

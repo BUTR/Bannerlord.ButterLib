@@ -37,13 +37,23 @@ namespace Bannerlord.ButterLib.Implementation
             {
                 services.AddScoped<CampaignDescriptor, CampaignDescriptorImplementation>();
                 services.AddSingleton<ICampaignDescriptorStatic, CampaignDescriptorStaticImplementation>();
+
                 services.AddScoped(typeof(DistanceMatrix<>), typeof(DistanceMatrixImplementation<>));
                 services.AddSingleton<IDistanceMatrixStatic, DistanceMatrixStaticImplementation>();
+
                 services.AddSingleton<ICampaignExtensions, CampaignExtensionsImplementation>();
                 services.AddTransient<ICampaignDescriptorProvider, JsonCampaignDescriptorProvider>();
+
                 services.AddScoped<IMBObjectExtensionDataStore, MBObjectExtensionDataStore>();
+
                 services.AddScoped<HotKeyManager, HotKeyManagerImplementation>();
                 services.AddSingleton<IHotKeyManagerStatic, HotKeyManagerStaticImplementation>();
+
+                services.AddSubSystem<CampaignIdentifierSubSystem>();
+                services.AddSubSystem<DistanceMatrixSubSystem>();
+                services.AddSubSystem<HotKeySubSystem>();
+                services.AddSubSystem<ObjectSystemSubSystem>();
+                services.AddSubSystem<SaveSystemSubSystem>();
             }
         }
 
@@ -62,7 +72,7 @@ namespace Bannerlord.ButterLib.Implementation
             Logger.LogInformation("Wrapping DebugManager of type {type} with DebugManagerWrapper.", Debug.DebugManager.GetType());
             Debug.DebugManager = new DebugManagerWrapper(Debug.DebugManager, serviceProvider!);
 
-            HotKeySubSystem.Enable();
+            HotKeySubSystem.Instance?.Enable();
 
             Logger.LogTrace("ButterLib.Implementation: OnSubModuleLoad: Done");
         }
@@ -84,11 +94,9 @@ namespace Bannerlord.ButterLib.Implementation
                     Debug.DebugManager = new DebugManagerWrapper(Debug.DebugManager, this.GetServiceProvider()!);
                 }
 
-                CampaignIdentifierSubSystem.Enable();
-
-                ObjectSystemSubSystem.Enable();
-
-                SaveSystemSubSystem.Enable();
+                CampaignIdentifierSubSystem.Instance?.Enable();
+                ObjectSystemSubSystem.Instance?.Enable();
+                SaveSystemSubSystem.Instance?.Enable();
             }
 
             Logger.LogTrace("ButterLib.Implementation: OnBeforeInitialModuleScreenSetAsRoot: Done");

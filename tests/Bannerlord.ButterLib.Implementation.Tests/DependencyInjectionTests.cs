@@ -2,6 +2,7 @@ using Bannerlord.ButterLib.CampaignIdentifier;
 using Bannerlord.ButterLib.Common.Extensions;
 using Bannerlord.ButterLib.Common.Helpers;
 using Bannerlord.ButterLib.DistanceMatrix;
+using Bannerlord.ButterLib.ExceptionHandler;
 using Bannerlord.ButterLib.Implementation.CampaignIdentifier;
 using Bannerlord.ButterLib.Implementation.Common.Extensions;
 using Bannerlord.ButterLib.Implementation.DistanceMatrix;
@@ -17,7 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
-using Bannerlord.ButterLib.ExceptionHandler;
+
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
 using TaleWorlds.Engine;
@@ -86,7 +87,7 @@ namespace Bannerlord.ButterLib.Implementation.Tests
             var subModule = new ButterLibSubModule();
             var subModuleWrapper = new MBSubModuleBaseWrapper(subModule);
             subModuleWrapper.SubModuleLoad();
-            ExceptionHandlerSubSystem.Disable();
+            ExceptionHandlerSubSystem.Instance?.Disable();
 
             var services = ButterLibSubModule.Instance!.GetServices()!;
             services.AddScoped<CampaignDescriptor, CampaignDescriptorImplementation>();
@@ -118,8 +119,8 @@ namespace Bannerlord.ButterLib.Implementation.Tests
 
 
             var hero = (Hero) FormatterServices.GetUninitializedObject(typeof(Hero));
-            SymbolExtensions2.GetFieldInfo((Hero h) => h.Name).SetValue(hero, new TextObject("TestHero"));
-            SymbolExtensions2.GetPropertyInfo((Hero h) => h.BirthDay).SetValue(hero, CampaignTime.YearsFromNow(18));
+            AccessTools.Field(typeof(Hero), "Name").SetValue(hero, new TextObject("TestHero"));
+            AccessTools.Field(typeof(Hero), "_birthDay").SetValue(hero, CampaignTime.YearsFromNow(18));
 
             var campaignDescriptor = CampaignDescriptor.Create(hero);
             Assert.NotNull(campaignDescriptor);

@@ -32,7 +32,9 @@ namespace Bannerlord.ButterLib.ExceptionHandler.Patches
                 return;
             }
 
-            harmony.Patch(TickMethod, finalizer: new HarmonyMethod(TickFinalizerMethod));
+            harmony.Patch(
+                TickMethod,
+                finalizer: new HarmonyMethod(TickFinalizerMethod, before: new [] { "org.calradia.admiralnelson.betterexceptionwindow" }));
         }
 
         internal static void Disable(Harmony harmony)

@@ -1,6 +1,8 @@
 ﻿using Bannerlord.ButterLib.Options;
+using Bannerlord.ButterLib.SubSystems;
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -119,6 +121,15 @@ namespace Bannerlord.ButterLib.Common.Extensions
             });
             // Lets hope that the Regex cache is sufficient.
             return Regex.IsMatch(input, $"{regexPattern}$");
+        }
+
+        public static IServiceCollection AddSubSystem<TImplementation>(this IServiceCollection services)
+            where TImplementation : class, ISubSystem, new()
+        {
+            var instance = new TImplementation();
+            services.AddSingleton<TImplementation>(sp => instance);
+            services.TryAddEnumerable(ServiceDescriptor.Singleton<ISubSystem, TImplementation>(sp => sp.GetRequiredService<TImplementation>()));
+            return services;
         }
     }
 }

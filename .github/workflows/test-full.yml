@@ -1,0 +1,135 @@
+name: Test Fully
+
+on:
+  repository_dispatch:
+    types:
+      # If a new version of the game is released, test the repo against it.
+      # This way we will always know if the repo is broken on a new update.
+      - game_version_update
+#  push:
+#    branches:
+#      - dev
+#    paths:
+#      - '.github/workflows/test-full.yml'
+#      - 'src/**'
+#      - 'tests/**'
+#      - 'build/**'
+  pull_request:
+    branches:
+      - master
+    # will be triggereg when undrafting or requesting review
+    types: [review_requested, ready_for_review]
+    paths:
+      - '.github/workflows/test-full.yml'
+      - 'src/**'
+      - 'tests/**'
+      - 'build/**'
+
+env:
+  # Disable the .NET logo in the console output.
+  DOTNET_NOLOGO: true
+  # Disable the .NET first time experience to skip caching NuGet packages and speed up the build.
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  # Disable sending .NET CLI telemetry to Microsoft.
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+jobs:
+  test:
+    name: Test Fully
+    runs-on: windows-latest
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@master
+      with:
+        dotnet-version: 3.1.x
+
+    - name: Setup BUTR GPR
+      uses: actions/setup-dotnet@master
+      with:
+        source-url: https://nuget.pkg.github.com/BUTR/index.json
+      env:
+        NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+    - name: Download DepotDownloader_2.3.6
+      uses: i3h/download-release-asset@v1
+      with:
+        owner: SteamRE
+        repo: DepotDownloader
+        tag: DepotDownloader_2.3.6
+        file: depotdownloader-2.3.6.zip
+
+    - name: Extract DepotDownloader_2.3.6
+      uses: DuckSoft/extract-7z-action@v1.0
+      with:
+        pathSource: depotdownloader-2.3.6.zip
+        pathTarget: depotdownloader
+
+    - name: Download opencover.4.7.922
+      uses: i3h/download-release-asset@v1
+      with:
+        owner: OpenCover
+        repo: opencover
+        tag: 4.7.922
+        file: opencover.4.7.922.zip
+
+    - name: Extract opencover.4.7.922
+      uses: DuckSoft/extract-7z-action@v1.0
+      with:
+        pathSource: opencover.4.7.922.zip
+        pathTarget: opencover
+
+    - name: Test
+      run: |
+        $testproj = "$PWD/tests/Bannerlord.ButterLib.Tests/Bannerlord.ButterLib.Tests.csproj";
+        $testprojimpl = "$PWD/tests/Bannerlord.ButterLib.Implementation.Tests/Bannerlord.ButterLib.Implementation.Tests.csproj";
+
+        $filter = "+[Bannerlord.ButterLib*]* -[Bannerlord.ButterLib*.Tests]*";
+
+        $gameversions = Get-Content -Path supported-game-versions.txt;
+
+        For ($i = 0; $i -le $gameversions.Length - 1; $i++)
+        {
+            $gameversion = $gameversions[$i];
+            $gamefolder = "$PWD/bannerlord-$gameversion";
+
+            New-Item -ItemType directory -Force -Path "$gamefolder";
+
+            dotnet depotdownloader/DepotDownloader.dll -app 261550 -depot 261551 -beta $gameversion -filelist "$PWD/.github/resources/FileFilters.regexp" -username "${{secrets.STEAM_LOGIN}}" -password "${{secrets.STEAM_PASSWORD}}" -dir "$gamefolder";
+        }
+
+        opencover/OpenCover.Console.exe -register -target:"dotnet.exe" -targetargs:"test $testproj --configuration Debug  -p:OverrideGameVersion=$($gameversions[-1]) -p:GameFolder=""$PWD/bannerlord-$($gameversions[-1])""" -filter:"$filter" -output:"coverage_butterlib_$($gameversions[-1])_debug.xml" -mergebyhash;
+        opencover/OpenCover.Console.exe -register -target:"dotnet.exe" -targetargs:"test $testproj --configuration Release  -p:OverrideGameVersion=$($gameversions[-1]) -p:GameFolder=""$PWD/bannerlord-$($gameversions[-1])""" -filter:"$filter" -output:"coverage_butterlib_$($gameversions[-1])_release.xml" -mergebyhash;
+        For ($i = 0; $i -le $gameversions.Length - 1; $i++)
+        {
+            $gameversion = $gameversions[$i];
+            $gamefolder = "$PWD/bannerlord-$gameversion";
+
+            opencover/OpenCover.Console.exe -register -target:"dotnet.exe" -targetargs:"test $testprojimpl --configuration Debug -p:OverrideGameVersion=$gameversion -p:GameFolder=""$gamefolder""" -filter:"$filter" -output:"coverage_butterlib_impl_$($gameversion)_debug.xml" -mergebyhash;
+            opencover/OpenCover.Console.exe -register -target:"dotnet.exe" -targetargs:"test $testprojimpl --configuration Release -p:OverrideGameVersion=$gameversion -p:GameFolder=""$gamefolder""" -filter:"$filter" -output:"coverage_butterlib_impl_$($gameversion)_release.xml" -mergebyhash;
+        }
+      shell: pwsh
+
+    - name: ReportGenerator
+      uses: danielpalme/ReportGenerator-GitHub-Action@4.6.1
+      with:
+        reports: '*.xml'
+        targetdir: 'coveragereport'
+        reporttypes: 'HtmlInline;Cobertura'
+        sourcedirs: './'
+        tag: '${{ github.run_number }}_${{ github.run_id }}' # Optional tag or build version.
+
+    - name: Upload ReportGenerator to GitHub
+      uses: actions/upload-artifact@v1
+      with:
+        name: coverage-report
+        path: coveragereport
+
+    - name: Upload ReportGenerator to CodeCov
+      uses: codecov/codecov-action@v1
+      with:
+        token: ${{secrets.CODECOV_TOKEN}}
+        file: coveragereport/Cobertura.xml
+        fail_ci_if_error: true
