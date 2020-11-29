@@ -22,7 +22,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
         internal static IEnumerable<ExtendedModuleInfo> GetLoadedModulesEnumerable()
         {
             var modulesNames = Utilities.GetModulesNames();
-            for (var i = 0; i < modulesNames.Length; i++)
+            for (var i = 0; i < modulesNames?.Length; i++)
             {
                 var moduleInfo = new ExtendedModuleInfo();
                 moduleInfo.Load(modulesNames[i]);

@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace Bannerlord.ButterLib.ExceptionHandler.WinForms
 {
-    public partial class HtmlCrashReportForm : Form
+    internal partial class HtmlCrashReportForm : Form
     {
         private static bool HasBetterExceptionWindow =>
             ModuleInfoHelper.GetLoadedModules().Any(m => string.Equals(m.Id, "BetterExceptionWindow", StringComparison.InvariantCultureIgnoreCase));

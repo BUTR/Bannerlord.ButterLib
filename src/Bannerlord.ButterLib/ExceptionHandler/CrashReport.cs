@@ -10,7 +10,7 @@ using System.Reflection;
 
 namespace Bannerlord.ButterLib.ExceptionHandler
 {
-    public class CrashReport
+    internal class CrashReport
     {
         public Exception Exception { get; }
         public List<ExtendedModuleInfo> LoadedModules { get; } = ModuleInfoHelper.GetExtendedLoadedModules();
