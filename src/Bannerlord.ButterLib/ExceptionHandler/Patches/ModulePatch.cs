@@ -13,6 +13,9 @@ using static HarmonyLib.AccessTools;
 
 namespace Bannerlord.ButterLib.ExceptionHandler.Patches
 {
+    /// <summary>
+    /// While we cover this via DotNetManagedPatch, we want to have the same behavior as BEW
+    /// </summary>
     internal sealed class ModulePatch
     {
         private static ILogger _logger = default!;
@@ -32,21 +35,19 @@ namespace Bannerlord.ButterLib.ExceptionHandler.Patches
 
             harmony.Patch(
                 OnApplicationTickMethod,
-                finalizer: new HarmonyMethod(OnApplicationTickFinalizerMethod, before: new [] { "org.calradia.admiralnelson.betterexceptionwindow" }));
+                finalizer: new HarmonyMethod(FinalizerMethod, before: new [] { "org.calradia.admiralnelson.betterexceptionwindow" }));
         }
 
         internal static void Disable(Harmony harmony)
         {
-            harmony.Unpatch(OnApplicationTickMethod, OnApplicationTickFinalizerMethod);
+            harmony.Unpatch(OnApplicationTickMethod, FinalizerMethod);
         }
 
-        private static readonly MethodInfo? OnApplicationTickMethod =
-            Method(typeof(TaleWorlds.MountAndBlade.Module), "OnApplicationTick");
+        private static readonly MethodInfo? OnApplicationTickMethod = Method(typeof(TaleWorlds.MountAndBlade.Module), "OnApplicationTick");
 
-        private static readonly MethodInfo? OnApplicationTickFinalizerMethod =
-            Method(typeof(ModulePatch), nameof(OnApplicationTickFinalizer));
+        private static readonly MethodInfo? FinalizerMethod = Method(typeof(ModulePatch), nameof(Finalizer));
 
-        public static void OnApplicationTickFinalizer(Exception? __exception)
+        public static void Finalizer(Exception? __exception)
         {
             if (__exception is not null)
             {

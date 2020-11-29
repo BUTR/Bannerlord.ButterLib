@@ -39,10 +39,12 @@ namespace Bannerlord.ButterLib.ExceptionHandler
         {
             IsEnabled = true;
 
+            DotNetManagedPatch.Enable(_harmony);
             MissionPatch.Enable(_harmony);
             MissionViewPatch.Enable(_harmony);
             ModulePatch.Enable(_harmony);
             ScreenManagerPatch.Enable(_harmony);
+            ScriptComponentBehaviourPatch.Enable(_harmony);
 
             // re-enable BetterExceptionWindow and keep it as it is. It has now features we have yet to match.
             if (ModuleInfoHelper.GetLoadedModules().Any(m => string.Equals(m.Id, "BetterExceptionWindow", StringComparison.InvariantCultureIgnoreCase)))
@@ -93,10 +95,12 @@ namespace Bannerlord.ButterLib.ExceptionHandler
         {
             IsEnabled = false;
 
+            DotNetManagedPatch.Disable(_harmony);
             MissionPatch.Disable(_harmony);
             MissionViewPatch.Disable(_harmony);
             ModulePatch.Disable(_harmony);
             ScreenManagerPatch.Disable(_harmony);
+            ScriptComponentBehaviourPatch.Disable(_harmony);
 
             /*
             if (ModuleInfoHelper.GetLoadedModules().Any(m => string.Equals(m.Id, "BetterExceptionWindow", StringComparison.InvariantCultureIgnoreCase)))

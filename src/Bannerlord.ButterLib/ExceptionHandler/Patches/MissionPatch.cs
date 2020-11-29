@@ -15,6 +15,9 @@ using static HarmonyLib.AccessTools;
 
 namespace Bannerlord.ButterLib.ExceptionHandler.Patches
 {
+    /// <summary>
+    /// While we cover this via DotNetManagedPatch, we want to have the same behavior as BEW
+    /// </summary>
     internal sealed class MissionPatch
     {
         private static ILogger _logger = default!;
@@ -34,21 +37,19 @@ namespace Bannerlord.ButterLib.ExceptionHandler.Patches
 
             harmony.Patch(
                 TickMethod,
-                finalizer: new HarmonyMethod(TickFinalizerMethod, before: new [] { "org.calradia.admiralnelson.betterexceptionwindow" }));
+                finalizer: new HarmonyMethod(FinalizerMethod, before: new [] { "org.calradia.admiralnelson.betterexceptionwindow" }));
         }
 
         internal static void Disable(Harmony harmony)
         {
-            harmony.Unpatch(TickMethod, TickFinalizerMethod);
+            harmony.Unpatch(TickMethod, FinalizerMethod);
         }
 
-        private static readonly MethodInfo? TickMethod =
-            Method(typeof(Mission), "Tick");
+        private static readonly MethodInfo? TickMethod = Method(typeof(Mission), "Tick");
 
-        private static readonly MethodInfo? TickFinalizerMethod =
-            Method(typeof(MissionPatch), nameof(TickFinalizer));
+        private static readonly MethodInfo? FinalizerMethod = Method(typeof(MissionPatch), nameof(Finalizer));
 
-        public static void TickFinalizer(Exception? __exception)
+        public static void Finalizer(Exception? __exception)
         {
             if (__exception is not null)
             {

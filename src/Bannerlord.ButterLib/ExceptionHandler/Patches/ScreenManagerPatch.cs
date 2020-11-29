@@ -15,7 +15,10 @@ using static HarmonyLib.AccessTools;
 
 namespace Bannerlord.ButterLib.ExceptionHandler.Patches
 {
-    internal sealed class ScreenManagerPatch
+    /// <summary>
+    /// Entrypoint into C# engine part
+    /// </summary>
+    internal static class ScreenManagerPatch
     {
         private static ILogger _logger = default!;
 
@@ -33,22 +36,35 @@ namespace Bannerlord.ButterLib.ExceptionHandler.Patches
             }
 
             harmony.Patch(
+                PreTickMethod,
+                finalizer: new HarmonyMethod(FinalizerMethod));
+            harmony.Patch(
                 TickMethod,
-                finalizer: new HarmonyMethod(TickFinalizerMethod, before: new [] { "org.calradia.admiralnelson.betterexceptionwindow" }));
+                finalizer: new HarmonyMethod(FinalizerMethod, before: new [] { "org.calradia.admiralnelson.betterexceptionwindow" }));
+            harmony.Patch(
+                LateTickMethod,
+                finalizer: new HarmonyMethod(FinalizerMethod));
+            harmony.Patch(
+                UpdateMethod,
+                finalizer: new HarmonyMethod(FinalizerMethod));
         }
 
         internal static void Disable(Harmony harmony)
         {
-            harmony.Unpatch(TickMethod, TickFinalizerMethod);
+            harmony.Unpatch(PreTickMethod, FinalizerMethod);
+            harmony.Unpatch(TickMethod, FinalizerMethod);
+            harmony.Unpatch(LateTickMethod, FinalizerMethod);
+            harmony.Unpatch(UpdateMethod, FinalizerMethod);
         }
 
-        private static readonly MethodInfo? TickMethod =
-            Method(typeof(ScreenManager), "Tick");
+        private static readonly MethodInfo? PreTickMethod = Method(typeof(ScreenManager), "PreTick");
+        private static readonly MethodInfo? TickMethod = Method(typeof(ScreenManager), "Tick");
+        private static readonly MethodInfo? LateTickMethod = Method(typeof(ScreenManager), "LateTick");
+        private static readonly MethodInfo? UpdateMethod = Method(typeof(ScreenManager), "Update");
 
-        private static readonly MethodInfo? TickFinalizerMethod =
-            Method(typeof(ScreenManagerPatch), nameof(TickFinalizer));
+        private static readonly MethodInfo? FinalizerMethod = Method(typeof(ScreenManagerPatch), nameof(Finalizer));
 
-        public static void TickFinalizer(Exception? __exception)
+        public static void Finalizer(Exception? __exception)
         {
             if (__exception is not null)
             {

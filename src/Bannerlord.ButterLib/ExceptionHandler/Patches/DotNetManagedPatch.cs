@@ -9,42 +9,46 @@ using Microsoft.Extensions.Logging.Abstractions;
 using System;
 using System.Reflection;
 
-using TaleWorlds.MountAndBlade.View.Missions;
+using TaleWorlds.DotNet;
 
 using static HarmonyLib.AccessTools;
 
 namespace Bannerlord.ButterLib.ExceptionHandler.Patches
 {
-    internal sealed class MissionViewPatch
+    /// <summary>
+    /// DotNet.Managed if one of the highest entrypoint into the C# engine part.
+    /// We should check if we should handle more exception catches
+    /// </summary>
+    internal sealed class DotNetManagedPatch
     {
         private static ILogger _logger = default!;
 
         internal static void Enable(Harmony harmony)
         {
-            _logger = ButterLibSubModule.Instance?.GetServiceProvider()?.GetRequiredService<ILogger<MissionViewPatch>>() ??
-                      NullLogger<MissionViewPatch>.Instance;
+            _logger = ButterLibSubModule.Instance?.GetServiceProvider()?.GetRequiredService<ILogger<DotNetManagedPatch>>() ??
+                      NullLogger<DotNetManagedPatch>.Instance;
 
-            if (OnMissionScreenTickMethod == null)
-                _logger.LogError("OnMissionScreenTickMethod is null");
+            if (ApplicationTickMethod == null)
+                _logger.LogError("TickMethod is null");
 
-            if (OnMissionScreenTickMethod == null)
+            if (ApplicationTickMethod == null)
             {
                 return;
             }
 
             harmony.Patch(
-                OnMissionScreenTickMethod,
+                ApplicationTickMethod,
                 finalizer: new HarmonyMethod(FinalizerMethod, before: new [] { "org.calradia.admiralnelson.betterexceptionwindow" }));
         }
 
         internal static void Disable(Harmony harmony)
         {
-            harmony.Unpatch(OnMissionScreenTickMethod, FinalizerMethod);
+            harmony.Unpatch(ApplicationTickMethod, FinalizerMethod);
         }
 
-        private static readonly MethodInfo? OnMissionScreenTickMethod = Method(typeof(MissionView), "OnMissionScreenTick");
+        private static readonly MethodInfo? ApplicationTickMethod = Method(typeof(Managed), "ApplicationTick");
 
-        private static readonly MethodInfo? FinalizerMethod = Method(typeof(MissionViewPatch), nameof(Finalizer));
+        private static readonly MethodInfo? FinalizerMethod = Method(typeof(MissionPatch), nameof(Finalizer));
 
         public static void Finalizer(Exception? __exception)
         {
