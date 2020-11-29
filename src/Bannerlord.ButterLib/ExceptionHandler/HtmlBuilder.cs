@@ -33,15 +33,57 @@ namespace Bannerlord.ButterLib.ExceptionHandler
         public static string Build(CrashReport crashReport) => @$"
 <html>
   <head>
+    <title>Bannerlord Crash Report</title>
     <meta charset='utf-8'>
     <game version='{ApplicationVersionUtils.GameVersionStr()}'>
+    <style>
+        .headers {{
+            font-family: ""Consolas"", monospace;
+        }}
+        .root-container {{
+            font-family: ""Consolas"", monospace;
+            font-size: small;
+
+            margin: 5px;
+			background-color: white;
+            border: 1px solid grey;
+            padding: 5px;
+        }}
+        .headers-container {{
+            display: none;
+        }}
+        .modules-container {{
+            margin: 5px;
+            background-color: white;
+            border: 1px solid grey;
+            padding: 5px;
+        }}
+        .modules-official-container {{
+            margin: 5px;
+            background-color: white;
+            border: 1px solid grey;
+            padding: 5px;
+        }}
+        .submodules-container {{
+            margin: 5px;
+            border: 1px solid grey;
+            background-color: white;
+            padding: 5px;
+        }}
+        .submodules-official-container {{
+            margin: 5px;
+            border: 1px solid grey;
+            background-color: white;
+            padding: 5px;
+        }}
+    </style>
   </head>
   <body>
-     <table style='width: 100%;'>
+    <table style='width: 100%;'>
       <tbody>
         <tr>
           <td style='width: 80%;'>
-            <p>
+            <div>
               <b>Bannerlord has encountered a problem and will close itself.</b>
               <br/>
               This is a community Crash Report. Please save it and use it for reporting the error.
@@ -51,47 +93,66 @@ namespace Bannerlord.ButterLib.ExceptionHandler
               <br/>
               If you were in the middle of something, the progress might be lost.
               <br/>
-            </p>
+            </div>
           </td>
-          <td>
-            <select style='float:right; margin-left:10px;' class=""input"" onchange=""changeFontSize(this);"">
-              <option value=""1.0em"" selected=""selected"">Standard</option>
-			  <option value=""0.9em"">Medium</option>
-              <option value=""0.8em"">Small</option>
-            </select>
+           <td>
+		    <div style='float:right; margin-left:10px;'>
+		      <label>Colorful: <input type='checkbox' onclick='changeBackgroundColor(this)'></label>
+			  <br/>
+			  <br/>
+              <select class='input' onchange='changeFontSize(this);'>
+                <option value='1.0em' selected='selected'>Standard</option>
+			    <option value='0.9em'>Medium</option>
+                <option value='0.8em'>Small</option>
+              </select>
+			</div>
           </td>
         </tr>
       </tbody>
     </table>
-    <h2><a href='javascript:;' onclick='showHideById(this, ""exception"")'>+ Exception</a></h2>
-    <div id='exception' style='font-family: ""Consolas""; font-size: small; display: none'>
-    {GetRecursiveExceptionHtml(crashReport.Exception)}
+    <div class='root-container'>
+      <h2><a href='javascript:;' class='headers' onclick='showHideById(this, ""exception"")'>+ Exception</a></h2>
+      <div id='exception' class='headers-container'>
+      {GetRecursiveExceptionHtml(crashReport.Exception)}
+      </div>
     </div>
-    <h2><a href='javascript:;' onclick='showHideById(this, ""installed-modules"")'>+ Installed Modules</a></h2>
-    <div id='installed-modules' style='font-family: ""Consolas""; font-size: small; display: none'>
-    {GetModuleListHtml(crashReport)}
+    <div class='root-container'>
+      <h2><a href='javascript:;' class='headers' onclick='showHideById(this, ""installed-modules"")'>+ Installed Modules</a></h2>
+      <div id='installed-modules' class='headers-container'>
+      {GetModuleListHtml(crashReport)}
+      </div>
     </div>
-    <h2><a href='javascript:;' onclick='showHideById(this, ""assemblies"")'>+ Assemblies</a></h2>
-    <div id='assemblies' style='font-family: ""Consolas""; font-size: small; display: none'>
-    <label>Hide: </label>
-    <label><input type='checkbox' onclick='showHideByClassName(this, ""tw_assembly"")'> TaleWorlds</label>
-    <label><input type='checkbox' onclick='showHideByClassName(this, ""sys_assembly"")'> System</label>
-    <label><input type='checkbox' onclick='showHideByClassName(this, ""module_assembly"")'> Modules</label>
-    <label><input type='checkbox' onclick='showHideByClassName(this, ""unclas_assembly"")'> Unclassified</label>
-    {GetAssemblyListHtml(crashReport)}
+    <div class='root-container'>
+      <h2><a href='javascript:;' class='headers' onclick='showHideById(this, ""assemblies"")'>+ Assemblies</a></h2>
+      <div id='assemblies' class='headers-container'>
+      <label>Hide: </label>
+      <label><input type='checkbox' onclick='showHideByClassName(this, ""tw_assembly"")'> TaleWorlds</label>
+      <label><input type='checkbox' onclick='showHideByClassName(this, ""sys_assembly"")'> System</label>
+      <label><input type='checkbox' onclick='showHideByClassName(this, ""module_assembly"")'> Modules</label>
+      <label><input type='checkbox' onclick='showHideByClassName(this, ""unclas_assembly"")'> Unclassified</label>
+      {GetAssemblyListHtml(crashReport)}
+      </div>
     </div>
-    <h2><a href='javascript:;' onclick='showHideById(this, ""harmony-patches"")'>+ Harmony Patches</a></h2>
-    <div id='harmony-patches' style='font-family: ""Consolas""; font-size: small; display: none'>
-    {GetHarmonyPatchesListHtml(crashReport)}
+    <div class='root-container'>
+      <h2><a href='javascript:;' class='headers' onclick='showHideById(this, ""harmony-patches"")'>+ Harmony Patches</a></h2>
+      <div id='harmony-patches' class='headers-container'>
+      {GetHarmonyPatchesListHtml(crashReport)}
+      </div>
+    </div>
+    <div class='root-container'>
+      <h2><a href='javascript:;' class='headers' onclick='showHideById(this, ""log-files"")'>+ Log Files</a></h2>
+      <div id='log-files' class='headers-container'>
+      {GetLogFilesListHtml(crashReport)}
+      </div>
     </div>
     <script>
       function showHideById(element, id) {{
-          if (document.getElementById(id).style.display === 'none') {{
-              document.getElementById(id).style.display = 'block';
-              element.innerHTML = element.innerHTML.replace('+', '-');
-          }} else {{
+          if (document.getElementById(id).style.display === 'block') {{
               document.getElementById(id).style.display = 'none';
               element.innerHTML = element.innerHTML.replace('-', '+');
+          }} else {{
+              document.getElementById(id).style.display = 'block';
+              element.innerHTML = element.innerHTML.replace('+', '-');
           }}
       }}
       function showHideByClassName(element, className) {{
@@ -100,11 +161,25 @@ namespace Bannerlord.ButterLib.ExceptionHandler
               list[i].style.display = (element.checked) ? 'none' : 'list-item';
           }}
       }}
-       function changeFontSize(fontSize) {{
-          document.getElementById(""exception"").style.fontSize = fontSize.value;
-          document.getElementById(""installed-modules"").style.fontSize = fontSize.value;
-          document.getElementById(""assemblies"").style.fontSize = fontSize.value;
-          document.getElementById(""harmony-patches"").style.fontSize = fontSize.value;
+      function setBackgroundColorByClassName(className, color) {{
+          var list = document.getElementsByClassName(className);
+          for (var i = 0; i < list.length; i++) {{
+            list[i].style.backgroundColor = color;
+          }}
+      }}
+      function changeFontSize(fontSize) {{
+          document.getElementById('exception').style.fontSize = fontSize.value;
+          document.getElementById('installed-modules').style.fontSize = fontSize.value;
+          document.getElementById('assemblies').style.fontSize = fontSize.value;
+          document.getElementById('harmony-patches').style.fontSize = fontSize.value;
+      }}
+      function changeBackgroundColor(element) {{
+          document.body.style.backgroundColor = (element.checked) ? '#ececec' : 'white';
+          setBackgroundColorByClassName('headers-container', (element.checked) ? 'white' : 'white');
+          setBackgroundColorByClassName('modules-container', (element.checked) ? '#ffffe0' : 'white');
+          setBackgroundColorByClassName('modules-official-container', (element.checked) ? '#f4fcdc' : 'white');
+          setBackgroundColorByClassName('submodules-container', (element.checked) ? '#fcfce3' : 'white');
+          setBackgroundColorByClassName('submodules-official-container', (element.checked) ? '#f2f9df' : 'white');
       }}
     </script>
   </body>
@@ -121,40 +196,131 @@ namespace Bannerlord.ButterLib.ExceptionHandler
 
         private static string GetModuleListHtml(CrashReport crashReport)
         {
-            var sb0 = new StringBuilder();
-            var sb1 = new StringBuilder();
-            var sb2 = new StringBuilder();
+            var moduleBuilder = new StringBuilder();
+            var subModulesBuilder = new StringBuilder();
+            var assembliesBuilder = new StringBuilder();
+            var tagsBuilder = new StringBuilder();
+            var additionalAssembliesBuilder = new StringBuilder();
+            var dependenciesBuilder = new StringBuilder();
 
-            sb0.AppendLine("<ul>");
-            foreach (var module in crashReport.LoadedModules)
+            void AppendDependencies(ExtendedModuleInfo module)
             {
-                sb1.Clear();
-                sb1.AppendLine("<ul>");
-                foreach (var subModule in module.SubModules)
+                dependenciesBuilder.Clear();
+                dependenciesBuilder.AppendLine("<ul>");
+                foreach (var dependedModuleId in module.DependedModuleIds)
                 {
-                    sb2.Clear();
-                    sb2.AppendLine("<ul>");
+                    var dependentModule = crashReport.LoadedModules.Find(m => m.Id == dependedModuleId);
+                    if (dependentModule == null)
+                    {
+                        dependenciesBuilder.Append("<li>")
+                            .Append("MODULE WITH ID: ").Append(dependedModuleId).Append(" NOT FOUND!")
+                            .AppendLine("</li>");
+                    }
+                    else
+                    {
+                        dependenciesBuilder.Append("<li>")
+                            .Append($"<a href='javascript:;' onclick='document.getElementById(\"{dependedModuleId}\").scrollIntoView(false)'>").Append(dependedModuleId)
+                            .AppendLine("</a></li>");
+                    }
+                }
+                dependenciesBuilder.AppendLine("</ul>");
+            }
+
+            void AppendSubModules(ExtendedModuleInfo module)
+            {
+                subModulesBuilder.Clear();
+                subModulesBuilder.AppendLine("<ul>");
+                foreach (var subModule in module.ExtendedSubModules)
+                {
+                    if (!subModule.IsLoadable)
+                        continue;
+
+                    assembliesBuilder.Clear();
+                    assembliesBuilder.AppendLine("<ul>");
                     foreach (var assembly in subModule.Assemblies)
                     {
-                        sb2.Append("<li>").Append(assembly).AppendLine("</li>");
+                        assembliesBuilder.Append("<li>").Append(assembly).AppendLine("</li>");
                     }
-                    sb2.AppendLine("</ul>");
+                    assembliesBuilder.AppendLine("</ul>");
 
-                    sb1.AppendLine("<li>")
-                        .Append(subModule.Name).Append(" (").Append(subModule.DLLName).AppendLine(")")
-                        .AppendLine(sb2.ToString())
+                    tagsBuilder.Clear();
+                    tagsBuilder.AppendLine("<ul>");
+                    foreach (var (tag, value) in subModule.Tags)
+                    {
+                        tagsBuilder.Append("<li>").Append(tag).Append(": ").Append(value).AppendLine("</li>");
+                    }
+                    tagsBuilder.AppendLine("</ul>");
+
+                    subModulesBuilder.AppendLine("<li>")
+                        .AppendLine(module.IsOfficial ? "<div class=\"submodules-official-container\">" : "<div class=\"submodules-container\">")
+                        .Append("<b>").Append(subModule.Name).AppendLine("</b></br>")
+                        .Append("Name: ").Append(subModule.Name).AppendLine("</br>")
+                        .Append("DLLName: ").Append(subModule.DLLName).AppendLine("</br>")
+                        .Append("SubModuleClassType: ").Append(subModule.SubModuleClassType).AppendLine("</br>")
+                        //.Append("Verified: ").Append(subModule.IsVerifiedDLL).AppendLine("</br>")
+                        .Append(subModule.Tags.Count == 0 ? "" : $"Tags:</br>{NL}")
+                        .Append(subModule.Tags.Count == 0 ? "" : $"{tagsBuilder}{NL}")
+                        .Append(subModule.Assemblies.Count == 0 ? "" : $"Assemblies:</br>{NL}")
+                        .Append(subModule.Assemblies.Count == 0 ? "" : $"{assembliesBuilder}{NL}")
+                        .AppendLine("</div>")
                         .AppendLine("</li>");
                 }
-                sb1.AppendLine("</ul>");
+                subModulesBuilder.AppendLine("</ul>");
+            }
 
-                sb0.AppendLine("<li>")
-                    .Append(string.IsNullOrWhiteSpace(module.Url) ? "<a>" : $"<a href='{module.Url}'>").Append(module.Name).Append(" (").Append(module.Id).Append(", ").Append(module.Version).Append(")").AppendLine("</a>")
-                    .AppendLine(sb1.ToString())
+            void AppendAdditionalAssemblies(ExtendedModuleInfo module, out bool hasAdditionalAssemblies)
+            {
+                hasAdditionalAssemblies = false;
+
+                additionalAssembliesBuilder.Clear();
+                additionalAssembliesBuilder.AppendLine("<ul>");
+                foreach (var externalLoadedAssembly in crashReport.ExternalLoadedAssemblies)
+                {
+                    if (IsModuleAssembly(module, externalLoadedAssembly))
+                    {
+                        hasAdditionalAssemblies = true;
+                        additionalAssembliesBuilder.Append("<li>")
+                            .Append(Path.GetFileName(externalLoadedAssembly.CodeBase))
+                            .Append(" (").Append(externalLoadedAssembly.FullName).Append(")")
+                            .AppendLine("</li>");
+                    }
+                }
+                additionalAssembliesBuilder.AppendLine("</ul>");
+            }
+
+            moduleBuilder.AppendLine("<ul>");
+            foreach (var module in crashReport.LoadedModules)
+            {
+                AppendDependencies(module);
+                AppendSubModules(module);
+                AppendAdditionalAssemblies(module, out var hasAdditionalAssemblies);
+
+                moduleBuilder.AppendLine("<li>")
+                    .AppendLine(module.IsOfficial ? "<div class=\"modules-official-container\">" : "<div class=\"modules-container\">")
+                    .Append($"<b><a href='javascript:;' onclick='showHideById(this, \"{module.Id}\")'>").Append("+ ").Append(module.Name).Append(" (").Append(module.Id).Append(", ").Append(module.Version).Append(")").AppendLine("</a></b>")
+                    .AppendLine($"<div id='{module.Id}' style='display: none'>")
+                    .Append("Id: ").Append(module.Id).AppendLine("</br>")
+                    .Append("Name: ").Append(module.Name).AppendLine("</br>")
+                    .Append("Alias: ").Append(module.Alias).AppendLine("</br>")
+                    .Append("Version: ").Append(module.Version.ToString()).AppendLine("</br>")
+                    //.Append("Selected: ").Append(module.IsSelected.ToString()).AppendLine("</br>")
+                    .Append("Official: ").Append(module.IsOfficial.ToString()).AppendLine("</br>")
+                    .Append("Singleplayer: ").Append(module.IsSingleplayerModule.ToString()).AppendLine("</br>")
+                    .Append("Multiplayer: ").Append(module.IsMultiplayerModule.ToString()).AppendLine("</br>")
+                    .Append(module.DependedModuleIds.Count == 0 ? "" : $"Dependencies:</br>{NL}")
+                    .Append(module.DependedModuleIds.Count == 0 ? "" : $"{dependenciesBuilder}{NL}")
+                    .Append(string.IsNullOrWhiteSpace(module.Url) ? "" : $"Url: <a href='{module.Url}'>{module.Url}</a></br>{NL}")
+                    .Append(module.SubModules.Count == 0 ? "" : $"SubModules:</br>{NL}")
+                    .Append(module.SubModules.Count == 0 ? "" : $"{subModulesBuilder}{NL}")
+                    .Append(!hasAdditionalAssemblies ? "" : $"Additional Assemblies:</br>{NL}")
+                    .Append(!hasAdditionalAssemblies ? "" : $"{additionalAssembliesBuilder}{NL}")
+                    .AppendLine("</div>")
+                    .AppendLine("</div>")
                     .AppendLine("</li>");
             }
-            sb0.AppendLine("</ul>");
+            moduleBuilder.AppendLine("</ul>");
 
-            return sb0.ToString();
+            return moduleBuilder.ToString();
         }
 
         private static string GetAssemblyListHtml(CrashReport crashReport)
@@ -171,6 +337,17 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                     return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
                 }
 
+                if (!isModule)
+                {
+                    foreach (var loadedModule in crashReport.LoadedModules)
+                    {
+                        if (IsModuleAssembly(loadedModule, assembly))
+                        {
+                            isModule = true;
+                            break;
+                        }
+                    }
+                }
                 var isTW = !assembly.IsDynamic && assembly.Location.IndexOf($"Mount & Blade II Bannerlord\\bin\\{TWCommon.ConfigName}\\", StringComparison.InvariantCultureIgnoreCase) >= 0;
                 var isSystem = !assembly.IsDynamic && assembly.Location.IndexOf("Windows\\Microsoft.NET\\", StringComparison.InvariantCultureIgnoreCase) >= 0;
 
@@ -199,59 +376,73 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             return sb0.ToString();
         }
 
+        private static bool IsModuleAssembly(ExtendedModuleInfo loadedModule, Assembly assembly)
+        {
+            if (assembly.IsDynamic || string.IsNullOrWhiteSpace(assembly.CodeBase))
+                return false;
+
+            var modulePath = new Uri(Path.GetFullPath(loadedModule.Folder));
+            var moduleDirectory = Path.GetFileName(loadedModule.Folder);
+
+            var assemblyPath = new Uri(assembly.CodeBase);
+            var relativePath = modulePath.MakeRelativeUri(assemblyPath);
+            return relativePath.OriginalString.StartsWith(moduleDirectory);
+        }
+
         private static string GetHarmonyPatchesListHtml(CrashReport crashReport)
         {
-            var sb0 = new StringBuilder();
-            var sb1 = new StringBuilder();
-            var sb2 = new StringBuilder();
+            var harmonyPatchesListBuilder = new StringBuilder();
+            var patchesBuilder = new StringBuilder();
+            var patchBuilder = new StringBuilder();
 
             void AppendPatches(string name, IReadOnlyCollection<Patch> patches)
             {
-                sb2.Clear();
+                patchBuilder.Clear();
                 foreach (var patch in patches)
                 {
-                    sb2.Append("<li>")
+                    patchBuilder.Append("<li>")
                         .Append("Owner: ").Append(patch.owner).Append("; ")
                         .Append("Namespace: ").Append(patch.PatchMethod.DeclaringType!.FullName).Append(patch.PatchMethod.Name).Append("; ")
                         .Append(patch.index != 0 ? $"Index: {patch.index}; " : "")
                         .Append(patch.priority != 400 ? $"Priority: {patch.priority}; " : "")
                         .Append(patch.before.Length > 0 ? $"Before: {string.Join(", ", patch.before)}; " : "")
-                        .Append(patch.before.Length > 0 ? $"After: {string.Join(", ", patch.after)}; " : "")
+                        .Append(patch.after.Length > 0 ? $"After: {string.Join(", ", patch.after)}; " : "")
                         .AppendLine("</li>");
                 }
 
                 if (patches.Count > 0)
                 {
-                    sb1.AppendLine("<li>")
+                    patchesBuilder.AppendLine("<li>")
                         .AppendLine(name)
                         .AppendLine("<ul>")
-                        .AppendLine(sb2.ToString())
+                        .AppendLine(patchBuilder.ToString())
                         .AppendLine("</ul>")
                         .AppendLine("</li>");
                 }
             }
 
-            sb0.AppendLine("<ul>");
+            harmonyPatchesListBuilder.AppendLine("<ul>");
             foreach (var (originalMethod, patches) in crashReport.LoadedHarmonyPatches)
             {
-                sb1.Clear();
+                patchesBuilder.Clear();
 
                 AppendPatches(nameof(patches.Prefixes), patches.Prefixes);
                 AppendPatches(nameof(patches.Postfixes), patches.Postfixes);
                 AppendPatches(nameof(patches.Finalizers), patches.Finalizers);
                 AppendPatches(nameof(patches.Transpilers), patches.Transpilers);
 
-                sb0.AppendLine("<li>")
+                harmonyPatchesListBuilder.AppendLine("<li>")
                     .Append(originalMethod!.DeclaringType!.FullName).Append(".").AppendLine(originalMethod.Name)
                     .AppendLine("<ul>")
-                    .AppendLine(sb1.ToString())
+                    .AppendLine(patchesBuilder.ToString())
                     .AppendLine("</ul>")
                     .AppendLine("</li>")
                     .AppendLine("<br/>");
             }
-            sb0.AppendLine("</ul>");
+            harmonyPatchesListBuilder.AppendLine("</ul>");
 
-            return sb0.ToString();
+            return harmonyPatchesListBuilder.ToString();
+        }
         }
     }
 }
