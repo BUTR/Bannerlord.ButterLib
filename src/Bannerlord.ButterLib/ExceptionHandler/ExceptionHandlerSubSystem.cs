@@ -1,5 +1,4 @@
 ﻿using Bannerlord.ButterLib.Common.Helpers;
-using Bannerlord.ButterLib.ExceptionHandler.Patches;
 using Bannerlord.ButterLib.SubSystems;
 
 using HarmonyLib;
@@ -37,13 +36,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
         {
             IsEnabled = true;
 
-            EngineCallbackPatches.Enable(Harmony);
-            LibraryCallbackPatches.Enable(Harmony);
-            MBCallbackPatches.Enable(Harmony);
-
-            //MissionPatch.Enable(Harmony);
-            //MissionViewPatch.Enable(Harmony);
-            //ModulePatch.Enable(Harmony);
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
             // re-enable BetterExceptionWindow and keep it as it is. It has now features we have yet to match.
             if (ModuleInfoHelper.GetLoadedModules().Any(m => string.Equals(m.Id, "BetterExceptionWindow", StringComparison.InvariantCultureIgnoreCase)))
@@ -64,15 +57,16 @@ namespace Bannerlord.ButterLib.ExceptionHandler
         {
             IsEnabled = false;
 
-            EngineCallbackPatches.Disable(Harmony);
-            LibraryCallbackPatches.Disable(Harmony);
-            MBCallbackPatches.Disable(Harmony);
-
-            //MissionPatch.Disable(Harmony);
-            //MissionViewPatch.Disable(Harmony);
-            //ModulePatch.Disable(Harmony);
+            AppDomain.CurrentDomain.UnhandledException -= CurrentDomain_UnhandledException;
         }
 
+        private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            if (e.ExceptionObject is Exception exception)
+            {
+                HtmlBuilder.BuildAndShow(new CrashReport(exception));
+            }
+        }
 
         private static Assembly? GetBetterExceptionWindowAssembly() => AppDomain.CurrentDomain.GetAssemblies()
             .Where(a => !a.IsDynamic)
