@@ -153,12 +153,14 @@ namespace Bannerlord.ButterLib.ExceptionHandler
       {GetHarmonyPatchesListHtml(crashReport)}
       </div>
     </div>
+    <!--
     <div class='root-container'>
       <h2><a href='javascript:;' class='headers' onclick='showHideById(this, ""log-files"")'>+ Log Files</a></h2>
       <div id='log-files' class='headers-container'>
       {GetLogFilesListHtml(crashReport)}
       </div>
     </div>
+    -->
     <script>
       function showHideById(element, id) {{
           if (document.getElementById(id).style.display === 'block') {{
@@ -462,6 +464,10 @@ namespace Bannerlord.ButterLib.ExceptionHandler
 
             return harmonyPatchesListBuilder.ToString();
         }
+
+        private static string GetLogFilesListHtml(CrashReport crashReport)
+        {
+            return "";
         }
     }
 }

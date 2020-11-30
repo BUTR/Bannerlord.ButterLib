@@ -18,7 +18,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
     {
         public static ExceptionHandlerSubSystem? Instance { get; private set; }
 
-        internal static readonly Harmony Harmony = new Harmony("Bannerlord.ButterLib.ExceptionHandler");
+        internal static readonly Harmony Harmony = new Harmony("Bannerlord.ButterLib.ExceptionHandler.BEW");
 
         public string Id => "ExceptionHandler";
         public string Description => "Captures game crashes and creates reports out of them.";
@@ -37,6 +37,11 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             IsEnabled = true;
 
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+
+            if (ModuleInfoHelper.GetLoadedModules().Any(m => string.Equals(m.Id, "BetterExceptionWindow", StringComparison.InvariantCultureIgnoreCase)))
+            {
+                BEWPatch.Enable(Harmony);
+            }
 
             // re-enable BetterExceptionWindow and keep it as it is. It has now features we have yet to match.
             if (ModuleInfoHelper.GetLoadedModules().Any(m => string.Equals(m.Id, "BetterExceptionWindow", StringComparison.InvariantCultureIgnoreCase)))
@@ -58,12 +63,23 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             IsEnabled = false;
 
             AppDomain.CurrentDomain.UnhandledException -= CurrentDomain_UnhandledException;
+
+            if (ModuleInfoHelper.GetLoadedModules().Any(m => string.Equals(m.Id, "BetterExceptionWindow", StringComparison.InvariantCultureIgnoreCase)))
+            {
+                BEWPatch.Disable(Harmony);
+            }
         }
 
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             if (e.ExceptionObject is Exception exception)
             {
+                if (BEWPatch.SuppressedExceptions.Contains(exception))
+                {
+                    BEWPatch.SuppressedExceptions.Remove(exception);
+                    return;
+                }
+
                 HtmlBuilder.BuildAndShow(new CrashReport(exception));
             }
         }
