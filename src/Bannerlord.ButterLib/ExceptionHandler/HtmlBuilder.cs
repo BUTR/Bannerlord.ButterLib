@@ -140,7 +140,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
       <h2><a href='javascript:;' class='headers' onclick='showHideById(this, ""assemblies"")'>+ Assemblies</a></h2>
       <div id='assemblies' class='headers-container'>
       <label>Hide: </label>
-      <label><input type='checkbox' onclick='showHideByClassName(this, ""tw_assembly"")'> TaleWorlds</label>
+      <label><input type='checkbox' onclick='showHideByClassName(this, ""tw_assembly"")'> Game Core</label>
       <label><input type='checkbox' onclick='showHideByClassName(this, ""sys_assembly"")'> System</label>
       <label><input type='checkbox' onclick='showHideByClassName(this, ""module_assembly"")'> Modules</label>
       <label><input type='checkbox' onclick='showHideByClassName(this, ""unclas_assembly"")'> Unclassified</label>
@@ -222,7 +222,6 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             void AppendDependencies(ExtendedModuleInfo module)
             {
                 dependenciesBuilder.Clear();
-                dependenciesBuilder.AppendLine("<ul>");
                 foreach (var dependedModuleId in module.DependedModuleIds)
                 {
                     var dependentModule = crashReport.LoadedModules.Find(m => m.Id == dependedModuleId);
@@ -239,33 +238,27 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                             .AppendLine("</a></li>");
                     }
                 }
-                dependenciesBuilder.AppendLine("</ul>");
             }
 
             void AppendSubModules(ExtendedModuleInfo module)
             {
                 subModulesBuilder.Clear();
-                subModulesBuilder.AppendLine("<ul>");
                 foreach (var subModule in module.ExtendedSubModules)
                 {
                     if (!subModule.IsLoadable)
                         continue;
 
                     assembliesBuilder.Clear();
-                    assembliesBuilder.AppendLine("<ul>");
                     foreach (var assembly in subModule.Assemblies)
                     {
                         assembliesBuilder.Append("<li>").Append(assembly).AppendLine("</li>");
                     }
-                    assembliesBuilder.AppendLine("</ul>");
 
                     tagsBuilder.Clear();
-                    tagsBuilder.AppendLine("<ul>");
                     foreach (var (tag, value) in subModule.Tags)
                     {
                         tagsBuilder.Append("<li>").Append(tag).Append(": ").Append(value).AppendLine("</li>");
                     }
-                    tagsBuilder.AppendLine("</ul>");
 
                     subModulesBuilder.AppendLine("<li>")
                         .AppendLine(module.IsOfficial ? "<div class=\"submodules-official-container\">" : "<div class=\"submodules-container\">")
@@ -274,34 +267,32 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                         .Append("DLLName: ").Append(subModule.DLLName).AppendLine("</br>")
                         .Append("SubModuleClassType: ").Append(subModule.SubModuleClassType).AppendLine("</br>")
                         //.Append("Verified: ").Append(subModule.IsVerifiedDLL).AppendLine("</br>")
-                        .Append(subModule.Tags.Count == 0 ? "" : $"Tags:</br>{NL}")
-                        .Append(subModule.Tags.Count == 0 ? "" : $"{tagsBuilder}{NL}")
-                        .Append(subModule.Assemblies.Count == 0 ? "" : $"Assemblies:</br>{NL}")
-                        .Append(subModule.Assemblies.Count == 0 ? "" : $"{assembliesBuilder}{NL}")
+                        .Append(tagsBuilder.Length == 0 ? "" : $"Tags:</br>{NL}")
+                        .Append(tagsBuilder.Length == 0 ? "" : $"<ul>{NL}")
+                        .Append(tagsBuilder.Length == 0 ? "" : $"{tagsBuilder}{NL}")
+                        .Append(tagsBuilder.Length == 0 ? "" : $"</ul>{NL}")
+                        .Append(assembliesBuilder.Length == 0 ? "" : $"Assemblies:</br>{NL}")
+                        .Append(assembliesBuilder.Length == 0 ? "" : $"<ul>{NL}")
+                        .Append(assembliesBuilder.Length == 0 ? "" : $"{assembliesBuilder}{NL}")
+                        .Append(assembliesBuilder.Length == 0 ? "" : $"</ul>{NL}")
                         .AppendLine("</div>")
                         .AppendLine("</li>");
                 }
-                subModulesBuilder.AppendLine("</ul>");
             }
 
-            void AppendAdditionalAssemblies(ExtendedModuleInfo module, out bool hasAdditionalAssemblies)
+            void AppendAdditionalAssemblies(ExtendedModuleInfo module)
             {
-                hasAdditionalAssemblies = false;
-
                 additionalAssembliesBuilder.Clear();
-                additionalAssembliesBuilder.AppendLine("<ul>");
                 foreach (var externalLoadedAssembly in crashReport.ExternalLoadedAssemblies)
                 {
                     if (IsModuleAssembly(module, externalLoadedAssembly))
                     {
-                        hasAdditionalAssemblies = true;
                         additionalAssembliesBuilder.Append("<li>")
                             .Append(Path.GetFileName(externalLoadedAssembly.CodeBase))
                             .Append(" (").Append(externalLoadedAssembly.FullName).Append(")")
                             .AppendLine("</li>");
                     }
                 }
-                additionalAssembliesBuilder.AppendLine("</ul>");
             }
 
             moduleBuilder.AppendLine("<ul>");
@@ -309,7 +300,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             {
                 AppendDependencies(module);
                 AppendSubModules(module);
-                AppendAdditionalAssemblies(module, out var hasAdditionalAssemblies);
+                AppendAdditionalAssemblies(module);
 
                 moduleBuilder.AppendLine("<li>")
                     .AppendLine(module.IsOfficial ? "<div class=\"modules-official-container\">" : "<div class=\"modules-container\">")
@@ -323,13 +314,19 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                     .Append("Official: ").Append(module.IsOfficial.ToString()).AppendLine("</br>")
                     .Append("Singleplayer: ").Append(module.IsSingleplayerModule.ToString()).AppendLine("</br>")
                     .Append("Multiplayer: ").Append(module.IsMultiplayerModule.ToString()).AppendLine("</br>")
-                    .Append(module.DependedModuleIds.Count == 0 ? "" : $"Dependencies:</br>{NL}")
-                    .Append(module.DependedModuleIds.Count == 0 ? "" : $"{dependenciesBuilder}{NL}")
+                    .Append(dependenciesBuilder.Length == 0 ? "" : $"Dependencies:</br>{NL}")
+                    .Append(dependenciesBuilder.Length == 0 ? "" : $"<ul>{NL}")
+                    .Append(dependenciesBuilder.Length == 0 ? "" : $"{dependenciesBuilder}{NL}")
+                    .Append(dependenciesBuilder.Length == 0 ? "" : $"</ul>{NL}")
                     .Append(string.IsNullOrWhiteSpace(module.Url) ? "" : $"Url: <a href='{module.Url}'>{module.Url}</a></br>{NL}")
-                    .Append(module.SubModules.Count == 0 ? "" : $"SubModules:</br>{NL}")
-                    .Append(module.SubModules.Count == 0 ? "" : $"{subModulesBuilder}{NL}")
-                    .Append(!hasAdditionalAssemblies ? "" : $"Additional Assemblies:</br>{NL}")
-                    .Append(!hasAdditionalAssemblies ? "" : $"{additionalAssembliesBuilder}{NL}")
+                    .Append(subModulesBuilder.Length == 0 ? "" : $"SubModules:</br>{NL}")
+                    .Append(subModulesBuilder.Length == 0 ? "" : $"<ul>{NL}")
+                    .Append(subModulesBuilder.Length == 0 ? "" : $"{subModulesBuilder}{NL}")
+                    .Append(subModulesBuilder.Length == 0 ? "" : $"</ul>{NL}")
+                    .Append(additionalAssembliesBuilder.Length == 0 ? "" : $"Additional Assemblies:</br>{NL}")
+                    .Append(additionalAssembliesBuilder.Length == 0 ? "" : $"<ul>{NL}")
+                    .Append(additionalAssembliesBuilder.Length == 0 ? "" : $"{additionalAssembliesBuilder}{NL}")
+                    .Append(additionalAssembliesBuilder.Length == 0 ? "" : $"</ul>{NL}")
                     .AppendLine("</div>")
                     .AppendLine("</div>")
                     .AppendLine("</li>");
@@ -416,6 +413,9 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                 patchBuilder.Clear();
                 foreach (var patch in patches)
                 {
+                    if (string.Equals(patch.owner, ExceptionHandlerSubSystem.Harmony.Id, StringComparison.InvariantCultureIgnoreCase))
+                        continue;
+
                     patchBuilder.Append("<li>")
                         .Append("Owner: ").Append(patch.owner).Append("; ")
                         .Append("Namespace: ").Append(patch.PatchMethod.DeclaringType!.FullName).Append(patch.PatchMethod.Name).Append("; ")
@@ -426,7 +426,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                         .AppendLine("</li>");
                 }
 
-                if (patches.Count > 0)
+                if (patchBuilder.Length > 0)
                 {
                     patchesBuilder.AppendLine("<li>")
                         .AppendLine(name)
@@ -447,13 +447,16 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                 AppendPatches(nameof(patches.Finalizers), patches.Finalizers);
                 AppendPatches(nameof(patches.Transpilers), patches.Transpilers);
 
-                harmonyPatchesListBuilder.AppendLine("<li>")
-                    .Append(originalMethod!.DeclaringType!.FullName).Append(".").AppendLine(originalMethod.Name)
-                    .AppendLine("<ul>")
-                    .AppendLine(patchesBuilder.ToString())
-                    .AppendLine("</ul>")
-                    .AppendLine("</li>")
-                    .AppendLine("<br/>");
+                if (patchesBuilder.Length > 0)
+                {
+                    harmonyPatchesListBuilder.AppendLine("<li>")
+                        .Append(originalMethod!.DeclaringType!.FullName).Append(".").AppendLine(originalMethod.Name)
+                        .AppendLine("<ul>")
+                        .AppendLine(patchesBuilder.ToString())
+                        .AppendLine("</ul>")
+                        .AppendLine("</li>")
+                        .AppendLine("<br/>");
+                }
             }
             harmonyPatchesListBuilder.AppendLine("</ul>");
 

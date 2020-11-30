@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Xml;
 
@@ -12,8 +11,8 @@ namespace Bannerlord.ButterLib.Common.Helpers
     {
         public string Url { get; private set; } = string.Empty;
         public List<ExtendedSubModuleInfo> ExtendedSubModules { get; } = new List<ExtendedSubModuleInfo>();
-        public string XmlPath { get; private set; }
-        public string Folder { get; private set; }
+        public string XmlPath { get; private set; } = string.Empty;
+        public string Folder { get; private set; } = string.Empty;
 
         public new void Load(string alias)
         {

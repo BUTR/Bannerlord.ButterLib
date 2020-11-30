@@ -4,9 +4,6 @@ using Bannerlord.ButterLib.SubSystems;
 
 using HarmonyLib;
 
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-
 using System;
 using System.IO;
 using System.Linq;
@@ -22,13 +19,14 @@ namespace Bannerlord.ButterLib.ExceptionHandler
     {
         public static ExceptionHandlerSubSystem? Instance { get; private set; }
 
+        internal static readonly Harmony Harmony = new Harmony("Bannerlord.ButterLib.ExceptionHandler");
+
         public string Id => "ExceptionHandler";
         public string Description => "Captures game crashes and creates reports out of them.";
         public bool IsEnabled { get; private set; }
         public bool CanBeDisabled => true;
         public bool CanBeSwitchedAtRuntime => true;
 
-        private readonly Harmony _harmony = new Harmony("Bannerlord.ButterLib.ExceptionHandler");
 
         public ExceptionHandlerSubSystem()
         {
@@ -39,12 +37,13 @@ namespace Bannerlord.ButterLib.ExceptionHandler
         {
             IsEnabled = true;
 
-            DotNetManagedPatch.Enable(_harmony);
-            MissionPatch.Enable(_harmony);
-            MissionViewPatch.Enable(_harmony);
-            ModulePatch.Enable(_harmony);
-            ScreenManagerPatch.Enable(_harmony);
-            ScriptComponentBehaviourPatch.Enable(_harmony);
+            EngineCallbackPatches.Enable(Harmony);
+            LibraryCallbackPatches.Enable(Harmony);
+            MBCallbackPatches.Enable(Harmony);
+
+            //MissionPatch.Enable(Harmony);
+            //MissionViewPatch.Enable(Harmony);
+            //ModulePatch.Enable(Harmony);
 
             // re-enable BetterExceptionWindow and keep it as it is. It has now features we have yet to match.
             if (ModuleInfoHelper.GetLoadedModules().Any(m => string.Equals(m.Id, "BetterExceptionWindow", StringComparison.InvariantCultureIgnoreCase)))
@@ -59,63 +58,19 @@ namespace Bannerlord.ButterLib.ExceptionHandler
 
                 ReloadBetterExceptionWindow();
             }
-
-            if (ModuleInfoHelper.GetLoadedModules().Any(m => string.Equals(m.Id, "BetterExceptionWindow", StringComparison.InvariantCultureIgnoreCase)))
-            {
-
-            }
-
-            /*
-            if (ModuleInfoHelper.GetLoadedModules().Any(m => string.Equals(m.Id, "BetterExceptionWindow", StringComparison.InvariantCultureIgnoreCase)))
-            {
-                var betterExceptionWindowModulePath = Path.Combine(Utilities.GetBasePath(), "Modules", "BetterExceptionWindow");
-                var configPath = Path.Combine(betterExceptionWindowModulePath, "config.json");
-                if (!File.Exists(configPath))
-                    return;
-
-                File.Copy(configPath, $"{configPath}.bl.bak", true);
-                var configFile = File.ReadAllText(configPath);
-                if (JsonConvert.DeserializeObject(configFile) is JObject config)
-                {
-                    config["CatchOnApplicationTick"] = false;
-                    config["CatchOnMissionScreenTick"] = false;
-                    config["CatchOnFrameTick"] = false;
-                    config["CatchTick"] = false;
-
-                    configFile = JsonConvert.SerializeObject(config);
-                    File.WriteAllText(configPath, configFile);
-
-                    ReloadBetterExceptionWindow();
-                }
-            }
-            */
         }
 
         public void Disable()
         {
             IsEnabled = false;
 
-            DotNetManagedPatch.Disable(_harmony);
-            MissionPatch.Disable(_harmony);
-            MissionViewPatch.Disable(_harmony);
-            ModulePatch.Disable(_harmony);
-            ScreenManagerPatch.Disable(_harmony);
-            ScriptComponentBehaviourPatch.Disable(_harmony);
+            EngineCallbackPatches.Disable(Harmony);
+            LibraryCallbackPatches.Disable(Harmony);
+            MBCallbackPatches.Disable(Harmony);
 
-            /*
-            if (ModuleInfoHelper.GetLoadedModules().Any(m => string.Equals(m.Id, "BetterExceptionWindow", StringComparison.InvariantCultureIgnoreCase)))
-            {
-                var betterExceptionWindowModulePath = Path.Combine(Utilities.GetBasePath(), "Modules", "BetterExceptionWindow");
-                var configPath = Path.Combine(betterExceptionWindowModulePath, "config.json");
-
-                if (!File.Exists($"{configPath}.bl.bak"))
-                    return;
-
-                File.Copy($"{configPath}.bl.bak", configPath, true);
-
-                ReloadBetterExceptionWindow();
-            }
-            */
+            //MissionPatch.Disable(Harmony);
+            //MissionViewPatch.Disable(Harmony);
+            //ModulePatch.Disable(Harmony);
         }
 
 
