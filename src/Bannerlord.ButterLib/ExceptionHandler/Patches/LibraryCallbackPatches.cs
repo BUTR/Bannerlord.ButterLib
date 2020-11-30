@@ -11,10 +11,10 @@ namespace Bannerlord.ButterLib.ExceptionHandler.Patches
     {
         private static MethodInfo[]? _methods;
         private static MethodInfo[] Methods => _methods ??= Enumerable.Empty<MethodInfo>()
-            .Concat(BasePatch.GetMethods<DotNetObject, LibraryCallback>())
+            //.Concat(BasePatch.GetMethods<DotNetObject, LibraryCallback>())
             .Concat(BasePatch.GetMethods<LibraryCallback>(typeof(Managed)))
-            .Concat(BasePatch.GetDerivedMethods<ManagedObject, LibraryCallback>())
-            .Concat(BasePatch.GetDerivedMethods<NativeObject, LibraryCallback>())
+            //.Concat(BasePatch.GetDerivedMethods<ManagedObject, LibraryCallback>())
+            //.Concat(BasePatch.GetDerivedMethods<NativeObject, LibraryCallback>())
             .ToArray();
 
         internal static void Enable(Harmony harmony)
