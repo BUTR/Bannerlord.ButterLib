@@ -52,11 +52,31 @@ namespace Bannerlord.ButterLib.Common.Helpers
                 if (xmlElement.Attributes["id"] is { } idAttr && xmlElement.Attributes["order"] is { } orderAttr && Enum.TryParse<LoadType>(orderAttr.InnerText, out var order))
                 {
                     var optional = xmlElement.Attributes["optional"]?.InnerText.Equals("true") ?? false;
-                    DependedModuleMetadatas.Add(new DependedModuleMetadata(idAttr.InnerText, order, optional));
+                    var version = ApplicationVersionUtils.TryParse(xmlElement.Attributes["version"]?.InnerText, out var v) ? v : ApplicationVersion.Empty;
+                    DependedModuleMetadatas.Add(new DependedModuleMetadata(idAttr.InnerText, order, optional, version));
                 }
             }
         }
 
         public override string ToString() => $"{Id} - {Version}";
+
+
+        private delegate IEnumerable<string> GetModulePathsDelegate(string directoryPath, int searchDepth);
+        private static readonly GetModulePathsDelegate? GetModulePaths = AccessTools2.GetDelegate<GetModulePathsDelegate>(typeof(ModuleInfo), "GetModulePaths");
+
+        public static IEnumerable<ExtendedModuleInfo> GetExtendedModules()
+        {
+            if (GetModulePaths is null)
+                yield break;
+
+            foreach (var path in GetModulePaths(System.IO.Path.Combine(BasePath.Name, "Modules"), 1).ToArray())
+            {
+                var moduleInfo = new ExtendedModuleInfo();
+                try { moduleInfo.Load(System.IO.Path.GetFileName(System.IO.Path.GetDirectoryName(path))); }
+                catch (Exception) { continue; }
+
+                yield return moduleInfo;
+            }
+        }
     }
 }

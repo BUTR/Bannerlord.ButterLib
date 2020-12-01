@@ -1,4 +1,8 @@
-﻿using System;
+﻿using Bannerlord.ButterLib.Common.Extensions;
+
+using System;
+
+using TaleWorlds.Library;
 
 namespace Bannerlord.ButterLib.Helpers.ModuleInfo
 {
@@ -7,12 +11,14 @@ namespace Bannerlord.ButterLib.Helpers.ModuleInfo
         public readonly string Id;
         public readonly LoadType LoadType;
         public readonly bool IsOptional;
+        public readonly ApplicationVersion Version;
 
-        public DependedModuleMetadata(string id, LoadType loadType, bool isOptional)
+        public DependedModuleMetadata(string id, LoadType loadType, bool isOptional, ApplicationVersion version)
         {
             Id = id;
             LoadType = loadType;
             IsOptional = isOptional;
+            Version = version;
         }
 
         /*
@@ -24,5 +30,15 @@ namespace Bannerlord.ButterLib.Helpers.ModuleInfo
         public static bool operator ==(DependedModuleMetadata left, DependedModuleMetadata right) => left.Equals(right);
         public static bool operator !=(DependedModuleMetadata left, DependedModuleMetadata right) => !(left == right);
         */
+
+        private static string GetLoadType(LoadType loadType) => loadType switch
+        {
+            LoadType.LoadAfterThis  => "Before ",
+            LoadType.LoadBeforeThis => "After  ",
+            _                       => "ERROR  "
+        };
+        private static string GetVersion(ApplicationVersion av) => av.IsSameWithRevision(ApplicationVersion.Empty) ? "" : $" {av}";
+        private static string GetOptional(bool isOptional) => isOptional ? " Optional" : "";
+        public override string ToString() => $"{GetLoadType(LoadType)}{Id}{GetVersion(Version)}{GetOptional(IsOptional)}";
     }
 }
