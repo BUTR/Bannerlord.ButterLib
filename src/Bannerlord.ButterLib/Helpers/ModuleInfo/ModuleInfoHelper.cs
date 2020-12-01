@@ -8,6 +8,7 @@ using TaleWorlds.MountAndBlade;
 
 using Path = System.IO.Path;
 
+// ReSharper disable once CheckNamespace
 namespace Bannerlord.ButterLib.Common.Helpers
 {
     public static class ModuleInfoHelper

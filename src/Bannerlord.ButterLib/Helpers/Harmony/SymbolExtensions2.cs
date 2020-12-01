@@ -4,6 +4,7 @@ using System;
 using System.Linq.Expressions;
 using System.Reflection;
 
+// ReSharper disable once CheckNamespace
 namespace Bannerlord.ButterLib.Common.Helpers
 {
     public static class SymbolExtensions2

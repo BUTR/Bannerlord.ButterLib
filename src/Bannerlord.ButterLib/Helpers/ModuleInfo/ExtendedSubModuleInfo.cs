@@ -5,6 +5,7 @@ using System.Xml;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 
+// ReSharper disable once CheckNamespace
 namespace Bannerlord.ButterLib.Common.Helpers
 {
     public sealed class ExtendedSubModuleInfo : SubModuleInfo

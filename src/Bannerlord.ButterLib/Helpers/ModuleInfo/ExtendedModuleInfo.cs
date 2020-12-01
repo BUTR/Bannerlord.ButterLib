@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Bannerlord.ButterLib.Helpers.ModuleInfo;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
@@ -6,32 +8,9 @@ using System.Xml;
 using TaleWorlds.Engine;
 using TaleWorlds.Library;
 
+// ReSharper disable once CheckNamespace
 namespace Bannerlord.ButterLib.Common.Helpers
 {
-    public enum LoadType { LoadAfterThis, LoadBeforeThis }
-
-    public readonly struct DependedModuleMetadata
-    {
-        public readonly string Id;
-        public readonly LoadType LoadType;
-        public readonly bool IsOptional;
-
-        public DependedModuleMetadata(string id, LoadType loadType, bool isOptional)
-        {
-            Id = id;
-            LoadType = loadType;
-            IsOptional = isOptional;
-        }
-
-        public override bool Equals(object obj) => obj is DependedModuleMetadata objStr && Equals(objStr);
-        public bool Equals(DependedModuleMetadata obj) => Id.Equals(obj.Id) && LoadType.Equals(obj.LoadType) && IsOptional.Equals(obj.IsOptional);
-
-        public override int GetHashCode() => HashCode.Combine(Id, LoadType, IsOptional);
-
-        public static bool operator ==(DependedModuleMetadata left, DependedModuleMetadata right) => left.Equals(right);
-        public static bool operator !=(DependedModuleMetadata left, DependedModuleMetadata right) => !(left == right);
-    }
-
     public sealed class ExtendedModuleInfo : ModuleInfo
     {
         public string Url { get; private set; } = string.Empty;

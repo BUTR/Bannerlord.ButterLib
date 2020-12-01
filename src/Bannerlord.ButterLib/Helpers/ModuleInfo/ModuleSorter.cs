@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using Bannerlord.ButterLib.Common.Helpers;
+
+using System.Collections.Generic;
 using System.Linq;
 
 using TaleWorlds.Library;
 
-namespace Bannerlord.ButterLib.Common.Helpers
+namespace Bannerlord.ButterLib.Helpers.ModuleInfo
 {
     public static class ModuleSorter
     {

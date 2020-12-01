@@ -1,4 +1,6 @@
-﻿using HarmonyLib;
+﻿using Bannerlord.ButterLib.Helpers;
+
+using HarmonyLib;
 
 using System;
 using System.Reflection;
@@ -7,6 +9,7 @@ using System.Runtime.Serialization;
 using TaleWorlds.DotNet;
 using TaleWorlds.Library;
 
+// ReSharper disable once CheckNamespace
 namespace Bannerlord.ButterLib.Common.Helpers
 {
     /// <summary>Helper class for handling the game version.</summary>

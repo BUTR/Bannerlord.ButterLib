@@ -6,6 +6,7 @@ using TaleWorlds.CampaignSystem;
 using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
 
+// ReSharper disable once CheckNamespace
 namespace Bannerlord.ButterLib.Common.Helpers
 {
     /// <summary>Helper class used to store numeric variables or complex entities in the <see cref="TextObject" />.</summary>

@@ -1,5 +1,6 @@
 ﻿using TaleWorlds.Library;
 
+// ReSharper disable once CheckNamespace
 namespace Bannerlord.ButterLib.Common.Extensions
 {
     /// <summary>

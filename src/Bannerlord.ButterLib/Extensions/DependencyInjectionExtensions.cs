@@ -25,6 +25,7 @@ using TaleWorlds.MountAndBlade;
 
 using Path = System.IO.Path;
 
+// ReSharper disable once CheckNamespace
 namespace Bannerlord.ButterLib.Common.Extensions
 {
     public static class DependencyInjectionExtensions

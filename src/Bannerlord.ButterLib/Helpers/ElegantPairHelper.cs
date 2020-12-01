@@ -1,5 +1,6 @@
 ﻿using TaleWorlds.ObjectSystem;
 
+// ReSharper disable once CheckNamespace
 namespace Bannerlord.ButterLib.Common.Helpers
 {
     /// <summary>Helper class that implements the pairing function created by Matthew Szudzik.</summary>

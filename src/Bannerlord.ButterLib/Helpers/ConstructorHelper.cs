@@ -3,7 +3,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace Bannerlord.ButterLib.Common.Helpers
+namespace Bannerlord.ButterLib.Helpers
 {
     internal static class ConstructorHelper
     {
