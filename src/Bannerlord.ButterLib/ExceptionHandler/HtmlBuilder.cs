@@ -95,7 +95,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             <div>
               <b>Bannerlord has encountered a problem and will close itself.</b>
               <br/>
-              This is a community Crash Report. Please save it and use it for reporting the error.
+              This is a community Crash Report. Please save it and use it for reporting the error. Do not provide screenshots, provide the report!
               <br/>
               Most likely this error was caused by a custom installed module.
               <br/>

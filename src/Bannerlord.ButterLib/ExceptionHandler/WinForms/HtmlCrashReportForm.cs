@@ -51,15 +51,18 @@ if (!document.getElementsByClassName) {
       <h1>Intercepted an exception!</h1>
     </td>
     <td>
-      <button style='float:right; margin-left:10px;' onclick='window.external.Close()'>Close Report</button>
-      {(HasBetterExceptionWindow ? "<button style='float:right; margin-left:10px;' onclick='window.external.Close()'>BEW Report</button>" : "")}
+      {(HasBetterExceptionWindow
+            ? "<button style='float:right; margin-left:10px;' onclick='window.external.Close()'>BEW Report</button>"
+            : "<button style='float:right; margin-left:10px;' onclick='window.external.Close()'>Close Report</button>")}
       <button style='float:right; margin-left:10px;' onclick='window.external.SaveReport()'>Save Report</button>
       <button style='float:right; margin-left:10px;' onclick='window.external.CopyAsHTML()'>Copy as HTML</button>
     </td>
   </tr>
   </tbody>
 </table>
-{(HasBetterExceptionWindow ? "Click 'BEW Report' to close this report and open the report from Better Exception Window." : "")}
+{(HasBetterExceptionWindow
+            ? "Click 'BEW Report' to close this report and open the report from Better Exception Window."
+            : "Clicking 'Close Report' will continue with the Game's error report mechanism.")}
 <hr/>";
 
         private string ReportInHtml { get; }
