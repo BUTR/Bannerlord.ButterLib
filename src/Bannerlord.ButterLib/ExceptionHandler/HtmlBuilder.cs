@@ -1,16 +1,13 @@
 ﻿using Bannerlord.ButterLib.Common.Extensions;
 using Bannerlord.ButterLib.Common.Helpers;
 using Bannerlord.ButterLib.ExceptionHandler.WinForms;
+using Bannerlord.ButterLib.Helpers.ModuleInfo;
 
 using HarmonyLib;
-
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
@@ -220,6 +217,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             var tagsBuilder = new StringBuilder();
             var additionalAssembliesBuilder = new StringBuilder();
             var dependenciesBuilder = new StringBuilder();
+            var dependenciesMetadataBuilder = new StringBuilder();
 
             void AppendDependencies(ExtendedModuleInfo module)
             {
@@ -237,6 +235,29 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                     {
                         dependenciesBuilder.Append("<li>")
                             .Append($"<a href='javascript:;' onclick='document.getElementById(\"{dependedModuleId}\").scrollIntoView(false)'>").Append(dependedModuleId)
+                            .AppendLine("</a></li>");
+                    }
+                }
+            }
+
+            void AppendDependenciesMetadata(ExtendedModuleInfo module)
+            {
+                dependenciesMetadataBuilder.Clear();
+                foreach (var dependedModuleMetadata in module.DependedModuleMetadatas)
+                {
+                    var dependentModule = crashReport.LoadedModules.Find(m => m.Id == dependedModuleMetadata.Id);
+                    if (dependentModule == null && !dependedModuleMetadata.IsOptional)
+                    {
+                        dependenciesMetadataBuilder.Append("<li>")
+                            .Append("ERROR! MODULE WITH ID '").Append(dependedModuleMetadata.Id).Append("' NOT FOUND!")
+                            .AppendLine("</li>");
+                    }
+                    else
+                    {
+                        dependenciesMetadataBuilder.Append("<li>")
+                            .Append("Load ").Append(DependedModuleMetadata.GetLoadType(dependedModuleMetadata.LoadType))
+                            .Append($"<a href='javascript:;' onclick='document.getElementById(\"{dependedModuleMetadata.Id}\").scrollIntoView(false)'>")
+                            .Append(dependedModuleMetadata.Id)
                             .AppendLine("</a></li>");
                     }
                 }
@@ -301,6 +322,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             foreach (var module in crashReport.LoadedModules)
             {
                 AppendDependencies(module);
+                AppendDependenciesMetadata(module);
                 AppendSubModules(module);
                 AppendAdditionalAssemblies(module);
 
@@ -320,6 +342,10 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                     .Append(dependenciesBuilder.Length == 0 ? "" : $"<ul>{NL}")
                     .Append(dependenciesBuilder.Length == 0 ? "" : $"{dependenciesBuilder}{NL}")
                     .Append(dependenciesBuilder.Length == 0 ? "" : $"</ul>{NL}")
+                    .Append(dependenciesMetadataBuilder.Length == 0 ? "" : $"Dependency Metadatas:</br>{NL}")
+                    .Append(dependenciesMetadataBuilder.Length == 0 ? "" : $"<ul>{NL}")
+                    .Append(dependenciesMetadataBuilder.Length == 0 ? "" : $"{dependenciesMetadataBuilder}{NL}")
+                    .Append(dependenciesMetadataBuilder.Length == 0 ? "" : $"</ul>{NL}")
                     .Append(string.IsNullOrWhiteSpace(module.Url) ? "" : $"Url: <a href='{module.Url}'>{module.Url}</a></br>{NL}")
                     .Append(subModulesBuilder.Length == 0 ? "" : $"SubModules:</br>{NL}")
                     .Append(subModulesBuilder.Length == 0 ? "" : $"<ul>{NL}")

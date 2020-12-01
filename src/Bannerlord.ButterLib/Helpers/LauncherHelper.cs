@@ -16,8 +16,9 @@ namespace Bannerlord.ButterLib.Helpers
 
             var userDataManager = new UserDataManager();
             userDataManager.LoadUserData();
-            var userData = userDataManager.UserData;
-            var userGameTypeData = userData.SingleplayerData;
+            var userGameTypeData = userDataManager.UserData.GameType == GameType.Multiplayer
+                ? userDataManager.UserData.MultiplayerData
+                : userDataManager.UserData.SingleplayerData;
 
             var modules = userGameTypeData.ModDatas.Select(md =>
             {

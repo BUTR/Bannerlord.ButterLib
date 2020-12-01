@@ -31,7 +31,7 @@ namespace Bannerlord.ButterLib.Helpers.ModuleInfo
         public static bool operator !=(DependedModuleMetadata left, DependedModuleMetadata right) => !(left == right);
         */
 
-        private static string GetLoadType(LoadType loadType) => loadType switch
+        internal static string GetLoadType(LoadType loadType) => loadType switch
         {
             LoadType.LoadAfterThis  => "Before ",
             LoadType.LoadBeforeThis => "After  ",
