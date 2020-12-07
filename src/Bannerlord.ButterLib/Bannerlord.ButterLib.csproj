@@ -1,4 +1,4 @@
-﻿<!--EXTERNAL_PROPERTIES: Version;GameVersion;HarmonyVersion;BuildResourcesVersion;ExtensionVersion;SupportedVersions;MSBuildThisFileDirectory-->
+﻿<!--EXTERNAL_PROPERTIES: Version;GameVersion;HarmonyVersion;BuildResourcesVersion;ExtensionVersion;SupportedVersions;MSBuildThisFileDirectory;BANNERLORD_BUTR_UPLOAD_URL-->
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
@@ -6,6 +6,7 @@
     <LangVersion>9.0</LangVersion>
     <Nullable>enable</Nullable>
     <PlatformTarget>x64</PlatformTarget>
+    <BUTRUploadUrl>$(BANNERLORD_BUTR_UPLOAD_URL)</BUTRUploadUrl>
   </PropertyGroup>
 
   <!--NuGet Package-->
@@ -67,5 +68,14 @@
     <InternalsVisibleTo Include="Bannerlord.ButterLib.ObjectSystem.Test" />
   </ItemGroup>
   <!--InternalsVisibleTo-->
+
+  <Target Name="SetBUTRUploadUrl" BeforeTargets="BeforeCompile" Condition="$(BUTRUploadUrl) != ''">
+    <ItemGroup>
+      <AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute" >
+        <_Parameter1>BUTRUploadUrl</_Parameter1>
+        <_Parameter2>$(BUTRUploadUrl)</_Parameter2>
+      </AssemblyAttribute>
+    </ItemGroup>
+  </Target>
 
 </Project>

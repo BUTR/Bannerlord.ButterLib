@@ -1,6 +1,7 @@
 ﻿using Bannerlord.ButterLib.CampaignIdentifier;
 using Bannerlord.ButterLib.Common.Extensions;
 using Bannerlord.ButterLib.Common.Helpers;
+using Bannerlord.ButterLib.CrashUploader;
 using Bannerlord.ButterLib.DelayedSubModule;
 using Bannerlord.ButterLib.ExceptionHandler;
 using Bannerlord.ButterLib.ObjectSystem.Extensions;
@@ -78,6 +79,9 @@ Make sure ButterLib is loaded before them!";
 
             Services.AddSubSystem<DelayedSubModuleSubSystem>();
             Services.AddSubSystem<ExceptionHandlerSubSystem>();
+            Services.AddSubSystem<CrashUploaderSubSystem>();
+
+            Services.AddSingleton<ICrashUploader, BUTRCrashUploader>();
         }
 
         protected override void OnSubModuleLoad()

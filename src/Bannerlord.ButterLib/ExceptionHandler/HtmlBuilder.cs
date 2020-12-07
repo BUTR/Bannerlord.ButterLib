@@ -22,8 +22,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
 
         public static void BuildAndShow(CrashReport crashReport)
         {
-            var html = Build(crashReport);
-            using var form = new HtmlCrashReportForm(html);
+            using var form = new HtmlCrashReportForm(crashReport);
             form.ShowDialog();
         }
 
@@ -33,6 +32,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
     <title>Bannerlord Crash Report</title>
     <meta charset='utf-8'>
     <game version='{ApplicationVersionUtils.GameVersionStr()}'>
+    <report id='{crashReport.Id}'>
     <style>
         .headers {{
             font-family: ""Consolas"", monospace;

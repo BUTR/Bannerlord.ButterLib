@@ -12,6 +12,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
 {
     internal class CrashReport
     {
+        public Guid Id { get; } = Guid.NewGuid();
         public Exception Exception { get; }
         public List<ExtendedModuleInfo> LoadedModules { get; } = ModuleInfoHelper.GetExtendedLoadedModules();
         public List<Assembly> ModuleLoadedAssemblies { get; } = new List<Assembly>();
