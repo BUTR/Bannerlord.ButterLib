@@ -16,6 +16,8 @@ using Bannerlord.ButterLib.ObjectSystem;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
+using StoryMode;
+
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
@@ -112,9 +114,10 @@ namespace Bannerlord.ButterLib.Implementation
             {
                 var gameStarter = (CampaignGameStarter)gameStarterObject;
 
-                // Behaviors
-                gameStarter.AddBehavior(new CampaignIdentifierBehavior());
                 gameStarter.AddBehavior(new GeopoliticsCachingBehavior());
+
+                if (game.GameType is CampaignStoryMode)
+                    gameStarter.AddBehavior(new CampaignIdentifierBehavior()); // Requires StoryMode
             }
 
             Logger.LogTrace("ButterLib.Implementation: OnGameStart: Done");
