@@ -69,13 +69,14 @@
   </ItemGroup>
   <!--InternalsVisibleTo-->
 
-  <Target Name="SetBUTRUploadUrl" BeforeTargets="BeforeCompile" Condition="$(BUTRUploadUrl) != ''">
-    <ItemGroup>
+  <Target Name="SetBUTRUploadUrl" BeforeTargets="BeforeCompile">
+    <ItemGroup Condition="$(BUTRUploadUrl) != ''">
       <AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute" >
         <_Parameter1>BUTRUploadUrl</_Parameter1>
         <_Parameter2>$(BUTRUploadUrl)</_Parameter2>
       </AssemblyAttribute>
     </ItemGroup>
+    <Warning Condition="$(BUTRUploadUrl) == ''" Text="Environment variable 'BANNERLORD_BUTR_UPLOAD_URL' is not set!"></Warning>
   </Target>
 
 </Project>
