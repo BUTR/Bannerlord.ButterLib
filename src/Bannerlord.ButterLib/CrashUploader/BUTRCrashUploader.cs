@@ -19,7 +19,7 @@ namespace Bannerlord.ButterLib.CrashUploader
                 return null;
 
             var htmlReport = HtmlBuilder.Build(crashReport);
-            var data = Encoding.ASCII.GetBytes(htmlReport);
+            var data = Encoding.UTF8.GetBytes(htmlReport);
 
             var httpWebRequest = WebRequest.CreateHttp($"{uploadUrlAttr.Value}?id={crashReport.Id}");
             httpWebRequest.Method = "POST";
