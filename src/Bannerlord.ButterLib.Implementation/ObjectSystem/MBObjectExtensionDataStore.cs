@@ -58,17 +58,19 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
 
         public void SetVariable(MBObjectBase @object, string name, object? data) => _vars[DataKey.Make(@object, name)] = data;
 
-        public bool TryGetVariable<T>(MBObjectBase @object, string name, [MaybeNullWhen(false)][NotNullWhen(true)] out T value)
+#nullable disable
+        public bool TryGetVariable<T>(MBObjectBase @object, string name, out T value)
         {
-            if (_vars.TryGetValue(DataKey.Make(@object, name), out var val) && val is T concreteVal)
+            if (_vars.TryGetValue(DataKey.Make(@object, name), out var val) && (val is T || val is null))
             {
-                value = concreteVal;
+                value = (T)val;
                 return true;
             }
 
             value = default;
             return false;
         }
+#nullable restore
 
         /* Flags Implementation */
 
