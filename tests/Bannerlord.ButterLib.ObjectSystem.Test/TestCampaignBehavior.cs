@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -149,7 +150,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
 
         private void SetOrValidateHeroVars(Hero h, bool store)
         {
-            var gender = h.IsFemale ? 'F' : 'M';
+            var gender = h.IsFemale ? "F" : "M";
             var fellowClans = h.Clan?.Kingdom?.Clans.Where(c => c != h.Clan).ToArray();
             var ht = new HeroTest(h);
 
@@ -162,7 +163,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
                 if (h.TryGetVariable("HeroTest", out HeroTest? ht2) && ht2 != ht)
                     Error("Set != Get: HeroTest");
 
-                if (h.TryGetVariable("Gender", out char gender2) && gender2 != gender)
+                if (h.TryGetVariable("Gender", out string gender2) && gender2 != gender)
                     Error("Set != Get: Gender");
 
                 if (h.TryGetVariable("FellowClans", out Clan[]? fellowClans2) && fellowClans2 != fellowClans)
@@ -170,12 +171,12 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
             }
             else
             {
-                LoadObjectVar(h, "Gender", out char gotGender);
+                LoadObjectVar(h, "Gender", out string gotGender);
                 LoadObjectVar(h, "FellowClans", out Clan[]? gotFellowClans);
                 LoadObjectVar(h, "HeroTest", out HeroTest? gotHeroTest);
 
                 TestSeqVar("FellowClans", fellowClans, gotFellowClans);
-                TestValVar("Gender", gender, gotGender);
+                TestRefVarByValue("Gender", gender, gotGender);
                 gotHeroTest?.Test(this, "HeroTest", ht);
             }
         }
@@ -256,6 +257,15 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
                 #endregion DisabledCircularReferenceTest
             }
 
+            public override string ToString() => $"{Hero.Name} {Hero.Clan?.Name}" + FirstNameIfDiff();
+
+            private string FirstNameIfDiff()
+            {
+                return Hero.FirstName is null || Hero.Name is null || Hero.FirstName.ToString().Equals(Hero.Name.ToString(), StringComparison.InvariantCulture)
+                    ? string.Empty
+                    : $" [FN: {Hero.FirstName}]";
+            }
+
             [SaveableField(0)]
             internal readonly Hero Hero; // internal readonly ref
 
@@ -324,7 +334,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
 
         private bool LoadObjectVar<T>(MBObjectBase obj, string name, out T value)
         {
-            if (obj.TryGetVariable<T>(name, out var val))
+            if (obj.TryGetVariable(name, out T val))
             {
                 value = val;
                 return true;
