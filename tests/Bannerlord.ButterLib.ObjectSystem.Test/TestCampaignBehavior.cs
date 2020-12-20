@@ -18,7 +18,7 @@ using TaleWorlds.SaveSystem;
 
 namespace Bannerlord.ButterLib.ObjectSystem.Test
 {
-    internal class TestCampaignBehavior : CampaignBehaviorBase
+    internal sealed class TestCampaignBehavior : CampaignBehaviorBase
     {
         private readonly bool SimpleMode = false; // non-const to prevent annoying unreachable code warnings
         private bool _hitError;
@@ -105,7 +105,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
             {
                 realm.SetVariable(SimpleKey, SimpleId);
 
-                if (LoadObjectVar(realm, SimpleKey, out string? id2) && id2 is { } && !SimpleId.Equals(id2))
+                if (LoadObjectVar(realm, SimpleKey, out string? id2) && id2 is not null && !SimpleId.Equals(id2))
                     Error($"Incorrect value for variable \"{SimpleKey}\" immediately after setting it. Got value \"{id2}\".");
             }
 
@@ -124,7 +124,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
 
             if (realm is null)
                 Error($"Kingdom object \"{SimpleId}\" not found!");
-            else if (LoadObjectVar(realm, SimpleKey, out string? id2) && id2 is { } && !SimpleId.Equals(id2))
+            else if (LoadObjectVar(realm, SimpleKey, out string? id2) && id2 is not null && !SimpleId.Equals(id2))
                 Error($"Incorrect value for variable \"{SimpleKey}\" stored upon object {GetObjectTrace(realm)}. Got value \"{id2}\".");
 
             if (!Hero.MainHero.HasFlag("IsPlayer"))
@@ -180,15 +180,11 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
             }
         }
 
-        public class SavedTypeDefiner : SaveableCampaignBehaviorTypeDefiner
+        private sealed class CustomTypeDefiner : SaveableTypeDefiner
         {
-            public SavedTypeDefiner() : base(222_444_710) { }
+            public CustomTypeDefiner() : base(222_444_710) { }
 
-            protected override void DefineClassTypes()
-            {
-                AddClassDefinition(typeof(HeroTest), 1);
-                //AddClassDefinition(typeof(WrappedDictionary), 3);
-            }
+            protected override void DefineClassTypes() => AddClassDefinition(typeof(HeroTest), 1);
 
             protected override void DefineEnumTypes() => AddEnumDefinition(typeof(ElectionCandidate), 2);
 
@@ -202,7 +198,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
             }
         }
 
-        private class HeroTest
+        private sealed class HeroTest
         {
             internal void Test(TestCampaignBehavior test, string name, HeroTest want)
             {
@@ -295,12 +291,6 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
 
         private enum ElectionCandidate { Trump = 0, Biden = 1, Kanye = 2 };
 
-        //public class WrappedDictionary
-        //{
-        //    [SaveableProperty(0)]
-        //    public Dictionary<string, string> Dictionary { get; set; } = new Dictionary<string, string>();
-        //}
-
         #region DisabledCircularReferenceTest
         //[SaveableClass(4)]
         //private class ItemTest : IEquatable<ItemTest>
@@ -332,7 +322,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
         //}
         #endregion DisabledCircularReferenceTest
 
-        private bool LoadObjectVar<T>(MBObjectBase obj, string name, [MaybeNullWhen(false)][NotNullWhen(true)] out T value)
+        private bool LoadObjectVar<T>(MBObjectBase obj, string name, out T value)
         {
             if (obj.TryGetVariable<T>(name, out var val))
             {
@@ -340,7 +330,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
                 return true;
             }
 
-            value = default;
+            value = default!;
             Error($"Object's variable \"{name}\" not found! Object: {GetObjectTrace(obj)}");
             return false;
         }
@@ -348,21 +338,27 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
         private bool TestValVar<T>(string id, T want, T got) where T : struct =>
             Assert(want.Equals(got), "WRONG VALUE!", id, $"GOT: {ValueToStringOrDefault(got)}  //  WANT: {ValueToStringOrDefault(want)}");
 
-        private bool TestRefVarNullCases<T>(string id, T? want, T? got) where T : class => AllNull(want, got)
+        private bool TestRefVarNullCases<T>(string id, T? want, T? got) where T : class
+            => AllNull(want, got)
             || NorNull(want, got)
             || AssertNot(OnlyGotIsNull(want, got), "NULL!", id, $"GOT: null  //  WANT: {want}")
             && AssertNot(OnlyGotIsNotNull(want, got), "NOT NULL!", id, $"GOT: {got}  //  WANT: null");
 
-        private bool TestRefVar<T>(string id, T? want, T? got) where T : class => TestRefVarNullCases(id, want, got) &&
-            Assert(NorNull(want, got) && ReferenceEquals(want, got), "REF-INEQUALITY!", id, $"GOT: {got}  //  WANT: {want}");
+        private bool TestRefVar<T>(string id, T? want, T? got) where T : class
+            => TestRefVarNullCases(id, want, got)
+            && Assert(AllNull(want, got) || NorNull(want, got) && ReferenceEquals(want, got), "REF-INEQUALITY!", id, $"GOT: {got}  //  WANT: {want}");
 
-        private bool TestRefVarByValue<T>(string id, T? want, T? got) where T : class => TestRefVarNullCases(id, want, got) &&
-            Assert(NorNull(want, got) && want!.Equals(got), "WRONG VALUE!", id, $"GOT: {got}  //  WANT: {want}");
+        private bool TestRefVarByValue<T>(string id, T? want, T? got) where T : class
+            => TestRefVarNullCases(id, want, got)
+            && Assert(AllNull(want, got) || NorNull(want, got) && want!.Equals(got), "WRONG VALUE!", id, $"GOT: {got}  //  WANT: {want}");
 
-        private bool TestSeqVar<T>(string id, IEnumerable<T>? want, IEnumerable<T>? got) => TestRefVarNullCases(id, want, got) &&
-            Assert(NorNull(want, got) && want.SequenceEqual(got), "WRONG SEQUENCE!", id, $"GOT: [{string.Join(" | ", got)}]  //  WANT: [{string.Join(" | ", want)}]");
+        private bool TestSeqVar<T>(string id, IEnumerable<T>? want, IEnumerable<T>? got)
+            => TestRefVarNullCases(id, want, got)
+            && Assert(AllNull(want, got) || NorNull(want, got) && want.SequenceEqual(got), "WRONG SEQUENCE!", id, $"GOT: [{(got is null ? "null" : string.Join(" | ", got))}]"
+               + $"  //  WANT: [{(want is null ? "null" : string.Join(" | ", want))}]");
 
         private bool AssertNot(bool condition, string msg, string? id = null, string? trace = null) => !condition || Error(msg, id, trace);
+
         private bool Assert(bool condition, string msg, string? id = null, string? trace = null) => condition || Error(msg, id, trace);
 
         private bool Error(string msg, string? id = null, string? trace = null)
@@ -377,9 +373,12 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
         }
 
         private static bool NorNull<T>(T? a, T? b) where T : class => !(a is null || b is null);
+
         private static bool AllNull<T>(T? a, T? b) where T : class => a is null && b is null;
-        private static bool OnlyGotIsNull<T>(T? want, T? got) where T : class => want is { } && got is null;
-        private static bool OnlyGotIsNotNull<T>(T? want, T? got) where T : class => want is null && got is { };
+
+        private static bool OnlyGotIsNull<T>(T? want, T? got) where T : class => want is not null && got is null;
+
+        private static bool OnlyGotIsNotNull<T>(T? want, T? got) where T : class => want is null && got is not null;
 
         private static string ValueToStringOrDefault<T>(T val) where T : struct => val.Equals(default(T)) ? $"default({typeof(T).Name})" : val.ToString() ?? string.Empty;
 
