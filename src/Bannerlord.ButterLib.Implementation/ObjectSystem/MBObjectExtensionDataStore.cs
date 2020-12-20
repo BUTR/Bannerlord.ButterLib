@@ -72,7 +72,7 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
 
         /* Flags Implementation */
 
-        public bool HasFlag(MBObjectBase @object, string name) => _flags.ContainsKey(DataKey.Make(@object, name));
+        public bool HasFlag(MBObjectBase @object, string name) => _flags.TryGetValue(DataKey.Make(@object, name), out var flag) && flag;
 
         public bool RemoveFlag(MBObjectBase @object, string name) => _flags.TryRemove(DataKey.Make(@object, name), out _);
 

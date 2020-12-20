@@ -153,10 +153,10 @@ Make sure ButterLib is loaded before them!";
         protected override void OnGameStart(Game game, IGameStarter gameStarterObject)
         {
             base.OnGameStart(game, gameStarterObject);
-            Logger.LogTrace("OnGameStart: Started...");
+            Logger.LogTrace("OnGameStart: Started");
 
             GameScope = ServiceProvider.CreateScope();
-            Logger.LogInformation("Created GameScope...");
+            Logger.LogInformation("Created GameScope.");
 
             if (game.GameType is Campaign)
                 CampaignIdentifierEvents.Instance = new CampaignIdentifierEvents();
@@ -167,7 +167,7 @@ Make sure ButterLib is loaded before them!";
         public override void OnGameEnd(Game game)
         {
             base.OnGameEnd(game);
-            Logger.LogTrace("OnGameEnd: Started...");
+            Logger.LogTrace("OnGameEnd: Started");
 
             GameScope = null;
 
