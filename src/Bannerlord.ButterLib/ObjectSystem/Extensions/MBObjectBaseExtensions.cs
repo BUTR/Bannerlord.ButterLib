@@ -153,12 +153,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Extensions
                 throw new ArgumentException("Variable name cannot be empty.", nameof(name));
 
             if (Instance is { } instance)
-            {
-                if (data is char @char)
-                    instance.SetVariable(@object, name, @char.ToString());
-                else
-                    instance.SetVariable(@object, name, data);
-            }
+                instance.SetVariable(@object, name, data);
         }
 
         /// <summary>
