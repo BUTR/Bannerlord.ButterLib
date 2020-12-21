@@ -78,7 +78,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Extensions
                 throw new ArgumentException("Variable name cannot be empty.", nameof(name));
 
             if (typeof(T) == typeof(char))
-                throw new NotSupportedException("TaleWorlds.SaveSystem cannot store type 'char'. Consider using a string.");
+                throw new NotSupportedException("TaleWorlds.SaveSystem cannot store variable-width basic type `char`. Consider using a string.");
 
             if (Instance is { } instance && instance.TryGetVariable(@object, name, out T val))
             {

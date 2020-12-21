@@ -2,14 +2,16 @@
 using Bannerlord.ButterLib.Logger.Extensions;
 using Bannerlord.ButterLib.ObjectSystem.Extensions;
 
+using HarmonyLib;
+
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Text;
 
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
@@ -151,7 +153,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
         private void SetOrValidateHeroVars(Hero h, bool store)
         {
             var gender = h.IsFemale ? "F" : "M";
-            var fellowClans = h.Clan?.Kingdom?.Clans.Where(c => c != h.Clan).ToArray();
+            var fellowClans = h.Clan?.Kingdom?.Clans.Where(c => c != h.Clan).OrderBy(c => c.Name.ToString()).ToArray();
             var ht = new HeroTest(h);
 
             if (store)
@@ -186,16 +188,13 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
             public CustomTypeDefiner() : base(222_444_710) { }
 
             protected override void DefineClassTypes() => AddClassDefinition(typeof(HeroTest), 1);
-
-            protected override void DefineEnumTypes() => AddEnumDefinition(typeof(ElectionCandidate), 2);
+            protected override void DefineStructTypes() => AddStructDefinition(typeof(Position2D), 2);
+            protected override void DefineEnumTypes() => AddEnumDefinition(typeof(ElectionCandidate), 3);
 
             protected override void DefineContainerDefinitions()
             {
                 // Apparently this throws a duplicate key exception in one of SaveSystem.DefinitionContext's type dictionaries, because !SaveSystem.IsUserFriendly():
                 // ConstructContainerDefinition(typeof(Clan[]));
-
-                // This has never been uncommented but would've done the same:
-                // ConstructContainerDefinition(typeof(Dictionary<string, string>));
             }
         }
 
@@ -206,9 +205,10 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
                 var me = name;
 
                 test.TestValVar($"{me}.{nameof(Age)}", want.Age, Age);
-                test.TestValVar($"{me}.{nameof(BodyProperties)}", want.BodyProperties, BodyProperties);
+                test.TestValVar($"{me}.{nameof(StaticBodyProp)}", want.StaticBodyProp, StaticBodyProp);
                 test.TestValVar($"{me}.{nameof(StateEnum)}", want.StateEnum, StateEnum);
                 test.TestValVar($"{me}.{nameof(CustomEnum)}", want.CustomEnum, CustomEnum);
+                test.TestValVar($"{me}.{nameof(Position)}", want.Position, Position);
 
                 test.TestRefVar($"{me}.{nameof(Spouse)}", want.Spouse, Spouse);
                 test.TestRefVar($"{me}.{nameof(Kingdom)}", want.Kingdom, Kingdom);
@@ -216,7 +216,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
                 // Disabled for now, because we can't get reference-equality w/ non-MBObjectBase objects:
                 // test.TestSeqVar($"{me}.{nameof(EquippedItemUsage)}", want.EquippedItemUsage, EquippedItemUsage);
 
-                test.TestRefVarByValue($"{me}.{nameof(NameLink)}", want.NameLink, NameLink);
+                test.TestRefVarByValue($"{me}.{nameof(NameLink)}", want.NameLink.ToString(), NameLink.ToString());
             }
 
             // only explicit constructor, parameter name doesn't match any fields/props but type does
@@ -226,10 +226,13 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
                 Age = (int)h.Age;
                 Spouse = h.Spouse;
                 Kingdom = h.Clan?.Kingdom;
-                BodyProperties = h.BodyProperties;
+                StaticBodyProp = (StaticBodyProperties)AccessTools.Property(typeof(Hero), "StaticBodyProperties").GetValue(h);
                 NameLink = h.EncyclopediaLinkWithName;
                 StateEnum = h.HeroState;
-                CustomEnum = (ElectionCandidate)(h.Id.InternalValue % 3);
+                CustomEnum = (ElectionCandidate)(h.Id.InternalValue % 3 + 1);
+                Position = h.PartyBelongedTo is null
+                    ? new Position2D { x = 6969f, y = -6969f }
+                    : new Position2D { x = h.PartyBelongedTo.Position2D.X, y = h.PartyBelongedTo.Position2D.Y };
 
                 #region DisabledCircularReferenceTest
                 //EquippedItemUsage = new List<ItemTest>();
@@ -257,13 +260,22 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
                 #endregion DisabledCircularReferenceTest
             }
 
-            public override string ToString() => $"{Hero.Name} {Hero.Clan?.Name}" + FirstNameIfDiff();
-
-            private string FirstNameIfDiff()
+            public override string ToString()
             {
-                return Hero.FirstName is null || Hero.Name is null || Hero.FirstName.ToString().Equals(Hero.Name.ToString(), StringComparison.InvariantCulture)
-                    ? string.Empty
-                    : $" [FN: {Hero.FirstName}]";
+                string NamePlz(MBObjectBase? obj) => obj is null ? "<null>" : obj.GetName().ToString();
+
+                var sb = new StringBuilder();
+                sb.AppendLine($"{Hero.Name} {Hero.Clan?.Name} // {Hero.StringId} = {{");
+                sb.AppendLine($"\tAge:      {Age}");
+                sb.AppendLine($"\tSpouse:   {NamePlz(Spouse)}");
+                sb.AppendLine($"\tKingdom:  {NamePlz(Kingdom)}");
+                sb.AppendLine($"\tBodyProp: {StaticBodyProp}");
+                sb.AppendLine($"\tNameLink: {NameLink}");
+                sb.AppendLine($"\tState:    {Enum.GetName(typeof(Hero.CharacterStates), StateEnum)}");
+                sb.AppendLine($"\tSupports: {Enum.GetName(typeof(ElectionCandidate), CustomEnum)}");
+                sb.AppendLine($"\tPosition: {Position}");
+                sb.Append("}");
+                return sb.ToString();
             }
 
             [SaveableField(0)]
@@ -279,7 +291,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
             internal Kingdom? Kingdom { get; private set; } // private setter
 
             [SaveableField(4)]
-            internal readonly BodyProperties BodyProperties; // a readonly struct
+            internal StaticBodyProperties StaticBodyProp; // a weird ISerializable struct
 
             [SaveableField(5)]
             internal TextObject NameLink; // a complex ref type that's not MBObjectBase
@@ -290,6 +302,9 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
             [SaveableField(7)]
             internal ElectionCandidate CustomEnum; // custom enum
 
+            [SaveableProperty(8)]
+            public Position2D Position { get; set; }
+
             #region DisabledCircularReferenceTest
             // This one should exercise reference loops.
             // 1. List<ItemTest> -> ItemTest elements -> HeroTest [ItemTest.FirstUser]
@@ -299,7 +314,26 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
             #endregion DisabledCircularReferenceTest
         }
 
-        private enum ElectionCandidate { Trump = 0, Biden = 1, Kanye = 2 };
+        private enum ElectionCandidate : int { Trump = 2, Biden = 1, Kanye = 3 };
+
+        private struct Position2D : IEquatable<Position2D>
+        {
+            [SaveableField(0)]
+            public float x;
+
+            [SaveableField(1)]
+            public float y;
+
+            private static bool NearEqual(float v1, float v2, float epsilon = 1e-5f) => Math.Abs(v1 - v2) < epsilon;
+
+            public override bool Equals(object obj) => obj is Position2D pos && Equals(pos);
+
+            public bool Equals(Position2D other) => other is { } o && NearEqual(x, o.x) && NearEqual(y, o.y);
+
+            public override int GetHashCode() => HashCode.Combine(x, y);
+
+            public override string ToString() => $"[X: {x:F3}; Y: {y:F3}]";
+        }
 
         #region DisabledCircularReferenceTest
         //[SaveableClass(4)]
@@ -390,7 +424,8 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
 
         private static bool OnlyGotIsNotNull<T>(T? want, T? got) where T : class => want is null && got is not null;
 
-        private static string ValueToStringOrDefault<T>(T val) where T : struct => val.Equals(default(T)) ? $"default({typeof(T).Name})" : val.ToString() ?? string.Empty;
+        private static string ValueToStringOrDefault<T>(T val) where T : struct
+            => val.Equals(default(T)) ? $"default({typeof(T).Name})" : val.ToString() ?? string.Empty;
 
         private static string GetObjectTrace(MBObjectBase obj) =>
             $"{obj.GetType().FullName}[\"{obj.StringId}\": {obj.Id.InternalValue}]: {obj.GetName()}";

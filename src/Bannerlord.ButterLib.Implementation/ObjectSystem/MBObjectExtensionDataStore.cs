@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.ObjectSystem;
@@ -101,6 +100,8 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
             public override bool Equals(object? obj) => obj is DataKey k && Equals(k);
 
             public override int GetHashCode() => HashCode.Combine(ObjectId, Key);
+
+            public override string ToString() => $"{ObjectId}::{Key}";
         }
 
         private sealed class SavedTypeDefiner : SaveableCampaignBehaviorTypeDefiner
