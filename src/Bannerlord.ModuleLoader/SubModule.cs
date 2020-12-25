@@ -99,7 +99,7 @@ Make sure ModuleLoader is loaded before them!";
 
         private static void CheckLoadOrder()
         {
-            var loadedModules = ModuleInfoHelper.GetLoadedModules();
+            var loadedModules = ModuleInfoHelper.GetExtendedLoadedModules();
 
             var sb = new StringBuilder();
 

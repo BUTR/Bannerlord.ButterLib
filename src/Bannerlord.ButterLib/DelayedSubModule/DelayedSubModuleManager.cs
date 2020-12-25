@@ -232,7 +232,7 @@ namespace Bannerlord.ButterLib.DelayedSubModule
         private static void Subscribe<T>(Type caller, string method, SubscriptionType subscriptionType, EventHandler<SubscriptionEventArgs> @delegate)
             where T : MBSubModuleBase
         {
-            var loadedModules = ModuleInfoHelper.GetLoadedModules();
+            var loadedModules = ModuleInfoHelper.GetExtendedLoadedModules();
             var callerModule = ModuleInfoHelper.GetModuleInfo(caller);
             var destModule = ModuleInfoHelper.GetModuleInfo(typeof(T));
 

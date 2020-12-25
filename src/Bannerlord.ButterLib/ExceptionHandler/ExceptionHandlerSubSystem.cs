@@ -38,13 +38,13 @@ namespace Bannerlord.ButterLib.ExceptionHandler
 
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            if (ModuleInfoHelper.GetLoadedModules().Any(m => string.Equals(m.Id, "BetterExceptionWindow", StringComparison.InvariantCultureIgnoreCase)))
+            if (ModuleInfoHelper.GetExtendedLoadedModules().Any(m => string.Equals(m.Id, "BetterExceptionWindow", StringComparison.InvariantCultureIgnoreCase)))
             {
                 BEWPatch.Enable(Harmony);
             }
 
             // re-enable BetterExceptionWindow and keep it as it is. It has now features we have yet to match.
-            if (ModuleInfoHelper.GetLoadedModules().Any(m => string.Equals(m.Id, "BetterExceptionWindow", StringComparison.InvariantCultureIgnoreCase)))
+            if (ModuleInfoHelper.GetExtendedLoadedModules().Any(m => string.Equals(m.Id, "BetterExceptionWindow", StringComparison.InvariantCultureIgnoreCase)))
             {
                 var betterExceptionWindowModulePath = Path.Combine(Utilities.GetBasePath(), "Modules", "BetterExceptionWindow");
                 var configPath = Path.Combine(betterExceptionWindowModulePath, "config.json");
@@ -64,7 +64,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
 
             AppDomain.CurrentDomain.UnhandledException -= CurrentDomain_UnhandledException;
 
-            if (ModuleInfoHelper.GetLoadedModules().Any(m => string.Equals(m.Id, "BetterExceptionWindow", StringComparison.InvariantCultureIgnoreCase)))
+            if (ModuleInfoHelper.GetExtendedLoadedModules().Any(m => string.Equals(m.Id, "BetterExceptionWindow", StringComparison.InvariantCultureIgnoreCase)))
             {
                 BEWPatch.Disable(Harmony);
             }

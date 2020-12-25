@@ -17,7 +17,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler.WinForms
     public partial class HtmlCrashReportForm : Form
     {
         private static bool HasBetterExceptionWindow =>
-            ModuleInfoHelper.GetLoadedModules().Any(m => string.Equals(m.Id, "BetterExceptionWindow", StringComparison.InvariantCultureIgnoreCase));
+            ModuleInfoHelper.GetExtendedLoadedModules().Any(m => string.Equals(m.Id, "BetterExceptionWindow", StringComparison.InvariantCultureIgnoreCase));
 
 
         // https://gist.github.com/eikes/2299607

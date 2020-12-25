@@ -44,7 +44,6 @@ namespace Bannerlord.ButterLib.Common.Helpers
         public bool IsSingleplayerModule { get; private set; }
         public bool IsMultiplayerModule { get; private set; }
         public bool IsSelected { get; set; }
-        public List<SubModuleInfo> SubModules { get; } = new();
         public List<DependedModule> DependedModules { get; } = new();
 
 
@@ -57,7 +56,6 @@ namespace Bannerlord.ButterLib.Common.Helpers
         public void Load(string alias)
         {
 			Alias = alias;
-			SubModules.Clear();
 			DependedModules.Clear();
             DependedModuleMetadatas.Clear();
 
@@ -87,11 +85,11 @@ namespace Bannerlord.ButterLib.Common.Helpers
             var subModules = moduleNode?.SelectSingleNode("SubModules")?.SelectNodes("SubModule");
             for (var i = 0; i < subModules?.Count; i++)
             {
-                var subModuleInfo = new SubModuleInfo();
+                var extendedSubModuleInfo = new ExtendedSubModuleInfo();
                 try
                 {
-                    subModuleInfo.LoadFrom(subModules[i], PathPrefix + alias);
-                    SubModules.Add(subModuleInfo);
+                    extendedSubModuleInfo.LoadFrom(subModules[i], PathPrefix + alias);
+                    ExtendedSubModules.Add(extendedSubModuleInfo);
                 }
                 catch { }
             }
