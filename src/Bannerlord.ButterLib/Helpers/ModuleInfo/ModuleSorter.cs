@@ -14,9 +14,9 @@ namespace Bannerlord.ButterLib.Helpers.ModuleInfo
 
         private static IEnumerable<ExtendedModuleInfo> GetDependentModulesOf(ICollection<ExtendedModuleInfo> source, ExtendedModuleInfo module)
         {
-            foreach (var dependedModuleId in module.DependedModuleIds)
+            foreach (var dependedModule in module.DependedModules)
             {
-                if (source.FirstOrDefault(i => i.Id == dependedModuleId) is { } moduleInfo)
+                if (source.FirstOrDefault(i => i.Id == dependedModule.ModuleId) is { } moduleInfo)
                 {
                     yield return moduleInfo;
                 }

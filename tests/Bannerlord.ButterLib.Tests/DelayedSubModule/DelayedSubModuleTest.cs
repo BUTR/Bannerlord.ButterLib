@@ -22,11 +22,11 @@ namespace Bannerlord.ButterLib.Tests.DelayedSubModule
             if (type == typeof(TestSubModuleCaller))
 
             {
-                __result = TestHelper.ModuleInfoCaller;
+                __result = TestHelper.ModuleInfoCaller1;
             }
             if (type == typeof(TestSubModuleTarget))
             {
-                __result = TestHelper.ModuleInfoTarget;
+                __result = TestHelper.ModuleInfoTarget1;
             }
 
             return false;

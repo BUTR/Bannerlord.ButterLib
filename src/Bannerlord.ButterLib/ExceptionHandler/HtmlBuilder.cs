@@ -222,19 +222,19 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             void AppendDependencies(ExtendedModuleInfo module)
             {
                 dependenciesBuilder.Clear();
-                foreach (var dependedModuleId in module.DependedModuleIds)
+                foreach (var dependedModule in module.DependedModules)
                 {
-                    var dependentModule = crashReport.LoadedModules.Find(m => m.Id == dependedModuleId);
+                    var dependentModule = crashReport.LoadedModules.Find(m => m.Id == dependedModule.ModuleId);
                     if (dependentModule == null)
                     {
                         dependenciesBuilder.Append("<li>")
-                            .Append("MODULE WITH ID: ").Append(dependedModuleId).Append(" NOT FOUND!")
+                            .Append("MODULE WITH ID: ").Append(dependedModule.ModuleId).Append(" NOT FOUND!")
                             .AppendLine("</li>");
                     }
                     else
                     {
                         dependenciesBuilder.Append("<li>")
-                            .Append($"<a href='javascript:;' onclick='document.getElementById(\"{dependedModuleId}\").scrollIntoView(false)'>").Append(dependedModuleId)
+                            .Append($"<a href='javascript:;' onclick='document.getElementById(\"{dependedModule.ModuleId}\").scrollIntoView(false)'>").Append(dependedModule.ModuleId)
                             .AppendLine("</a></li>");
                     }
                 }
