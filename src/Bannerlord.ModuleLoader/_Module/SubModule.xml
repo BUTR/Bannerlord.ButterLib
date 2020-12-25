@@ -8,7 +8,7 @@
   <SingleplayerModule value="true" />
   <MultiplayerModule value="false" />
   <DependedModules>
-    <DependedModule Id="Bannerlord.Harmony" />
+    <DependedModule Id="Bannerlord.Harmony" DependentVersion="v$harmonyversion$" />
   </DependedModules>
   <!-- Prototype -->
   <DependedModuleMetadatas>

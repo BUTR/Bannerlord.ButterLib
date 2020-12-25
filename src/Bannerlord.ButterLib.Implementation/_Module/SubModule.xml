@@ -9,7 +9,7 @@
   <MultiplayerModule value="false" />
   <Url value="https://www.nexusmods.com/mountandblade2bannerlord/mods/2018" />
   <DependedModules>
-    <DependedModule Id="Bannerlord.Harmony" />
+    <DependedModule Id="Bannerlord.Harmony" DependentVersion="v$harmonyversion$" />
     <!--<DependedModule Id="Bannerlord.ModuleLoader" />-->
   </DependedModules>
   <!-- Prototype -->
