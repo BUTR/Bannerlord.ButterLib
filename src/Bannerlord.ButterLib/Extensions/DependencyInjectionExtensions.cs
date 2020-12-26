@@ -85,7 +85,7 @@ namespace Bannerlord.ButterLib.Common.Extensions
         /// </summary>
         public static IServiceCollection AddSerilogLoggerProvider(this MBSubModuleBase subModule, string filename, IEnumerable<string>? filter = null, Action<LoggerConfiguration>? configure = null)
         {
-            filter ??= new List<string> { subModule.GetType().Assembly.GetName().Name ?? string.Empty };
+            filter ??= new List<string> { $"{subModule.GetType().Assembly.GetName().Name}.*" };
             var filterList = filter.ToList();
 
             var services = subModule.GetServices();
