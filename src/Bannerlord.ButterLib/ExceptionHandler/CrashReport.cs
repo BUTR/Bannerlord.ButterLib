@@ -24,7 +24,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             Exception = exception;
 
             var moduleAssemblies = new List<string>();
-            foreach (var subModule in LoadedModules.SelectMany(module => module.SubModules))
+            foreach (var subModule in LoadedModules.SelectMany(module => module.ExtendedSubModules))
             {
                 moduleAssemblies.Add(Path.GetFileNameWithoutExtension(subModule.DLLName));
                 moduleAssemblies.AddRange(subModule.Assemblies.Select(Path.GetFileNameWithoutExtension));
