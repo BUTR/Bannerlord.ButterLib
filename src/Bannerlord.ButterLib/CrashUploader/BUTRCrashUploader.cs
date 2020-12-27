@@ -21,7 +21,7 @@ namespace Bannerlord.ButterLib.CrashUploader
             var htmlReport = HtmlBuilder.Build(crashReport);
             var data = Encoding.UTF8.GetBytes(htmlReport);
 
-            var httpWebRequest = WebRequest.CreateHttp($"{uploadUrlAttr.Value}?id={crashReport.Id}");
+            var httpWebRequest = WebRequest.CreateHttp($"{uploadUrlAttr.Value}");
             httpWebRequest.Method = "POST";
             httpWebRequest.ContentType = "text/html";
             httpWebRequest.ContentLength = data.Length;
@@ -30,7 +30,7 @@ namespace Bannerlord.ButterLib.CrashUploader
             using var requestStream = await httpWebRequest.GetRequestStreamAsync().ConfigureAwait(false);
             await requestStream.WriteAsync(data, 0, data.Length).ConfigureAwait(false);
 
-            if (await httpWebRequest.GetResponseAsync().ConfigureAwait(false) is HttpWebResponse response && response.GetResponseStream() is { } stream)
+            if (await httpWebRequest.GetResponseAsync().ConfigureAwait(false) is HttpWebResponse { StatusCode: HttpStatusCode.OK } response && response.GetResponseStream() is { } stream)
             {
                 using var responseReader = new StreamReader(stream);
                 return await responseReader.ReadLineAsync().ConfigureAwait(false);
