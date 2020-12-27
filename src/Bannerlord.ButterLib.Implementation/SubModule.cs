@@ -76,6 +76,7 @@ namespace Bannerlord.ButterLib.Implementation
             Debug.DebugManager = new DebugManagerWrapper(Debug.DebugManager, serviceProvider!);
 
             HotKeySubSystem.Instance?.Enable();
+            SaveSystemSubSystem.Instance?.Enable();
 
             Logger.LogTrace("ButterLib.Implementation: OnSubModuleLoad: Done");
         }
@@ -99,7 +100,6 @@ namespace Bannerlord.ButterLib.Implementation
 
                 CampaignIdentifierSubSystem.Instance?.Enable();
                 ObjectSystemSubSystem.Instance?.Enable();
-                SaveSystemSubSystem.Instance?.Enable();
             }
 
             Logger.LogTrace("ButterLib.Implementation: OnBeforeInitialModuleScreenSetAsRoot: Done");
