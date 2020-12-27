@@ -51,43 +51,43 @@ namespace Bannerlord.ButterLib.ExceptionHandler
         }}
         .modules-container {{
             margin: 5px;
-            background-color: white;
+            background-color: #ffffe0;
             border: 1px solid grey;
             padding: 5px;
         }}
         .submodules-container {{
             margin: 5px;
             border: 1px solid grey;
-            background-color: white;
+            background-color: #f8f8e7;
             padding: 5px;
         }}
         .modules-official-container {{
             margin: 5px;
-            background-color: white;
+            background-color: #f4fcdc;
             border: 1px solid grey;
             padding: 5px;
         }}
         .submodules-official-container {{
             margin: 5px;
             border: 1px solid grey;
-            background-color: white;
+            background-color: #f0f4e4;
             padding: 5px;
         }}
         .modules-invalid-container {{
             margin: 5px;
-            background-color: white;
+            background-color: #ffefd5;
             border: 1px solid grey;
             padding: 5px;
         }}
         .submodules-invalid-container {{
             margin: 5px;
             border: 1px solid grey;
-            background-color: white;
+            background-color: #f5ecdf;
             padding: 5px;
         }}
     </style>
   </head>
-  <body>
+  <body style='background-color: #ececec;'>
     <table style='width: 100%;'>
       <tbody>
         <tr>
@@ -106,7 +106,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
           </td>
            <td>
 		    <div style='float:right; margin-left:10px;'>
-		      <label>Colorful:</label>
+		      <label>Without Color:</label>
 			  <input type='checkbox' onclick='changeBackgroundColor(this)'>
 			  <br/>
 			  <br/>
@@ -187,14 +187,14 @@ namespace Bannerlord.ButterLib.ExceptionHandler
           document.getElementById('harmony-patches').style.fontSize = fontSize.value;
       }}
       function changeBackgroundColor(element) {{
-          document.body.style.backgroundColor = (element.checked) ? '#ececec' : 'white';
-          setBackgroundColorByClassName('headers-container', (element.checked) ? 'white' : 'white');
-          setBackgroundColorByClassName('modules-container', (element.checked) ? '#ffffe0' : 'white');
-          setBackgroundColorByClassName('submodules-container', (element.checked) ? '#f8f8e7' : 'white');
-          setBackgroundColorByClassName('modules-official-container', (element.checked) ? '#f4fcdc' : 'white');
-          setBackgroundColorByClassName('submodules-official-container', (element.checked) ? '#f0f4e4' : 'white');
-          setBackgroundColorByClassName('modules-invalid-container', (element.checked) ? '#ffefd5' : 'white');
-          setBackgroundColorByClassName('submodules-invalid-container', (element.checked) ? '#f5ecdf' : 'white');
+          document.body.style.backgroundColor = (!element.checked) ? '#ececec' : 'white';
+          setBackgroundColorByClassName('headers-container', (!element.checked) ? 'white' : 'white');
+          setBackgroundColorByClassName('modules-container', (!element.checked) ? '#ffffe0' : 'white');
+          setBackgroundColorByClassName('submodules-container', (!element.checked) ? '#f8f8e7' : 'white');
+          setBackgroundColorByClassName('modules-official-container', (!element.checked) ? '#f4fcdc' : 'white');
+          setBackgroundColorByClassName('submodules-official-container', (!element.checked) ? '#f0f4e4' : 'white');
+          setBackgroundColorByClassName('modules-invalid-container', (!element.checked) ? '#ffefd5' : 'white');
+          setBackgroundColorByClassName('submodules-invalid-container', (!element.checked) ? '#f5ecdf' : 'white');
       }}
     </script>
   </body>

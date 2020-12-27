@@ -61,7 +61,7 @@ if (!document.getElementsByClassName) {
             ? "<button style='float:right; margin-left:10px;' onclick='window.external.Close()'>BEW Report</button>"
             : "<button style='float:right; margin-left:10px;' onclick='window.external.Close()'>Close Report</button>")}
       {(CrashUploaderSubSystem.Instance?.IsEnabled == true
-            ? "<button style='float:right; margin-left:10px;' onclick='window.external.UploadReport()'>Upload Report</button>"
+            ? "<button style='float:right; margin-left:10px;' onclick='window.external.UploadReport()'>Upload Report as a Permalink</button>"
             : "")}
       <button style='float:right; margin-left:10px;' onclick='window.external.SaveReport()'>Save Report</button>
       <button style='float:right; margin-left:10px;' onclick='window.external.CopyAsHTML()'>Copy as HTML</button>

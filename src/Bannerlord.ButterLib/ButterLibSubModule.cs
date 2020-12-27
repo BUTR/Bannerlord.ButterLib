@@ -112,6 +112,7 @@ Make sure ButterLib is loaded before them!";
                 InitializeServices();
 
             ExceptionHandlerSubSystem.Instance?.Enable();
+            CrashUploaderSubSystem.Instance?.Enable();
 
             Logger.LogTrace("OnSubModuleLoad: Done");
         }
