@@ -1,5 +1,6 @@
 ﻿using Bannerlord.ButterLib.Common.Extensions;
 using Bannerlord.ButterLib.Logger.Extensions;
+
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -42,7 +43,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
 
             if (game.GameType is Campaign)
             {
-                CampaignGameStarter initializer = (CampaignGameStarter)starterObject;
+                var initializer = (CampaignGameStarter)starterObject;
                 initializer.AddBehavior(new TestCampaignBehavior());
                 _logger.LogTrace($"Added campaign behavior: {nameof(TestCampaignBehavior)}");
             }

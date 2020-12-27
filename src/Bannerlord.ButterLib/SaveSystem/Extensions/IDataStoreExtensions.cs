@@ -65,14 +65,16 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
                     // The game's save system limits the string to be of size of short.MaxValue
                     // We avoid this limitation by splitting the string into chunks.
                     var jsonDataChunks = Array.Empty<string>();
-                    var result = dataStore.SyncData(key, ref jsonDataChunks); // try to get as array of JSON string(s)
-                    var jsonData = JsonConvert.DeserializeObject<JsonData>(ChunksToString(jsonDataChunks ?? Array.Empty<string>()), settings);
-                    data = jsonData.Format switch
+                    if (dataStore.SyncData(key, ref jsonDataChunks))
                     {
-                        2 => JsonConvert.DeserializeObject<T>(jsonData.Data, settings),
-                        _ => data
-                    };
-                    return result;
+                        var jsonData = JsonConvert.DeserializeObject<JsonData>(ChunksToString(jsonDataChunks ?? Array.Empty<string>()), settings);
+                        data = jsonData.Format switch
+                        {
+                            2 => JsonConvert.DeserializeObject<T>(jsonData.Data, settings),
+                            _ => data
+                        };
+                        return true;
+                    }
                 }
                 catch (Exception e) when (e is InvalidCastException) { }
 
@@ -80,9 +82,11 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
                 {
                     // The first version of SyncDataAsJson stored the string as a single entity
                     var jsonData = "";
-                    var result = dataStore.SyncData(key, ref jsonData); // try to get as JSON string
-                    data = JsonConvert.DeserializeObject<T>(jsonData, settings);
-                    return result;
+                    if (dataStore.SyncData(key, ref jsonData)) // try to get as JSON string
+                    {
+                        data = JsonConvert.DeserializeObject<T>(jsonData, settings);
+                        return true;
+                    }
                 }
                 catch (Exception ex) when (ex is InvalidCastException) { }
 
@@ -90,8 +94,7 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
                 {
                     // Most likely the save file stores the data with its default binary serialization
                     // We read it as it is, the next save will convert the data to JSON
-                    var result = dataStore.SyncData(key, ref data);
-                    return result;
+                    return dataStore.SyncData(key, ref data);
                 }
                 catch (Exception ex) when (ex is InvalidCastException) { }
             }

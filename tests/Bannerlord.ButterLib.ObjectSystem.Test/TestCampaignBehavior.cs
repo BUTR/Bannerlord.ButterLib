@@ -2,13 +2,16 @@
 using Bannerlord.ButterLib.Logger.Extensions;
 using Bannerlord.ButterLib.ObjectSystem.Extensions;
 
+using HarmonyLib;
+
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 
+using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Text;
 
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
@@ -18,7 +21,7 @@ using TaleWorlds.SaveSystem;
 
 namespace Bannerlord.ButterLib.ObjectSystem.Test
 {
-    internal class TestCampaignBehavior : CampaignBehaviorBase
+    internal sealed class TestCampaignBehavior : CampaignBehaviorBase
     {
         private readonly bool SimpleMode = false; // non-const to prevent annoying unreachable code warnings
         private bool _hitError;
@@ -105,7 +108,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
             {
                 realm.SetVariable(SimpleKey, SimpleId);
 
-                if (LoadObjectVar(realm, SimpleKey, out string? id2) && id2 is { } && !SimpleId.Equals(id2))
+                if (LoadObjectVar(realm, SimpleKey, out string? id2) && id2 is not null && !SimpleId.Equals(id2))
                     Error($"Incorrect value for variable \"{SimpleKey}\" immediately after setting it. Got value \"{id2}\".");
             }
 
@@ -124,7 +127,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
 
             if (realm is null)
                 Error($"Kingdom object \"{SimpleId}\" not found!");
-            else if (LoadObjectVar(realm, SimpleKey, out string? id2) && id2 is { } && !SimpleId.Equals(id2))
+            else if (LoadObjectVar(realm, SimpleKey, out string? id2) && id2 is not null && !SimpleId.Equals(id2))
                 Error($"Incorrect value for variable \"{SimpleKey}\" stored upon object {GetObjectTrace(realm)}. Got value \"{id2}\".");
 
             if (!Hero.MainHero.HasFlag("IsPlayer"))
@@ -149,8 +152,8 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
 
         private void SetOrValidateHeroVars(Hero h, bool store)
         {
-            var gender = h.IsFemale ? 'F' : 'M';
-            var fellowClans = h.Clan?.Kingdom?.Clans.Where(c => c != h.Clan).ToArray();
+            var gender = h.IsFemale ? "F" : "M";
+            var fellowClans = h.Clan?.Kingdom?.Clans.Where(c => c != h.Clan).OrderBy(c => c.Name.ToString()).ToArray();
             var ht = new HeroTest(h);
 
             if (store)
@@ -162,7 +165,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
                 if (h.TryGetVariable("HeroTest", out HeroTest? ht2) && ht2 != ht)
                     Error("Set != Get: HeroTest");
 
-                if (h.TryGetVariable("Gender", out char gender2) && gender2 != gender)
+                if (h.TryGetVariable("Gender", out string gender2) && gender2 != gender)
                     Error("Set != Get: Gender");
 
                 if (h.TryGetVariable("FellowClans", out Clan[]? fellowClans2) && fellowClans2 != fellowClans)
@@ -170,48 +173,42 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
             }
             else
             {
-                LoadObjectVar(h, "Gender", out char gotGender);
+                LoadObjectVar(h, "Gender", out string gotGender);
                 LoadObjectVar(h, "FellowClans", out Clan[]? gotFellowClans);
                 LoadObjectVar(h, "HeroTest", out HeroTest? gotHeroTest);
 
                 TestSeqVar("FellowClans", fellowClans, gotFellowClans);
-                TestValVar("Gender", gender, gotGender);
+                TestRefVarByValue("Gender", gender, gotGender);
                 gotHeroTest?.Test(this, "HeroTest", ht);
             }
         }
 
-        public class SavedTypeDefiner : SaveableCampaignBehaviorTypeDefiner
+        private sealed class CustomTypeDefiner : SaveableTypeDefiner
         {
-            public SavedTypeDefiner() : base(222_444_710) { }
+            public CustomTypeDefiner() : base(222_444_710) { }
 
-            protected override void DefineClassTypes()
-            {
-                AddClassDefinition(typeof(HeroTest), 1);
-                //AddClassDefinition(typeof(WrappedDictionary), 3);
-            }
-
-            protected override void DefineEnumTypes() => AddEnumDefinition(typeof(ElectionCandidate), 2);
+            protected override void DefineClassTypes() => AddClassDefinition(typeof(HeroTest), 1);
+            protected override void DefineStructTypes() => AddStructDefinition(typeof(Position2D), 2);
+            protected override void DefineEnumTypes() => AddEnumDefinition(typeof(ElectionCandidate), 3);
 
             protected override void DefineContainerDefinitions()
             {
                 // Apparently this throws a duplicate key exception in one of SaveSystem.DefinitionContext's type dictionaries, because !SaveSystem.IsUserFriendly():
                 // ConstructContainerDefinition(typeof(Clan[]));
-
-                // This has never been uncommented but would've done the same:
-                // ConstructContainerDefinition(typeof(Dictionary<string, string>));
             }
         }
 
-        private class HeroTest
+        private sealed class HeroTest
         {
             internal void Test(TestCampaignBehavior test, string name, HeroTest want)
             {
                 var me = name;
 
                 test.TestValVar($"{me}.{nameof(Age)}", want.Age, Age);
-                test.TestValVar($"{me}.{nameof(BodyProperties)}", want.BodyProperties, BodyProperties);
+                test.TestValVar($"{me}.{nameof(StaticBodyProp)}", want.StaticBodyProp, StaticBodyProp);
                 test.TestValVar($"{me}.{nameof(StateEnum)}", want.StateEnum, StateEnum);
                 test.TestValVar($"{me}.{nameof(CustomEnum)}", want.CustomEnum, CustomEnum);
+                test.TestValVar($"{me}.{nameof(Position)}", want.Position, Position);
 
                 test.TestRefVar($"{me}.{nameof(Spouse)}", want.Spouse, Spouse);
                 test.TestRefVar($"{me}.{nameof(Kingdom)}", want.Kingdom, Kingdom);
@@ -219,7 +216,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
                 // Disabled for now, because we can't get reference-equality w/ non-MBObjectBase objects:
                 // test.TestSeqVar($"{me}.{nameof(EquippedItemUsage)}", want.EquippedItemUsage, EquippedItemUsage);
 
-                test.TestRefVarByValue($"{me}.{nameof(NameLink)}", want.NameLink, NameLink);
+                test.TestRefVarByValue($"{me}.{nameof(NameLink)}", want.NameLink.ToString(), NameLink.ToString());
             }
 
             // only explicit constructor, parameter name doesn't match any fields/props but type does
@@ -229,10 +226,13 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
                 Age = (int)h.Age;
                 Spouse = h.Spouse;
                 Kingdom = h.Clan?.Kingdom;
-                BodyProperties = h.BodyProperties;
+                StaticBodyProp = (StaticBodyProperties)AccessTools.Property(typeof(Hero), "StaticBodyProperties").GetValue(h);
                 NameLink = h.EncyclopediaLinkWithName;
                 StateEnum = h.HeroState;
-                CustomEnum = (ElectionCandidate)(h.Id.InternalValue % 3);
+                CustomEnum = (ElectionCandidate)(h.Id.InternalValue % 3 + 1);
+                Position = h.PartyBelongedTo is null
+                    ? new Position2D { x = 6969f, y = -6969f }
+                    : new Position2D { x = h.PartyBelongedTo.Position2D.X, y = h.PartyBelongedTo.Position2D.Y };
 
                 #region DisabledCircularReferenceTest
                 //EquippedItemUsage = new List<ItemTest>();
@@ -260,6 +260,24 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
                 #endregion DisabledCircularReferenceTest
             }
 
+            public override string ToString()
+            {
+                string NamePlz(MBObjectBase? obj) => obj is null ? "<null>" : obj.GetName().ToString();
+
+                var sb = new StringBuilder();
+                sb.AppendLine($"{Hero.Name} {Hero.Clan?.Name} // {Hero.StringId} = {{");
+                sb.AppendLine($"\tAge:      {Age}");
+                sb.AppendLine($"\tSpouse:   {NamePlz(Spouse)}");
+                sb.AppendLine($"\tKingdom:  {NamePlz(Kingdom)}");
+                sb.AppendLine($"\tBodyProp: {StaticBodyProp}");
+                sb.AppendLine($"\tNameLink: {NameLink}");
+                sb.AppendLine($"\tState:    {Enum.GetName(typeof(Hero.CharacterStates), StateEnum)}");
+                sb.AppendLine($"\tSupports: {Enum.GetName(typeof(ElectionCandidate), CustomEnum)}");
+                sb.AppendLine($"\tPosition: {Position}");
+                sb.Append("}");
+                return sb.ToString();
+            }
+
             [SaveableField(0)]
             internal readonly Hero Hero; // internal readonly ref
 
@@ -273,7 +291,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
             internal Kingdom? Kingdom { get; private set; } // private setter
 
             [SaveableField(4)]
-            internal readonly BodyProperties BodyProperties; // a readonly struct
+            internal StaticBodyProperties StaticBodyProp; // a weird ISerializable struct
 
             [SaveableField(5)]
             internal TextObject NameLink; // a complex ref type that's not MBObjectBase
@@ -284,6 +302,9 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
             [SaveableField(7)]
             internal ElectionCandidate CustomEnum; // custom enum
 
+            [SaveableProperty(8)]
+            public Position2D Position { get; set; }
+
             #region DisabledCircularReferenceTest
             // This one should exercise reference loops.
             // 1. List<ItemTest> -> ItemTest elements -> HeroTest [ItemTest.FirstUser]
@@ -293,13 +314,26 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
             #endregion DisabledCircularReferenceTest
         }
 
-        private enum ElectionCandidate { Trump = 0, Biden = 1, Kanye = 2 };
+        private enum ElectionCandidate : int { Trump = 2, Biden = 1, Kanye = 3 };
 
-        //public class WrappedDictionary
-        //{
-        //    [SaveableProperty(0)]
-        //    public Dictionary<string, string> Dictionary { get; set; } = new Dictionary<string, string>();
-        //}
+        private struct Position2D : IEquatable<Position2D>
+        {
+            [SaveableField(0)]
+            public float x;
+
+            [SaveableField(1)]
+            public float y;
+
+            private static bool NearEqual(float v1, float v2, float epsilon = 1e-5f) => Math.Abs(v1 - v2) < epsilon;
+
+            public override bool Equals(object obj) => obj is Position2D pos && Equals(pos);
+
+            public bool Equals(Position2D other) => other is { } o && NearEqual(x, o.x) && NearEqual(y, o.y);
+
+            public override int GetHashCode() => HashCode.Combine(x, y);
+
+            public override string ToString() => $"[X: {x:F3}; Y: {y:F3}]";
+        }
 
         #region DisabledCircularReferenceTest
         //[SaveableClass(4)]
@@ -332,15 +366,15 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
         //}
         #endregion DisabledCircularReferenceTest
 
-        private bool LoadObjectVar<T>(MBObjectBase obj, string name, [MaybeNullWhen(false)][NotNullWhen(true)] out T value)
+        private bool LoadObjectVar<T>(MBObjectBase obj, string name, out T value)
         {
-            if (obj.TryGetVariable<T>(name, out var val))
+            if (obj.TryGetVariable(name, out T val))
             {
                 value = val;
                 return true;
             }
 
-            value = default;
+            value = default!;
             Error($"Object's variable \"{name}\" not found! Object: {GetObjectTrace(obj)}");
             return false;
         }
@@ -348,21 +382,27 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
         private bool TestValVar<T>(string id, T want, T got) where T : struct =>
             Assert(want.Equals(got), "WRONG VALUE!", id, $"GOT: {ValueToStringOrDefault(got)}  //  WANT: {ValueToStringOrDefault(want)}");
 
-        private bool TestRefVarNullCases<T>(string id, T? want, T? got) where T : class => AllNull(want, got)
+        private bool TestRefVarNullCases<T>(string id, T? want, T? got) where T : class
+            => AllNull(want, got)
             || NorNull(want, got)
             || AssertNot(OnlyGotIsNull(want, got), "NULL!", id, $"GOT: null  //  WANT: {want}")
             && AssertNot(OnlyGotIsNotNull(want, got), "NOT NULL!", id, $"GOT: {got}  //  WANT: null");
 
-        private bool TestRefVar<T>(string id, T? want, T? got) where T : class => TestRefVarNullCases(id, want, got) &&
-            Assert(NorNull(want, got) && ReferenceEquals(want, got), "REF-INEQUALITY!", id, $"GOT: {got}  //  WANT: {want}");
+        private bool TestRefVar<T>(string id, T? want, T? got) where T : class
+            => TestRefVarNullCases(id, want, got)
+            && Assert(AllNull(want, got) || NorNull(want, got) && ReferenceEquals(want, got), "REF-INEQUALITY!", id, $"GOT: {got}  //  WANT: {want}");
 
-        private bool TestRefVarByValue<T>(string id, T? want, T? got) where T : class => TestRefVarNullCases(id, want, got) &&
-            Assert(NorNull(want, got) && want!.Equals(got), "WRONG VALUE!", id, $"GOT: {got}  //  WANT: {want}");
+        private bool TestRefVarByValue<T>(string id, T? want, T? got) where T : class
+            => TestRefVarNullCases(id, want, got)
+            && Assert(AllNull(want, got) || NorNull(want, got) && want!.Equals(got), "WRONG VALUE!", id, $"GOT: {got}  //  WANT: {want}");
 
-        private bool TestSeqVar<T>(string id, IEnumerable<T>? want, IEnumerable<T>? got) => TestRefVarNullCases(id, want, got) &&
-            Assert(NorNull(want, got) && want.SequenceEqual(got), "WRONG SEQUENCE!", id, $"GOT: [{string.Join(" | ", got)}]  //  WANT: [{string.Join(" | ", want)}]");
+        private bool TestSeqVar<T>(string id, IEnumerable<T>? want, IEnumerable<T>? got)
+            => TestRefVarNullCases(id, want, got)
+            && Assert(AllNull(want, got) || NorNull(want, got) && want.SequenceEqual(got), "WRONG SEQUENCE!", id, $"GOT: [{(got is null ? "null" : string.Join(" | ", got))}]"
+               + $"  //  WANT: [{(want is null ? "null" : string.Join(" | ", want))}]");
 
         private bool AssertNot(bool condition, string msg, string? id = null, string? trace = null) => !condition || Error(msg, id, trace);
+
         private bool Assert(bool condition, string msg, string? id = null, string? trace = null) => condition || Error(msg, id, trace);
 
         private bool Error(string msg, string? id = null, string? trace = null)
@@ -377,11 +417,15 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
         }
 
         private static bool NorNull<T>(T? a, T? b) where T : class => !(a is null || b is null);
-        private static bool AllNull<T>(T? a, T? b) where T : class => a is null && b is null;
-        private static bool OnlyGotIsNull<T>(T? want, T? got) where T : class => want is { } && got is null;
-        private static bool OnlyGotIsNotNull<T>(T? want, T? got) where T : class => want is null && got is { };
 
-        private static string ValueToStringOrDefault<T>(T val) where T : struct => val.Equals(default(T)) ? $"default({typeof(T).Name})" : val.ToString() ?? string.Empty;
+        private static bool AllNull<T>(T? a, T? b) where T : class => a is null && b is null;
+
+        private static bool OnlyGotIsNull<T>(T? want, T? got) where T : class => want is not null && got is null;
+
+        private static bool OnlyGotIsNotNull<T>(T? want, T? got) where T : class => want is null && got is not null;
+
+        private static string ValueToStringOrDefault<T>(T val) where T : struct
+            => val.Equals(default(T)) ? $"default({typeof(T).Name})" : val.ToString() ?? string.Empty;
 
         private static string GetObjectTrace(MBObjectBase obj) =>
             $"{obj.GetType().FullName}[\"{obj.StringId}\": {obj.Id.InternalValue}]: {obj.GetName()}";

@@ -9,12 +9,13 @@
   <MultiplayerModule value="false" />
   <Url value="https://www.nexusmods.com/mountandblade2bannerlord/mods/2018" />
   <DependedModules>
-    <DependedModule Id="Bannerlord.Harmony" />
+    <DependedModule Id="Bannerlord.Harmony" DependentVersion="v$harmonyversion$" />
     <!--<DependedModule Id="Bannerlord.ModuleLoader" />-->
   </DependedModules>
   <!-- Prototype -->
   <DependedModuleMetadatas>
     <DependedModuleMetadata id="Bannerlord.Harmony" order="LoadBeforeThis" version="v$harmonyversion$" />
+    <DependedModuleMetadata id="BetterExceptionWindow" order="LoadBeforeThis" optional="true" />
     <!--<DependedModuleMetadata id="Bannerlord.ModuleLoader" order="LoadBeforeThis" />-->
 
     <DependedModuleMetadata id="Native" order="LoadAfterThis" />

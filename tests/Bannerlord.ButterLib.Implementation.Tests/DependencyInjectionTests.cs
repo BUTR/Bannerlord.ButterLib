@@ -3,6 +3,7 @@ using Bannerlord.ButterLib.Common.Extensions;
 using Bannerlord.ButterLib.Common.Helpers;
 using Bannerlord.ButterLib.DistanceMatrix;
 using Bannerlord.ButterLib.ExceptionHandler;
+using Bannerlord.ButterLib.Extensions;
 using Bannerlord.ButterLib.Implementation.CampaignIdentifier;
 using Bannerlord.ButterLib.Implementation.Common.Extensions;
 using Bannerlord.ButterLib.Implementation.DistanceMatrix;
@@ -81,7 +82,8 @@ namespace Bannerlord.ButterLib.Implementation.Tests
                 prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetConfigsPath)));
             harmony.Patch(SymbolExtensions2.GetPropertyInfo(() => TWCommon.ConfigName).GetMethod,
                 prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetConfigName)));
-            ModuleInfoHelper.LoadedModules = new List<ExtendedModuleInfo>();
+            ModuleInfoHelper.LoadedModules = new List<ModuleInfo>();
+            ModuleInfoHelper.LoadedExtendedModules = new List<ExtendedModuleInfo>();
             ModuleInfoHelper.PastInitialization = true;
 
             var subModule = new ButterLibSubModule();

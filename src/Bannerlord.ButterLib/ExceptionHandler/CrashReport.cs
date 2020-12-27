@@ -10,20 +10,21 @@ using System.Reflection;
 
 namespace Bannerlord.ButterLib.ExceptionHandler
 {
-    public class CrashReport
+    internal class CrashReport
     {
+        public Guid Id { get; } = Guid.NewGuid();
         public Exception Exception { get; }
         public List<ExtendedModuleInfo> LoadedModules { get; } = ModuleInfoHelper.GetExtendedLoadedModules();
         public List<Assembly> ModuleLoadedAssemblies { get; } = new List<Assembly>();
         public List<Assembly> ExternalLoadedAssemblies { get; } = new List<Assembly>();
-        public Dictionary<MethodBase, HarmonyLib.Patches> LoadedHarmonyPatches { get; } = new Dictionary<MethodBase, HarmonyLib.Patches>();
+        public Dictionary<MethodBase, Patches> LoadedHarmonyPatches { get; } = new Dictionary<MethodBase, Patches>();
 
         public CrashReport(Exception exception)
         {
             Exception = exception;
 
             var moduleAssemblies = new List<string>();
-            foreach (var subModule in LoadedModules.SelectMany(module => module.SubModules))
+            foreach (var subModule in LoadedModules.SelectMany(module => module.ExtendedSubModules))
             {
                 moduleAssemblies.Add(Path.GetFileNameWithoutExtension(subModule.DLLName));
                 moduleAssemblies.AddRange(subModule.Assemblies.Select(Path.GetFileNameWithoutExtension));

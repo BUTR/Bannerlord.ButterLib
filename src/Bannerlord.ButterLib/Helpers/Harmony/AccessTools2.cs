@@ -9,6 +9,7 @@ using System.Reflection;
 
 using static HarmonyLib.AccessTools;
 
+// ReSharper disable once CheckNamespace
 namespace Bannerlord.ButterLib.Common.Helpers
 {
     /// <summary>An extension of Harmony's helper class for reflection related functions</summary>

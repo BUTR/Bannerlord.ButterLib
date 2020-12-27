@@ -30,8 +30,8 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
 
         internal static bool Enable(Harmony harmony)
         {
-            _log = ButterLibSubModule.Instance?.GetServiceProvider()?.GetRequiredService<ILogger<TypeExtensionsPatch>>()
-                   ?? NullLogger<TypeExtensionsPatch>.Instance;
+            var provider = ButterLibSubModule.Instance?.GetServiceProvider() ?? ButterLibSubModule.Instance?.GetTempServiceProvider();
+            _log = provider?.GetRequiredService<ILogger<TypeExtensionsPatch>>() ?? NullLogger<TypeExtensionsPatch>.Instance;
 
             return NotNull(TargetType, nameof(TargetType))
                    & NotNull(TargetMethod, nameof(TargetMethod))

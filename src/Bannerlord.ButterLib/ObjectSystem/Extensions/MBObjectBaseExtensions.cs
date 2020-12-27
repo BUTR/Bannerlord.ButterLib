@@ -50,12 +50,13 @@ namespace Bannerlord.ButterLib.ObjectSystem.Extensions
             return Instance is { } instance && instance.HasVariable(@object, name);
         }
 
+#nullable disable
         /**
          * <summary>
          * Gets the <paramref name="value"/> of the variable <paramref name="name"/> stored for <paramref name="object"/>.
          * </summary>
          * <returns>
-         * If the variable exists, returns <see langword="true"/>, and <paramref name="value"/> is set to its value.
+         * If the variable exists (including when set to <see langword="null"/>), returns <see langword="true"/>, and <paramref name="value"/> is set to its value.
          * Otherwise, returns <see langword="false"/>, and <paramref name="value"/> is set to a default-valued <typeparamref name="T"/>.
          * </returns>
          * <example>
@@ -69,14 +70,17 @@ namespace Bannerlord.ButterLib.ObjectSystem.Extensions
          * <param name="name">The variable's name.</param>
          * <param name="value">The variable value or <see langword="default"> if nonexistent.</param>
          */
-        internal static bool TryGetVariable<T>(this MBObjectBase @object, string name, [MaybeNullWhen(false)][NotNullWhen(true)] out T value)
+        internal static bool TryGetVariable<T>(this MBObjectBase @object, string name, out T value)
         {
             if (name is null!)
                 throw new ArgumentNullException(nameof(name));
             else if (name.Length == 0)
                 throw new ArgumentException("Variable name cannot be empty.", nameof(name));
 
-            if (Instance is { } instance && instance.TryGetVariable<T>(@object, name, out var val))
+            if (typeof(T) == typeof(char))
+                throw new NotSupportedException("TaleWorlds.SaveSystem cannot store variable-width basic type `char`. Consider using a string.");
+
+            if (Instance is { } instance && instance.TryGetVariable(@object, name, out T val))
             {
                 value = val;
                 return true;
@@ -85,6 +89,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Extensions
             value = default;
             return false;
         }
+#nullable restore
 
         /** <summary>
          *  Set the value of the variable <paramref name="name"/> upon <paramref name="object"/>
@@ -150,13 +155,11 @@ namespace Bannerlord.ButterLib.ObjectSystem.Extensions
             else if (name.Length == 0)
                 throw new ArgumentException("Variable name cannot be empty.", nameof(name));
 
+            if (typeof(T) == typeof(char))
+                throw new NotSupportedException("TaleWorlds.SaveSystem cannot store type 'char'. Consider using a string.");
+
             if (Instance is { } instance)
-            {
-                if (data is char @char)
-                    instance.SetVariable(@object, name, @char.ToString());
-                else
-                    instance.SetVariable(@object, name, data);
-            }
+                instance.SetVariable(@object, name, data);
         }
 
         /// <summary>

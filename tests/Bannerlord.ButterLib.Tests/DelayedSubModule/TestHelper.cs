@@ -7,7 +7,6 @@ namespace Bannerlord.ButterLib.Tests.DelayedSubModule
     public static class TestHelper
     {
         private static ExtendedModuleInfo? _moduleInfoCaller;
-
         public static ExtendedModuleInfo ModuleInfoCaller
         {
             get
@@ -36,6 +35,39 @@ namespace Bannerlord.ButterLib.Tests.DelayedSubModule
                 }
 
                 return _moduleInfoTarget;
+            }
+        }
+        
+        
+        private static ModuleInfo? _moduleInfoCaller1;
+        public static ModuleInfo ModuleInfoCaller1
+        {
+            get
+            {
+                if (_moduleInfoCaller1 is null)
+                {
+                    _moduleInfoCaller1 = new ModuleInfo();
+                    SymbolExtensions2.GetPropertyInfo((ModuleInfo m) => m.Id).SetValue(_moduleInfoCaller1, nameof(TestSubModuleCaller));
+                    SymbolExtensions2.GetPropertyInfo((ModuleInfo m) => m.Name).SetValue(_moduleInfoCaller1, nameof(TestSubModuleCaller));
+                }
+
+                return _moduleInfoCaller1;
+            }
+        }
+
+        private static ModuleInfo? _moduleInfoTarget1;
+        public static ModuleInfo ModuleInfoTarget1
+        {
+            get
+            {
+                if (_moduleInfoTarget1 is null)
+                {
+                    _moduleInfoTarget1 = new ModuleInfo();
+                    SymbolExtensions2.GetPropertyInfo((ModuleInfo m) => m.Id).SetValue(_moduleInfoTarget1, nameof(TestSubModuleTarget));
+                    SymbolExtensions2.GetPropertyInfo((ModuleInfo m) => m.Name).SetValue(_moduleInfoTarget1, nameof(TestSubModuleTarget));
+                }
+
+                return _moduleInfoTarget1;
             }
         }
     }

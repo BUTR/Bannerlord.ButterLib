@@ -2,6 +2,7 @@
 
 using TaleWorlds.CampaignSystem;
 
+// ReSharper disable once CheckNamespace
 namespace Bannerlord.ButterLib.Common.Extensions
 {
     /// <summary>Extension class of the <see cref="T:TaleWorlds.CampaignSystem.MbEvent}" /> class and its generic variations.</summary>

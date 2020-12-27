@@ -69,6 +69,8 @@ jobs:
         # Delete Implementations folder
         Remove-Item -Recurse $impl;
       shell: pwsh
+      env:
+        BANNERLORD_BUTR_UPLOAD_URL: ${{secrets.BANNERLORD_BUTR_UPLOAD_URL}}
 
     - name: Upload bannerlord folder
       uses: actions/upload-artifact@v2

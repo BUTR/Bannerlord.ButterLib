@@ -1,9 +1,15 @@
-﻿using Bannerlord.ButterLib.Common.Helpers;
+﻿using Bannerlord.ButterLib.Common.Extensions;
+using Bannerlord.ButterLib.Common.Helpers;
+using Bannerlord.ButterLib.CrashUploader;
+
+using Microsoft.Extensions.DependencyInjection;
 
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Bannerlord.ButterLib.ExceptionHandler.WinForms
@@ -11,7 +17,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler.WinForms
     public partial class HtmlCrashReportForm : Form
     {
         private static bool HasBetterExceptionWindow =>
-            ModuleInfoHelper.GetLoadedModules().Any(m => string.Equals(m.Id, "BetterExceptionWindow", StringComparison.InvariantCultureIgnoreCase));
+            ModuleInfoHelper.GetExtendedLoadedModules().Any(m => string.Equals(m.Id, "BetterExceptionWindow", StringComparison.InvariantCultureIgnoreCase));
 
 
         // https://gist.github.com/eikes/2299607
@@ -51,22 +57,30 @@ if (!document.getElementsByClassName) {
       <h1>Intercepted an exception!</h1>
     </td>
     <td>
-      <button style='float:right; margin-left:10px;' onclick='window.external.Close()'>Close Report</button>
-      {(HasBetterExceptionWindow ? "<button style='float:right; margin-left:10px;' onclick='window.external.Close()'>BEW Report</button>" : "")}
+      {(HasBetterExceptionWindow
+            ? "<button style='float:right; margin-left:10px;' onclick='window.external.Close()'>BEW Report</button>"
+            : "<button style='float:right; margin-left:10px;' onclick='window.external.Close()'>Close Report</button>")}
+      {(CrashUploaderSubSystem.Instance?.IsEnabled == true
+            ? "<button style='float:right; margin-left:10px;' onclick='window.external.UploadReport()'>Upload Report as a Permalink</button>"
+            : "")}
       <button style='float:right; margin-left:10px;' onclick='window.external.SaveReport()'>Save Report</button>
       <button style='float:right; margin-left:10px;' onclick='window.external.CopyAsHTML()'>Copy as HTML</button>
     </td>
   </tr>
   </tbody>
 </table>
-{(HasBetterExceptionWindow ? "Click 'BEW Report' to close this report and open the report from Better Exception Window." : "")}
+{(HasBetterExceptionWindow
+            ? "Click 'BEW Report' to close this report and open the report from Better Exception Window."
+            : "Clicking 'Close Report' will continue with the Game's error report mechanism.")}
 <hr/>";
 
+        private CrashReport CrashReport { get; }
         private string ReportInHtml { get; }
 
-        public HtmlCrashReportForm(string reportInHtml)
+        internal HtmlCrashReportForm(CrashReport crashReport)
         {
-            ReportInHtml = reportInHtml;
+            CrashReport = crashReport;
+            ReportInHtml = HtmlBuilder.Build(crashReport);
 
             InitializeComponent();
             HtmlRender.ObjectForScripting = this;
@@ -90,9 +104,29 @@ if (!document.getElementsByClassName) {
             };
         }
 
-        public void CopyAsHTML()
+        public async void CopyAsHTML()
         {
-            Clipboard.SetText(ReportInHtml);
+            await SetClipboardTextAsync(ReportInHtml);
+        }
+
+        public async void UploadReport()
+        {
+            var crashUploader = ButterLibSubModule.Instance?.GetServiceProvider()?.GetRequiredService<ICrashUploader>();
+            if (crashUploader is null)
+            {
+                MessageBox.Show("Failed to get the crash uploader!", "Error!");
+                return;
+            }
+
+            var url = await crashUploader.UploadAsync(CrashReport).ConfigureAwait(false);
+            if (url is null)
+            {
+                MessageBox.Show("The crash uploader could not upload the report!", "Error!");
+                return;
+            }
+
+            await SetClipboardTextAsync(url);
+            MessageBox.Show($"Report available at\n{url}\nThe url was copied to the clipboard!", "Success!");
         }
 
         public void SaveReport()
@@ -129,5 +163,18 @@ if (!document.getElementsByClassName) {
 
         private static bool UriIsValid(string url) =>
             Uri.TryCreate(url, UriKind.Absolute, out Uri uriResult) && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+
+        private static async Task SetClipboardTextAsync(string text)
+        {
+            var completionSource = new TaskCompletionSource<object?>();
+            var staThread = new Thread(() =>
+            {
+                Clipboard.SetText(text);
+                completionSource.SetResult(null);
+            });
+            staThread.SetApartmentState(ApartmentState.STA);
+            staThread.Start();
+            await completionSource.Task;
+        }
     }
 }

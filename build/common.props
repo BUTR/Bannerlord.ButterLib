@@ -4,13 +4,13 @@
   <!--Development Variables-->
   <PropertyGroup>
     <!--Module Version-->
-    <Version>1.0.18</Version>
+    <Version>1.0.19</Version>
     <!--Harmony Version-->
     <HarmonyVersion>2.0.2</HarmonyVersion>
     <!--Microsoft Extension Libraries Version-->
     <ExtensionVersion>2.0.0</ExtensionVersion>
     <!--BuildResources Version-->
-    <BuildResourcesVersion>1.0.0.31</BuildResourcesVersion>
+    <BuildResourcesVersion>1.0.0.32</BuildResourcesVersion>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -62,9 +62,9 @@
 
   <PropertyGroup>
     <!--Bannerlord's Root Folder. Leave empty if you want it to be tried to be autoresolved.-->
-    <GameFolder>$(BANNERLORD_GAME_DIR)</GameFolder>
     <GameFolder Condition="$(IsStable)">$(BANNERLORD_STABLE_DIR)</GameFolder>
     <GameFolder Condition="$(IsBeta)">$(BANNERLORD_BETA_DIR)</GameFolder>
+    <GameFolder Condition="$(GameFolder) == ''">$(BANNERLORD_GAME_DIR)</GameFolder>
   </PropertyGroup>
 
   <!--Automatic Path Resolution-->

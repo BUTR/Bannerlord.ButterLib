@@ -22,11 +22,11 @@ namespace Bannerlord.ButterLib.Tests.DelayedSubModule
             if (type == typeof(TestSubModuleCaller))
 
             {
-                __result = TestHelper.ModuleInfoCaller;
+                __result = TestHelper.ModuleInfoCaller1;
             }
             if (type == typeof(TestSubModuleTarget))
             {
-                __result = TestHelper.ModuleInfoTarget;
+                __result = TestHelper.ModuleInfoTarget1;
             }
 
             return false;
@@ -47,7 +47,8 @@ namespace Bannerlord.ButterLib.Tests.DelayedSubModule
         public void SubscribeBeforeTargetLoad_Test()
         {
             // Initialization
-            ModuleInfoHelper.LoadedModules = new List<ExtendedModuleInfo> { TestHelper.ModuleInfoCaller, TestHelper.ModuleInfoTarget };
+            ModuleInfoHelper.LoadedModules = new List<ModuleInfo> { TestHelper.ModuleInfoCaller1, TestHelper.ModuleInfoTarget1 };
+            ModuleInfoHelper.LoadedExtendedModules = new List<ExtendedModuleInfo> { TestHelper.ModuleInfoCaller, TestHelper.ModuleInfoTarget };
             ModuleInfoHelper.PastInitialization = true;
             // Initialization
 
@@ -62,7 +63,8 @@ namespace Bannerlord.ButterLib.Tests.DelayedSubModule
         public void SubscribeBeforeTargetLoad_CallTargetManually_Test()
         {
             // Initialization
-            ModuleInfoHelper.LoadedModules = new List<ExtendedModuleInfo> { TestHelper.ModuleInfoCaller, TestHelper.ModuleInfoTarget };
+            ModuleInfoHelper.LoadedModules = new List<ModuleInfo> { TestHelper.ModuleInfoCaller1, TestHelper.ModuleInfoTarget1 };
+            ModuleInfoHelper.LoadedExtendedModules = new List<ExtendedModuleInfo> { TestHelper.ModuleInfoCaller, TestHelper.ModuleInfoTarget };
             ModuleInfoHelper.PastInitialization = true;
             // Initialization
 
@@ -82,7 +84,8 @@ namespace Bannerlord.ButterLib.Tests.DelayedSubModule
         public void SubscribeAfterTargetLoad_Test()
         {
             // Initialization
-            ModuleInfoHelper.LoadedModules = new List<ExtendedModuleInfo> { TestHelper.ModuleInfoTarget, TestHelper.ModuleInfoCaller };
+            ModuleInfoHelper.LoadedModules = new List<ModuleInfo> { TestHelper.ModuleInfoTarget1, TestHelper.ModuleInfoCaller1 };
+            ModuleInfoHelper.LoadedExtendedModules = new List<ExtendedModuleInfo> { TestHelper.ModuleInfoTarget, TestHelper.ModuleInfoCaller };
             ModuleInfoHelper.PastInitialization = true;
             // Initialization
 

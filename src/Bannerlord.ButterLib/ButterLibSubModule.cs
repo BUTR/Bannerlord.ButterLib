@@ -1,6 +1,7 @@
 ﻿using Bannerlord.ButterLib.CampaignIdentifier;
 using Bannerlord.ButterLib.Common.Extensions;
 using Bannerlord.ButterLib.Common.Helpers;
+using Bannerlord.ButterLib.CrashUploader;
 using Bannerlord.ButterLib.DelayedSubModule;
 using Bannerlord.ButterLib.ExceptionHandler;
 using Bannerlord.ButterLib.ObjectSystem.Extensions;
@@ -78,6 +79,9 @@ Make sure ButterLib is loaded before them!";
 
             Services.AddSubSystem<DelayedSubModuleSubSystem>();
             Services.AddSubSystem<ExceptionHandlerSubSystem>();
+            Services.AddSubSystem<CrashUploaderSubSystem>();
+
+            Services.AddSingleton<ICrashUploader, BUTRCrashUploader>();
         }
 
         protected override void OnSubModuleLoad()
@@ -108,6 +112,7 @@ Make sure ButterLib is loaded before them!";
                 InitializeServices();
 
             ExceptionHandlerSubSystem.Instance?.Enable();
+            CrashUploaderSubSystem.Instance?.Enable();
 
             Logger.LogTrace("OnSubModuleLoad: Done");
         }
@@ -149,10 +154,10 @@ Make sure ButterLib is loaded before them!";
         protected override void OnGameStart(Game game, IGameStarter gameStarterObject)
         {
             base.OnGameStart(game, gameStarterObject);
-            Logger.LogTrace("OnGameStart: Started...");
+            Logger.LogTrace("OnGameStart: Started");
 
             GameScope = ServiceProvider.CreateScope();
-            Logger.LogInformation("Created GameScope...");
+            Logger.LogInformation("Created GameScope.");
 
             if (game.GameType is Campaign)
                 CampaignIdentifierEvents.Instance = new CampaignIdentifierEvents();
@@ -163,7 +168,7 @@ Make sure ButterLib is loaded before them!";
         public override void OnGameEnd(Game game)
         {
             base.OnGameEnd(game);
-            Logger.LogTrace("OnGameEnd: Started...");
+            Logger.LogTrace("OnGameEnd: Started");
 
             GameScope = null;
 
@@ -179,7 +184,7 @@ Make sure ButterLib is loaded before them!";
 
         private static void CheckLoadOrder()
         {
-            var loadedModules = ModuleInfoHelper.GetLoadedModules();
+            var loadedModules = ModuleInfoHelper.GetExtendedLoadedModules();
             if (loadedModules.Count == 0) return;
 
             var sb = new StringBuilder();

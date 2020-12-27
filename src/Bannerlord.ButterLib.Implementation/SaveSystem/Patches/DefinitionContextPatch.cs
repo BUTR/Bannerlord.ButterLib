@@ -40,8 +40,8 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
 
         internal static bool Enable(Harmony harmony)
         {
-            _log = ButterLibSubModule.Instance?.GetServiceProvider()?.GetRequiredService<ILogger<DefinitionContextPatch>>()
-                   ?? NullLogger<DefinitionContextPatch>.Instance;
+            var provider = ButterLibSubModule.Instance?.GetServiceProvider() ?? ButterLibSubModule.Instance?.GetTempServiceProvider();
+            _log = provider?.GetRequiredService<ILogger<DefinitionContextPatch>>() ?? NullLogger<DefinitionContextPatch>.Instance;
 
             return Patches.Select(p => p.IsReady).All(ready => ready) && Patches.All(p => p.Enable(harmony));
         }

@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.ObjectSystem;
@@ -13,8 +12,8 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
 {
     internal sealed class MBObjectExtensionDataStore : CampaignBehaviorBase, IMBObjectExtensionDataStore
     {
-        private ConcurrentDictionary<DataKey, object?> _vars = new ConcurrentDictionary<DataKey, object?>();
-        private ConcurrentDictionary<DataKey, bool>   _flags = new ConcurrentDictionary<DataKey, bool>();
+        private ConcurrentDictionary<DataKey, object?> _vars = new();
+        private ConcurrentDictionary<DataKey, bool>   _flags = new();
 
         public override void RegisterEvents() { }
 
@@ -58,21 +57,23 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
 
         public void SetVariable(MBObjectBase @object, string name, object? data) => _vars[DataKey.Make(@object, name)] = data;
 
-        public bool TryGetVariable<T>(MBObjectBase @object, string name, [MaybeNullWhen(false)][NotNullWhen(true)] out T value)
+#nullable disable
+        public bool TryGetVariable<T>(MBObjectBase @object, string name, out T value)
         {
-            if (_vars.TryGetValue(DataKey.Make(@object, name), out var val) && val is T concreteVal)
+            if (_vars.TryGetValue(DataKey.Make(@object, name), out var val) && (val is T || val is null))
             {
-                value = concreteVal;
+                value = (T)val;
                 return true;
             }
 
             value = default;
             return false;
         }
+#nullable restore
 
         /* Flags Implementation */
 
-        public bool HasFlag(MBObjectBase @object, string name) => _flags.ContainsKey(DataKey.Make(@object, name));
+        public bool HasFlag(MBObjectBase @object, string name) => _flags.TryGetValue(DataKey.Make(@object, name), out var flag) && flag;
 
         public bool RemoveFlag(MBObjectBase @object, string name) => _flags.TryRemove(DataKey.Make(@object, name), out _);
 
@@ -99,6 +100,8 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
             public override bool Equals(object? obj) => obj is DataKey k && Equals(k);
 
             public override int GetHashCode() => HashCode.Combine(ObjectId, Key);
+
+            public override string ToString() => $"{ObjectId}::{Key}";
         }
 
         private sealed class SavedTypeDefiner : SaveableCampaignBehaviorTypeDefiner
@@ -108,7 +111,7 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
             protected override void DefineContainerDefinitions()
             {
                 ConstructContainerDefinition(typeof(ConcurrentDictionary<DataKey, object?>));
-                ConstructContainerDefinition(typeof(ConcurrentDictionary<DataKey, bool>));
+                ConstructContainerDefinition(typeof(ConcurrentDictionary<DataKey, bool>));                
             }
         }
     }

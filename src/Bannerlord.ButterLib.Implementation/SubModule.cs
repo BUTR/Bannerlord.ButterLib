@@ -1,6 +1,7 @@
 ﻿using Bannerlord.ButterLib.CampaignIdentifier;
 using Bannerlord.ButterLib.Common.Extensions;
 using Bannerlord.ButterLib.DistanceMatrix;
+using Bannerlord.ButterLib.Extensions;
 using Bannerlord.ButterLib.HotKeys;
 using Bannerlord.ButterLib.Implementation.CampaignIdentifier;
 using Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehaviors;
@@ -14,6 +15,8 @@ using Bannerlord.ButterLib.ObjectSystem;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+
+using StoryMode;
 
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
@@ -73,6 +76,7 @@ namespace Bannerlord.ButterLib.Implementation
             Debug.DebugManager = new DebugManagerWrapper(Debug.DebugManager, serviceProvider!);
 
             HotKeySubSystem.Instance?.Enable();
+            SaveSystemSubSystem.Instance?.Enable();
 
             Logger.LogTrace("ButterLib.Implementation: OnSubModuleLoad: Done");
         }
@@ -96,7 +100,6 @@ namespace Bannerlord.ButterLib.Implementation
 
                 CampaignIdentifierSubSystem.Instance?.Enable();
                 ObjectSystemSubSystem.Instance?.Enable();
-                SaveSystemSubSystem.Instance?.Enable();
             }
 
             Logger.LogTrace("ButterLib.Implementation: OnBeforeInitialModuleScreenSetAsRoot: Done");
@@ -111,9 +114,10 @@ namespace Bannerlord.ButterLib.Implementation
             {
                 var gameStarter = (CampaignGameStarter)gameStarterObject;
 
-                // Behaviors
-                gameStarter.AddBehavior(new CampaignIdentifierBehavior());
                 gameStarter.AddBehavior(new GeopoliticsCachingBehavior());
+
+                if (game.GameType is CampaignStoryMode)
+                    gameStarter.AddBehavior(new CampaignIdentifierBehavior()); // Requires StoryMode
             }
 
             Logger.LogTrace("ButterLib.Implementation: OnGameStart: Done");
