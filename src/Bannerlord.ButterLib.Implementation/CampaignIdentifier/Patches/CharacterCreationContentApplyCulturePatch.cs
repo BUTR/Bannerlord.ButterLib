@@ -26,8 +26,10 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.Patches
 
         internal static void Enable(Harmony harmony)
         {
-            _logger = ButterLibSubModule.Instance?.GetServiceProvider()?.GetRequiredService<ILogger<CharacterCreationContentApplyCulturePatch>>() ??
-                      NullLogger<CharacterCreationContentApplyCulturePatch>.Instance;
+            var provider = ButterLibSubModule.Instance?.GetServiceProvider() ?? ButterLibSubModule.Instance?.GetTempServiceProvider();
+
+            _logger = provider?.GetRequiredService<ILogger<CharacterCreationContentApplyCulturePatch>>()
+                      ?? NullLogger<CharacterCreationContentApplyCulturePatch>.Instance;
 
             if (ApplyCultureTargetMethod is null)
                 _logger.LogError("ApplyCultureTargetMethod is null");

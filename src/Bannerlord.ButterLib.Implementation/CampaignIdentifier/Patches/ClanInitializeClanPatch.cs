@@ -23,8 +23,8 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.Patches
 
         internal static void Enable(Harmony harmony)
         {
-            _logger = ButterLibSubModule.Instance?.GetServiceProvider()?.GetRequiredService<ILogger<ClanInitializeClanPatch>>() ??
-                      NullLogger<ClanInitializeClanPatch>.Instance;
+            var provider = ButterLibSubModule.Instance?.GetServiceProvider() ?? ButterLibSubModule.Instance?.GetTempServiceProvider();
+            _logger = provider?.GetRequiredService<ILogger<ClanInitializeClanPatch>>() ?? NullLogger<ClanInitializeClanPatch>.Instance;
 
             if (InitializeClanTargetMethod is null)
                 _logger.LogError("InitializeClanTargetMethod is null");

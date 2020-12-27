@@ -28,8 +28,8 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem.Patches
 
         internal static void Enable(Harmony harmony)
         {
-            _log = ButterLibSubModule.Instance?.GetServiceProvider()?.GetRequiredService<ILogger<CampaignBehaviorManagerPatch>>() ??
-                NullLogger<CampaignBehaviorManagerPatch>.Instance;
+            var provider = ButterLibSubModule.Instance?.GetServiceProvider() ?? ButterLibSubModule.Instance?.GetTempServiceProvider();
+            _log = provider?.GetRequiredService<ILogger<CampaignBehaviorManagerPatch>>() ?? NullLogger<CampaignBehaviorManagerPatch>.Instance;
 
             if (OnGameLoadedTargetMI is null)
                 _log.LogError($"{nameof(OnGameLoadedTargetMI)} is null");
