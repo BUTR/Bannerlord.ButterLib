@@ -12,8 +12,8 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
 {
     internal sealed class MBObjectExtensionDataStore : CampaignBehaviorBase, IMBObjectExtensionDataStore
     {
-        private Dictionary<DataKey, object?> _vars = new();
-        private Dictionary<DataKey, bool>   _flags = new();
+        private ConcurrentDictionary<DataKey, object?> _vars = new();
+        private ConcurrentDictionary<DataKey, bool>   _flags = new();
 
         public override void RegisterEvents() { }
 
@@ -51,9 +51,9 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
         /* Variables Implementation */
         public bool HasVariable(MBObjectBase @object, string name) => _vars.ContainsKey(DataKey.Make(@object, name));
 
-        //public bool RemoveVariable(MBObjectBase @object, string name) => _vars.TryRemove(DataKey.Make(@object, name), out _);
+        public bool RemoveVariable(MBObjectBase @object, string name) => _vars.TryRemove(DataKey.Make(@object, name), out _);
 
-        public bool RemoveVariable(MBObjectBase @object, string name) => _vars.Remove(DataKey.Make(@object, name));
+        //public bool RemoveVariable(MBObjectBase @object, string name) => _vars.Remove(DataKey.Make(@object, name));
 
         public void SetVariable(MBObjectBase @object, string name, object? data) => _vars[DataKey.Make(@object, name)] = data;
 
@@ -75,9 +75,9 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
 
         public bool HasFlag(MBObjectBase @object, string name) => _flags.TryGetValue(DataKey.Make(@object, name), out var flag) && flag;
 
-        //public bool RemoveFlag(MBObjectBase @object, string name) => _flags.TryRemove(DataKey.Make(@object, name), out _);
+        public bool RemoveFlag(MBObjectBase @object, string name) => _flags.TryRemove(DataKey.Make(@object, name), out _);
 
-        public bool RemoveFlag(MBObjectBase @object, string name) => _flags.Remove(DataKey.Make(@object, name));
+        //public bool RemoveFlag(MBObjectBase @object, string name) => _flags.Remove(DataKey.Make(@object, name));
 
         public void SetFlag(MBObjectBase @object, string name) => _flags[DataKey.Make(@object, name)] = true;
 
@@ -110,8 +110,8 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
             protected override void DefineClassTypes() => AddClassDefinition(typeof(DataKey), 1);
             protected override void DefineContainerDefinitions()
             {
-                ConstructContainerDefinition(typeof(Dictionary<DataKey, object?>));
-                ConstructContainerDefinition(typeof(Dictionary<DataKey, bool>));                
+                ConstructContainerDefinition(typeof(ConcurrentDictionary<DataKey, object?>));
+                ConstructContainerDefinition(typeof(ConcurrentDictionary<DataKey, bool>));                
             }
         }
     }
