@@ -15,7 +15,7 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier
         public bool CanBeDisabled => true;
         public bool CanBeSwitchedAtRuntime => false;
 
-        private readonly Harmony _harmony = new Harmony("Bannerlord.ButterLib.CampaignIdentifier");
+        private readonly Harmony _harmony = new("Bannerlord.ButterLib.CampaignIdentifier");
 
         public CampaignIdentifierSubSystem()
         {

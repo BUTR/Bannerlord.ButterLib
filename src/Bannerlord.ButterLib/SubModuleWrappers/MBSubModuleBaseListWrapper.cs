@@ -12,7 +12,7 @@ namespace Bannerlord.ButterLib.SubModuleWrappers
     /// </summary>
     public class MBSubModuleBaseListWrapper : MBSubModuleBase
     {
-        protected List<MBSubModuleBaseWrapper> SubModules { get; } = new List<MBSubModuleBaseWrapper>();
+        protected List<MBSubModuleBaseWrapper> SubModules { get; } = new();
 
         public virtual void OnServiceRegistration()
         {

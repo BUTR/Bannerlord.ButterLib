@@ -34,7 +34,7 @@ namespace Bannerlord.ButterLib.DynamicAPI
     {
         public static DynamicAPIInstance? RequestAPIClass(string @class)
         {
-            return new DynamicAPIInstance(null!);
+            return new(null!);
         }
 
         public static TDelegate? RequestAPIMethod<TDelegate>(string method, params Type[] types) where TDelegate : Delegate

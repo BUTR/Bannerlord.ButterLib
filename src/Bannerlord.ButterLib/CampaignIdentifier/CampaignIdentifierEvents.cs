@@ -5,8 +5,8 @@ namespace Bannerlord.ButterLib.CampaignIdentifier
     /// <summary>Custom events used by CampaignIdentifier.</summary>
     public sealed class CampaignIdentifierEvents
     {
-        private readonly MbEvent _onDescriptorRelatedDataChanged = new MbEvent();
-        private readonly MbEvent<CampaignDescriptor> _onDescriptorAssigned = new MbEvent<CampaignDescriptor>();
+        private readonly MbEvent _onDescriptorRelatedDataChanged = new();
+        private readonly MbEvent<CampaignDescriptor> _onDescriptorAssigned = new();
 
         /// <summary>An instance of the CampaignIdentifier custom events.</summary>
         /// <remarks>Assigned in the process of creating new game or loading existing one.</remarks>

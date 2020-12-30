@@ -30,14 +30,14 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// </summary>
         public const string SPECIFIC_PLURAL_FORM_TAG = "SPECIFIC_PLURAL_FORM";
 
-        private static readonly ReadOnlyCollection<int> EasternSlavicPluralExceptions = new ReadOnlyCollection<int>(new List<int>() { 11, 12, 13, 14 });
-        private static readonly ReadOnlyCollection<int> EasternSlavicSingularNumerics = new ReadOnlyCollection<int>(new List<int>() { 1, 2, 3, 4 });
+        private static readonly ReadOnlyCollection<int> EasternSlavicPluralExceptions = new(new List<int>() { 11, 12, 13, 14 });
+        private static readonly ReadOnlyCollection<int> EasternSlavicSingularNumerics = new(new List<int>() { 1, 2, 3, 4 });
 
-        private static readonly ReadOnlyCollection<int> WesternSlavicPluralExceptions = new ReadOnlyCollection<int>(new List<int>() { 12, 13, 14 });
-        private static readonly ReadOnlyCollection<int> WesternSlavicSingularNumerics = new ReadOnlyCollection<int>(new List<int>() { 2, 3, 4 });
+        private static readonly ReadOnlyCollection<int> WesternSlavicPluralExceptions = new(new List<int>() { 12, 13, 14 });
+        private static readonly ReadOnlyCollection<int> WesternSlavicSingularNumerics = new(new List<int>() { 2, 3, 4 });
 
-        private static readonly ReadOnlyCollection<string> EasternSlavicGroupLanguageIDs = new ReadOnlyCollection<string>(new List<string>() { "Russian", "Русский", "Ukrainian", "Українська", "Belarusian", "Беларускі" });
-        private static readonly ReadOnlyCollection<string> WesternSlavicGroupLanguageIDs = new ReadOnlyCollection<string>(new List<string>() { "Polish", "Polski" });
+        private static readonly ReadOnlyCollection<string> EasternSlavicGroupLanguageIDs = new(new List<string>() { "Russian", "Русский", "Ukrainian", "Українська", "Belarusian", "Беларускі" });
+        private static readonly ReadOnlyCollection<string> WesternSlavicGroupLanguageIDs = new(new List<string>() { "Polish", "Polski" });
 
         private static RecursiveCaller GetRecursiveCaller(RecursiveCaller currentCaller, RecursiveCaller receivedCaller)
         {
@@ -61,7 +61,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
             switch (entity)
             {
                 case Hero hero:
-                    TextObject characterProperties = new TextObject();
+                    TextObject characterProperties = new();
                     characterProperties.SetTextVariable("NAME", hero.Name);
                     characterProperties.SetTextVariable("AGE", (int)hero.Age);
                     characterProperties.SetTextVariable("GENDER", hero.IsFemale ? 1 : 0);
@@ -69,7 +69,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
                     characterProperties.SetTextVariable("FIRSTNAME", hero.FirstName ?? hero.Name);
                     return characterProperties;
                 case Settlement settlement:
-                    TextObject settlementProperties = new TextObject();
+                    TextObject settlementProperties = new();
                     settlementProperties.SetTextVariable("NAME", settlement.Name);
                     settlementProperties.SetTextVariable("IS_TOWN", settlement.IsTown ? 1 : 0);
                     settlementProperties.SetTextVariable("IS_CASTLE", settlement.IsCastle ? 1 : 0);
@@ -77,14 +77,14 @@ namespace Bannerlord.ButterLib.Common.Helpers
                     settlementProperties.SetTextVariable("LINK", settlement.EncyclopediaLinkWithName);
                     return settlementProperties;
                 case Clan clan:
-                    TextObject clanProperties = new TextObject();
+                    TextObject clanProperties = new();
                     clanProperties.SetTextVariable("NAME", clan.Name);
                     clanProperties.SetTextVariable("MINOR_FACTION", clan.IsMinorFaction ? 1 : 0);
                     clanProperties.SetTextVariable("UNDER_CONTRACT", clan.IsUnderMercenaryService ? 1 : 0);
                     clanProperties.SetTextVariable("LINK", clan.EncyclopediaLinkWithName);
                     return clanProperties;
                 case Kingdom kingdom:
-                    TextObject kingdomProperties = new TextObject();
+                    TextObject kingdomProperties = new();
                     kingdomProperties.SetTextVariable("NAME", kingdom.Name);
                     kingdomProperties.SetTextVariable("LINK", kingdom.EncyclopediaLinkWithName);
                     return kingdomProperties;
@@ -203,7 +203,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
         }
 
         private static Dictionary<string, TextObject> GetPluralFormAttributes(PluralForm pluralForm) =>
-            new Dictionary<string, TextObject>()
+            new()
             {
                 [PLURAL_FORM_TAG] = new TextObject(pluralForm == PluralForm.Plural ? 1 : 0),
                 [SPECIFIC_PLURAL_FORM_TAG] = new TextObject(pluralForm != PluralForm.SpecificPlural ? 1 : 0),

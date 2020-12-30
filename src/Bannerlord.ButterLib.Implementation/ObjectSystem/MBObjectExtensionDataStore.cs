@@ -28,10 +28,10 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
             }
 
             dataStore.SyncData("Vars", ref _vars);
-            _vars ??= new();
+            _vars ??= new ConcurrentDictionary<DataKey, object?>();
 
             dataStore.SyncData("Flags", ref _flags);
-            _flags ??= new();
+            _flags ??= new ConcurrentDictionary<DataKey, bool>();
         }
 
         private void ReleaseOrphanedEntries<T>(IDictionary<DataKey, T> dict, ISet<MBGUID> cache)
@@ -93,7 +93,7 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
 
             private DataKey(MBGUID objectId, string key) => (ObjectId, Key) = (objectId, key);
 
-            internal static DataKey Make(MBObjectBase obj, string key) => new DataKey(obj.Id, key);
+            internal static DataKey Make(MBObjectBase obj, string key) => new(obj.Id, key);
 
             public bool Equals(DataKey other) => ObjectId == other.ObjectId && !(Key is null || other.Key is null) && Key.Equals(other.Key);
 

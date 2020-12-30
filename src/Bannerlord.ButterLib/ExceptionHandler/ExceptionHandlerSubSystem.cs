@@ -18,7 +18,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
     {
         public static ExceptionHandlerSubSystem? Instance { get; private set; }
 
-        internal static readonly Harmony Harmony = new Harmony("Bannerlord.ButterLib.ExceptionHandler.BEW");
+        internal static readonly Harmony Harmony = new("Bannerlord.ButterLib.ExceptionHandler.BEW");
 
         public string Id => "ExceptionHandler";
         public string Description => "Captures game crashes and creates reports out of them.";

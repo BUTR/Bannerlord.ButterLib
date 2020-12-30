@@ -26,7 +26,7 @@ namespace Bannerlord.ButterLib.DelayedSubModule
     public static class DelayedSubModuleManager
     {
         // We need a ConcurrentHashSet
-        private static ConcurrentDictionary<Key, object?> RegisteredTypes { get; } = new ConcurrentDictionary<Key, object?>();
+        private static ConcurrentDictionary<Key, object?> RegisteredTypes { get; } = new();
 
         /// <summary>
         /// An event that is raised when the load / unload methods of the

@@ -5,8 +5,8 @@ namespace Bannerlord.ButterLib.Common.Helpers
 {
     public readonly struct DependedModule
     {
-        public string ModuleId { get; }
-        public ApplicationVersion Version { get; }
+        public string ModuleId { get; init; }
+        public ApplicationVersion Version { get; init; }
 
         public DependedModule(string moduleId, ApplicationVersion version)
         {

@@ -27,7 +27,6 @@
     <Compile Include="..\Bannerlord.ButterLib\Helpers\ModuleInfo\DependedModule.cs" Link="ButterLib\DependedModule.cs" />
     <Compile Include="..\Bannerlord.ButterLib\Helpers\ModuleInfo\ExtendedSubModuleInfo.cs" Link="ButterLib\ExtendedSubModuleInfo.cs" />
     <Compile Include="..\Bannerlord.ButterLib\Helpers\ModuleInfo\ModuleInfoHelper.cs" Link="ButterLib\ModuleInfoHelper.cs" />
-    <Compile Include="..\Bannerlord.ButterLib\Internal\NullableAttributes.cs" Link="ButterLib\NullableAttributes.cs" />
     <Compile Include="..\Bannerlord.ButterLib\SubModuleWrappers\MBSubModuleBaseWrapper.cs" Link="ButterLib\MBSubModuleBaseWrapper.cs" />
   </ItemGroup>
 
@@ -43,7 +42,15 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Bannerlord.ReferenceAssemblies.Core.EarlyAccess" Version="$(GameVersion).*" PrivateAssets="All" />
+    <PackageReference Include="IsExternalInit" Version="1.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Lib.Harmony" Version="$(HarmonyVersion)" IncludeAssets="compile" />
+    <PackageReference Include="Nullable" Version="1.3.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
 </Project>

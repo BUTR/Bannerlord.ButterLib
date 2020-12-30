@@ -15,7 +15,7 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem
         public bool CanBeDisabled => true;
         public bool CanBeSwitchedAtRuntime => false;
 
-        private readonly Harmony _harmony = new Harmony("Bannerlord.ButterLib.SaveSystem");
+        private readonly Harmony _harmony = new("Bannerlord.ButterLib.SaveSystem");
 
         public SaveSystemSubSystem()
         {

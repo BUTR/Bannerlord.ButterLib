@@ -1,44 +1,42 @@
-﻿using Bannerlord.ButterLib.Common.Extensions;
-
-using System;
-
-using TaleWorlds.Library;
+﻿using TaleWorlds.Library;
 
 namespace Bannerlord.ButterLib.Helpers.ModuleInfo
 {
     public readonly struct DependedModuleMetadata
     {
-        public readonly string Id;
-        public readonly LoadType LoadType;
-        public readonly bool IsOptional;
-        public readonly ApplicationVersion Version;
+        public string Id { get; init; }
+        public LoadType LoadType { get; init; }
+        public bool IsOptional { get; init; }
+        public bool IsIncompatible { get; init; }
+        public ApplicationVersion Version { get; init; }
 
         public DependedModuleMetadata(string id, LoadType loadType, bool isOptional, ApplicationVersion version)
         {
             Id = id;
             LoadType = loadType;
             IsOptional = isOptional;
+            IsIncompatible = false;
+            Version = version;
+        }
+        public DependedModuleMetadata(string id, LoadType loadType, bool isOptional, bool isIncompatible, ApplicationVersion version)
+        {
+            Id = id;
+            LoadType = loadType;
+            IsOptional = isOptional;
+            IsIncompatible = isIncompatible;
             Version = version;
         }
 
-        /*
-        public override bool Equals(object obj) => obj is DependedModuleMetadata objStr && Equals(objStr);
-        public bool Equals(DependedModuleMetadata obj) => Id.Equals(obj.Id) && LoadType.Equals(obj.LoadType) && IsOptional.Equals(obj.IsOptional);
-
-        public override int GetHashCode() => HashCode.Combine(Id, LoadType, IsOptional);
-
-        public static bool operator ==(DependedModuleMetadata left, DependedModuleMetadata right) => left.Equals(right);
-        public static bool operator !=(DependedModuleMetadata left, DependedModuleMetadata right) => !(left == right);
-        */
-
         internal static string GetLoadType(LoadType loadType) => loadType switch
         {
-            LoadType.LoadAfterThis  => "Before ",
-            LoadType.LoadBeforeThis => "After  ",
-            _                       => "ERROR  "
+            LoadType.NONE           => "",
+            LoadType.LoadAfterThis  => "Before       ",
+            LoadType.LoadBeforeThis => "After        ",
+            _                       => "ERROR        "
         };
-        private static string GetVersion(ApplicationVersion av) => av.IsSameWithRevision(ApplicationVersion.Empty) ? "" : $" {av}";
+        private static string GetVersion(ApplicationVersion av) => av.IsSame(ApplicationVersion.Empty) ? "" : $" {av}";
         private static string GetOptional(bool isOptional) => isOptional ? " Optional" : "";
-        public override string ToString() => $"{GetLoadType(LoadType)}{Id}{GetVersion(Version)}{GetOptional(IsOptional)}";
+        private static string GetIncompatible(bool isOptional) => isOptional ? "Incompatible " : "";
+        public override string ToString() => GetLoadType(LoadType) + GetIncompatible(IsIncompatible) + Id + GetVersion(Version) + GetOptional(IsOptional);
     }
 }
