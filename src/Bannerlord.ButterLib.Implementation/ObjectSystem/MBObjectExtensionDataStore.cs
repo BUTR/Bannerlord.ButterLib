@@ -28,10 +28,10 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
             }
 
             dataStore.SyncData("Vars", ref _vars);
-            _vars ??= new ConcurrentDictionary<DataKey, object?>();
+            _vars ??= new();
 
             dataStore.SyncData("Flags", ref _flags);
-            _flags ??= new ConcurrentDictionary<DataKey, bool>();
+            _flags ??= new();
         }
 
         private void ReleaseOrphanedEntries<T>(IDictionary<DataKey, T> dict, ISet<MBGUID> cache)
@@ -111,7 +111,7 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
             protected override void DefineContainerDefinitions()
             {
                 ConstructContainerDefinition(typeof(ConcurrentDictionary<DataKey, object?>));
-                ConstructContainerDefinition(typeof(ConcurrentDictionary<DataKey, bool>));                
+                ConstructContainerDefinition(typeof(ConcurrentDictionary<DataKey, bool>));
             }
         }
     }
