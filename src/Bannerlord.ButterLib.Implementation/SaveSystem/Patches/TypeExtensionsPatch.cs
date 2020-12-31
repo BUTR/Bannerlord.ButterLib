@@ -54,7 +54,7 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
         private static readonly Type? TargetType = typeof(MetaData).Assembly.GetType("TaleWorlds.SaveSystem.TypeExtensions");
         private static readonly Type[] TargetMethodParams = new[] { typeof(Type), typeof(ContainerType).MakeByRefType() };
         private static readonly MethodInfo? TargetMethod = AccessTools.Method(TargetType, "IsContainer", TargetMethodParams);
-        private static readonly MethodInfo? PatchMethod = AccessTools.Method(typeof(TypeExtensionsPatch), "IsContainerPrefix");
+        private static readonly MethodInfo? PatchMethod = AccessTools.Method(typeof(TypeExtensionsPatch), nameof(IsContainerPrefix));
 
         private static bool IsContainerPrefix(Type type, out ContainerType containerType, ref bool __result)
         {
@@ -70,7 +70,7 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
             else if (typeof(IList).IsAssignableFrom(type))
                 containerType = ContainerType.List;
             else if (type == typeof(Queue<>) || type == typeof(Queue))
-                containerType = ContainerType.Queue; // Piggybacking ICollection<T> on to the "Queue" category is phase 2
+                containerType = ContainerType.Queue;
 
             __result = containerType != ContainerType.None;
             return false;

@@ -48,7 +48,7 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
 
         internal static bool Disable(Harmony harmony)
         {
-            // TODO:
+            _ = harmony;
             return false;
         }
 
