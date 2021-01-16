@@ -46,6 +46,8 @@
         <!--Helper libraries-->
         <Assembly value="System.Runtime.CompilerServices.Unsafe.dll" />
         <Assembly value="Microsoft.Bcl.HashCode.dll" />
+        <Assembly value="System.Reflection.Metadata.dll" />
+        <Assembly value="System.Collections.Immutable.dll" />
       </Assemblies>
       <Tags />
     </SubModule>

@@ -7,6 +7,7 @@
     <Nullable>enable</Nullable>
 
     <Configurations>Stable_Debug;Stable_Release;Beta_Debug;Beta_Release</Configurations>
+    <DefineConstants>$(DefineConstants);BANNERLORDBUTRSHARED_BUTTERLIB</DefineConstants>
   </PropertyGroup>
 
   <!--Module Creation-->
@@ -38,6 +39,10 @@
 
   <ItemGroup>
     <PackageReference Include="Bannerlord.BuildResources" Version="$(BuildResourcesVersion)">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Bannerlord.BUTR.Shared" Version="$(BUTRSharedVersion)">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Bannerlord.BUTR.Shared.Helpers;
+
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
@@ -205,9 +207,9 @@ namespace Bannerlord.ButterLib.Common.Helpers
         private static Dictionary<string, TextObject> GetPluralFormAttributes(PluralForm pluralForm) =>
             new()
             {
-                [PLURAL_FORM_TAG] = new TextObject(pluralForm == PluralForm.Plural ? 1 : 0),
-                [SPECIFIC_PLURAL_FORM_TAG] = new TextObject(pluralForm != PluralForm.SpecificPlural ? 1 : 0),
-                [SPECIFIC_SINGULAR_FORM_TAG] = new TextObject(pluralForm != PluralForm.SpecificSingular ? 1 : 0)
+                [PLURAL_FORM_TAG] = TextObjectHelper.Create(pluralForm == PluralForm.Plural ? 1 : 0),
+                [SPECIFIC_PLURAL_FORM_TAG] = TextObjectHelper.Create(pluralForm != PluralForm.SpecificPlural ? 1 : 0),
+                [SPECIFIC_SINGULAR_FORM_TAG] = TextObjectHelper.Create(pluralForm != PluralForm.SpecificSingular ? 1 : 0)
             };
 
         /// <summary>Sets a numeric variable along with the appropriate <see cref="PluralForm" /> tag in accordance with the grammar rules of the game language.</summary>
@@ -225,7 +227,9 @@ namespace Bannerlord.ButterLib.Common.Helpers
                 return;
             }
             var attributes = GetPluralFormAttributes(GetPluralForm(variableValue));
-            TextObject explainedTextObject = string.IsNullOrEmpty(format) ? new TextObject(variableValue, attributes) : new TextObject(variableValue.ToString(format), attributes);
+            var explainedTextObject = string.IsNullOrEmpty(format)
+                ? TextObjectHelper.Create(variableValue.ToString(), attributes)
+                : TextObjectHelper.Create(variableValue.ToString(format), attributes);
             if (textObject is null)
             {
                 MBTextManager.SetTextVariable(tag, explainedTextObject);
@@ -251,7 +255,9 @@ namespace Bannerlord.ButterLib.Common.Helpers
                 return;
             }
             var attributes = GetPluralFormAttributes(GetPluralForm(variableValue));
-            TextObject explainedTextObject = string.IsNullOrEmpty(format) ? new TextObject(variableValue, attributes) : new TextObject(variableValue.ToString(format), attributes);
+            var explainedTextObject = string.IsNullOrEmpty(format)
+                ? TextObjectHelper.Create(variableValue.ToString("R"), attributes)
+                : TextObjectHelper.Create(variableValue.ToString(format), attributes);
             if (textObject is null)
             {
                 MBTextManager.SetTextVariable(tag, explainedTextObject);

@@ -177,7 +177,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// <returns>A delegate or <see langword="null"/> when <paramref name="methodInfo"/> is <see langword="null"/>.</returns>
         public static TDelegate? GetDelegateObjectInstance<TDelegate>(MethodInfo? methodInfo) where TDelegate : Delegate
         {
-            if (methodInfo is null || methodInfo.DeclaringType is null) return null;
+            if (methodInfo?.DeclaringType is null) return null;
 
             var instance = Expression.Parameter(typeof(object), "instance");
             var parameters = methodInfo.GetParameters().Select((t2, i) => Expression.Parameter(t2.ParameterType, $"p{i}")).ToList();

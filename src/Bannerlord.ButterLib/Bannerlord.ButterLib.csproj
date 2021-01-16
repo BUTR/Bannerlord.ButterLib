@@ -7,6 +7,7 @@
     <Nullable>enable</Nullable>
     <PlatformTarget>x64</PlatformTarget>
     <BUTRUploadUrl>$(BANNERLORD_BUTR_UPLOAD_URL)</BUTRUploadUrl>
+    <DefineConstants>$(DefineConstants);BANNERLORDBUTRSHARED_BUTTERLIB</DefineConstants>
   </PropertyGroup>
 
   <!--NuGet Package-->
@@ -33,6 +34,10 @@
   <!--NuGet References-->
   <ItemGroup>
     <PackageReference Include="Bannerlord.BuildResources" Version="$(BuildResourcesVersion)">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Bannerlord.BUTR.Shared" Version="$(BUTRSharedVersion)">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

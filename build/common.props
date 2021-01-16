@@ -10,7 +10,8 @@
     <!--Microsoft Extension Libraries Version-->
     <ExtensionVersion>2.0.0</ExtensionVersion>
     <!--BuildResources Version-->
-    <BuildResourcesVersion>1.0.0.32</BuildResourcesVersion>
+    <BuildResourcesVersion>1.0.0.33</BuildResourcesVersion>
+    <BUTRSharedVersion>1.6.1.19</BUTRSharedVersion>
   </PropertyGroup>
 
   <PropertyGroup>

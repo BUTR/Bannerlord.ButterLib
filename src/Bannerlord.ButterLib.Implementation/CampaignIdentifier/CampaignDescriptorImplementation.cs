@@ -1,4 +1,5 @@
-﻿using Bannerlord.ButterLib.CampaignIdentifier;
+﻿using Bannerlord.BUTR.Shared.Helpers;
+using Bannerlord.ButterLib.CampaignIdentifier;
 using Bannerlord.ButterLib.Implementation.CampaignIdentifier.Helpers;
 
 using System;
@@ -168,11 +169,11 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier
             var cultureName = (string) _attributes[DescriptorAttribute.HeroCulture];
             cultureName = Regex.Replace(cultureName, @"\{[\\?=][^}]*\}", string.Empty);
 
-            var resultTextObject = new TextObject(LocalizableValue);
-            var parentsInfoTextObject = new TextObject(LocalizableParentsInfo);
+            var resultTextObject = TextObjectHelper.Create(LocalizableValue);
+            var parentsInfoTextObject = TextObjectHelper.Create(LocalizableParentsInfo);
 
             //BASE_DESCRIPTOR_HERO
-            var baseHeroTextObject = new TextObject();
+            var baseHeroTextObject = TextObjectHelper.Create("");
             baseHeroTextObject.SetTextVariable("NAME", (string) _attributes[DescriptorAttribute.HeroName]);
             baseHeroTextObject.SetTextVariable("CLAN", familyName.Length > 0 ? 1 : 0);
             baseHeroTextObject.SetTextVariable("CLAN_NAME", familyName);
@@ -202,7 +203,7 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier
             MBTextManager.SetTextVariable("BASE_DESCRIPTOR_HERO", baseHeroTextObject);
 
             //BASE_DESCRIPTOR_HERO_PARENTS
-            var parentsTextObject = new TextObject(fatherName.Length > 0 || motherName.Length > 0 ? 1 : 0);
+            var parentsTextObject = TextObjectHelper.Create(fatherName.Length > 0 || motherName.Length > 0 ? 1 : 0);
             parentsTextObject.SetTextVariable("INFO", parentsInfoTextObject);
             resultTextObject.SetTextVariable("BASE_DESCRIPTOR_HERO_PARENTS", parentsTextObject);
 
