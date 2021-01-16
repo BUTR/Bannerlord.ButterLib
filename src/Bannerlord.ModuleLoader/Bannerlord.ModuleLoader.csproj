@@ -18,16 +18,10 @@
 
   <ItemGroup>
     <Compile Include="..\Bannerlord.ButterLib\Extensions\ApplicationVersionExtensions.cs" Link="ButterLib\ApplicationVersionExtensions.cs" />
-    <Compile Include="..\Bannerlord.ButterLib\Extensions\DictionaryExtensions.cs" Link="ButterLib\DictionaryExtensions.cs" />
     <Compile Include="..\Bannerlord.ButterLib\Helpers\ApplicationVersionUtils.cs" Link="ButterLib\ApplicationVersionUtils.cs" />
     <Compile Include="..\Bannerlord.ButterLib\Helpers\ConstructorHelper.cs" Link="ButterLib\ConstructorHelper.cs" />
     <Compile Include="..\Bannerlord.ButterLib\Helpers\Harmony\AccessTools2.cs" Link="ButterLib\AccessTools2.cs" />
-    <Compile Include="..\Bannerlord.ButterLib\Helpers\ModuleInfo\ExtendedModuleInfo.cs" Link="ButterLib\ExtendedModuleInfo.cs" />
-    <Compile Include="..\Bannerlord.ButterLib\Helpers\ModuleInfo\LoadType.cs" Link="ButterLib\LoadType.cs" />
-    <Compile Include="..\Bannerlord.ButterLib\Helpers\ModuleInfo\DependedModuleMetadata.cs" Link="ButterLib\DependedModuleMetadata.cs" />
-    <Compile Include="..\Bannerlord.ButterLib\Helpers\ModuleInfo\DependedModule.cs" Link="ButterLib\DependedModule.cs" />
-    <Compile Include="..\Bannerlord.ButterLib\Helpers\ModuleInfo\ExtendedSubModuleInfo.cs" Link="ButterLib\ExtendedSubModuleInfo.cs" />
-    <Compile Include="..\Bannerlord.ButterLib\Helpers\ModuleInfo\ModuleInfoHelper.cs" Link="ButterLib\ModuleInfoHelper.cs" />
+    <Compile Include="..\Bannerlord.ButterLib\Helpers\ModuleInfoHelper.cs" Link="ButterLib\ModuleInfoHelper.cs" />
     <Compile Include="..\Bannerlord.ButterLib\SubModuleWrappers\MBSubModuleBaseWrapper.cs" Link="ButterLib\MBSubModuleBaseWrapper.cs" />
   </ItemGroup>
 

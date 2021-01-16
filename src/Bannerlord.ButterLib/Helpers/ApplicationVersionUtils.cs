@@ -3,8 +3,10 @@
 using HarmonyLib;
 
 using System;
+using System.IO;
 using System.Reflection;
-
+using System.Runtime.Serialization;
+using System.Xml;
 using TaleWorlds.DotNet;
 using TaleWorlds.Library;
 
@@ -28,16 +30,16 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// <returns>A string representation of the game version.</returns>
         public static string GameVersionStr()
         {
-            if (GetVersionStrMethod is null)
-                return "e1.0.0";
+            if (GetVersionStrMethod is not null)
+            {
+                var @params = GetVersionStrMethod.GetParameters();
+                if (@params.Length == 0)
+                    return GetVersionStrMethod.Invoke(null, Array.Empty<object>()) as string ?? "e1.0.0";
+                if (@params.Length == 1 && @params[0].ParameterType == typeof(string))
+                    return GetVersionStrMethod.Invoke(null, new object[] {"Singleplayer"}) as string ?? "e1.0.0";
+            }
 
-            var @params = GetVersionStrMethod.GetParameters();
-            if (@params.Length == 0)
-                return GetVersionStrMethod.Invoke(null, Array.Empty<object>()) as string ?? "e1.0.0";
-            if (@params.Length == 1 && @params[0].ParameterType == typeof(string))
-                return GetVersionStrMethod.Invoke(null, new object[] { "Singleplayer" }) as string ?? "e1.0.0";
-
-            return "e1.0.0";
+            return ApplicationVersionHelper.ToString(ApplicationVersionHelper.FromParametersFile("Singleplayer"));
         }
 
         /// <summary>

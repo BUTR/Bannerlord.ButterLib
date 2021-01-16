@@ -10,17 +10,14 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-using TaleWorlds.Library;
-
 namespace Bannerlord.ButterLib.Tests.DelayedSubModule
 {
     public class DelayedSubModuleTest
     {
         [MethodImpl(MethodImplOptions.NoInlining)]
-        private static bool MockedGetModuleInfo(Type type, ref ModuleInfo? __result)
+        private static bool MockedGetModuleInfo(Type type, ref object? __result)
         {
             if (type == typeof(TestSubModuleCaller))
-
             {
                 __result = TestHelper.ModuleInfoCaller1;
             }
@@ -47,7 +44,7 @@ namespace Bannerlord.ButterLib.Tests.DelayedSubModule
         public void SubscribeBeforeTargetLoad_Test()
         {
             // Initialization
-            ModuleInfoHelper.LoadedModules = new List<ModuleInfo> { TestHelper.ModuleInfoCaller1, TestHelper.ModuleInfoTarget1 };
+            //ModuleInfoHelper.LoadedModules = new List<ModuleInfo> { TestHelper.ModuleInfoCaller1, TestHelper.ModuleInfoTarget1 };
             ModuleInfoHelper.LoadedExtendedModules = new List<ExtendedModuleInfo> { TestHelper.ModuleInfoCaller, TestHelper.ModuleInfoTarget };
             ModuleInfoHelper.PastInitialization = true;
             // Initialization
@@ -63,7 +60,7 @@ namespace Bannerlord.ButterLib.Tests.DelayedSubModule
         public void SubscribeBeforeTargetLoad_CallTargetManually_Test()
         {
             // Initialization
-            ModuleInfoHelper.LoadedModules = new List<ModuleInfo> { TestHelper.ModuleInfoCaller1, TestHelper.ModuleInfoTarget1 };
+            //ModuleInfoHelper.LoadedModules = new List<ModuleInfo> { TestHelper.ModuleInfoCaller1, TestHelper.ModuleInfoTarget1 };
             ModuleInfoHelper.LoadedExtendedModules = new List<ExtendedModuleInfo> { TestHelper.ModuleInfoCaller, TestHelper.ModuleInfoTarget };
             ModuleInfoHelper.PastInitialization = true;
             // Initialization
@@ -84,7 +81,7 @@ namespace Bannerlord.ButterLib.Tests.DelayedSubModule
         public void SubscribeAfterTargetLoad_Test()
         {
             // Initialization
-            ModuleInfoHelper.LoadedModules = new List<ModuleInfo> { TestHelper.ModuleInfoTarget1, TestHelper.ModuleInfoCaller1 };
+            //ModuleInfoHelper.LoadedModules = new List<ModuleInfo> { TestHelper.ModuleInfoTarget1, TestHelper.ModuleInfoCaller1 };
             ModuleInfoHelper.LoadedExtendedModules = new List<ExtendedModuleInfo> { TestHelper.ModuleInfoTarget, TestHelper.ModuleInfoCaller };
             ModuleInfoHelper.PastInitialization = true;
             // Initialization
