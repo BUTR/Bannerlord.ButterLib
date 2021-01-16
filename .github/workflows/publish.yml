@@ -55,8 +55,9 @@ jobs:
         {
             $gameversion = $gameversions[$i];
             $version = $gameversion.substring(1);
+            $constgameversion = $gameversion.replace(".", "");
             dotnet clean $proj --configuration Release;
-            dotnet build $proj --configuration Release -p:OverrideGameVersion=$gameversion -p:GameFolder="$path";
+            dotnet build $proj --configuration Release -p:OverrideGameVersion=$gameversion -p:GameFolder="$path" -p:ConstGameVersionWithPrefix="$constgameversion";
 
             # Copy Implementations to the Implementations folder
             Copy-Item $pdll $impl/;

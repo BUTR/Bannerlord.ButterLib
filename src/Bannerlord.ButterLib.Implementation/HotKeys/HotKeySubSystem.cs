@@ -55,13 +55,15 @@ namespace Bannerlord.ButterLib.Implementation.HotKeys
                     hotKey.OnPressedInternal();
                 if (hotKey.GameKey.PrimaryKey.InputKey.IsReleased())
                     hotKey.OnReleasedInternal();
-#else
+#elif e155 || e156 || e157
                 if (hotKey.GameKey.KeyboardKey?.InputKey.IsDown() == true || hotKey.GameKey.ControllerKey?.InputKey.IsDown() == true)
                     hotKey.IsDownInternal();
                 if (hotKey.GameKey.KeyboardKey?.InputKey.IsPressed() == true || hotKey.GameKey.ControllerKey?.InputKey.IsPressed() == true)
                     hotKey.OnPressedInternal();
                 if (hotKey.GameKey.KeyboardKey?.InputKey.IsReleased() == true || hotKey.GameKey.ControllerKey?.InputKey.IsReleased() == true)
                     hotKey.OnReleasedInternal();
+#else
+#error ConstGameVersionWithPrefix is not handled!
 #endif
             }
         }

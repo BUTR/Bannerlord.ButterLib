@@ -58,7 +58,6 @@
   </PropertyGroup>
   <PropertyGroup>
     <ConstGameVersionWithPrefix>$([System.String]::Copy('$(GameVersionWithPrefix)').Replace('.',''))</ConstGameVersionWithPrefix>
-    <DefineConstants Condition="$(IsStable) OR $(IsBeta)">$(DefineConstants);$(ConstGameVersionWithPrefix)</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup>
