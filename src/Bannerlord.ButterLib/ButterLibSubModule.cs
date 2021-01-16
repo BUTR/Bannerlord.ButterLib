@@ -1,6 +1,6 @@
-﻿using Bannerlord.ButterLib.CampaignIdentifier;
+﻿using Bannerlord.BUTR.Shared.Helpers;
+using Bannerlord.ButterLib.CampaignIdentifier;
 using Bannerlord.ButterLib.Common.Extensions;
-using Bannerlord.ButterLib.Common.Helpers;
 using Bannerlord.ButterLib.CrashUploader;
 using Bannerlord.ButterLib.DelayedSubModule;
 using Bannerlord.ButterLib.ExceptionHandler;
@@ -17,8 +17,9 @@ using System.Windows.Forms;
 
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
-using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
+
+using ModuleInfoHelper = Bannerlord.ButterLib.Common.Helpers.ModuleInfoHelper;
 
 namespace Bannerlord.ButterLib
 {
@@ -194,7 +195,7 @@ Make sure ButterLib is loaded before them!";
             if (harmonyModuleIndex == -1)
             {
                 if (sb.Length != 0) sb.AppendLine();
-                sb.AppendLine(new TextObject(SErrorHarmonyNotFound).ToString());
+                sb.AppendLine(TextObjectHelper.Create(SErrorHarmonyNotFound).ToString());
             }
 
             // TODO: Keep it optional for now
@@ -204,7 +205,7 @@ Make sure ButterLib is loaded before them!";
             if (moduleLoaderIndex == -1)
             {
                 if (sb.Length != 0) sb.AppendLine();
-                sb.AppendLine(new TextObject(SErrorModuleLoaderNotFound).ToString());
+                sb.AppendLine(TextObjectHelper.Create(SErrorModuleLoaderNotFound).ToString());
             }
             */
 
@@ -213,7 +214,7 @@ Make sure ButterLib is loaded before them!";
             if (butterLibModuleIndex == -1)
             {
                 if (sb.Length != 0) sb.AppendLine();
-                sb.AppendLine(new TextObject(SErrorButterLibNotFound).ToString());
+                sb.AppendLine(TextObjectHelper.Create(SErrorButterLibNotFound).ToString());
             }
 
             var officialModules = loadedModules.Where(x => x.IsOfficial).Select(x => (Module: x, Index: loadedModules.IndexOf(x)));
@@ -221,8 +222,8 @@ Make sure ButterLib is loaded before them!";
             if (modulesLoadedBeforeButterLib.Count > 0)
             {
                 if (sb.Length != 0) sb.AppendLine();
-                sb.AppendLine(new TextObject(SErrorOfficialModulesLoadedBeforeButterLib).ToString());
-                sb.AppendLine(new TextObject(SErrorOfficialModules).ToString());
+                sb.AppendLine(TextObjectHelper.Create(SErrorOfficialModulesLoadedBeforeButterLib).ToString());
+                sb.AppendLine(TextObjectHelper.Create(SErrorOfficialModules).ToString());
                 foreach (var (module, _) in modulesLoadedBeforeButterLib)
                     sb.AppendLine(module.Id);
             }
@@ -230,9 +231,9 @@ Make sure ButterLib is loaded before them!";
             if (sb.Length > 0)
             {
                 sb.AppendLine();
-                sb.AppendLine(new TextObject(SMessageContinue).ToString());
+                sb.AppendLine(TextObjectHelper.Create(SMessageContinue).ToString());
 
-                switch (MessageBox.Show(sb.ToString(), new TextObject(SWarningTitle).ToString(), MessageBoxButtons.YesNo))
+                switch (MessageBox.Show(sb.ToString(), TextObjectHelper.Create(SWarningTitle).ToString(), MessageBoxButtons.YesNo))
                 {
                     case DialogResult.Yes:
                         Environment.Exit(1);

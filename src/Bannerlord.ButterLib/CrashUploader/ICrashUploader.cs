@@ -1,5 +1,6 @@
-﻿using System.Threading.Tasks;
-using Bannerlord.ButterLib.ExceptionHandler;
+﻿using Bannerlord.ButterLib.ExceptionHandler;
+
+using System.Threading.Tasks;
 
 namespace Bannerlord.ButterLib.CrashUploader
 {

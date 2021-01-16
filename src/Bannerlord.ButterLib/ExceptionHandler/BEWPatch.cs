@@ -16,7 +16,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
 {
     internal sealed class BEWPatch
     {
-        internal static readonly HashSet<Exception> SuppressedExceptions = new HashSet<Exception>();
+        internal static readonly HashSet<Exception> SuppressedExceptions = new();
 
         private static readonly MethodInfo? ManagedApplicationTickMethod = Method(typeof(Managed), "ApplicationTick");
         private static readonly MethodInfo? ScriptComponentBehaviourOnTickMethod = Method(typeof(ScriptComponentBehaviour), "OnTick");

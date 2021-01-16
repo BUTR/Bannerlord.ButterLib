@@ -262,7 +262,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
 
             public override string ToString()
             {
-                string NamePlz(MBObjectBase? obj) => obj is null ? "<null>" : obj.GetName().ToString();
+                static string NamePlz(MBObjectBase? obj) => obj is null ? "<null>" : obj.GetName().ToString();
 
                 var sb = new StringBuilder();
                 sb.AppendLine($"{Hero.Name} {Hero.Clan?.Name} // {Hero.StringId} = {{");

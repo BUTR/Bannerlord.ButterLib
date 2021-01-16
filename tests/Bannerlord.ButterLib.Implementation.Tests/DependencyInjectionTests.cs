@@ -82,7 +82,7 @@ namespace Bannerlord.ButterLib.Implementation.Tests
                 prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetConfigsPath)));
             harmony.Patch(SymbolExtensions2.GetPropertyInfo(() => TWCommon.ConfigName).GetMethod,
                 prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetConfigName)));
-            ModuleInfoHelper.LoadedModules = new List<ModuleInfo>();
+            //ModuleInfoHelper.LoadedModules = new List<ModuleInfo>();
             ModuleInfoHelper.LoadedExtendedModules = new List<ExtendedModuleInfo>();
             ModuleInfoHelper.PastInitialization = true;
 

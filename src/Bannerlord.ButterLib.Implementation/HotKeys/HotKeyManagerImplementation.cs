@@ -20,11 +20,11 @@ namespace Bannerlord.ButterLib.Implementation.HotKeys
 {
     internal sealed class HotKeyManagerImplementation : HotKeyManager
     {
-        internal static readonly List<HotKeyBase> HotKeys = new List<HotKeyBase>();
+        internal static readonly List<HotKeyBase> HotKeys = new();
 
         private int _currentId = 150; // should be enough no prevent collision with the game
         private readonly string _subModName;
-        private readonly List<HotKeyBase> _hotKeys = new List<HotKeyBase>();
+        private readonly List<HotKeyBase> _hotKeys = new();
 
         internal HotKeyManagerImplementation(string subModName)
         {

@@ -115,7 +115,7 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
             }
             if (typeof(Clan).IsAssignableFrom(typeof(T)))
             {
-                var clans = Clan.All.Where(c => c.IsInitialized && c.Fortifications.Count > 0).ToList();
+                var clans = Clan.All.Where(c => c.IsInitialized && c.Fiefs.Any()).ToList();
                 var settlementDistanceMatrix = Campaign.Current.GetCampaignBehavior<GeopoliticsCachingBehavior>().SettlementDistanceMatrix ?? new DistanceMatrixImplementation<Settlement>();
                 var lst = GetSettlementOwnersPairedList(settlementDistanceMatrix);
 

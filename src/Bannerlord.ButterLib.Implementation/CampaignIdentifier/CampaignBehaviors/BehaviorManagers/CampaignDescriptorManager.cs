@@ -1,4 +1,5 @@
-﻿using Bannerlord.ButterLib.CampaignIdentifier;
+﻿using Bannerlord.BUTR.Shared.Helpers;
+using Bannerlord.ButterLib.CampaignIdentifier;
 using Bannerlord.ButterLib.Common.Extensions;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -81,13 +82,13 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehavio
                         true,
                         string.Join(" - ", existingDescriptor.Descriptor, existingDescriptor.KeyValue)));
 
-                var newIdTextObject = new TextObject("{=wF4qRrhmEu}Assign new ID");
-                var inquiryBody = $"{new TextObject(InquiryUpperBody)}\n \n{new TextObject(InquiryLowerBody, new Dictionary<string, TextObject> {["NEW_ID"] = newIdTextObject})}";
+                var newIdTextObject = TextObjectHelper.Create("{=wF4qRrhmEu}Assign new ID");
+                var inquiryBody = $"{TextObjectHelper.Create(InquiryUpperBody)}\n \n{TextObjectHelper.Create(InquiryLowerBody, new Dictionary<string, TextObject> {["NEW_ID"] = newIdTextObject})}";
                 inquiryElements.Add(new InquiryElement(null, newIdTextObject.ToString(),
                     new ImageIdentifier(), true,
-                    new TextObject("{=25Ts3iQnv6}This is a standalone campaign and must be assigned a new ID.").ToString()));
+                    TextObjectHelper.Create("{=25Ts3iQnv6}This is a standalone campaign and must be assigned a new ID.").ToString()));
                 InformationManager.ShowMultiSelectionInquiry(new MultiSelectionInquiryData(
-                    new TextObject("{=4BuIRaILsb}Select identified ongoing campaign").ToString(),
+                    TextObjectHelper.Create("{=4BuIRaILsb}Select identified ongoing campaign").ToString(),
                     inquiryBody, inquiryElements, true, 1, GameTexts.FindText("str_done").ToString(), "",
                     OnDescriptorSelectionOver,
                     OnDescriptorSelectionOver));

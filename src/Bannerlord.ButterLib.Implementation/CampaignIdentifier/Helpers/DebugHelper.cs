@@ -9,7 +9,7 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.Helpers
     {
         public static ArgumentOutOfRangeException GetOutOfRangeException<T>(T value, string functionName, string argumentName)
         {
-            return new ArgumentOutOfRangeException(argumentName, value, $"{functionName} is supplied with not supported {typeof(T).Name} value.");
+            return new(argumentName, value, $"{functionName} is supplied with not supported {typeof(T).Name} value.");
         }
     }
 }

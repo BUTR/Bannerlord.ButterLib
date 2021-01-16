@@ -25,7 +25,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@master
       with:
-        dotnet-version: 3.1.x
+        dotnet-version: 5.0.x
 
     - name: Setup BUTR GPR
       uses: actions/setup-dotnet@master
@@ -93,7 +93,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@master
       with:
-        dotnet-version: 3.1.x
+        dotnet-version: 5.0.x
 
     - name: Setup BUTR GPR
       uses: actions/setup-dotnet@master
@@ -110,7 +110,8 @@ jobs:
 
     - name: Zip Bannerlord.ButterLib
       run: 7z a -tzip Bannerlord.ButterLib.zip ./bannerlord/*
-      shell: pwsh
+      #shell: pwsh
+      # pwsh casues it to include the root folder
 
     - name: Install Bannerlord.ChangelogParser and Bannerlord.NexusmodsUploader
       run: >-
@@ -166,7 +167,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@master
       with:
-        dotnet-version: 3.1.x
+        dotnet-version: 5.0.x
 
     - name: Setup BUTR GPR
       uses: actions/setup-dotnet@master
@@ -221,7 +222,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@master
       with:
-        dotnet-version: 3.1.x
+        dotnet-version: 5.0.x
 
     - name: Setup BUTR GPR
       uses: actions/setup-dotnet@master
@@ -238,7 +239,8 @@ jobs:
 
     - name: Zip Bannerlord.ButterLib
       run: 7z a -tzip Bannerlord.ButterLib.zip ./bannerlord/*
-      shell: pwsh
+      #shell: pwsh
+      # pwsh casues it to include the root folder
 
     - name: Install Bannerlord.ChangelogParser and Bannerlord.NexusmodsUploader
       run: >-

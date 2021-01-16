@@ -27,16 +27,8 @@ namespace Bannerlord.ButterLib.Tests
         public void Setup()
         {
             var harmony = new Harmony($"{nameof(ApplicationVersionUtilsTests)}.{nameof(Setup)}");
-            harmony.Patch(SymbolExtensions.GetMethodInfo(() => Managed.GetVersionStr(null!)),
+            harmony.Patch(SymbolExtensions.GetMethodInfo(() => ApplicationVersionUtils.GameVersionStr()),
                 prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetVersionStr)));
-        }
-
-        [Test]
-        public void GameVersionStr_Test()
-        {
-            var gameVersionStr = ApplicationVersionUtils.GameVersionStr();
-            Assert.NotNull(gameVersionStr);
-            Assert.AreEqual(TestAppVersionStr, gameVersionStr);
         }
 
         [Test]

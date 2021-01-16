@@ -93,7 +93,7 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
 
             private DataKey(MBGUID objectId, string key) => (ObjectId, Key) = (objectId, key);
 
-            internal static DataKey Make(MBObjectBase obj, string key) => new DataKey(obj.Id, key);
+            internal static DataKey Make(MBObjectBase obj, string key) => new(obj.Id, key);
 
             public bool Equals(DataKey other) => ObjectId == other.ObjectId && !(Key is null || other.Key is null) && Key.Equals(other.Key);
 
@@ -111,7 +111,7 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
             protected override void DefineContainerDefinitions()
             {
                 ConstructContainerDefinition(typeof(ConcurrentDictionary<DataKey, object?>));
-                ConstructContainerDefinition(typeof(ConcurrentDictionary<DataKey, bool>));                
+                ConstructContainerDefinition(typeof(ConcurrentDictionary<DataKey, bool>));
             }
         }
     }

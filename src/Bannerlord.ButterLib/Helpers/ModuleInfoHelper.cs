@@ -15,12 +15,13 @@ namespace Bannerlord.ButterLib.Common.Helpers
     {
         internal static bool PastInitialization = false;
         internal static List<ExtendedModuleInfo>? LoadedExtendedModules { get; set; }
-        internal static List<ModuleInfo>? LoadedModules { get; set; }
+        //internal static List<ModuleInfo>? LoadedModules { get; set; }
 
         // We can cache it because it is not expected for the game to change Module\Module order
-        public static List<ModuleInfo> GetLoadedModules() => PastInitialization ? LoadedModules ??= GetLoadedModulesEnumerable().ToList() : GetLoadedModulesEnumerable().ToList();
+        //public static List<ModuleInfo> GetLoadedModules() => PastInitialization ? LoadedModules ??= GetLoadedModulesEnumerable().ToList() : GetLoadedModulesEnumerable().ToList();
         public static List<ExtendedModuleInfo> GetExtendedLoadedModules() => PastInitialization ? LoadedExtendedModules ??= GetExtendedLoadedModulesEnumerable().ToList() : GetExtendedLoadedModulesEnumerable().ToList();
 
+        /*
         internal static IEnumerable<ModuleInfo> GetLoadedModulesEnumerable()
         {
             var modulesNames = Utilities.GetModulesNames();
@@ -31,6 +32,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
                 yield return moduleInfo;
             }
         }
+        */
 
         internal static IEnumerable<ExtendedModuleInfo> GetExtendedLoadedModulesEnumerable()
         {

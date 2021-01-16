@@ -15,9 +15,9 @@ namespace Bannerlord.ButterLib.ExceptionHandler
         public Guid Id { get; } = Guid.NewGuid();
         public Exception Exception { get; }
         public List<ExtendedModuleInfo> LoadedModules { get; } = ModuleInfoHelper.GetExtendedLoadedModules();
-        public List<Assembly> ModuleLoadedAssemblies { get; } = new List<Assembly>();
-        public List<Assembly> ExternalLoadedAssemblies { get; } = new List<Assembly>();
-        public Dictionary<MethodBase, Patches> LoadedHarmonyPatches { get; } = new Dictionary<MethodBase, Patches>();
+        public List<Assembly> ModuleLoadedAssemblies { get; } = new();
+        public List<Assembly> ExternalLoadedAssemblies { get; } = new();
+        public Dictionary<MethodBase, Patches> LoadedHarmonyPatches { get; } = new();
 
         public CrashReport(Exception exception)
         {

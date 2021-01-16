@@ -13,7 +13,7 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehavio
     /// <summary>Custom behavior used by CampaignIdentifier.</summary>
     internal sealed class CampaignIdentifierBehavior : CampaignBehaviorBase
     {
-        private CampaignDescriptorManager _descriptorManager = new CampaignDescriptorManager();
+        private CampaignDescriptorManager _descriptorManager = new();
 
         /// <summary>Alphanumeric campaign ID.</summary>
         public string CampaignId => _descriptorManager.CampaignDescriptor.KeyValue;
