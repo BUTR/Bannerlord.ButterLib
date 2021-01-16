@@ -48,7 +48,7 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
 
             if ((newOwner.Clan is not null || oldOwner.Clan is not null) && newOwner.Clan != oldOwner.Clan)
             {
-                var clans = Clan.All.Where(c => c.IsInitialized && c.Fiefs.Count > 0).ToList();
+                var clans = Clan.All.Where(c => c.IsInitialized && c.Fiefs.Any()).ToList();
 
                 if (oldOwner.Clan is not null)
                 {
