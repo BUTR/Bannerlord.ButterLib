@@ -1,10 +1,9 @@
-﻿using HarmonyLib;
+﻿using Bannerlord.BUTR.Shared.Helpers;
+
+using HarmonyLib;
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
 
 using static HarmonyLib.AccessTools;
@@ -45,12 +44,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
         }
 
         public static TDelegate? GetDelegate<TDelegate>(ConstructorInfo? constructorInfo) where TDelegate : Delegate
-        {
-            if (constructorInfo is null) return null;
-            var parameters = constructorInfo.GetParameters().Select((p, i) => Expression.Parameter(p.ParameterType, $"p{i}")).ToList();
-            var newExpression = Expression.New(constructorInfo, parameters);
-            return Expression.Lambda<TDelegate>(newExpression, parameters).Compile();
-        }
+            => ReflectionHelper.GetDelegate<TDelegate>(constructorInfo);
 
         public static TDelegate? GetConstructorDelegate<TDelegate>(Type type, Type[]? parameters = null) where TDelegate : Delegate
             => GetDelegate<TDelegate>(Constructor(type, parameters));
@@ -176,19 +170,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// <param name="methodInfo">The method's <see cref="MethodInfo"/>.</param>
         /// <returns>A delegate or <see langword="null"/> when <paramref name="methodInfo"/> is <see langword="null"/>.</returns>
         public static TDelegate? GetDelegateObjectInstance<TDelegate>(MethodInfo? methodInfo) where TDelegate : Delegate
-        {
-            if (methodInfo?.DeclaringType is null) return null;
-
-            var instance = Expression.Parameter(typeof(object), "instance");
-            var parameters = methodInfo.GetParameters().Select((t2, i) => Expression.Parameter(t2.ParameterType, $"p{i}")).ToList();
-
-            var body = Expression.Call(
-                Expression.Convert(instance, methodInfo.DeclaringType),
-                methodInfo,
-                parameters);
-
-            return Expression.Lambda<TDelegate>(body, new List<ParameterExpression> { instance }.Concat(parameters)).Compile();
-        }
+            => ReflectionHelper.GetDelegateObjectInstance<TDelegate>(methodInfo);
 
         /// <summary>
         /// Get a delegate for a method named <paramref name="method"/>, declared by <paramref name="type"/> or any of its base types.
@@ -199,7 +181,8 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// A delegate or <see langword="null"/> when <paramref name="type"/> or <paramref name="method"/>
         /// is <see langword="null"/> or when the method cannot be found.
         /// </returns>
-        public static TDelegate? GetDelegate<TDelegate>(Type type, string method) where TDelegate : Delegate => GetDelegate<TDelegate>(Method(type, method));
+        public static TDelegate? GetDelegate<TDelegate>(Type type, string method) where TDelegate : Delegate
+            => GetDelegate<TDelegate>(Method(type, method));
 
         /// <summary>
         /// Get a delegate for a method named <paramref name="method"/>, declared by <paramref name="type"/>
@@ -303,7 +286,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// <param name="methodInfo">The method's <see cref="MethodInfo"/>.</param>
         /// <returns>A delegate or <see langword="null"/> when <paramref name="methodInfo"/> is <see langword="null"/>.</returns>
         public static TDelegate? GetDelegate<TDelegate>(MethodInfo? methodInfo) where TDelegate : Delegate
-            => methodInfo is null ? null : Delegate.CreateDelegate(typeof(TDelegate), methodInfo) as TDelegate;
+            => ReflectionHelper.GetDelegate<TDelegate>(methodInfo);
 
         /// <summary>
         /// Get a delegate for an instance method declared by <paramref name="instance"/>'s type or any of its base types.
