@@ -35,7 +35,6 @@ jobs:
       uses: actions/setup-dotnet@master
       with:
         dotnet-version: 5.0.x
-
     - name: Setup BUTR GPR
       uses: actions/setup-dotnet@master
       with:
@@ -56,31 +55,24 @@ jobs:
             $PWD/docs/xrefs/Newtonsoft.Json-xrefmap.yml
       shell: pwsh
 
-    - name: Copy root README
-      run: Copy-Item "README.md" -Destination "docs/index.md"
-      shell: pwsh
-
-    - name: Build Bannerlord.ButterLib
-      run: dotnet build src/Bannerlord.ButterLib/Bannerlord.ButterLib.csproj
-      shell: pwsh
-
-    - name: Build DocFx.Plugin.LastModified
-      run: dotnet build build/DocFx.Plugin.LastModified/DocFx.Plugin.LastModified --configuration Release --output docs/_template/last-modified/plugins
-      shell: pwsh
-
-    - name: Install DocFX
-      run: nuget install docfx.console -ExcludeVersion
-
-    - name: Run DocFX metadata
+    - name: Build Bannerlord.ButterLib and DocFx.Plugin.LastModified
       run: >-
-        if ($${{runner.os == 'Windows'}}) { docfx.console/tools/docfx.exe metadata docs/docfx.json; }
-        else { mono docfx.console/tools/docfx.exe metadata docs/docfx.json; }
+        dotnet build src/Bannerlord.ButterLib/Bannerlord.ButterLib.csproj
+        dotnet build build/DocFx.Plugin.LastModified/DocFx.Plugin.LastModified --configuration Release --output docs/_template/last-modified/plugins;
       shell: pwsh
 
-    - name: Run DocFX build
+    - name: Run DocFX
       run: >-
-        if ($${{runner.os == 'Windows'}}) { docfx.console/tools/docfx.exe build docs/docfx.json; }
-        else { mono docfx.console/tools/docfx.exe build docs/docfx.json; }
+        Copy-Item "README.md" -Destination "docs/index.md";
+        nuget install docfx.console -ExcludeVersion
+        if ($${{runner.os == 'Windows'}}) {
+          docfx.console/tools/docfx.exe metadata docs/docfx.json;
+          docfx.console/tools/docfx.exe build docs/docfx.json;
+        }
+        else {
+          mono docfx.console/tools/docfx.exe metadata docs/docfx.json;
+          mono docfx.console/tools/docfx.exe build docs/docfx.json;
+        }
       shell: pwsh
 
     - name: Deploy DocFX
