@@ -57,7 +57,7 @@ jobs:
 
     - name: Build Bannerlord.ButterLib and DocFx.Plugin.LastModified
       run: >-
-        dotnet build src/Bannerlord.ButterLib/Bannerlord.ButterLib.csproj
+        dotnet build src/Bannerlord.ButterLib/Bannerlord.ButterLib.csproj;
         dotnet build build/DocFx.Plugin.LastModified/DocFx.Plugin.LastModified --configuration Release --output docs/_template/last-modified/plugins;
       shell: pwsh
 
