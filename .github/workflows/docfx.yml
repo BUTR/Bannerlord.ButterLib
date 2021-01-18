@@ -43,19 +43,10 @@ jobs:
       env:
         NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
-    - name: Download docfx
-      uses: i3h/download-release-asset@v1
+    - name: Setup NuGet
+      uses: nuget/setup-nuget@v1
       with:
-        owner: dotnet
-        repo: docfx
-        tag: latest
-        file: docfx.zip
-
-    - name: Extract docfx
-      uses: DuckSoft/extract-7z-action@v1.0
-      with:
-        pathSource: docfx.zip
-        pathTarget: docfx
+        nuget-version: 'latest'
 
     - name: Generating Newtonsoft.Json xref maps
       run: >-
@@ -69,24 +60,27 @@ jobs:
       run: Copy-Item "README.md" -Destination "docs/index.md"
       shell: pwsh
 
-    - name: Build Solution
+    - name: Build Bannerlord.ButterLib
       run: dotnet build src/Bannerlord.ButterLib/Bannerlord.ButterLib.csproj
-      env:
-        DOCFX: true
       shell: pwsh
 
     - name: Build DocFx.Plugin.LastModified
       run: dotnet build build/DocFx.Plugin.LastModified/DocFx.Plugin.LastModified --configuration Release --output docs/_template/last-modified/plugins
       shell: pwsh
 
-    - name: DocFX metadata
-      run: docfx/docfx.exe metadata docs/docfx.json
-      env:
-        DOCFX: true
+    - name: Install DocFX
+      run: nuget install docfx.console -ExcludeVersion
+
+    - name: Run DocFX metadata
+      run: >-
+        if ($${{runner.os == 'Windows'}}) { docfx.console/tools/docfx.exe metadata docs/docfx.json; }
+        else { mono docfx.console/tools/docfx.exe metadata docs/docfx.json; }
       shell: pwsh
 
-    - name: DocFX build
-      run: docfx/docfx.exe build docs/docfx.json;
+    - name: Run DocFX build
+      run: >-
+        if ($${{runner.os == 'Windows'}}) { docfx.console/tools/docfx.exe build docs/docfx.json; }
+        else { mono docfx.console/tools/docfx.exe build docs/docfx.json; }
       shell: pwsh
 
     - name: Deploy DocFX
