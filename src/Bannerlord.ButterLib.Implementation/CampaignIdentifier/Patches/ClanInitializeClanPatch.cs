@@ -1,4 +1,5 @@
-﻿using Bannerlord.ButterLib.CampaignIdentifier;
+﻿#if e143 || e150 || e151 || e152 || e153
+using Bannerlord.ButterLib.CampaignIdentifier;
 using Bannerlord.ButterLib.Common.Extensions;
 
 using HarmonyLib;
@@ -68,3 +69,4 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.Patches
         }
     }
 }
+#endif

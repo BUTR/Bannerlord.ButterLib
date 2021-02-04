@@ -205,7 +205,7 @@ Make sure ButterLib is loaded before them!";
             if (moduleLoaderIndex == -1)
             {
                 if (sb.Length != 0) sb.AppendLine();
-                sb.AppendLine(TextObjectHelper.Create(SErrorModuleLoaderNotFound).ToString());
+                sb.AppendLine(TextObjectHelper.Create((SErrorModuleLoaderNotFound).ToString());
             }
             */
 
