@@ -45,7 +45,7 @@ namespace Bannerlord.ButterLib.Implementation
                 services.AddSingleton<ICampaignExtensions, CampaignExtensionsImplementation>();
 #if e143 || e150 || e151 || e152 || e153
                 services.AddTransient<ICampaignDescriptorProvider, JsonCampaignDescriptorProvider>();
-#elif e157 || e158
+#elif e154 || e155 || e156 || e157 || e158
                 services.AddTransient<ICampaignDescriptorProvider, BlankCampaignDescriptorProvider>();
 #else
 #error ConstGameVersionWithPrefix is not handled!
