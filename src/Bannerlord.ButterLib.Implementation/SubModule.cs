@@ -16,8 +16,6 @@ using Bannerlord.ButterLib.ObjectSystem;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-using StoryMode;
-
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
@@ -45,7 +43,13 @@ namespace Bannerlord.ButterLib.Implementation
                 services.AddSingleton<IDistanceMatrixStatic, DistanceMatrixStaticImplementation>();
 
                 services.AddSingleton<ICampaignExtensions, CampaignExtensionsImplementation>();
+#if e143 || e150 || e151 || e152 || e153
                 services.AddTransient<ICampaignDescriptorProvider, JsonCampaignDescriptorProvider>();
+#elif e157 || e158
+                services.AddTransient<ICampaignDescriptorProvider, BlankCampaignDescriptorProvider>();
+#else
+#error ConstGameVersionWithPrefix is not handled!
+#endif
 
                 services.AddScoped<IMBObjectExtensionDataStore, MBObjectExtensionDataStore>();
 
@@ -116,8 +120,10 @@ namespace Bannerlord.ButterLib.Implementation
 
                 gameStarter.AddBehavior(new GeopoliticsCachingBehavior());
 
-                if (game.GameType is CampaignStoryMode)
+#if e143 || e150 || e151 || e152 || e153
+                if (game.GameType is StoryMode.CampaignStoryMode)
                     gameStarter.AddBehavior(new CampaignIdentifierBehavior()); // Requires StoryMode
+#endif
             }
 
             Logger.LogTrace("ButterLib.Implementation: OnGameStart: Done");

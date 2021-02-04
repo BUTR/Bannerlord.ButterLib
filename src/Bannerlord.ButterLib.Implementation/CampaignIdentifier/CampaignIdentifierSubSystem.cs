@@ -1,5 +1,4 @@
-﻿using Bannerlord.ButterLib.Implementation.CampaignIdentifier.Patches;
-using Bannerlord.ButterLib.SubSystems;
+﻿using Bannerlord.ButterLib.SubSystems;
 
 using HarmonyLib;
 
@@ -26,16 +25,26 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier
         {
             IsEnabled = true;
 
-            CharacterCreationContentApplyCulturePatch.Enable(_harmony);
-            ClanInitializeClanPatch.Enable(_harmony);
+#if e143 || e150 || e151 || e152 || e153
+            Patches.CharacterCreationContentApplyCulturePatch.Enable(_harmony);
+            Patches.ClanInitializeClanPatch.Enable(_harmony);
+#elif e154 || e155 || e156 || e157 || e158
+#else
+#error ConstGameVersionWithPrefix is not handled!
+#endif
         }
 
         public void Disable()
         {
             IsEnabled = false;
 
+#if e143 || e150 || e151 || e152 || e153
             //CharacterCreationContentApplyCulturePatch.Disable(_harmony);
             //ClanInitializeClanPatch.Disable(_harmony);
+#elif e154 || e155 || e156 || e157 || e158
+#else
+#error ConstGameVersionWithPrefix is not handled!
+#endif
         }
     }
 }

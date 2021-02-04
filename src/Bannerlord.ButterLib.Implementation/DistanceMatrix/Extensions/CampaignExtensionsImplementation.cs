@@ -1,7 +1,5 @@
-﻿using Bannerlord.ButterLib.CampaignIdentifier;
-using Bannerlord.ButterLib.DistanceMatrix;
+﻿using Bannerlord.ButterLib.DistanceMatrix;
 using Bannerlord.ButterLib.Extensions;
-using Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehaviors;
 using Bannerlord.ButterLib.Implementation.DistanceMatrix;
 
 using TaleWorlds.CampaignSystem;
@@ -9,24 +7,8 @@ using TaleWorlds.CampaignSystem;
 namespace Bannerlord.ButterLib.Implementation.Common.Extensions
 {
     /// <inheritdoc/>
-    internal sealed class CampaignExtensionsImplementation : ICampaignExtensions
+    internal sealed partial class CampaignExtensionsImplementation : ICampaignExtensions
     {
-        /// <inheritdoc/>
-        public string? GetCampaignId(Campaign campaign)
-        {
-            return campaign.GameStarted && campaign.GetCampaignBehavior<CampaignIdentifierBehavior>() is { } identifierBehavior
-                ? identifierBehavior.CampaignId
-                : null;
-        }
-
-        /// <inheritdoc/>
-        public CampaignDescriptor? GetCampaignDescriptor(Campaign campaign)
-        {
-            return campaign.GameStarted && campaign.GetCampaignBehavior<CampaignIdentifierBehavior>() is { } identifierBehavior
-                ? identifierBehavior.CampaignDescriptor
-                : null;
-        }
-
         /// <inheritdoc/>
         public DistanceMatrix<Settlement>? GetDefaultSettlementDistanceMatrix(Campaign campaign)
         {

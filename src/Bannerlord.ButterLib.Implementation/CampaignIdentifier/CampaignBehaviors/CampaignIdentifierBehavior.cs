@@ -1,4 +1,5 @@
-﻿using Bannerlord.ButterLib.CampaignIdentifier;
+﻿#if e143 || e150 || e151 || e152 || e153
+using Bannerlord.ButterLib.CampaignIdentifier;
 using Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehaviors.BehaviorManagers;
 using Bannerlord.ButterLib.SaveSystem.Extensions;
 
@@ -63,3 +64,4 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehavio
         }
     }
 }
+#endif

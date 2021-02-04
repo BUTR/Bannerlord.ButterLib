@@ -1,4 +1,5 @@
-﻿using Bannerlord.BUTR.Shared.Helpers;
+﻿#if e143 || e150 || e151 || e152 || e153
+using Bannerlord.BUTR.Shared.Helpers;
 using Bannerlord.ButterLib.CampaignIdentifier;
 using Bannerlord.ButterLib.Common.Extensions;
 
@@ -12,15 +13,23 @@ using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
 using TaleWorlds.Engine;
 using TaleWorlds.Localization;
-using TaleWorlds.SaveSystem;
 
 using Path = System.IO.Path;
+#endif
+
+using TaleWorlds.SaveSystem;
 
 namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehaviors.BehaviorManagers
 {
     [SaveableClass(2)]
     internal sealed class CampaignDescriptorManager
     {
+        [SaveableField(1)]
+        private CampaignDescriptorImplementation _campaignDescriptor = null!; // Won't be null when properly accessed.
+
+        private CampaignDescriptorImplementation? _descriptorToBeAssigned;
+
+#if e143 || e150 || e151 || e152 || e153
         private const string InquiryUpperBody =
             "{=gRz8MZ0YZ7}This game has no ID. It probably was started before installing ButterLib Campaign Identifier. We have found other ongoing campaigns that have similar initial character background and were already assigned an ID. If this game refers to one of them, please, select corresponding option.";
 
@@ -30,11 +39,6 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehavio
         private ICampaignDescriptorProvider? _campaignDescriptorSerializer;
         private ICampaignDescriptorProvider CampaignDescriptorSerializer => _campaignDescriptorSerializer ??=
             ButterLibSubModule.Instance?.GetServiceProvider()?.GetRequiredService<ICampaignDescriptorProvider>() ?? new JsonCampaignDescriptorProvider();
-
-        [SaveableField(1)]
-        private CampaignDescriptorImplementation _campaignDescriptor = null!; // Won't be null when properly accessed.
-
-        private CampaignDescriptorImplementation? _descriptorToBeAssigned;
 
         internal CampaignDescriptorImplementation CampaignDescriptor => _campaignDescriptor;
 
@@ -151,5 +155,6 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehavio
 
             _descriptorToBeAssigned = null;
         }
+#endif
     }
 }
