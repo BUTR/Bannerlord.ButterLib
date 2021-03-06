@@ -1,17 +1,15 @@
-﻿using Bannerlord.BUTR.Shared.Helpers;
-
-using HarmonyLib;
-
-using System;
+﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
 using static HarmonyLib.AccessTools;
+using AccessTools3 = HarmonyLib.BUTR.Extensions.AccessTools2;
 
 // ReSharper disable once CheckNamespace
 namespace Bannerlord.ButterLib.Common.Helpers
 {
     /// <summary>An extension of Harmony's helper class for reflection related functions</summary>
+    [Obsolete("Use package Harmony.Extensions instead!", false)]
     public static class AccessTools2
     {
         /// <summary>Creates a static field reference delegate</summary>
@@ -19,7 +17,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// <param name="fieldInfo">The field</param>
         /// <returns>A read and writable <see cref="T:HarmonyLib.AccessTools.FieldRef`1" /> delegate</returns>
         public static FieldRef<TField>? StaticFieldRefAccess<TField>(FieldInfo? fieldInfo)
-            => fieldInfo is null ? null : AccessTools.StaticFieldRefAccess<TField>(fieldInfo);
+            => AccessTools3.StaticFieldRefAccess<TField>(fieldInfo);
 
         /// <summary>Creates an instance field reference delegate for a private type</summary>
         /// <typeparam name="TField">The type of the field</typeparam>
@@ -27,10 +25,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// <param name="fieldName">The name of the field</param>
         /// <returns>A read and writable <see cref="T:HarmonyLib.AccessTools.FieldRef`2" /> delegate</returns>
         public static FieldRef<object, TField>? FieldRefAccess<TField>(Type type, string fieldName)
-        {
-            var field = Field(type, fieldName);
-            return field is null ? null : AccessTools.FieldRefAccess<object, TField>(field);
-        }
+            => AccessTools3.FieldRefAccess<TField>(type, fieldName);
 
         /// <summary>Creates an instance field reference</summary>
         /// <typeparam name="TObject">The class the field is defined in</typeparam>
@@ -38,19 +33,16 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// <param name="fieldName">The name of the field</param>
         /// <returns>A read and writable field reference delegate</returns>
         public static FieldRef<TObject, TField>? FieldRefAccess<TObject, TField>(string fieldName)
-        {
-            var field = typeof(TObject).GetField(fieldName, BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.NonPublic);
-            return field is null ? null : AccessTools.FieldRefAccess<TObject, TField>(field);
-        }
+            => AccessTools3.FieldRefAccess<TObject, TField>(fieldName);
 
         public static TDelegate? GetDelegate<TDelegate>(ConstructorInfo? constructorInfo) where TDelegate : Delegate
-            => ReflectionHelper.GetDelegate<TDelegate>(constructorInfo);
+            => AccessTools3.GetDelegate<TDelegate>(constructorInfo);
 
         public static TDelegate? GetConstructorDelegate<TDelegate>(Type type, Type[]? parameters = null) where TDelegate : Delegate
-            => GetDelegate<TDelegate>(Constructor(type, parameters));
+            => AccessTools3.GetConstructorDelegate<TDelegate>(type, parameters);
 
         public static TDelegate? GetDeclaredConstructorDelegate<TDelegate>(Type type, Type[]? parameters = null) where TDelegate : Delegate
-            => GetDelegate<TDelegate>(DeclaredConstructor(type, parameters));
+            => AccessTools3.GetDeclaredConstructorDelegate<TDelegate>(type, parameters);
 
         /// <summary>
         /// Get a delegate for a method named <paramref name="method"/>, declared by <paramref name="type"/> or any of its base types,
@@ -63,7 +55,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// is <see langword="null"/> or when the method cannot be found.
         /// </returns>
         public static TDelegate? GetDelegateObjectInstance<TDelegate>(Type type, string method) where TDelegate : Delegate
-            => GetDelegateObjectInstance<TDelegate>(Method(type, method));
+            => AccessTools3.GetDelegateObjectInstance<TDelegate>(type, method);
 
         /// <summary>
         /// Get a delegate for a method named <paramref name="method"/>, declared by <paramref name="type"/> or any of its base types,
@@ -83,7 +75,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
                                                                       string method,
                                                                       Type[]? parameters,
                                                                       Type[]? generics = null) where TDelegate : Delegate
-            => GetDelegateObjectInstance<TDelegate>(Method(type, method, parameters, generics));
+            => AccessTools3.GetDelegateObjectInstance<TDelegate>(type, method, parameters, generics);
 
         /// <summary>
         /// Try to get a delegate for a method named <paramref name="method"/>, declared by <paramref name="type"/> or any of its base types,
@@ -107,7 +99,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
                                                                      string method,
                                                                      Type[]? parameters = null,
                                                                      Type[]? generics = null) where TDelegate : Delegate
-            => (outDelegate = GetDelegateObjectInstance<TDelegate>(Method(type, method, parameters, generics))) is not null;
+            => AccessTools3.TryGetDelegateObjectInstance<TDelegate>(out outDelegate, type, method, parameters, generics);
 
         /// <summary>
         /// Get a delegate for a method named <paramref name="method"/>, directly declared by <paramref name="type"/>,
@@ -120,7 +112,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// is <see langword="null"/> or when the method cannot be found.
         /// </returns>
         public static TDelegate? GetDeclaredDelegateObjectInstance<TDelegate>(Type type, string method) where TDelegate : Delegate
-            => GetDelegateObjectInstance<TDelegate>(DeclaredMethod(type, method));
+            => AccessTools3.GetDeclaredDelegateObjectInstance<TDelegate>(type, method);
 
         /// <summary>
         /// Get a delegate for a method named <paramref name="method"/>, directly declared by <paramref name="type"/>,
@@ -140,7 +132,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
                                                                               string method,
                                                                               Type[]? parameters,
                                                                               Type[]? generics = null) where TDelegate : Delegate
-            => GetDelegateObjectInstance<TDelegate>(DeclaredMethod(type, method, parameters, generics));
+            => AccessTools3.GetDeclaredDelegateObjectInstance<TDelegate>(type, method, parameters, generics);
 
         /// <summary>
         /// Try to get a delegate for a method named <paramref name="method"/>, directly declared by <paramref name="type"/>,
@@ -164,13 +156,13 @@ namespace Bannerlord.ButterLib.Common.Helpers
                                                                              string method,
                                                                              Type[]? parameters = null,
                                                                              Type[]? generics = null) where TDelegate : Delegate
-            => (outDelegate = GetDelegateObjectInstance<TDelegate>(DeclaredMethod(type, method, parameters, generics))) is not null;
+            => AccessTools3.TryGetDeclaredDelegateObjectInstance<TDelegate>(out outDelegate, type, method, parameters, generics);
 
         /// <summary>Get a delegate bound to the instance type <see cref="object"/>.</summary>
         /// <param name="methodInfo">The method's <see cref="MethodInfo"/>.</param>
         /// <returns>A delegate or <see langword="null"/> when <paramref name="methodInfo"/> is <see langword="null"/>.</returns>
         public static TDelegate? GetDelegateObjectInstance<TDelegate>(MethodInfo? methodInfo) where TDelegate : Delegate
-            => ReflectionHelper.GetDelegateObjectInstance<TDelegate>(methodInfo);
+            => AccessTools3.GetDelegateObjectInstance<TDelegate>(methodInfo);
 
         /// <summary>
         /// Get a delegate for a method named <paramref name="method"/>, declared by <paramref name="type"/> or any of its base types.
@@ -182,7 +174,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// is <see langword="null"/> or when the method cannot be found.
         /// </returns>
         public static TDelegate? GetDelegate<TDelegate>(Type type, string method) where TDelegate : Delegate
-            => GetDelegate<TDelegate>(Method(type, method));
+            => AccessTools3.GetDelegate<TDelegate>(type, method);
 
         /// <summary>
         /// Get a delegate for a method named <paramref name="method"/>, declared by <paramref name="type"/>
@@ -202,7 +194,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
                                                         string method,
                                                         Type[]? parameters,
                                                         Type[]? generics = null) where TDelegate : Delegate
-            => GetDelegate<TDelegate>(Method(type, method, parameters, generics));
+            => AccessTools3.GetDelegate<TDelegate>(type, method, parameters, generics);
 
         /// <summary>
         /// Try to get a delegate for a method named <paramref name="method"/>, declared by <paramref name="type"/>
@@ -226,7 +218,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
                                                        string method,
                                                        Type[]? parameters = null,
                                                        Type[]? generics = null) where TDelegate : Delegate
-            => (outDelegate = GetDelegate<TDelegate>(Method(type, method, parameters, generics))) is not null;
+            => AccessTools3.TryGetDelegate<TDelegate>(out outDelegate, type, method, parameters, generics);
 
         /// <summary>
         /// Get a delegate for a method named <paramref name="method"/>, directly declared by <paramref name="type"/>.
@@ -238,7 +230,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// is <see langword="null"/> or when the method cannot be found.
         /// </returns>
         public static TDelegate? GetDeclaredDelegate<TDelegate>(Type type, string method) where TDelegate : Delegate
-            => GetDelegate<TDelegate>(DeclaredMethod(type, method));
+            => AccessTools3.GetDeclaredDelegate<TDelegate>(type, method);
 
         /// <summary>
         /// Get a delegate for a method named <paramref name="method"/>, directly declared by <paramref name="type"/>.
@@ -257,7 +249,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
                                                                 string method,
                                                                 Type[]? parameters,
                                                                 Type[]? generics = null) where TDelegate : Delegate
-            => GetDelegate<TDelegate>(DeclaredMethod(type, method, parameters, generics));
+            => AccessTools3.GetDeclaredDelegate<TDelegate>(type, method, parameters, generics);
 
         /// <summary>
         /// Try to get a delegate for a method named <paramref name="method"/>, directly declared by <paramref name="type"/>.
@@ -280,13 +272,13 @@ namespace Bannerlord.ButterLib.Common.Helpers
                                                                string method,
                                                                Type[]? parameters = null,
                                                                Type[]? generics = null) where TDelegate : Delegate
-            => (outDelegate = GetDelegate<TDelegate>(DeclaredMethod(type, method, parameters, generics))) is not null;
+            => AccessTools3.TryGetDeclaredDelegate<TDelegate>(out outDelegate, type, method, parameters, generics);
 
         /// <summary>Get a delegate for a method described by <paramref name="methodInfo"/>.</summary>
         /// <param name="methodInfo">The method's <see cref="MethodInfo"/>.</param>
         /// <returns>A delegate or <see langword="null"/> when <paramref name="methodInfo"/> is <see langword="null"/>.</returns>
         public static TDelegate? GetDelegate<TDelegate>(MethodInfo? methodInfo) where TDelegate : Delegate
-            => ReflectionHelper.GetDelegate<TDelegate>(methodInfo);
+            => AccessTools3.GetDelegate<TDelegate>(methodInfo);
 
         /// <summary>
         /// Get a delegate for an instance method declared by <paramref name="instance"/>'s type or any of its base types.
@@ -298,7 +290,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// is <see langword="null"/> or when the method cannot be found.
         /// </returns>
         public static TDelegate? GetDelegate<TDelegate, TInstance>(TInstance instance, string method) where TDelegate : Delegate
-            => instance is null ? null : GetDelegate<TDelegate, TInstance>(instance, Method(instance.GetType(), method));
+            => AccessTools3.GetDelegate<TDelegate, TInstance>(instance, method);
 
         /// <summary>
         /// Get a delegate for a method named <paramref name="method"/>, declared by <paramref name="instance"/>'s type or any of its base types.
@@ -317,7 +309,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
                                                                    string method,
                                                                    Type[]? parameters,
                                                                    Type[]? generics = null) where TDelegate : Delegate
-            => instance is null ? null : GetDelegate<TDelegate, TInstance>(instance, Method(instance.GetType(), method, parameters, generics));
+            => AccessTools3.GetDelegate<TDelegate, TInstance>(instance, method, parameters, generics);
 
         /// <summary>
         /// Try to get a delegate for an instance method named <paramref name="method"/>,
@@ -341,8 +333,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
                                                                   string method,
                                                                   Type[]? parameters = null,
                                                                   Type[]? generics = null) where TDelegate : Delegate
-            => (outDelegate = instance is null
-                ? null : GetDelegate<TDelegate, TInstance>(instance, Method(instance.GetType(), method, parameters, generics))) is not null;
+            => AccessTools3.TryGetDelegate<TDelegate, TInstance>(out outDelegate, instance, method, parameters, generics);
 
         /// <summary>
         /// Get a delegate for an instance method directly declared by <paramref name="instance"/>'s type.
@@ -355,7 +346,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// </returns>
         public static TDelegate? GetDeclaredDelegate<TDelegate, TInstance>(TInstance instance,
                                                                            string method) where TDelegate : Delegate
-            => instance is null ? null : GetDelegate<TDelegate, TInstance>(instance, DeclaredMethod(instance.GetType(), method));
+            => AccessTools3.GetDeclaredDelegate<TDelegate, TInstance>(instance, method);
 
         /// <summary>
         /// Get a delegate for an instance method named <paramref name="method"/>, directly declared by <paramref name="instance"/>'s type.
@@ -374,7 +365,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
                                                                            string method,
                                                                            Type[]? parameters,
                                                                            Type[]? generics = null) where TDelegate : Delegate
-            => instance is null ? null : GetDelegate<TDelegate, TInstance>(instance, DeclaredMethod(instance.GetType(), method, parameters, generics));
+            => AccessTools3.GetDeclaredDelegate<TDelegate, TInstance>(instance, method, parameters, generics);
 
         /// <summary>
         /// Try to get a delegate for an instance method named <paramref name="method"/>,
@@ -398,8 +389,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
                                                                           string method,
                                                                           Type[]? parameters = null,
                                                                           Type[]? generics = null) where TDelegate : Delegate
-            => (outDelegate = instance is null
-                ? null : GetDelegate<TDelegate, TInstance>(instance, DeclaredMethod(instance.GetType(), method, parameters, generics))) is not null;
+            => AccessTools3.TryGetDelegate<TDelegate, TInstance>(out outDelegate, instance, method, parameters, generics);
 
         /// <summary>
         /// Get a delegate for an instance method described by <paramref name="methodInfo"/> and bound to <paramref name="instance"/>.
@@ -411,7 +401,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// is <see langword="null"/> or when the method cannot be found.
         /// </returns>
         public static TDelegate? GetDelegate<TDelegate, TInstance>(TInstance instance, MethodInfo? methodInfo) where TDelegate : Delegate
-            => GetDelegate<TDelegate>(instance, methodInfo);
+            => AccessTools3.GetDelegate<TDelegate, TInstance>(instance, methodInfo);
 
         /// <summary>
         /// Get a delegate for an instance method described by <paramref name="methodInfo"/> and bound to <paramref name="instance"/>.
@@ -423,6 +413,6 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// is <see langword="null"/> or when the method cannot be found.
         /// </returns>
         public static TDelegate? GetDelegate<TDelegate>(object? instance, MethodInfo? methodInfo) where TDelegate : Delegate
-            => ReflectionHelper.GetDelegate<TDelegate>(instance, methodInfo);
+            => AccessTools3.GetDelegate<TDelegate>(instance, methodInfo);
     }
 }

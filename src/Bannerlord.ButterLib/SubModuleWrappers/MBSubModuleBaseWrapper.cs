@@ -1,4 +1,4 @@
-﻿using Bannerlord.ButterLib.Common.Helpers;
+﻿using HarmonyLib.BUTR.Extensions;
 
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;

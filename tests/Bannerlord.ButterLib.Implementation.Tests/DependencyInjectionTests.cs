@@ -27,6 +27,7 @@ using TaleWorlds.Library;
 using TaleWorlds.Localization;
 using TaleWorlds.ObjectSystem;
 
+using SymbolExtensions2 = HarmonyLib.BUTR.Extensions.SymbolExtensions2;
 using TWCommon = TaleWorlds.Library.Common;
 
 namespace Bannerlord.ButterLib.Implementation.Tests
