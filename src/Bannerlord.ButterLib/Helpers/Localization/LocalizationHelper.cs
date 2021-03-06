@@ -204,7 +204,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
             return number != 1 ? PluralForm.Plural : PluralForm.Singular;
         }
 
-        private static Dictionary<string, TextObject> GetPluralFormAttributes(PluralForm pluralForm) =>
+        private static Dictionary<string, TextObject?> GetPluralFormAttributes(PluralForm pluralForm) =>
             new()
             {
                 [PLURAL_FORM_TAG] = TextObjectHelper.Create(pluralForm == PluralForm.Plural ? 1 : 0),

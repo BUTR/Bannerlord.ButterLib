@@ -195,7 +195,7 @@ Make sure ButterLib is loaded before them!";
             if (harmonyModuleIndex == -1)
             {
                 if (sb.Length != 0) sb.AppendLine();
-                sb.AppendLine(TextObjectHelper.Create(SErrorHarmonyNotFound).ToString());
+                sb.AppendLine(TextObjectHelper.Create(SErrorHarmonyNotFound)?.ToString());
             }
 
             // TODO: Keep it optional for now
@@ -214,7 +214,7 @@ Make sure ButterLib is loaded before them!";
             if (butterLibModuleIndex == -1)
             {
                 if (sb.Length != 0) sb.AppendLine();
-                sb.AppendLine(TextObjectHelper.Create(SErrorButterLibNotFound).ToString());
+                sb.AppendLine(TextObjectHelper.Create(SErrorButterLibNotFound)?.ToString());
             }
 
             var officialModules = loadedModules.Where(x => x.IsOfficial).Select(x => (Module: x, Index: loadedModules.IndexOf(x)));
@@ -222,8 +222,8 @@ Make sure ButterLib is loaded before them!";
             if (modulesLoadedBeforeButterLib.Count > 0)
             {
                 if (sb.Length != 0) sb.AppendLine();
-                sb.AppendLine(TextObjectHelper.Create(SErrorOfficialModulesLoadedBeforeButterLib).ToString());
-                sb.AppendLine(TextObjectHelper.Create(SErrorOfficialModules).ToString());
+                sb.AppendLine(TextObjectHelper.Create(SErrorOfficialModulesLoadedBeforeButterLib)?.ToString());
+                sb.AppendLine(TextObjectHelper.Create(SErrorOfficialModules)?.ToString());
                 foreach (var (module, _) in modulesLoadedBeforeButterLib)
                     sb.AppendLine(module.Id);
             }
@@ -231,9 +231,9 @@ Make sure ButterLib is loaded before them!";
             if (sb.Length > 0)
             {
                 sb.AppendLine();
-                sb.AppendLine(TextObjectHelper.Create(SMessageContinue).ToString());
+                sb.AppendLine(TextObjectHelper.Create(SMessageContinue)?.ToString());
 
-                switch (MessageBox.Show(sb.ToString(), TextObjectHelper.Create(SWarningTitle).ToString(), MessageBoxButtons.YesNo))
+                switch (MessageBox.Show(sb.ToString(), TextObjectHelper.Create(SWarningTitle)?.ToString(), MessageBoxButtons.YesNo))
                 {
                     case DialogResult.Yes:
                         Environment.Exit(1);
