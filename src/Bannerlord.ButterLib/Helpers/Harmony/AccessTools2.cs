@@ -423,6 +423,6 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// is <see langword="null"/> or when the method cannot be found.
         /// </returns>
         public static TDelegate? GetDelegate<TDelegate>(object? instance, MethodInfo? methodInfo) where TDelegate : Delegate
-            => instance is null || methodInfo is null ? null : Delegate.CreateDelegate(typeof(TDelegate), instance, methodInfo.Name) as TDelegate;
+            => ReflectionHelper.GetDelegate<TDelegate>(instance, methodInfo);
     }
 }
