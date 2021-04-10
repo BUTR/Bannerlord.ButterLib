@@ -11,6 +11,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 using System;
+using System.Diagnostics;
+using System.Diagnostics.Logger;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -51,6 +54,8 @@ Make sure ButterLib is loaded before them!";
         private bool ServiceRegistrationWasCalled { get; set; }
         private bool OnBeforeInitialModuleScreenSetAsRootWasCalled { get; set; }
 
+        private TextWriterTraceListener? TextWriterTraceListener { get; set; }
+
         public ButterLibSubModule()
         {
             Instance = this;
@@ -77,6 +82,7 @@ Make sure ButterLib is loaded before them!";
 
             this.AddDefaultSerilogLogger();
             this.AddSerilogLoggerProvider("butterlib.txt", new[] { "Bannerlord.ButterLib.*" });
+            this.AddSerilogLoggerProvider("trace.txt", new[] { "System.Diagnostics.Logger.*" });
 
             Services.AddSubSystem<DelayedSubModuleSubSystem>();
             Services.AddSubSystem<ExceptionHandlerSubSystem>();
@@ -114,6 +120,10 @@ Make sure ButterLib is loaded before them!";
 
             ExceptionHandlerSubSystem.Instance?.Enable();
             CrashUploaderSubSystem.Instance?.Enable();
+
+            Trace.Listeners.Add(TextWriterTraceListener = new TextWriterTraceListener(new StreamWriter(new MemoryStream(), Encoding.UTF8, 1024, true)));
+            Trace.AutoFlush = true;
+            Logger.LogTrace("Added System.Diagnostics.Trace temporary listener.");
 
             Logger.LogTrace("OnSubModuleLoad: Done");
         }
@@ -253,6 +263,33 @@ Make sure ButterLib is loaded before them!";
 
                 Logger = this.GetServiceProvider().GetRequiredService<ILogger<ButterLibSubModule>>();
                 Logger.LogTrace("Assigned new _logger from GlobalServiceProvider.");
+
+                var logger = this.GetServiceProvider().GetRequiredService<ILogger<LoggerTraceListener>>();
+                Trace.Listeners.Add(new LoggerTraceListener(logger));
+                Logger.LogTrace("Added System.Diagnostics.Trace main listener.");
+
+                if (TextWriterTraceListener is not null)
+                {
+                    try
+                    {
+                        Trace.Flush(); // In case AutoFlush was set to false
+                        Trace.Listeners.Remove(TextWriterTraceListener);
+                        if (TextWriterTraceListener.Writer is StreamWriter { BaseStream: MemoryStream ms })
+                        {
+                            ms.Seek(0, SeekOrigin.Begin);
+                            using var reader = new StreamReader(ms, Encoding.UTF8, true, 1024, true);
+                            while (reader.Peek() >= 0)
+                            {
+                                Trace.WriteLine(reader.ReadLine());
+                            }
+                            Logger.LogTrace("Flushed logs from the System.Diagnostics.Trace temp listener.");
+                        }
+                    }
+                    finally
+                    {
+                        TextWriterTraceListener.Dispose();
+                    }
+                }
             }
         }
     }
