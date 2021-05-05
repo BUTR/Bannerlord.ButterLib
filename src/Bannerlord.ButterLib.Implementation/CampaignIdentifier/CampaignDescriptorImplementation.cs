@@ -22,7 +22,7 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier
     /// Also stores some general description on the campaign, based on a specified hero
     /// (default is the initial player character in the current campaign).
     /// </remarks>
-    [SaveableClass(1), Serializable]
+    [Serializable]
     internal sealed class CampaignDescriptorImplementation : CampaignDescriptor, ISerializable
     {
         //Consts
