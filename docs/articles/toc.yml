@@ -21,6 +21,10 @@
   href: DistanceMatrix/
   homepage: DistanceMatrix/Overview.md
 
+- name: HotKeys
+  href: HotKeys/
+  homepage: HotKeys/Overview.md
+
 - name: Optional
   href: Optional/toc.yml
 
