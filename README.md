@@ -24,6 +24,8 @@
   <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fnexusmods-downloads-ayuqql60xfxb.runkit.sh%2F%3Ftype%3Dunique%26gameId%3D3174%26modId%3D2018" /></a>
   <a href="https://www.nexusmods.com/mountandblade2bannerlord/mods/2018" alt="Nexus ButterLib">
   <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fnexusmods-downloads-ayuqql60xfxb.runkit.sh%2F%3Ftype%3Dtotal%26gameId%3D3174%26modId%3D2018" /></a>
+  <a href="https://www.nexusmods.com/mountandblade2bannerlord/mods/2018" alt="Nexus ButterLib">
+  <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fnexusmods-downloads-ayuqql60xfxb.runkit.sh%2F%3Ftype%3Dviews%26gameId%3D3174%26modId%3D2018" /></a>
   </br>
 </p>
 
