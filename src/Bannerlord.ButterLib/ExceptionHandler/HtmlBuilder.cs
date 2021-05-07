@@ -1,7 +1,7 @@
-﻿using Bannerlord.ButterLib.Common.Extensions;
+﻿using Bannerlord.BUTR.Shared.Helpers;
+using Bannerlord.ButterLib.Common.Extensions;
 using Bannerlord.ButterLib.Common.Helpers;
 using Bannerlord.ButterLib.ExceptionHandler.WinForms;
-using Bannerlord.ButterLib.Helpers.ModuleInfo;
 
 using HarmonyLib;
 
@@ -31,7 +31,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
   <head>
     <title>Bannerlord Crash Report</title>
     <meta charset='utf-8'>
-    <game version='{ApplicationVersionUtils.GameVersionStr()}'>
+    <game version='{ApplicationVersionHelper.GameVersionStr()}'>
     <report id='{crashReport.Id}'>
     <style>
         .headers {{

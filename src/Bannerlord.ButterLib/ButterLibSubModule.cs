@@ -22,8 +22,6 @@ using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 
-using ModuleInfoHelper = Bannerlord.ButterLib.Common.Helpers.ModuleInfoHelper;
-
 namespace Bannerlord.ButterLib
 {
     /// <summary>
@@ -105,10 +103,6 @@ Make sure ButterLib is loaded before them!";
             }
             else
             {
-                // ModuleInfoHelper will give false info if using flow without ModuleLoader
-                // ServiceRegistrationWasCalled is a good indicator if ModuleLoader is used
-                ModuleInfoHelper.PastInitialization = true;
-
                 serviceProvider = this.GetServiceProvider()!;
             }
 
@@ -149,10 +143,6 @@ Make sure ButterLib is loaded before them!";
 
                 if (DelayedServiceCreation)
                 {
-                    // ModuleInfoHelper will give false info if using flow without ModuleLoader
-                    // DelayedServiceCreation is a good indicator if ModuleLoader is used
-                    ModuleInfoHelper.PastInitialization = true;
-
                     InitializeServices();
                 }
             }
@@ -195,12 +185,13 @@ Make sure ButterLib is loaded before them!";
 
         private static void CheckLoadOrder()
         {
-            var loadedModules = ModuleInfoHelper.GetExtendedLoadedModules();
+            var loadedModules = BUTR.Shared.Helpers.ModuleInfoHelper.GetLoadedModules().ToList();
             if (loadedModules.Count == 0) return;
 
             var sb = new StringBuilder();
 
             var harmonyModule = loadedModules.SingleOrDefault(x => x.Id == "Bannerlord.Harmony");
+
             var harmonyModuleIndex = harmonyModule is not null ? loadedModules.IndexOf(harmonyModule) : -1;
             if (harmonyModuleIndex == -1)
             {

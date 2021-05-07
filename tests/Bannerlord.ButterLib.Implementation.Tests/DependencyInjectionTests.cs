@@ -17,6 +17,7 @@ using NUnit.Framework;
 
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 
@@ -62,6 +63,13 @@ namespace Bannerlord.ButterLib.Implementation.Tests
             return false;
         }
 
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private static bool MockedGetModuleNames(ref string[] __result)
+        {
+            __result = Array.Empty<string>();
+            return false;
+        }
+
         private static bool MockedGetSettlementAll(ref MBReadOnlyList<Settlement> __result)
         {
             var settlement = (Settlement) FormatterServices.GetUninitializedObject(typeof(Settlement));
@@ -83,9 +91,9 @@ namespace Bannerlord.ButterLib.Implementation.Tests
                 prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetConfigsPath)));
             harmony.Patch(SymbolExtensions2.GetPropertyInfo(() => TWCommon.ConfigName).GetMethod,
                 prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetConfigName)));
-            //ModuleInfoHelper.LoadedModules = new List<ModuleInfo>();
-            ModuleInfoHelper.LoadedExtendedModules = new List<ExtendedModuleInfo>();
-            ModuleInfoHelper.PastInitialization = true;
+            var engineUtilitiesType = Type.GetType("TaleWorlds.Engine.Utilities, TaleWorlds.Engine", false);
+            harmony.Patch(engineUtilitiesType?.GetMethod("GetModulesNames", BindingFlags.Public | BindingFlags.Static),
+                prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetModuleNames)));
 
             var subModule = new ButterLibSubModule();
             var subModuleWrapper = new MBSubModuleBaseWrapper(subModule);

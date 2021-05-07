@@ -12,7 +12,6 @@ using System.Windows.Forms;
 
 using TaleWorlds.MountAndBlade;
 
-using ModuleInfoHelper = Bannerlord.ButterLib.Common.Helpers.ModuleInfoHelper;
 using TWModule = TaleWorlds.MountAndBlade.Module;
 
 namespace Bannerlord.ModuleLoader
@@ -100,7 +99,7 @@ Make sure ModuleLoader is loaded before them!";
 
         private static void CheckLoadOrder()
         {
-            var loadedModules = ModuleInfoHelper.GetExtendedLoadedModules();
+            var loadedModules = BUTR.Shared.Helpers.ModuleInfoHelper.GetLoadedModules().ToList();
 
             var sb = new StringBuilder();
 

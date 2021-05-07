@@ -19,5 +19,8 @@ namespace Bannerlord.ButterLib.Implementation.Tests
 
         public delegate bool MockedGetSettlementAllDelegate(ref MBReadOnlyList<Settlement> __result);
         public static MethodInfo GetMethodInfo(this MockedGetSettlementAllDelegate @delegate) => @delegate.Method;
+
+        public delegate bool MockedGetModuleNamesDelegate(ref string[] __result);
+        public static MethodInfo GetMethodInfo(this MockedGetModuleNamesDelegate @delegate) => @delegate.Method;
     }
 }

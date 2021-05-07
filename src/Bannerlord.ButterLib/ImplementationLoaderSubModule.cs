@@ -1,4 +1,5 @@
-﻿using Bannerlord.ButterLib.Common.Extensions;
+﻿using Bannerlord.BUTR.Shared.Helpers;
+using Bannerlord.ButterLib.Common.Extensions;
 using Bannerlord.ButterLib.Common.Helpers;
 using Bannerlord.ButterLib.SubModuleWrappers;
 
@@ -17,6 +18,8 @@ using System.Reflection.PortableExecutable;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
+
+using AccessTools2 = HarmonyLib.BUTR.Extensions.AccessTools2;
 
 namespace Bannerlord.ButterLib
 {
@@ -58,7 +61,7 @@ namespace Bannerlord.ButterLib
                 yield break;
             }
 
-            var gameVersion = ApplicationVersionUtils.TryParse(ApplicationVersionUtils.GameVersionStr(), out var v) ? v : (ApplicationVersion?)null;
+            var gameVersion = ApplicationVersionHelper.GameVersion();
             if (gameVersion is null)
             {
                 logger?.LogError("Failed to get Game version!");
@@ -77,7 +80,7 @@ namespace Bannerlord.ButterLib
             var implementationsForGameVersion = ImplementationForGameVersion(gameVersion.Value, implementationsWithVersions).ToList();
             switch (implementationsForGameVersion.Count)
             {
-                case { } i when i > 1:
+                case > 1:
                 {
                     logger?.LogInformation("Found multiple matching implementations:");
                     foreach (var (implementation1, version1) in implementationsForGameVersion)
@@ -92,7 +95,7 @@ namespace Bannerlord.ButterLib
                     break;
                 }
 
-                case { } i when i == 1:
+                case 1:
                 {
                     logger?.LogInformation("Found matching implementation. Loading it.");
 
@@ -102,7 +105,7 @@ namespace Bannerlord.ButterLib
                     break;
                 }
 
-                case { } i when i == 0:
+                case 0:
                 {
                     logger?.LogInformation("Found no matching implementations. Loading the latest available.");
 
@@ -178,7 +181,7 @@ namespace Bannerlord.ButterLib
                     var value = attributeReader.ReadSerializedString();
                     if (string.Equals(key, "GameVersion"))
                     {
-                        if (!ApplicationVersionUtils.TryParse(value, out var implementationGameVersion))
+                        if (!ApplicationVersionHelper.TryParse(value, out var implementationGameVersion))
                         {
                             logger?.LogError("Implementation {name} has invalid GameVersion AssemblyMetadataAttribute!", implementation.Name);
                             continue;
