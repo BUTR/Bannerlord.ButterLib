@@ -4,14 +4,15 @@
   <!--Development Variables-->
   <PropertyGroup>
     <!--Module Version-->
-    <Version>1.0.21</Version>
+    <Version>1.0.22</Version>
     <!--Harmony Version-->
     <HarmonyVersion>2.0.2</HarmonyVersion>
     <!--Microsoft Extension Libraries Version-->
     <ExtensionVersion>2.0.0</ExtensionVersion>
     <!--BuildResources Version-->
     <BuildResourcesVersion>1.0.0.33</BuildResourcesVersion>
-    <BUTRSharedVersion>1.6.1.22</BUTRSharedVersion>
+    <BUTRSharedVersion>1.6.1.35</BUTRSharedVersion>
+    <HarmonyExtensionsVersion>2.0.0.39</HarmonyExtensionsVersion>
   </PropertyGroup>
 
   <PropertyGroup>

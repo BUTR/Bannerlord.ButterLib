@@ -22,7 +22,7 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier
     /// Also stores some general description on the campaign, based on a specified hero
     /// (default is the initial player character in the current campaign).
     /// </remarks>
-    [SaveableClass(1), Serializable]
+    [Serializable]
     internal sealed class CampaignDescriptorImplementation : CampaignDescriptor, ISerializable
     {
         //Consts
@@ -174,41 +174,41 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier
 
             //BASE_DESCRIPTOR_HERO
             var baseHeroTextObject = TextObjectHelper.Create("");
-            baseHeroTextObject.SetTextVariable("NAME", (string) _attributes[DescriptorAttribute.HeroName]);
-            baseHeroTextObject.SetTextVariable("CLAN", familyName.Length > 0 ? 1 : 0);
-            baseHeroTextObject.SetTextVariable("CLAN_NAME", familyName);
-            baseHeroTextObject.SetTextVariable("AGE", (int) _attributes[DescriptorAttribute.HeroAge]);
-            baseHeroTextObject.SetTextVariable("GENDER", (int) _attributes[DescriptorAttribute.HeroGender]);
+            baseHeroTextObject?.SetTextVariable("NAME", (string) _attributes[DescriptorAttribute.HeroName]);
+            baseHeroTextObject?.SetTextVariable("CLAN", familyName.Length > 0 ? 1 : 0);
+            baseHeroTextObject?.SetTextVariable("CLAN_NAME", familyName);
+            baseHeroTextObject?.SetTextVariable("AGE", (int) _attributes[DescriptorAttribute.HeroAge]);
+            baseHeroTextObject?.SetTextVariable("GENDER", (int) _attributes[DescriptorAttribute.HeroGender]);
 
-            baseHeroTextObject.SetTextVariable("BIRTHPLACE", birthPlace.Length > 0 ? 1 : 0);
-            baseHeroTextObject.SetTextVariable("BIRTHPLACE_NAME", birthPlace);
+            baseHeroTextObject?.SetTextVariable("BIRTHPLACE", birthPlace.Length > 0 ? 1 : 0);
+            baseHeroTextObject?.SetTextVariable("BIRTHPLACE_NAME", birthPlace);
 
-            baseHeroTextObject.SetTextVariable("CULTURE", cultureName.Length > 0 ? 1 : 0);
-            baseHeroTextObject.SetTextVariable("CULTURE_NAME", GameTexts.FindText("str_adjective_for_faction", cultureName.ToLower()));
+            baseHeroTextObject?.SetTextVariable("CULTURE", cultureName.Length > 0 ? 1 : 0);
+            baseHeroTextObject?.SetTextVariable("CULTURE_NAME", GameTexts.FindText("str_adjective_for_faction", cultureName.ToLower()));
 
             if (fatherName.Length > 0 && motherName.Length > 0)
             {
-                baseHeroTextObject.SetTextVariable("FULL_FAMILY", 1);
-                baseHeroTextObject.SetTextVariable("PARENTS_BEGIN", fatherName);
-                baseHeroTextObject.SetTextVariable("PARENTS_END", motherName);
+                baseHeroTextObject?.SetTextVariable("FULL_FAMILY", 1);
+                baseHeroTextObject?.SetTextVariable("PARENTS_BEGIN", fatherName);
+                baseHeroTextObject?.SetTextVariable("PARENTS_END", motherName);
             }
             else
             {
-                baseHeroTextObject.SetTextVariable("FULL_FAMILY", 0);
-                baseHeroTextObject.SetTextVariable("PARENTS_BEGIN", "");
-                baseHeroTextObject.SetTextVariable("PARENTS_END", fatherName.Length > 0 ? fatherName : motherName);
+                baseHeroTextObject?.SetTextVariable("FULL_FAMILY", 0);
+                baseHeroTextObject?.SetTextVariable("PARENTS_BEGIN", "");
+                baseHeroTextObject?.SetTextVariable("PARENTS_END", fatherName.Length > 0 ? fatherName : motherName);
             }
 
-            resultTextObject.SetTextVariable("BASE_DESCRIPTOR_HERO", baseHeroTextObject);
+            resultTextObject?.SetTextVariable("BASE_DESCRIPTOR_HERO", baseHeroTextObject);
             MBTextManager.SetTextVariable("BASE_DESCRIPTOR_HERO", baseHeroTextObject);
 
             //BASE_DESCRIPTOR_HERO_PARENTS
             var parentsTextObject = TextObjectHelper.Create(fatherName.Length > 0 || motherName.Length > 0 ? 1 : 0);
-            parentsTextObject.SetTextVariable("INFO", parentsInfoTextObject);
-            resultTextObject.SetTextVariable("BASE_DESCRIPTOR_HERO_PARENTS", parentsTextObject);
+            parentsTextObject?.SetTextVariable("INFO", parentsInfoTextObject);
+            resultTextObject?.SetTextVariable("BASE_DESCRIPTOR_HERO_PARENTS", parentsTextObject);
 
             //Result
-            return resultTextObject.ToString();
+            return resultTextObject?.ToString() ?? "ERROR";
         }
 
         private static string GetUniqueKey(int size)

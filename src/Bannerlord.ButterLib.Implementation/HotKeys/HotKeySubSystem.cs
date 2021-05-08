@@ -55,7 +55,7 @@ namespace Bannerlord.ButterLib.Implementation.HotKeys
                     hotKey.OnPressedInternal();
                 if (hotKey.GameKey.PrimaryKey.InputKey.IsReleased())
                     hotKey.OnReleasedInternal();
-#elif e155 || e156 || e157 || e158
+#elif e155 || e156 || e157 || e158 || e159 || e1510
                 if (hotKey.GameKey.KeyboardKey?.InputKey.IsDown() == true || hotKey.GameKey.ControllerKey?.InputKey.IsDown() == true)
                     hotKey.IsDownInternal();
                 if (hotKey.GameKey.KeyboardKey?.InputKey.IsPressed() == true || hotKey.GameKey.ControllerKey?.InputKey.IsPressed() == true)

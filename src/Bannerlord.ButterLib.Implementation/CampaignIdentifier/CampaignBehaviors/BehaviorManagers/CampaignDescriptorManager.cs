@@ -21,7 +21,6 @@ using TaleWorlds.SaveSystem;
 
 namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehaviors.BehaviorManagers
 {
-    [SaveableClass(2)]
     internal sealed class CampaignDescriptorManager
     {
         [SaveableField(1)]

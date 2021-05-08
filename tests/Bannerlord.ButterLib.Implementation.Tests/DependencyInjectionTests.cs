@@ -1,3 +1,4 @@
+using Bannerlord.BUTR.Shared.Helpers;
 using Bannerlord.ButterLib.CampaignIdentifier;
 using Bannerlord.ButterLib.Common.Extensions;
 using Bannerlord.ButterLib.Common.Helpers;
@@ -17,6 +18,7 @@ using NUnit.Framework;
 
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 
@@ -27,6 +29,7 @@ using TaleWorlds.Library;
 using TaleWorlds.Localization;
 using TaleWorlds.ObjectSystem;
 
+using SymbolExtensions2 = HarmonyLib.BUTR.Extensions.SymbolExtensions2;
 using TWCommon = TaleWorlds.Library.Common;
 
 namespace Bannerlord.ButterLib.Implementation.Tests
@@ -48,7 +51,7 @@ namespace Bannerlord.ButterLib.Implementation.Tests
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        private static bool MockedGetConfigsPath(ref string __result)
+        private static bool MockedGetConfigPath(ref string __result)
         {
             __result = AppDomain.CurrentDomain.BaseDirectory;
             return false;
@@ -58,6 +61,13 @@ namespace Bannerlord.ButterLib.Implementation.Tests
         private static bool MockedGetConfigName(ref string __result)
         {
             __result = "Win64_Shipping_Client";
+            return false;
+        }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private static bool MockedGetModuleNames(ref string[] __result)
+        {
+            __result = Array.Empty<string>();
             return false;
         }
 
@@ -78,13 +88,13 @@ namespace Bannerlord.ButterLib.Implementation.Tests
         public void Setup()
         {
             var harmony = new Harmony($"{nameof(DependencyInjectionTests)}.{nameof(Setup)}");
-            harmony.Patch(SymbolExtensions.GetMethodInfo(() => Utilities.GetConfigsPath()),
-                prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetConfigsPath)));
+            harmony.Patch(SymbolExtensions.GetMethodInfo(() => FSIOHelper.GetConfigPath()),
+                prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetConfigPath)));
             harmony.Patch(SymbolExtensions2.GetPropertyInfo(() => TWCommon.ConfigName).GetMethod,
                 prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetConfigName)));
-            //ModuleInfoHelper.LoadedModules = new List<ModuleInfo>();
-            ModuleInfoHelper.LoadedExtendedModules = new List<ExtendedModuleInfo>();
-            ModuleInfoHelper.PastInitialization = true;
+            var engineUtilitiesType = Type.GetType("TaleWorlds.Engine.Utilities, TaleWorlds.Engine", false);
+            harmony.Patch(engineUtilitiesType?.GetMethod("GetModulesNames", BindingFlags.Public | BindingFlags.Static),
+                prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetModuleNames)));
 
             var subModule = new ButterLibSubModule();
             var subModuleWrapper = new MBSubModuleBaseWrapper(subModule);

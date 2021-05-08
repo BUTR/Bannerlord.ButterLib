@@ -1,8 +1,8 @@
 ﻿using Bannerlord.BUTR.Shared.Helpers;
 using Bannerlord.ButterLib.Common.Extensions;
-using Bannerlord.ButterLib.Common.Helpers;
 
 using HarmonyLib;
+using HarmonyLib.BUTR.Extensions;
 
 using System;
 using System.Collections.Generic;
@@ -12,7 +12,6 @@ using System.Windows.Forms;
 
 using TaleWorlds.MountAndBlade;
 
-using ModuleInfoHelper = Bannerlord.ButterLib.Common.Helpers.ModuleInfoHelper;
 using TWModule = TaleWorlds.MountAndBlade.Module;
 
 namespace Bannerlord.ModuleLoader
@@ -100,7 +99,7 @@ Make sure ModuleLoader is loaded before them!";
 
         private static void CheckLoadOrder()
         {
-            var loadedModules = ModuleInfoHelper.GetExtendedLoadedModules();
+            var loadedModules = BUTR.Shared.Helpers.ModuleInfoHelper.GetLoadedModules().ToList();
 
             var sb = new StringBuilder();
 
@@ -109,7 +108,7 @@ Make sure ModuleLoader is loaded before them!";
             if (harmonyModuleIndex == -1)
             {
                 if (sb.Length != 0) sb.AppendLine();
-                sb.AppendLine(TextObjectHelper.Create(SErrorHarmonyNotFound).ToString());
+                sb.AppendLine(TextObjectHelper.Create(SErrorHarmonyNotFound)?.ToString());
             }
 
             var moduleLoaderModule = loadedModules.SingleOrDefault(x => x.Id == "Bannerlord.ModuleLoader");
@@ -117,12 +116,12 @@ Make sure ModuleLoader is loaded before them!";
             if (moduleLoaderModuleIndex == -1)
             {
                 if (sb.Length != 0) sb.AppendLine();
-                sb.AppendLine(TextObjectHelper.Create(SErrorModuleLoaderNotFound).ToString());
+                sb.AppendLine(TextObjectHelper.Create(SErrorModuleLoaderNotFound)?.ToString());
             }
             if (moduleLoaderModuleIndex != 1) // Straight after Bannerlord.Harmony
             {
                 if (sb.Length != 0) sb.AppendLine();
-                sb.AppendLine(TextObjectHelper.Create(SErrorModuleLoaderNotFirst).ToString());
+                sb.AppendLine(TextObjectHelper.Create(SErrorModuleLoaderNotFirst)?.ToString());
             }
 
             var officialModules = loadedModules.Where(x => x.IsOfficial).Select(x => (Module: x, Index: loadedModules.IndexOf(x)));
@@ -130,8 +129,8 @@ Make sure ModuleLoader is loaded before them!";
             if (modulesLoadedBefore.Count > 0)
             {
                 if (sb.Length != 0) sb.AppendLine();
-                sb.AppendLine(TextObjectHelper.Create(SErrorOfficialModulesLoadedBefore).ToString());
-                sb.AppendLine(TextObjectHelper.Create(SErrorOfficialModules).ToString());
+                sb.AppendLine(TextObjectHelper.Create(SErrorOfficialModulesLoadedBefore)?.ToString());
+                sb.AppendLine(TextObjectHelper.Create(SErrorOfficialModules)?.ToString());
                 foreach (var (module, _) in modulesLoadedBefore)
                     sb.AppendLine(module.Id);
             }
@@ -139,9 +138,9 @@ Make sure ModuleLoader is loaded before them!";
             if (sb.Length > 0)
             {
                 sb.AppendLine();
-                sb.AppendLine(TextObjectHelper.Create(SMessageContinue).ToString());
+                sb.AppendLine(TextObjectHelper.Create(SMessageContinue)?.ToString());
 
-                switch (MessageBox.Show(sb.ToString(), TextObjectHelper.Create(SWarningTitle).ToString(), MessageBoxButtons.YesNo))
+                switch (MessageBox.Show(sb.ToString(), TextObjectHelper.Create(SWarningTitle)?.ToString(), MessageBoxButtons.YesNo))
                 {
                     case DialogResult.Yes:
                         Environment.Exit(1);

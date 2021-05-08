@@ -1,5 +1,4 @@
 ﻿using Bannerlord.ButterLib.Common.Helpers;
-
 using HarmonyLib;
 
 using System;
@@ -14,7 +13,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
     {
         public Guid Id { get; } = Guid.NewGuid();
         public Exception Exception { get; }
-        public List<ExtendedModuleInfo> LoadedModules { get; } = ModuleInfoHelper.GetExtendedLoadedModules();
+        public List<ExtendedModuleInfo> LoadedModules { get; } = BUTR.Shared.Helpers.ModuleInfoHelper.GetLoadedModules().ToList();
         public List<Assembly> ModuleLoadedAssemblies { get; } = new();
         public List<Assembly> ExternalLoadedAssemblies { get; } = new();
         public Dictionary<MethodBase, Patches> LoadedHarmonyPatches { get; } = new();

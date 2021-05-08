@@ -4,6 +4,7 @@ using HarmonyLib;
 
 using System;
 using System.Collections.Concurrent;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 using TaleWorlds.MountAndBlade;
@@ -232,9 +233,9 @@ namespace Bannerlord.ButterLib.DelayedSubModule
         private static void Subscribe<T>(Type caller, string method, SubscriptionType subscriptionType, EventHandler<SubscriptionEventArgs> @delegate)
             where T : MBSubModuleBase
         {
-            var loadedModules = ModuleInfoHelper.GetExtendedLoadedModules();
-            var callerModule = ModuleInfoHelper.GetModuleInfo(caller);
-            var destModule = ModuleInfoHelper.GetModuleInfo(typeof(T));
+            var loadedModules = BUTR.Shared.Helpers.ModuleInfoHelper.GetLoadedModules().ToList();
+            var callerModule = BUTR.Shared.Helpers.ModuleInfoHelper.GetModuleByType(caller);
+            var destModule = BUTR.Shared.Helpers.ModuleInfoHelper.GetModuleByType(typeof(T));
 
             var callerModulePosition = loadedModules.IndexOf(callerModule!);
             var destModulePosition = loadedModules.IndexOf(destModule!);

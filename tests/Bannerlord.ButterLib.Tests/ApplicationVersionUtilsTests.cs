@@ -1,12 +1,10 @@
-﻿using Bannerlord.ButterLib.Common.Helpers;
+﻿using Bannerlord.BUTR.Shared.Helpers;
 
 using HarmonyLib;
 
 using NUnit.Framework;
 
 using System.Runtime.CompilerServices;
-
-using TaleWorlds.DotNet;
 using TaleWorlds.Library;
 
 namespace Bannerlord.ButterLib.Tests
@@ -27,14 +25,14 @@ namespace Bannerlord.ButterLib.Tests
         public void Setup()
         {
             var harmony = new Harmony($"{nameof(ApplicationVersionUtilsTests)}.{nameof(Setup)}");
-            harmony.Patch(SymbolExtensions.GetMethodInfo(() => ApplicationVersionUtils.GameVersionStr()),
+            harmony.Patch(SymbolExtensions.GetMethodInfo(() => ApplicationVersionHelper.GameVersionStr()),
                 prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetVersionStr)));
         }
 
         [Test]
         public void GameVersion_Test()
         {
-            var gameVersion = ApplicationVersionUtils.GameVersion();
+            var gameVersion = ApplicationVersionHelper.GameVersion();
             Assert.NotNull(gameVersion);
             Assert.AreEqual(TestAppVersion, gameVersion);
         }
@@ -42,7 +40,7 @@ namespace Bannerlord.ButterLib.Tests
         [Test]
         public void TryParse_Test()
         {
-            var result = ApplicationVersionUtils.TryParse(TestAppVersionStr, out var gameVersion);
+            var result = ApplicationVersionHelper.TryParse(TestAppVersionStr, out var gameVersion);
             Assert.True(result);
             Assert.AreEqual(TestAppVersion, gameVersion);
         }

@@ -11,6 +11,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 using System;
+using System.Diagnostics;
+using System.Diagnostics.Logger;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -18,8 +21,6 @@ using System.Windows.Forms;
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
-
-using ModuleInfoHelper = Bannerlord.ButterLib.Common.Helpers.ModuleInfoHelper;
 
 namespace Bannerlord.ButterLib
 {
@@ -51,6 +52,8 @@ Make sure ButterLib is loaded before them!";
         private bool ServiceRegistrationWasCalled { get; set; }
         private bool OnBeforeInitialModuleScreenSetAsRootWasCalled { get; set; }
 
+        private TextWriterTraceListener? TextWriterTraceListener { get; set; }
+
         public ButterLibSubModule()
         {
             Instance = this;
@@ -77,6 +80,7 @@ Make sure ButterLib is loaded before them!";
 
             this.AddDefaultSerilogLogger();
             this.AddSerilogLoggerProvider("butterlib.txt", new[] { "Bannerlord.ButterLib.*" });
+            this.AddSerilogLoggerProvider("trace.txt", new[] { "System.Diagnostics.Logger.*" });
 
             Services.AddSubSystem<DelayedSubModuleSubSystem>();
             Services.AddSubSystem<ExceptionHandlerSubSystem>();
@@ -99,10 +103,6 @@ Make sure ButterLib is loaded before them!";
             }
             else
             {
-                // ModuleInfoHelper will give false info if using flow without ModuleLoader
-                // ServiceRegistrationWasCalled is a good indicator if ModuleLoader is used
-                ModuleInfoHelper.PastInitialization = true;
-
                 serviceProvider = this.GetServiceProvider()!;
             }
 
@@ -114,6 +114,10 @@ Make sure ButterLib is loaded before them!";
 
             ExceptionHandlerSubSystem.Instance?.Enable();
             CrashUploaderSubSystem.Instance?.Enable();
+
+            Trace.Listeners.Add(TextWriterTraceListener = new TextWriterTraceListener(new StreamWriter(new MemoryStream(), Encoding.UTF8, 1024, true)));
+            Trace.AutoFlush = true;
+            Logger.LogTrace("Added System.Diagnostics.Trace temporary listener.");
 
             Logger.LogTrace("OnSubModuleLoad: Done");
         }
@@ -139,10 +143,6 @@ Make sure ButterLib is loaded before them!";
 
                 if (DelayedServiceCreation)
                 {
-                    // ModuleInfoHelper will give false info if using flow without ModuleLoader
-                    // DelayedServiceCreation is a good indicator if ModuleLoader is used
-                    ModuleInfoHelper.PastInitialization = true;
-
                     InitializeServices();
                 }
             }
@@ -185,17 +185,18 @@ Make sure ButterLib is loaded before them!";
 
         private static void CheckLoadOrder()
         {
-            var loadedModules = ModuleInfoHelper.GetExtendedLoadedModules();
+            var loadedModules = BUTR.Shared.Helpers.ModuleInfoHelper.GetLoadedModules().ToList();
             if (loadedModules.Count == 0) return;
 
             var sb = new StringBuilder();
 
             var harmonyModule = loadedModules.SingleOrDefault(x => x.Id == "Bannerlord.Harmony");
+
             var harmonyModuleIndex = harmonyModule is not null ? loadedModules.IndexOf(harmonyModule) : -1;
             if (harmonyModuleIndex == -1)
             {
                 if (sb.Length != 0) sb.AppendLine();
-                sb.AppendLine(TextObjectHelper.Create(SErrorHarmonyNotFound).ToString());
+                sb.AppendLine(TextObjectHelper.Create(SErrorHarmonyNotFound)?.ToString());
             }
 
             // TODO: Keep it optional for now
@@ -214,7 +215,7 @@ Make sure ButterLib is loaded before them!";
             if (butterLibModuleIndex == -1)
             {
                 if (sb.Length != 0) sb.AppendLine();
-                sb.AppendLine(TextObjectHelper.Create(SErrorButterLibNotFound).ToString());
+                sb.AppendLine(TextObjectHelper.Create(SErrorButterLibNotFound)?.ToString());
             }
 
             var officialModules = loadedModules.Where(x => x.IsOfficial).Select(x => (Module: x, Index: loadedModules.IndexOf(x)));
@@ -222,8 +223,8 @@ Make sure ButterLib is loaded before them!";
             if (modulesLoadedBeforeButterLib.Count > 0)
             {
                 if (sb.Length != 0) sb.AppendLine();
-                sb.AppendLine(TextObjectHelper.Create(SErrorOfficialModulesLoadedBeforeButterLib).ToString());
-                sb.AppendLine(TextObjectHelper.Create(SErrorOfficialModules).ToString());
+                sb.AppendLine(TextObjectHelper.Create(SErrorOfficialModulesLoadedBeforeButterLib)?.ToString());
+                sb.AppendLine(TextObjectHelper.Create(SErrorOfficialModules)?.ToString());
                 foreach (var (module, _) in modulesLoadedBeforeButterLib)
                     sb.AppendLine(module.Id);
             }
@@ -231,9 +232,9 @@ Make sure ButterLib is loaded before them!";
             if (sb.Length > 0)
             {
                 sb.AppendLine();
-                sb.AppendLine(TextObjectHelper.Create(SMessageContinue).ToString());
+                sb.AppendLine(TextObjectHelper.Create(SMessageContinue)?.ToString());
 
-                switch (MessageBox.Show(sb.ToString(), TextObjectHelper.Create(SWarningTitle).ToString(), MessageBoxButtons.YesNo))
+                switch (MessageBox.Show(sb.ToString(), TextObjectHelper.Create(SWarningTitle)?.ToString(), MessageBoxButtons.YesNo))
                 {
                     case DialogResult.Yes:
                         Environment.Exit(1);
@@ -253,6 +254,33 @@ Make sure ButterLib is loaded before them!";
 
                 Logger = this.GetServiceProvider().GetRequiredService<ILogger<ButterLibSubModule>>();
                 Logger.LogTrace("Assigned new _logger from GlobalServiceProvider.");
+
+                var logger = this.GetServiceProvider().GetRequiredService<ILogger<LoggerTraceListener>>();
+                Trace.Listeners.Add(new LoggerTraceListener(logger));
+                Logger.LogTrace("Added System.Diagnostics.Trace main listener.");
+
+                if (TextWriterTraceListener is not null)
+                {
+                    try
+                    {
+                        Trace.Flush(); // In case AutoFlush was set to false
+                        Trace.Listeners.Remove(TextWriterTraceListener);
+                        if (TextWriterTraceListener.Writer is StreamWriter { BaseStream: MemoryStream ms })
+                        {
+                            ms.Seek(0, SeekOrigin.Begin);
+                            using var reader = new StreamReader(ms, Encoding.UTF8, true, 1024, true);
+                            while (reader.Peek() >= 0)
+                            {
+                                Trace.WriteLine(reader.ReadLine());
+                            }
+                            Logger.LogTrace("Flushed logs from the System.Diagnostics.Trace temp listener.");
+                        }
+                    }
+                    finally
+                    {
+                        TextWriterTraceListener.Dispose();
+                    }
+                }
             }
         }
     }
