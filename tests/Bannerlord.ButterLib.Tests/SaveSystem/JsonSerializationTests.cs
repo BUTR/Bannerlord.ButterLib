@@ -1,5 +1,6 @@
-﻿using Bannerlord.ButterLib.SaveSystem;
-
+﻿using Bannerlord.BUTR.Shared.Helpers;
+using Bannerlord.ButterLib.SaveSystem;
+using HarmonyLib;
 using Newtonsoft.Json;
 
 using NUnit.Framework;
@@ -9,6 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 
 using TaleWorlds.CampaignSystem;
@@ -21,12 +23,23 @@ namespace Bannerlord.ButterLib.Tests.SaveSystem
 {
     public class JsonSerializationTests
     {
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private static bool MockedGetConfigPath(ref string __result)
+        {
+            __result = AppDomain.CurrentDomain.BaseDirectory;
+            return false;
+        }
+
         private static readonly FieldRef<FlattenedTroopRoster, Dictionary<UniqueTroopDescriptor, FlattenedTroopRosterElement>>? ElementDictionary =
             FieldRefAccess<FlattenedTroopRoster, Dictionary<UniqueTroopDescriptor, FlattenedTroopRosterElement>>("_elementDictionary");
 
         [SetUp]
         public void Setup()
         {
+            var harmony = new Harmony($"{nameof(JsonSerializationTests)}.{nameof(Setup)}");
+            harmony.Patch(SymbolExtensions.GetMethodInfo(() => FSIOHelper.GetConfigPath()),
+                prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetConfigPath)));
+
             var binFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
             var d1 = Directory.GetFiles(binFolder, "TaleWorlds*.dll");
             var d2 = Directory.GetFiles(binFolder, "StoryMode*.dll");
@@ -49,9 +62,20 @@ namespace Bannerlord.ButterLib.Tests.SaveSystem
             var saveableClassTypes = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(a =>
                 {
+                    IEnumerable<Type> Filter(Type[] types)
+                    {
+                        return types.Where(t => t is not null && !t.IsAbstract && !t.IsGenericType &&
+                                                t.GetMembers().Any(m => m.GetCustomAttributes(true).Any(
+                                                    att => att.GetType() == typeof(SaveableFieldAttribute) ||
+                                                           att.GetType() == typeof(SaveablePropertyAttribute))));
+                    }
                     try
                     {
-                        return a.GetTypes().Where(t => !t.IsAbstract && !t.IsGenericType && t.GetCustomAttribute<SaveableClassAttribute>(true) is not null);
+                        return Filter(a.GetTypes());
+                    }
+                    catch (ReflectionTypeLoadException e)
+                    {
+                        return Filter(e.Types);
                     }
                     catch (Exception)
                     {
@@ -95,9 +119,20 @@ namespace Bannerlord.ButterLib.Tests.SaveSystem
             var saveableClassTypes = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(a =>
                 {
+                    IEnumerable<Type> Filter(Type[] types)
+                    {
+                        return types.Where(t => t is not null && !t.IsAbstract && !t.IsGenericType &&
+                                                t.GetMembers().Any(m => m.GetCustomAttributes(true).Any(
+                                                    att => att.GetType() == typeof(SaveableFieldAttribute) ||
+                                                           att.GetType() == typeof(SaveablePropertyAttribute))));
+                    }
                     try
                     {
-                        return a.GetTypes().Where(t => !t.IsAbstract && !t.IsGenericType && t.GetCustomAttribute<SaveableClassAttribute>(true) is not null);
+                        return Filter(a.GetTypes());
+                    }
+                    catch (ReflectionTypeLoadException e)
+                    {
+                        return Filter(e.Types);
                     }
                     catch (Exception)
                     {

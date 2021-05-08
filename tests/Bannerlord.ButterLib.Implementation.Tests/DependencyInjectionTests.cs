@@ -1,3 +1,4 @@
+using Bannerlord.BUTR.Shared.Helpers;
 using Bannerlord.ButterLib.CampaignIdentifier;
 using Bannerlord.ButterLib.Common.Extensions;
 using Bannerlord.ButterLib.Common.Helpers;
@@ -50,7 +51,7 @@ namespace Bannerlord.ButterLib.Implementation.Tests
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        private static bool MockedGetConfigsPath(ref string __result)
+        private static bool MockedGetConfigPath(ref string __result)
         {
             __result = AppDomain.CurrentDomain.BaseDirectory;
             return false;
@@ -87,8 +88,8 @@ namespace Bannerlord.ButterLib.Implementation.Tests
         public void Setup()
         {
             var harmony = new Harmony($"{nameof(DependencyInjectionTests)}.{nameof(Setup)}");
-            harmony.Patch(SymbolExtensions.GetMethodInfo(() => Utilities.GetConfigsPath()),
-                prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetConfigsPath)));
+            harmony.Patch(SymbolExtensions.GetMethodInfo(() => FSIOHelper.GetConfigPath()),
+                prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetConfigPath)));
             harmony.Patch(SymbolExtensions2.GetPropertyInfo(() => TWCommon.ConfigName).GetMethod,
                 prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetConfigName)));
             var engineUtilitiesType = Type.GetType("TaleWorlds.Engine.Utilities, TaleWorlds.Engine", false);

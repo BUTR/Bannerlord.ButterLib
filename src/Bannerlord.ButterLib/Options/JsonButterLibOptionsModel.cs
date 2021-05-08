@@ -1,11 +1,11 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Bannerlord.BUTR.Shared.Helpers;
+
+using Microsoft.Extensions.Logging;
 
 using Newtonsoft.Json;
 
 using System;
 using System.IO;
-
-using TaleWorlds.Engine;
 
 namespace Bannerlord.ButterLib.Options
 {
@@ -13,7 +13,7 @@ namespace Bannerlord.ButterLib.Options
     internal sealed class JsonButterLibOptionsModel
     {
         //private static readonly string Path = System.IO.Path.Combine(Utilities.GetConfigsPath(), "ModSettings/Global/ButterLib/ButterLib_v1.json");
-        private static readonly string Path = System.IO.Path.Combine(Utilities.GetConfigsPath(), "ModSettings/ButterLib/Options.json");
+        private static readonly string Path = System.IO.Path.Combine(FSIOHelper.GetConfigPath(), "ModSettings/ButterLib/Options.json");
 
         [JsonProperty("MinLogLevel", DefaultValueHandling = DefaultValueHandling.Populate)]
         public int MinLogLevel { get; private set; } = (int) LogLevel.Information;

@@ -20,9 +20,9 @@ namespace Bannerlord.ButterLib.SaveSystem
 
             // SaveableRootClassAttribute is not needed
             // SaveableInterfaceAttribute is not used by the game
-            if (type.GetCustomAttributes(true).All(a =>
-                a.GetType() != typeof(SaveableClassAttribute) && a.GetType() != typeof(SaveableStructAttribute) &&
-                a.GetType() != typeof(SaveableEnumAttribute)))
+            if (type.GetMembers().All(m => m.GetCustomAttributes(true).Any(
+                att => att.GetType() != typeof(SaveableFieldAttribute) ||
+                       att.GetType() != typeof(SaveablePropertyAttribute))))
             {
                 return new List<JsonProperty>();
             }

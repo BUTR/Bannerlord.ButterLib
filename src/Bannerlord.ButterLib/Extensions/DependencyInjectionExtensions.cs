@@ -1,4 +1,5 @@
-﻿using Bannerlord.ButterLib.Options;
+﻿using Bannerlord.BUTR.Shared.Helpers;
+using Bannerlord.ButterLib.Options;
 using Bannerlord.ButterLib.SubSystems;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -20,7 +21,6 @@ using System.Text.RegularExpressions;
 
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
-using TaleWorlds.Engine;
 using TaleWorlds.MountAndBlade;
 
 using Path = System.IO.Path;
@@ -51,7 +51,7 @@ namespace Bannerlord.ButterLib.Common.Extensions
         /// </summary>
         public static IServiceProvider? GetTempServiceProvider(this MBSubModuleBase _) => ButterLibSubModule.Services?.BuildServiceProvider();
 
-        private static readonly string ModLogsPath = Path.Combine(Utilities.GetConfigsPath(), "ModLogs");
+        private static readonly string ModLogsPath = Path.Combine(FSIOHelper.GetConfigPath(), "ModLogs");
         private static readonly string OutputTemplate = "[{Timestamp:HH:mm:ss.fff}] [{SourceContext}] [{Level:u3}]: {Message:lj}{NewLine}{Exception}";
 
         internal static IServiceCollection? AddDefaultSerilogLogger(this MBSubModuleBase subModule)
