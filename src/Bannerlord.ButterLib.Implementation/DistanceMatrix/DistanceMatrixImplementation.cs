@@ -115,7 +115,7 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
             }
             if (typeof(Clan).IsAssignableFrom(typeof(T)))
             {
-                var clans = Clan.All.Where(c => c.IsInitialized && c.Fiefs.Count > 0).ToList();
+                var clans = Clan.All.Where(c => c.IsInitialized && c.Fiefs.Any()).ToList();
                 var settlementDistanceMatrix = Campaign.Current.GetCampaignBehavior<GeopoliticsCachingBehavior>().SettlementDistanceMatrix ?? new DistanceMatrixImplementation<Settlement>();
                 var lst = GetSettlementOwnersPairedList(settlementDistanceMatrix);
 
@@ -124,7 +124,7 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
             }
             if (typeof(Kingdom).IsAssignableFrom(typeof(T)))
             {
-                var kingdoms = Kingdom.All.Where(k => k.IsInitialized && k.Fiefs.Count > 0).ToList();
+                var kingdoms = Kingdom.All.Where(k => k.IsInitialized && k.Fiefs.Any()).ToList();
                 var settlementDistanceMatrix = Campaign.Current.GetCampaignBehavior<GeopoliticsCachingBehavior>().SettlementDistanceMatrix ?? new DistanceMatrixImplementation<Settlement>();
                 return kingdoms.SelectMany(_ => kingdoms, (X, Y) => (X, Y)).Where(tuple => tuple.X.Id < tuple.Y.Id)
                                .ToDictionary(key => ElegantPairHelper.Pair(key.X.Id, key.Y.Id), value => CalculateDistanceBetweenKingdoms(value.X, value.Y, settlementDistanceMatrix).GetValueOrDefault());
