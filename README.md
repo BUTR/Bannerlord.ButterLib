@@ -8,8 +8,8 @@
   <a href="https://www.codefactor.io/repository/github/butr/bannerlord.butterlib"><img src="https://www.codefactor.io/repository/github/butr/bannerlord.butterlib/badge" alt="CodeFactor" /></a>
   </br>
   <a href="https://github.com/BUTR/Bannerlord.ButterLib/actions?query=workflow%3ATest"><img src="https://github.com/BUTR/Bannerlord.ButterLib/workflows/Test/badge.svg?branch=dev&event=push" alt="Test" /></a>
-  <a href="https://codecov.io/gh/BUTR/Bannerlord.ButterLib"><img src="https://codecov.io/gh/BUTR/Bannerlord.ButterLib/branch/dev/graph/badge.svg" />
-   </a>
+  <a href="https://codecov.io/gh/BUTR/Bannerlord.ButterLib"><img src="https://codecov.io/gh/BUTR/Bannerlord.ButterLib/branch/dev/graph/badge.svg" /></a>
+  <a href="https://www.deepcode.ai/app/gh/BUTR/Bannerlord.ButterLib/_/dashboard?utm_content=gh%2FBUTR%2FBannerlord.ButterLib"><img src="https://www.deepcode.ai/api/gh/badge?key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwbGF0Zm9ybTEiOiJnaCIsIm93bmVyMSI6IkJVVFIiLCJyZXBvMSI6IkJhbm5lcmxvcmQuQnV0dGVyTGliIiwiaW5jbHVkZUxpbnQiOmZhbHNlLCJhdXRob3JJZCI6MjY3ODMsImlhdCI6MTYyMzQ0MDM5Mn0.d3ktydJ0eVQ9BrtkNoKc0h_Gfq5igp36VZ0TkwxqT4k" /></a>
   </br>
   <a href="https://www.nuget.org/packages/Bannerlord.ButterLib" alt="NuGet Bannerlord.ButterLib">
   <img src="https://img.shields.io/nuget/v/Bannerlord.ButterLib.svg?label=NuGet%20Bannerlord.ButterLib&colorB=blue" /></a>
