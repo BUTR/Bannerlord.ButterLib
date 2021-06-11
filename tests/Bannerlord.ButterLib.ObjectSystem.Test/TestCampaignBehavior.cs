@@ -55,7 +55,13 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
                 return;
             }
 
+#if e143 || e150 || e151 || e152 || e153 || e154 || e155 || e156 || e157 || e158 || e159 || e1510
             foreach (var h in Hero.All)
+#elif e160
+            foreach (var h in Hero.AllAliveHeroes)
+#else
+#error ConstGameVersionWithPrefix is not handled!
+#endif
             {
                 SetOrValidateHeroVars(h, true);
 
@@ -80,7 +86,13 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
                 return;
             }
 
+#if e143 || e150 || e151 || e152 || e153 || e154 || e155 || e156 || e157 || e158 || e159 || e1510
             foreach (var h in Hero.All)
+#elif e160
+            foreach (var h in Hero.AllAliveHeroes)
+#else
+#error ConstGameVersionWithPrefix is not handled!
+#endif
             {
                 SetOrValidateHeroVars(h, false);
 

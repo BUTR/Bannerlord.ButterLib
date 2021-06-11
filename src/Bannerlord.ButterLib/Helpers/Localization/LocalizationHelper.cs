@@ -63,31 +63,31 @@ namespace Bannerlord.ButterLib.Common.Helpers
             switch (entity)
             {
                 case Hero hero:
-                    TextObject characterProperties = new();
-                    characterProperties.SetTextVariable("NAME", hero.Name);
+                    TextObject? characterProperties = TextObjectHelper.Create(string.Empty);
+                    characterProperties!.SetTextVariable("NAME", hero.Name);
                     characterProperties.SetTextVariable("AGE", (int)hero.Age);
                     characterProperties.SetTextVariable("GENDER", hero.IsFemale ? 1 : 0);
                     characterProperties.SetTextVariable("LINK", hero.EncyclopediaLinkWithName);
                     characterProperties.SetTextVariable("FIRSTNAME", hero.FirstName ?? hero.Name);
                     return characterProperties;
                 case Settlement settlement:
-                    TextObject settlementProperties = new();
-                    settlementProperties.SetTextVariable("NAME", settlement.Name);
+                    TextObject? settlementProperties = TextObjectHelper.Create(string.Empty);
+                    settlementProperties!.SetTextVariable("NAME", settlement.Name);
                     settlementProperties.SetTextVariable("IS_TOWN", settlement.IsTown ? 1 : 0);
                     settlementProperties.SetTextVariable("IS_CASTLE", settlement.IsCastle ? 1 : 0);
                     settlementProperties.SetTextVariable("IS_VILLAGE", settlement.IsVillage ? 1 : 0);
                     settlementProperties.SetTextVariable("LINK", settlement.EncyclopediaLinkWithName);
                     return settlementProperties;
                 case Clan clan:
-                    TextObject clanProperties = new();
-                    clanProperties.SetTextVariable("NAME", clan.Name);
+                    TextObject? clanProperties = TextObjectHelper.Create(string.Empty);
+                    clanProperties!.SetTextVariable("NAME", clan.Name);
                     clanProperties.SetTextVariable("MINOR_FACTION", clan.IsMinorFaction ? 1 : 0);
                     clanProperties.SetTextVariable("UNDER_CONTRACT", clan.IsUnderMercenaryService ? 1 : 0);
                     clanProperties.SetTextVariable("LINK", clan.EncyclopediaLinkWithName);
                     return clanProperties;
                 case Kingdom kingdom:
-                    TextObject kingdomProperties = new();
-                    kingdomProperties.SetTextVariable("NAME", kingdom.Name);
+                    TextObject? kingdomProperties = TextObjectHelper.Create(string.Empty);
+                    kingdomProperties!.SetTextVariable("NAME", kingdom.Name);
                     kingdomProperties.SetTextVariable("LINK", kingdom.EncyclopediaLinkWithName);
                     return kingdomProperties;
                 default:

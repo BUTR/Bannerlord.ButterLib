@@ -103,7 +103,14 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
             }
             if (typeof(Hero).IsAssignableFrom(typeof(T)))
             {
-                var activeHeroes = Hero.All.Where(h => h.IsInitialized && !h.IsNotSpawned && !h.IsDisabled && !h.IsDead && !h.IsNotable).ToList();
+#if e143 || e150 || e151 || e152 || e153 || e154 || e155 || e156 || e157 || e158 || e159 || e1510
+                var activeHeroes = Hero.All
+#elif e160
+                var activeHeroes = Hero.AllAliveHeroes
+#else
+#error ConstGameVersionWithPrefix is not handled!
+#endif
+                    .Where(h => h.IsInitialized && !h.IsNotSpawned && !h.IsDisabled && !h.IsDead && !h.IsNotable).ToList();
                 return activeHeroes.SelectMany(_ => activeHeroes, (X, Y) => (X, Y)).Where(tuple => tuple.X.Id < tuple.Y.Id)
                                    .ToDictionary(key => ElegantPairHelper.Pair(key.X.Id, key.Y.Id), value => CalculateDistanceBetweenHeroes(value.X, value.Y).GetValueOrDefault());
             }
