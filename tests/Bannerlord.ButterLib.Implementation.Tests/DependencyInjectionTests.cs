@@ -131,7 +131,13 @@ namespace Bannerlord.ButterLib.Implementation.Tests
 
 
             var hero = (Hero) FormatterServices.GetUninitializedObject(typeof(Hero));
+#if e143 || e150 || e151 || e152 || e153 || e154 || e155 || e156 || e157 || e158 || e159
             AccessTools.Field(typeof(Hero), "Name").SetValue(hero, new TextObject("TestHero"));
+#elif e1510 || e160
+            AccessTools.Property(typeof(Hero), "Name").SetValue(hero, new TextObject("TestHero"));
+#else
+#error ConstGameVersionWithPrefix is not handled!
+#endif
             AccessTools.Field(typeof(Hero), "_birthDay").SetValue(hero, CampaignTime.YearsFromNow(18));
 
             var campaignDescriptor = CampaignDescriptor.Create(hero);
