@@ -4,7 +4,6 @@ using Bannerlord.ButterLib.DistanceMatrix;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
 
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.ObjectSystem;
@@ -12,17 +11,14 @@ using TaleWorlds.ObjectSystem;
 namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
 {
     /// <inheritdoc/>
-    [Serializable]
-    internal sealed class DistanceMatrixImplementation<T> : DistanceMatrix<T>, ISerializable where T : MBObjectBase
+    internal sealed class DistanceMatrixImplementation<T> : DistanceMatrix<T> where T : MBObjectBase
     {
         //Fields
         private readonly Dictionary<ulong, float> _distanceMatrix;
-        [NonSerialized]
         private readonly Dictionary<(T Object1, T Object2), float> _typedDistanceMatrix;
-        [NonSerialized]
         private readonly Func<IEnumerable<T>>? _entityListGetter;
-        [NonSerialized]
         private readonly Func<T, T, float>? _distanceCalculator;
+        private Dictionary<MBGUID, MBObjectBase> _cachedMapping = new();
 
         //properties
         /// <inheritdoc/>
@@ -50,34 +46,7 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
             _typedDistanceMatrix = GetTypedDistanceMatrix();
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="T:Bannerlord.ButterLib.Implementation.DistanceMatrix.DistanceMatrixImplementation`1" /> class
-        /// using serialized data.
-        /// </summary>
-        /// <remarks>Used exclusively for deserialization.</remarks>
-        private DistanceMatrixImplementation(SerializationInfo info, StreamingContext context)
-        {
-            if (info.GetString("ObjectTypeName") is { } typeStr && Type.GetType(typeStr) is { } type &&
-                info.GetValue(type.Name + "DistanceMatrix", typeof(Dictionary<ulong, float>)) is Dictionary<ulong, float> dict)
-            {
-                _distanceMatrix = dict;
-                _distanceMatrix.OnDeserialization(this);
-            }
-            else
-            {
-                _distanceMatrix = new Dictionary<ulong, float>();
-            }
-
-            _typedDistanceMatrix = GetTypedDistanceMatrix();
-        }
-
         //Public methods
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            info.AddValue("ObjectTypeName", typeof(T).AssemblyQualifiedName);
-            info.AddValue(typeof(T).Name + "DistanceMatrix", _distanceMatrix);
-        }
-
         /// <inheritdoc/>
         public override float GetDistance(T object1, T object2) =>
             _distanceMatrix.TryGetValue(object1.Id > object2.Id ? ElegantPairHelper.Pair(object2.Id, object1.Id) : ElegantPairHelper.Pair(object1.Id, object2.Id),
@@ -91,6 +60,11 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
         }
 
         //Private methods
+
+        private T GetObject(MBGUID id) => _cachedMapping.TryGetValue(id, out var obj) && obj is T objT
+            ? objT
+            : throw new ArgumentException($"Id '{id}' was not found!", nameof(id));
+
         /// <summary>Calculates distance matrix for the <see cref="MBObjectBase"/> objects of the specified subtype <typeparamref name="T"/>.</summary>
         /// <exception cref="T:System.ArgumentException"></exception>
         private Dictionary<ulong, float> CalculateDistanceMatrix()
@@ -98,9 +72,12 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
             if (_entityListGetter is not null && _distanceCalculator is not null)
             {
                 var entities = _entityListGetter().ToList();
+                _cachedMapping = entities.ToDictionary(key => key.Id, value => value as MBObjectBase);
+
                 return entities.SelectMany(_ => entities, (X, Y) => (X, Y)).Where(tuple => tuple.X.Id < tuple.Y.Id)
                                .ToDictionary(key => ElegantPairHelper.Pair(key.X.Id, key.Y.Id), value => _distanceCalculator(value.X, value.Y));
             }
+
             if (typeof(Hero).IsAssignableFrom(typeof(T)))
             {
 #if e143 || e150 || e151 || e152 || e153 || e154 || e155 || e156 || e157 || e158 || e159 || e1510
@@ -111,36 +88,52 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
 #error ConstGameVersionWithPrefix is not handled!
 #endif
                     .Where(h => h.IsInitialized && !h.IsNotSpawned && !h.IsDisabled && !h.IsDead && !h.IsNotable).ToList();
+                _cachedMapping = activeHeroes.ToDictionary(key => key.Id, value => value as MBObjectBase);
+
                 return activeHeroes.SelectMany(_ => activeHeroes, (X, Y) => (X, Y)).Where(tuple => tuple.X.Id < tuple.Y.Id)
                                    .ToDictionary(key => ElegantPairHelper.Pair(key.X.Id, key.Y.Id), value => CalculateDistanceBetweenHeroes(value.X, value.Y).GetValueOrDefault());
             }
+
             if (typeof(Settlement).IsAssignableFrom(typeof(T)))
             {
                 var settlements = Settlement.All.Where(s => s.IsInitialized && (s.IsFortification || s.IsVillage)).ToList();
-                return settlements.SelectMany(_ => settlements, (X, Y) => (X, Y)).Where(tuple => tuple.X.Id < tuple.Y.Id)
-                                  .ToDictionary(key => ElegantPairHelper.Pair(key.X.Id, key.Y.Id), value => Campaign.Current.Models.MapDistanceModel.GetDistance(value.X, value.Y));
+                _cachedMapping = settlements.ToDictionary(key => key.Id, value => value as MBObjectBase);
+                return settlements
+                    .SelectMany(_ => settlements, (X, Y) => (X, Y))
+                    .Where(tuple => tuple.X.Id < tuple.Y.Id)
+                    .ToDictionary(
+                        key => ElegantPairHelper.Pair(key.X.Id, key.Y.Id),
+                        value => Campaign.Current.Models.MapDistanceModel.GetDistance(value.X, value.Y));
             }
+
             if (typeof(Clan).IsAssignableFrom(typeof(T)))
             {
                 var clans = Clan.All.Where(c => c.IsInitialized && c.Fiefs.Any()).ToList();
+                _cachedMapping = clans.ToDictionary(key => key.Id, value => value as MBObjectBase);
+
                 var settlementDistanceMatrix = Campaign.Current.GetCampaignBehavior<GeopoliticsCachingBehavior>().SettlementDistanceMatrix ?? new DistanceMatrixImplementation<Settlement>();
                 var lst = GetSettlementOwnersPairedList(settlementDistanceMatrix);
 
                 return clans.SelectMany(_ => clans, (X, Y) => (X, Y)).Where(tuple => tuple.X.Id < tuple.Y.Id)
                             .ToDictionary(key => ElegantPairHelper.Pair(key.X.Id, key.Y.Id), value => CalculateDistanceBetweenClans(value.X, value.Y, lst ?? Enumerable.Empty<(ulong, float, float)>()).GetValueOrDefault());
             }
+
             if (typeof(Kingdom).IsAssignableFrom(typeof(T)))
             {
                 var kingdoms = Kingdom.All.Where(k => k.IsInitialized && k.Fiefs.Any()).ToList();
+                _cachedMapping = kingdoms.ToDictionary(key => key.Id, value => value as MBObjectBase);
+
                 var settlementDistanceMatrix = Campaign.Current.GetCampaignBehavior<GeopoliticsCachingBehavior>().SettlementDistanceMatrix ?? new DistanceMatrixImplementation<Settlement>();
+
                 return kingdoms.SelectMany(_ => kingdoms, (X, Y) => (X, Y)).Where(tuple => tuple.X.Id < tuple.Y.Id)
                                .ToDictionary(key => ElegantPairHelper.Pair(key.X.Id, key.Y.Id), value => CalculateDistanceBetweenKingdoms(value.X, value.Y, settlementDistanceMatrix).GetValueOrDefault());
             }
-            throw new ArgumentException($"{typeof(string).FullName} is not supported type");
+
+            throw new ArgumentException($"{typeof(T).FullName} is not a supported type");
         }
 
-        private Dictionary<(T Object1, T Object2), float> GetTypedDistanceMatrix() =>
-            _distanceMatrix.ToDictionary(key => ElegantPairHelper.UnPairMBGUID(key.Key), value => value.Value)
-                           .ToDictionary(key => ((T)MBObjectManager.Instance.GetObject(key.Key.A), (T)MBObjectManager.Instance.GetObject(key.Key.B)), value => value.Value);
+        private Dictionary<(T Object1, T Object2), float> GetTypedDistanceMatrix() => _distanceMatrix
+            .ToDictionary(key => ElegantPairHelper.UnPairMBGUID(key.Key), value => value.Value)
+            .ToDictionary(key => (GetObject(key.Key.A), GetObject(key.Key.B)), value => value.Value);
     }
 }
