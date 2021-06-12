@@ -69,7 +69,7 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
         /// <exception cref="T:System.ArgumentException"></exception>
         private Dictionary<ulong, float> CalculateDistanceMatrix()
         {
-            if (Campaign.Current.GetCampaignBehavior<GeopoliticsCachingBehavior>() is null)
+            if (Campaign.Current.GetCampaignBehavior<GeopoliticsBehavior>() is null)
                 return new Dictionary<ulong, float>();
 
             if (_entityListGetter is not null && _distanceCalculator is not null)
