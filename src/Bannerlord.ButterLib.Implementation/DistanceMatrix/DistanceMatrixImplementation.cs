@@ -63,7 +63,7 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
 
         private T GetObject(MBGUID id) => _cachedMapping.TryGetValue(id, out var obj) && obj is T objT
             ? objT
-            : throw new ArgumentException("Id was not found!", nameof(id));
+            : throw new ArgumentException($"Id '{id}' was not found!", nameof(id));
 
         /// <summary>Calculates distance matrix for the <see cref="MBObjectBase"/> objects of the specified subtype <typeparamref name="T"/>.</summary>
         /// <exception cref="T:System.ArgumentException"></exception>
