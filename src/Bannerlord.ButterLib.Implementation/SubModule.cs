@@ -116,9 +116,16 @@ namespace Bannerlord.ButterLib.Implementation
 
             if (game.GameType is Campaign)
             {
-                var gameStarter = (CampaignGameStarter)gameStarterObject;
+                var gameStarter = (CampaignGameStarter) gameStarterObject;
 
-                gameStarter.AddBehavior(new GeopoliticsBehavior());
+                if (DistanceMatrixSubSystem.Instance is { } subSystem)
+                {
+                    if (subSystem.IsEnabled)
+                    {
+                        gameStarter.AddBehavior(new GeopoliticsBehavior());
+                    }
+                    subSystem.GameInitialized = true;
+                }
 
 #if e143 || e150 || e151 || e152 || e153
                 if (game.GameType is StoryMode.CampaignStoryMode)
@@ -137,6 +144,10 @@ namespace Bannerlord.ButterLib.Implementation
             if (game.GameType is Campaign)
             {
                 CampaignIdentifierEvents.Instance = null;
+                if (DistanceMatrixSubSystem.Instance is { } subSystem)
+                {
+                    subSystem.GameInitialized = false;
+                }
             }
 
             Logger.LogTrace("ButterLib.Implementation: OnGameEnd: Done");

@@ -34,13 +34,25 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
             _flags ??= new();
         }
 
-        private void ReleaseOrphanedEntries<T>(IDictionary<DataKey, T> dict, ISet<MBGUID> cache)
+        private static void ReleaseOrphanedEntries<T>(IDictionary<DataKey, T> dict, ISet<MBGUID> cache)
         {
+            static bool DoesNotExist(MBGUID objectId)
+            {
+                try
+                {
+                    return MBObjectManager.Instance.GetObject(objectId) == default;
+                }
+                catch (Exception e) when(e is MBTypeNotRegisteredException)
+                {
+                    return true;
+                }
+            }
+
             foreach (var k in dict.Keys)
             {
                 if (cache.Contains(k.ObjectId))
                     dict.Remove(k);
-                else if (MBObjectManager.Instance.GetObject(k.ObjectId) == default)
+                else if (DoesNotExist(k.ObjectId))
                 {
                     cache.Add(k.ObjectId);
                     dict.Remove(k);

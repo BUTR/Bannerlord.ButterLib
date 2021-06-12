@@ -69,13 +69,20 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
         /// <exception cref="T:System.ArgumentException"></exception>
         private Dictionary<ulong, float> CalculateDistanceMatrix()
         {
+            if (Campaign.Current.GetCampaignBehavior<GeopoliticsCachingBehavior>() is null)
+                return new Dictionary<ulong, float>();
+
             if (_entityListGetter is not null && _distanceCalculator is not null)
             {
                 var entities = _entityListGetter().ToList();
                 _cachedMapping = entities.ToDictionary(key => key.Id, value => value as MBObjectBase);
 
-                return entities.SelectMany(_ => entities, (X, Y) => (X, Y)).Where(tuple => tuple.X.Id < tuple.Y.Id)
-                               .ToDictionary(key => ElegantPairHelper.Pair(key.X.Id, key.Y.Id), value => _distanceCalculator(value.X, value.Y));
+                return entities
+                    .SelectMany(_ => entities, (X, Y) => (X, Y))
+                    .Where(tuple => tuple.X.Id < tuple.Y.Id)
+                    .ToDictionary(
+                        key => ElegantPairHelper.Pair(key.X.Id, key.Y.Id),
+                        value => _distanceCalculator(value.X, value.Y));
             }
 
             if (typeof(Hero).IsAssignableFrom(typeof(T)))
@@ -90,8 +97,12 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
                     .Where(h => h.IsInitialized && !h.IsNotSpawned && !h.IsDisabled && !h.IsDead && !h.IsNotable).ToList();
                 _cachedMapping = activeHeroes.ToDictionary(key => key.Id, value => value as MBObjectBase);
 
-                return activeHeroes.SelectMany(_ => activeHeroes, (X, Y) => (X, Y)).Where(tuple => tuple.X.Id < tuple.Y.Id)
-                                   .ToDictionary(key => ElegantPairHelper.Pair(key.X.Id, key.Y.Id), value => CalculateDistanceBetweenHeroes(value.X, value.Y).GetValueOrDefault());
+                return activeHeroes
+                    .SelectMany(_ => activeHeroes, (X, Y) => (X, Y))
+                    .Where(tuple => tuple.X.Id < tuple.Y.Id)
+                    .ToDictionary(
+                        key => ElegantPairHelper.Pair(key.X.Id, key.Y.Id),
+                        value => CalculateDistanceBetweenHeroes(value.X, value.Y).GetValueOrDefault());
             }
 
             if (typeof(Settlement).IsAssignableFrom(typeof(T)))
@@ -114,8 +125,12 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
                 var settlementDistanceMatrix = Campaign.Current.GetCampaignBehavior<GeopoliticsBehavior>().SettlementDistanceMatrix ?? new DistanceMatrixImplementation<Settlement>();
                 var lst = GetSettlementOwnersPairedList(settlementDistanceMatrix);
 
-                return clans.SelectMany(_ => clans, (X, Y) => (X, Y)).Where(tuple => tuple.X.Id < tuple.Y.Id)
-                            .ToDictionary(key => ElegantPairHelper.Pair(key.X.Id, key.Y.Id), value => CalculateDistanceBetweenClans(value.X, value.Y, lst ?? Enumerable.Empty<(ulong, float, float)>()).GetValueOrDefault());
+                return clans
+                    .SelectMany(_ => clans, (X, Y) => (X, Y))
+                    .Where(tuple => tuple.X.Id < tuple.Y.Id)
+                    .ToDictionary(
+                        key => ElegantPairHelper.Pair(key.X.Id, key.Y.Id),
+                        value => CalculateDistanceBetweenClans(value.X, value.Y, lst ?? Enumerable.Empty<(ulong, float, float)>()).GetValueOrDefault());
             }
 
             if (typeof(Kingdom).IsAssignableFrom(typeof(T)))
