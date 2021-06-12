@@ -133,6 +133,6 @@ namespace Bannerlord.ButterLib.Common.Extensions
             return services;
         }
 
-        public static ISubSystem? GetSubSystem(this ServiceProvider sp, string id) => sp.GetServices<ISubSystem>().FirstOrDefault(s => s.Id == id);
+        public static ISubSystem? GetSubSystem(this IServiceProvider sp, string id) => sp.GetServices<ISubSystem>().FirstOrDefault(s => s.Id == id);
     }
 }
