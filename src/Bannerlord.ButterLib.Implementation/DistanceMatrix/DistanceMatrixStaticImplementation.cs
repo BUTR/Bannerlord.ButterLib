@@ -57,9 +57,11 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
               !float.IsNaN(x.Value) && ((x.Key.object1.Kingdom == kingdom1 && x.Key.object2.Kingdom == kingdom2) ||
                                         (x.Key.object2.Kingdom == kingdom1 && x.Key.object1.Kingdom == kingdom2));
 
-            static float ClanDistanceSelector(KeyValuePair<(Clan object1, Clan object2), float> x) => x.Value;
+            static (float distance, float weight) WeightedSettlementSelector(KeyValuePair<(Clan object1, Clan object2), float> x) =>
+              (x.Value, x.Key.object1.Tier + x.Key.object2.Tier);
 
-            return clanDistanceMatrix.AsTypedDictionary.Where(Predicate).Select(ClanDistanceSelector).Sum();
+            var settlementDistances = clanDistanceMatrix.AsTypedDictionary.Where(Predicate).Select(WeightedSettlementSelector).ToList();
+            return GetWeightedMeanDistance(settlementDistances);
         }
 
         /// <inheritdoc/>
