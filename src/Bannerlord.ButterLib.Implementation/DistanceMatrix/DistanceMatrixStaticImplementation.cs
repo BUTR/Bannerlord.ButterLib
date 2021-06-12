@@ -51,17 +51,15 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
         }
 
         /// <inheritdoc/>
-        public float CalculateDistanceBetweenKingdoms(Kingdom kingdom1, Kingdom kingdom2, DistanceMatrix<Settlement> settlementDistanceMatrix)
+        public float CalculateDistanceBetweenKingdoms(Kingdom kingdom1, Kingdom kingdom2, DistanceMatrix<Clan> clanDistanceMatrix)
         {
-            bool Predicate(KeyValuePair<(Settlement object1, Settlement object2), float> x) =>
-              !float.IsNaN(x.Value) && ((x.Key.object1.MapFaction == kingdom1 && x.Key.object2.MapFaction == kingdom2) ||
-                                        (x.Key.object2.MapFaction == kingdom1 && x.Key.object1.MapFaction == kingdom2));
+            bool Predicate(KeyValuePair<(Clan object1, Clan object2), float> x) =>
+              !float.IsNaN(x.Value) && ((x.Key.object1.Kingdom == kingdom1 && x.Key.object2.Kingdom == kingdom2) ||
+                                        (x.Key.object2.Kingdom == kingdom1 && x.Key.object1.Kingdom == kingdom2));
 
-            static (float distance, float weight) WeightedSettlementSelector(KeyValuePair<(Settlement object1, Settlement object2), float> x) =>
-              (x.Value, GetSettlementWeight(x.Key.object1) + GetSettlementWeight(x.Key.object2));
+            static float ClanDistanceSelector(KeyValuePair<(Clan object1, Clan object2), float> x) => x.Value;
 
-            var settlementDistances = settlementDistanceMatrix.AsTypedDictionary.Where(Predicate).Select(WeightedSettlementSelector).ToList();
-            return GetWeightedMeanDistance(settlementDistances);
+            return clanDistanceMatrix.AsTypedDictionary.Where(Predicate).Select(ClanDistanceSelector).Sum();
         }
 
         /// <inheritdoc/>

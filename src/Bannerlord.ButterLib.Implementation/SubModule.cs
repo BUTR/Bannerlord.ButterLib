@@ -118,7 +118,7 @@ namespace Bannerlord.ButterLib.Implementation
             {
                 var gameStarter = (CampaignGameStarter)gameStarterObject;
 
-                gameStarter.AddBehavior(new GeopoliticsCachingBehavior());
+                gameStarter.AddBehavior(new GeopoliticsBehavior());
 
 #if e143 || e150 || e151 || e152 || e153
                 if (game.GameType is StoryMode.CampaignStoryMode)

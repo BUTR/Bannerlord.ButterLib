@@ -81,8 +81,8 @@ namespace Bannerlord.ButterLib.DistanceMatrix
         /// or <see cref="float.NaN" /> if distance could not be calculated.
         /// </returns>
         /// <remarks>Calculation is based on the average distance between kingdoms fiefs weighted by the fief type.</remarks>
-        public static float? CalculateDistanceBetweenKingdoms(Kingdom kingdom1, Kingdom kingdom2, DistanceMatrix<Settlement> settlementDistanceMatrix)
-            => StaticInstance?.CalculateDistanceBetweenKingdoms(kingdom1, kingdom2, settlementDistanceMatrix);
+        public static float? CalculateDistanceBetweenKingdoms(Kingdom kingdom1, Kingdom kingdom2, DistanceMatrix<Clan> clanDistanceMatrix)
+            => StaticInstance?.CalculateDistanceBetweenKingdoms(kingdom1, kingdom2, clanDistanceMatrix);
 
         /// <summary>
         /// Transforms given <see cref="Settlement"/> distance matrix into list of the weighted distances

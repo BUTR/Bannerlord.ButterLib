@@ -12,7 +12,7 @@ namespace Bannerlord.ButterLib.Implementation.Common.Extensions
         /// <inheritdoc/>
         public DistanceMatrix<Settlement>? GetDefaultSettlementDistanceMatrix(Campaign campaign)
         {
-            return campaign.GameStarted && campaign.GetCampaignBehavior<GeopoliticsCachingBehavior>() is { } geopoliticsCachingBehavior
+            return campaign.GameStarted && campaign.GetCampaignBehavior<GeopoliticsBehavior>() is { } geopoliticsCachingBehavior
                 ? geopoliticsCachingBehavior.SettlementDistanceMatrix
                 : null;
         }
@@ -20,7 +20,7 @@ namespace Bannerlord.ButterLib.Implementation.Common.Extensions
         /// <inheritdoc/>
         public DistanceMatrix<Clan>? GetDefaultClanDistanceMatrix(Campaign campaign)
         {
-            return campaign.GameStarted && campaign.GetCampaignBehavior<GeopoliticsCachingBehavior>() is { } geopoliticsCachingBehavior
+            return campaign.GameStarted && campaign.GetCampaignBehavior<GeopoliticsBehavior>() is { } geopoliticsCachingBehavior
                 ? geopoliticsCachingBehavior.ClanDistanceMatrix
                 : null;
         }
@@ -28,7 +28,7 @@ namespace Bannerlord.ButterLib.Implementation.Common.Extensions
         /// <inheritdoc/>
         public DistanceMatrix<Kingdom>? GetDefaultKingdomDistanceMatrix(Campaign campaign)
         {
-            return campaign.GameStarted && campaign.GetCampaignBehavior<GeopoliticsCachingBehavior>() is { } geopoliticsCachingBehavior
+            return campaign.GameStarted && campaign.GetCampaignBehavior<GeopoliticsBehavior>() is { } geopoliticsCachingBehavior
                 ? geopoliticsCachingBehavior.KingdomDistanceMatrix
                 : null;
         }

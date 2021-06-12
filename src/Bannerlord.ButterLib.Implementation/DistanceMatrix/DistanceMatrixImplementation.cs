@@ -111,7 +111,7 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
                 var clans = Clan.All.Where(c => c.IsInitialized && c.Fiefs.Any()).ToList();
                 _cachedMapping = clans.ToDictionary(key => key.Id, value => value as MBObjectBase);
 
-                var settlementDistanceMatrix = Campaign.Current.GetCampaignBehavior<GeopoliticsCachingBehavior>().SettlementDistanceMatrix ?? new DistanceMatrixImplementation<Settlement>();
+                var settlementDistanceMatrix = Campaign.Current.GetCampaignBehavior<GeopoliticsBehavior>().SettlementDistanceMatrix ?? new DistanceMatrixImplementation<Settlement>();
                 var lst = GetSettlementOwnersPairedList(settlementDistanceMatrix);
 
                 return clans.SelectMany(_ => clans, (X, Y) => (X, Y)).Where(tuple => tuple.X.Id < tuple.Y.Id)
@@ -123,10 +123,10 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
                 var kingdoms = Kingdom.All.Where(k => k.IsInitialized && k.Fiefs.Any()).ToList();
                 _cachedMapping = kingdoms.ToDictionary(key => key.Id, value => value as MBObjectBase);
 
-                var settlementDistanceMatrix = Campaign.Current.GetCampaignBehavior<GeopoliticsCachingBehavior>().SettlementDistanceMatrix ?? new DistanceMatrixImplementation<Settlement>();
+                var claDistanceMatrix = Campaign.Current.GetCampaignBehavior<GeopoliticsBehavior>().ClanDistanceMatrix ?? new DistanceMatrixImplementation<Clan>();
 
                 return kingdoms.SelectMany(_ => kingdoms, (X, Y) => (X, Y)).Where(tuple => tuple.X.Id < tuple.Y.Id)
-                               .ToDictionary(key => ElegantPairHelper.Pair(key.X.Id, key.Y.Id), value => CalculateDistanceBetweenKingdoms(value.X, value.Y, settlementDistanceMatrix).GetValueOrDefault());
+                               .ToDictionary(key => ElegantPairHelper.Pair(key.X.Id, key.Y.Id), value => CalculateDistanceBetweenKingdoms(value.X, value.Y, claDistanceMatrix).GetValueOrDefault());
             }
 
             throw new ArgumentException($"{typeof(T).FullName} is not a supported type");
