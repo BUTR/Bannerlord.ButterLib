@@ -13,8 +13,6 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
     /// <inheritdoc/>
     internal sealed class DistanceMatrixImplementation<T> : DistanceMatrix<T> where T : MBObjectBase
     {
-        private record Ref<TRef>(TRef Value);
-
         //Fields
         private readonly Dictionary<ulong, float> _distanceMatrix;
         private readonly Dictionary<(T Object1, T Object2), float> _typedDistanceMatrix;
@@ -63,7 +61,9 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
 
         //Private methods
 
-        private T GetObject(MBGUID id) => _cachedMapping.TryGetValue(id, out var obj) && obj is T objT ? objT : throw new Exception();
+        private T GetObject(MBGUID id) => _cachedMapping.TryGetValue(id, out var obj) && obj is T objT
+            ? objT
+            : throw new ArgumentException("Id was not found!", nameof(id));
 
         /// <summary>Calculates distance matrix for the <see cref="MBObjectBase"/> objects of the specified subtype <typeparamref name="T"/>.</summary>
         /// <exception cref="T:System.ArgumentException"></exception>
@@ -77,6 +77,7 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
                 return entities.SelectMany(_ => entities, (X, Y) => (X, Y)).Where(tuple => tuple.X.Id < tuple.Y.Id)
                                .ToDictionary(key => ElegantPairHelper.Pair(key.X.Id, key.Y.Id), value => _distanceCalculator(value.X, value.Y));
             }
+
             if (typeof(Hero).IsAssignableFrom(typeof(T)))
             {
 #if e143 || e150 || e151 || e152 || e153 || e154 || e155 || e156 || e157 || e158 || e159 || e1510
@@ -92,6 +93,7 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
                 return activeHeroes.SelectMany(_ => activeHeroes, (X, Y) => (X, Y)).Where(tuple => tuple.X.Id < tuple.Y.Id)
                                    .ToDictionary(key => ElegantPairHelper.Pair(key.X.Id, key.Y.Id), value => CalculateDistanceBetweenHeroes(value.X, value.Y).GetValueOrDefault());
             }
+
             if (typeof(Settlement).IsAssignableFrom(typeof(T)))
             {
                 var settlements = Settlement.All.Where(s => s.IsInitialized && (s.IsFortification || s.IsVillage)).ToList();
@@ -103,6 +105,7 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
                         key => ElegantPairHelper.Pair(key.X.Id, key.Y.Id),
                         value => Campaign.Current.Models.MapDistanceModel.GetDistance(value.X, value.Y));
             }
+
             if (typeof(Clan).IsAssignableFrom(typeof(T)))
             {
                 var clans = Clan.All.Where(c => c.IsInitialized && c.Fiefs.Any()).ToList();
@@ -114,6 +117,7 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
                 return clans.SelectMany(_ => clans, (X, Y) => (X, Y)).Where(tuple => tuple.X.Id < tuple.Y.Id)
                             .ToDictionary(key => ElegantPairHelper.Pair(key.X.Id, key.Y.Id), value => CalculateDistanceBetweenClans(value.X, value.Y, lst ?? Enumerable.Empty<(ulong, float, float)>()).GetValueOrDefault());
             }
+
             if (typeof(Kingdom).IsAssignableFrom(typeof(T)))
             {
                 var kingdoms = Kingdom.All.Where(k => k.IsInitialized && k.Fiefs.Any()).ToList();
@@ -124,7 +128,8 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
                 return kingdoms.SelectMany(_ => kingdoms, (X, Y) => (X, Y)).Where(tuple => tuple.X.Id < tuple.Y.Id)
                                .ToDictionary(key => ElegantPairHelper.Pair(key.X.Id, key.Y.Id), value => CalculateDistanceBetweenKingdoms(value.X, value.Y, settlementDistanceMatrix).GetValueOrDefault());
             }
-            throw new ArgumentException($"{typeof(string).FullName} is not supported type");
+
+            throw new ArgumentException($"{typeof(T).FullName} is not a supported type");
         }
 
         private Dictionary<(T Object1, T Object2), float> GetTypedDistanceMatrix() => _distanceMatrix
