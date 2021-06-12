@@ -25,7 +25,14 @@ namespace Bannerlord.ButterLib.SaveSystem
         {
             if (serializer.Deserialize<MBGUID?>(reader) is { } mbguid)
             {
-                return MBObjectManager.Instance.GetObject(mbguid);
+                try
+                {
+                    return MBObjectManager.Instance.GetObject(mbguid);
+                }
+                catch (Exception e) when(e is MBTypeNotRegisteredException)
+                {
+                    return null;
+                }
             }
             return null;
         }
