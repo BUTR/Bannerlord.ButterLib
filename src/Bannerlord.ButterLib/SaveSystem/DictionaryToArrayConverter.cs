@@ -35,7 +35,7 @@ namespace Bannerlord.ButterLib.SaveSystem
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            if (!(existingValue is IDictionary dict))
+            if (existingValue is not IDictionary dict)
             {
                 var contract = serializer.ContractResolver.ResolveContract(objectType);
                 dict = (IDictionary) contract.DefaultCreator();

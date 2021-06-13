@@ -5,6 +5,7 @@ using System.Linq;
 
 using TaleWorlds.Library;
 
+// ReSharper disable once CheckNamespace
 namespace Bannerlord.ButterLib.Helpers.ModuleInfo
 {
     public static class ModuleSorter

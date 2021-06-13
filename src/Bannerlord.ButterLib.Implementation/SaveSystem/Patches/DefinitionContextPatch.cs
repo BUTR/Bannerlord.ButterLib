@@ -17,23 +17,21 @@ using TaleWorlds.SaveSystem.Definition;
 
 namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
 {
-    /*
-     * <summary>
-     * Patches all the methods in DefinitionContext which add a new type definition from a SaveableTypeDefiner to only
-     * execute if the given type is not already registered.
-     * </summary>
-     * <remarks>
-     * <para>
-     * This prevents unpredictable save [partial] failures (game reports a saving error, yet saves it anyway).
-     * Further, it prevents a crash when trying to load one of such savegames.
-     * </para>
-     * <para>
-     * In the face of mods, it's impossible for a programmer to know whether a type has already been defined elsewhere
-     * (and also ridiculous to ask any programmer to always know what types have already been defined in the base game).
-     * These patches fully resolve such issues.
-     * </para>
-     * </remarks>
-     */
+    /// <summary>
+    /// Patches all the methods in DefinitionContext which add a new type definition from a SaveableTypeDefiner to only
+    /// execute if the given type is not already registered.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// This prevents unpredictable save [partial] failures (game reports a saving error, yet saves it anyway).
+    /// Further, it prevents a crash when trying to load one of such savegames.
+    /// </para>
+    /// <para>
+    /// In the face of mods, it's impossible for a programmer to know whether a type has already been defined elsewhere
+    /// (and also ridiculous to ask any programmer to always know what types have already been defined in the base game).
+    /// These patches fully resolve such issues.
+    /// </para>
+    /// </remarks>
     internal sealed class DefinitionContextPatch
     {
         private static ILogger _log = default!;
@@ -138,19 +136,17 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
                                                              Dictionary<Type, TypeDefinitionBase> ____allTypeDefinitions) =>
             CanAddTypeDefinition(genericStructDefinition, ____allTypeDefinitions);
 
-        /*
-         * <summary>
-         * Prevent <c>DefinitionContext.ConstructContainerDefinition</c> from executing if the given
-         * <see cref="Type"> is not a supported container type.
-         * </summary>
-         * <remarks>
-         * The target method fails to check all used values of the <see cref="ContainerType"> enum;
-         * specifically, it does not check for the value <c>None</c>. Thus, it can easily add alleged
-         * container type definitions to the <c>DefinitionContext</c> whose fields are, besides the
-         * <see cref="Type">, entirely null. If this happens, the game will later crash.
-         * </remarks>
-         */
-        private static bool ConstructContainerDefinitionPrefix(Type type) => type is not null && IsContainer!(type);
+        /// <summary>
+        /// Prevent <c>DefinitionContext.ConstructContainerDefinition</c> from executing if the given
+        /// <see cref="Type"/> is not a supported container type.
+        /// </summary>
+        /// <remarks>
+        /// The target method fails to check all used values of the <see cref="ContainerType"/> enum;
+        /// specifically, it does not check for the value <c>None</c>. Thus, it can easily add alleged
+        /// container type definitions to the <c>DefinitionContext</c> whose fields are, besides the
+        /// <see cref="Type"/>, entirely null. If this happens, the game will later crash.
+        /// </remarks>
+        private static bool ConstructContainerDefinitionPrefix(Type? type) => type is not null && IsContainer!(type);
 
         // INSTRUMENTATION
 
