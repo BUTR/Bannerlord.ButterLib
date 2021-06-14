@@ -12,6 +12,11 @@
     <string id="4BuIRaILsb" text="Выберите идентифицированную кампанию" />
     <string id="wF4qRrhmEu" text="Присвоить новый ID" />
     <string id="25Ts3iQnv6" text="Это отдельная кампания, и ей должен быть присвоен новый идентификатор." />
-    <string id="GDkjThJcH6" text="ButterLib загружен посе официальных модулей! ButterLib должен загружаться до официальных модулей!" />
+
+    <string id="BguqytVG3q" text="Предупреждение от Bannerlord.ButterLib!" />
+    <string id="FE6ya1gzZR" text="{DEPENDENT_MODULE} не найден!" />
+    <string id="5G9zffrgMh" text="{MODULE} загружен до {DEPENDENT_MODULE}!{NL}{MODULE} должен загружаться после этого модуля!" />
+    <string id="UZ8zfvudMs" text="{MODULE} загружен после {DEPENDENT_MODULE}!{NL}{MODULE} должен загружаться до этого модуля!" />
+    <string id="eXs6FLm5DP" text="Рекомендуется прервать игру. Вы хотите выйти?" />
   </strings>
 </base>
