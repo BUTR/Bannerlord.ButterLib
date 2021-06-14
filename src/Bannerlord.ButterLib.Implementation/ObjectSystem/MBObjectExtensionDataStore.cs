@@ -1,4 +1,7 @@
-﻿using Bannerlord.ButterLib.ObjectSystem;
+﻿using Bannerlord.ButterLib.Common.Extensions;
+using Bannerlord.ButterLib.ObjectSystem;
+
+using Microsoft.Extensions.DependencyInjection;
 
 using System;
 using System.Collections.Concurrent;
@@ -19,6 +22,9 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
 
         public override void SyncData(IDataStore dataStore)
         {
+            var keeper = ButterLibSubModule.Instance?.GetServiceProvider()?.GetRequiredService<IMBObjectKeeper>();
+            keeper?.Sync(dataStore);
+
             if (dataStore.IsSaving)
             {
                 // Cache known-expired object IDs, as MBObjectManager.GetObject can be slow.

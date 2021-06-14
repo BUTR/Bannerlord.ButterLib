@@ -19,16 +19,12 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
 
         private static string ChunksToString(string[] chunks)
         {
-            if (chunks.Length == 0)
-                return string.Empty;
-            else if (chunks.Length == 1)
-                return chunks[0];
+            if (chunks.Length == 0) return string.Empty;
+            if (chunks.Length == 1) return chunks[0];
 
             var strBuilder = new StringBuilder(short.MaxValue);
-
             foreach (var chunk in chunks)
                 strBuilder.Append(chunk);
-
             return strBuilder.ToString();
         }
 
@@ -67,10 +63,10 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
                     var jsonDataChunks = Array.Empty<string>();
                     if (dataStore.SyncData(key, ref jsonDataChunks))
                     {
-                        var jsonData = JsonConvert.DeserializeObject<JsonData>(ChunksToString(jsonDataChunks ?? Array.Empty<string>()), settings);
-                        data = jsonData.Format switch
+                        var (format, jsonData) = JsonConvert.DeserializeObject<JsonData>(ChunksToString(jsonDataChunks ?? Array.Empty<string>()), settings);
+                        data = format switch
                         {
-                            2 => JsonConvert.DeserializeObject<T>(jsonData.Data, settings),
+                            2 => JsonConvert.DeserializeObject<T>(jsonData, settings),
                             _ => data
                         };
                         return true;
@@ -102,16 +98,6 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
             return false;
         }
 
-        private sealed class JsonData
-        {
-            public int Format { get; private set; }
-            public string Data { get; private set; }
-
-            public JsonData(int format, string data)
-            {
-                Format = format;
-                Data = data;
-            }
-        }
+        private record JsonData(int Format, string Data);
     }
 }

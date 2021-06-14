@@ -52,6 +52,8 @@ namespace Bannerlord.ButterLib.Implementation
 #endif
 
                 services.AddScoped<IMBObjectExtensionDataStore, MBObjectExtensionDataStore>();
+                services.AddScoped<IMBObjectFinder, MBObjectFinder>();
+                services.AddScoped<IMBObjectKeeper, MBObjectKeeper>();
 
                 services.AddScoped<HotKeyManager, HotKeyManagerImplementation>();
                 services.AddSingleton<IHotKeyManagerStatic, HotKeyManagerStaticImplementation>();

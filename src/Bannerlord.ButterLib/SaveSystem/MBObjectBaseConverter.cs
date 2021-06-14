@@ -1,4 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using Bannerlord.ButterLib.Common.Extensions;
+using Bannerlord.ButterLib.ObjectSystem;
+
+using Microsoft.Extensions.DependencyInjection;
+
+using Newtonsoft.Json;
 
 using System;
 
@@ -12,9 +17,12 @@ namespace Bannerlord.ButterLib.SaveSystem
 
         public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
         {
-            if (value is MBObjectBase mbObjectBase)
+            if (value is MBObjectBase mbObject)
             {
-                serializer.Serialize(writer, mbObjectBase.Id);
+                var keeper = ButterLibSubModule.Instance?.GetServiceProvider()?.GetRequiredService<IMBObjectKeeper>();
+                keeper?.Keep(mbObject);
+
+                serializer.Serialize(writer, mbObject.Id);
                 return;
             }
 
@@ -25,14 +33,8 @@ namespace Bannerlord.ButterLib.SaveSystem
         {
             if (serializer.Deserialize<MBGUID?>(reader) is { } mbguid)
             {
-                try
-                {
-                    return MBObjectManager.Instance.GetObject(mbguid);
-                }
-                catch (Exception e) when(e is MBTypeNotRegisteredException)
-                {
-                    return null;
-                }
+                var finder = ButterLibSubModule.Instance?.GetServiceProvider()?.GetRequiredService<IMBObjectFinder>();
+                return finder?.Find(mbguid, objectType);
             }
             return null;
         }
