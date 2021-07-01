@@ -208,8 +208,8 @@ namespace Bannerlord.ButterLib.Common.Helpers
             new()
             {
                 [PLURAL_FORM_TAG] = TextObjectHelper.Create(pluralForm == PluralForm.Plural ? 1 : 0),
-                [SPECIFIC_PLURAL_FORM_TAG] = TextObjectHelper.Create(pluralForm != PluralForm.SpecificPlural ? 1 : 0),
-                [SPECIFIC_SINGULAR_FORM_TAG] = TextObjectHelper.Create(pluralForm != PluralForm.SpecificSingular ? 1 : 0)
+                [SPECIFIC_PLURAL_FORM_TAG] = TextObjectHelper.Create(pluralForm == PluralForm.SpecificPlural ? 1 : 0),
+                [SPECIFIC_SINGULAR_FORM_TAG] = TextObjectHelper.Create(pluralForm == PluralForm.SpecificSingular ? 1 : 0)
             };
 
         /// <summary>Sets a numeric variable along with the appropriate <see cref="PluralForm" /> tag in accordance with the grammar rules of the game language.</summary>
