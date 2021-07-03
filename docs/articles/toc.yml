@@ -25,6 +25,10 @@
   href: HotKeys/
   homepage: HotKeys/Overview.md
 
+- name: MBSubModuleBaseExtended
+  href: MBSubModuleBaseExtended/
+  homepage: MBSubModuleBaseExtended/Overview.md
+
 - name: Optional
   href: Optional/toc.yml
 
