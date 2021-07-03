@@ -35,7 +35,7 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
         private static readonly Type? ICampaignObjectTypeType =
             AccessTools2.TypeByName("TaleWorlds.CampaignSystem.CampaignObjectManager.ICampaignObjectType");
         private static readonly MethodInfo? ObjectClassGetter =
-            AccessTools2.PropertyGetter(ICampaignObjectTypeType, "ObjectClass");
+            AccessTools2.PropertyGetter(ICampaignObjectTypeType!, "ObjectClass");
 
         private static MBObjectBase? FindCampaignObjectManager(MBGUID id, Type type)
         {
