@@ -1,0 +1,152 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Used Terminology: | ButterLib Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Used Terminology: | ButterLib Documentation ">
+    <meta name="generator" content="docfx 2.58.0.0">
+    
+    <link rel="shortcut icon" href="../../favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/collapse-container.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+                  </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+
+<div class="WARNING">
+<h5>Warning</h5>
+<p>This article is an work in progress!</p>
+</div>
+<h3 id="used-terminology">Used Terminology:</h3>
+<ul>
+<li>Game Reference Assemblies -</li>
+<li>Game Stable Version -</li>
+<li>Game Beta Version -</li>
+</ul>
+<h3 id="used-environment-variables">Used Environment Variables:</h3>
+<ul>
+<li><code>GITHUB_ACTIONS</code> - used to indicate that the current environment is a CI.</li>
+<li><code>BANNERLORD_GAME_DIR</code> - path to the Bannerlord game directory.</li>
+</ul>
+<p>There are also two additional game path variables, used in the case when you can setup two game installations - the current Stable game version and the current Beta game version.</p>
+<ul>
+<li><code>BANNERLORD_STABLE_DIR</code> - points to the Stable game installation.</li>
+<li><code>BANNERLORD_BETA_DIR</code> - points to the Beta game installation.</li>
+</ul>
+<p>An example of such case is to buy the game on <code>Steam</code> and <code>GOG</code>. <code>Steam</code> provides a Beta version, while <code>GOG</code> provides the Stable one.</p>
+<h3 id="solution">Solution</h3>
+<p>The solution (<code>Bannerlord.ButterLib.sln</code>) has 4 configurations available.</p>
+<ul>
+<li><code>Stable Debug</code></li>
+<li><code>Stable Release</code></li>
+<li><code>Beta Debug</code></li>
+<li><code>Beta Release</code></li>
+</ul>
+<p>They are used to the full potential if you have set up the additional variables <code>BANNERLORD_STABLE_DIR</code> and <code>BANNERLORD_BETA_DIR</code>.
+Basically, when a <code>Stable</code> configuration is chosen, the modules will be copied after the project build into <code>%Stable Game Path%/Modules</code>.<br>
+Same with <code>Beta</code>, will be copied into <code>%Beta Game Path%/Modules</code>.<br>
+When those variables are not provided, the <code>BANNERLORD_GAME_DIR</code> is used for both. This means that in both configurations the modules will be copied to the same game installations for Stable and Beta game versions.</p>
+<h3 id="supported-game-versionstxt">supported-game-versions.txt</h3>
+<p>This is a TXT file that contains all supported game version by ButterLib currently, in specific order:</p>
+<ul>
+<li>First version entry is the current Beta.</li>
+<li>Second is the current Stable.</li>
+<li>Last is the minimal version supported.</li>
+<li>Everything in-between can be in any order.</li>
+</ul>
+<p>The solution parses the file and uses the version to get the right Game Reference Assemblies to build against.</p>
+</article>
+          </div>
+          <div class="contribution-panel mobile-hide">
+              <a href="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/docs/articles/Development/Overview.md/#L1" title="Improve this Doc" class="fab btn-warning pull-right"><i class="glyphicon glyphicon-pencil"></i></a>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            © 2020 BUTR
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>

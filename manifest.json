@@ -1,0 +1,1362 @@
+{
+  "homepages": [],
+  "source_base_path": "D:/a/Bannerlord.ButterLib/Bannerlord.ButterLib/docs",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "Resource",
+      "output": {
+        "resource": {
+          "relative_path": "index.json"
+        }
+      },
+      "is_incremental": false
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../resources/Butter.png",
+      "output": {
+        "resource": {
+          "relative_path": "resources/Butter.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "../resources/language.xsd",
+      "output": {
+        "resource": {
+          "relative_path": "resources/language.xsd"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Assemblies.AssemblyVerifier.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Assemblies.AssemblyVerifier.html",
+          "hash": "Hgf0F0Z3YZr3YwtHxvDoGK10IiCmDyu/aKx1C/Lb0JU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Assemblies.IAssemblyLoader.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Assemblies.IAssemblyLoader.html",
+          "hash": "Il9qrSByRBNmNuvM6s4RngwLJ/qxWLgW7Tfz9IRdXM8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Assemblies.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Assemblies.html",
+          "hash": "bP+OcwRITu3IrGnage6HFOff/QGbIbb+hnncehJOmZ0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.ButterLibSaveableTypeDefiner.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.ButterLibSaveableTypeDefiner.html",
+          "hash": "7xJekUGUParRM34sxWsIw7c5XeHm1D1/6iVfm5cClVc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.ButterLibSubModule.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.ButterLibSubModule.html",
+          "hash": "2/7jdwY3whrcqITif9lA92na1W9gJpsC44z/Zezlgq0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.CampaignIdentifier.CampaignDescriptor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.CampaignIdentifier.CampaignDescriptor.html",
+          "hash": "5ot3UJLkdgefAVOh7tEdur/ksIRB6CUc34dGWaaM8z0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.CampaignIdentifier.CampaignIdentifierEvents.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.CampaignIdentifier.CampaignIdentifierEvents.html",
+          "hash": "GLZL40lbo6GGDv89yet4cq+csnYac3/SN+BjYOE95hE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.CampaignIdentifier.ICampaignDescriptorProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.CampaignIdentifier.ICampaignDescriptorProvider.html",
+          "hash": "DfFnfxCLm7ar0LyEqODRLts9aKUgw+8iXWkW6rXC3Kk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.CampaignIdentifier.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.CampaignIdentifier.html",
+          "hash": "AC/Xr6hFbWaG4rXcD4/Qp0rfVOF61qjNVMTZS26nnAM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Common.Extensions.ApplicationVersionExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Common.Extensions.ApplicationVersionExtensions.html",
+          "hash": "8PXqrNpF3D6S7BNWPetLtIFW4lE6Wytwgep7iP/lQh8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Common.Extensions.CampaignExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Common.Extensions.CampaignExtensions.html",
+          "hash": "VNjBzbXNLm+YurBABigymHefJxLj/6D0a/VeWJAGHk0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Common.Extensions.DependencyInjectionExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Common.Extensions.DependencyInjectionExtensions.html",
+          "hash": "qaHpAAVVhAqpS0IbPCjsAkTUTRT3stb6F1flUIykNMY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Common.Extensions.DictionaryExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Common.Extensions.DictionaryExtensions.html",
+          "hash": "3xLyCMr/PZCzgrV1jJCN33Ck8XPiRrwI4vkBxMX66bM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Common.Extensions.MbEventExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Common.Extensions.MbEventExtensions.html",
+          "hash": "+glNR9lkA/K1w8jSWu16yZ3lFIavCszb3e5wdgPS1/M="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Common.Extensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Common.Extensions.html",
+          "hash": "XhK3qm+aMny0ZGxojD33FByq5nloQuKmH4u+Et5U0nk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Common.Helpers.AccessTools2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Common.Helpers.AccessTools2.html",
+          "hash": "keUc7h+5H1YV4Bdw9Rc9hf49sZ3u1ugizHMfPYNoFZM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Common.Helpers.AlphanumComparatorFast.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Common.Helpers.AlphanumComparatorFast.html",
+          "hash": "ce6cMAmr2GyJAyFn0fmSOqqZnTNinSGvkUPHaoiavXw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Common.Helpers.ApplicationVersionComparer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Common.Helpers.ApplicationVersionComparer.html",
+          "hash": "l9jEMP+0RVf/6u2ILlWP2Fvay9nA91U9MKC/g9n/NrE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Common.Helpers.ApplicationVersionRange.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Common.Helpers.ApplicationVersionRange.html",
+          "hash": "vTvV4nCqC0jSXkCNygJrhVVLM2+fZwJRP56CvVILJwk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Common.Helpers.ApplicationVersionUtils.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Common.Helpers.ApplicationVersionUtils.html",
+          "hash": "hw7/a818PM1y99HaYKz7uN8fdtN1yRbFLUH03ZzLoJU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Common.Helpers.DependedModule.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Common.Helpers.DependedModule.html",
+          "hash": "FS/cPHNWcm+CF4xM7gfOr2AjsicCbsjVIpoddz89FuE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Common.Helpers.DependedModuleMetadata.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Common.Helpers.DependedModuleMetadata.html",
+          "hash": "xw4olaAMDwr65cvJWyLLiyLxBUYEQBLkhZkzSeXjaOc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Common.Helpers.ElegantPairHelper.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Common.Helpers.ElegantPairHelper.html",
+          "hash": "1O0mtFRJF8VXqq+0I2vZWU4f0ik1EYX2f/dovckl7NE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Common.Helpers.ExtendedModuleInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Common.Helpers.ExtendedModuleInfo.html",
+          "hash": "EXsxDm9UOdLwvycWVtyM5vdH0tdngy/G2Ch7l9DOw5g="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Common.Helpers.ExtendedSubModuleInfo.SubModuleTags.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Common.Helpers.ExtendedSubModuleInfo.SubModuleTags.html",
+          "hash": "Hx0EGNAbTgLzfP4p7jt1uud87e6XFSpAFEYSHiiyIIQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Common.Helpers.ExtendedSubModuleInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Common.Helpers.ExtendedSubModuleInfo.html",
+          "hash": "WtNQxWaUkbvhu9SE91jwMVUF+83f18tJeky8y0lyXJI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Common.Helpers.LoadType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Common.Helpers.LoadType.html",
+          "hash": "G9XzrEAvsPd0A9c9nYtv6XseHXuFtXBMBwAUonntGYs="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Common.Helpers.LocalizationHelper.PluralForm.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Common.Helpers.LocalizationHelper.PluralForm.html",
+          "hash": "Gyxqm3mZIpByR9vV9AaQX4Kv6RD6EyZCU0J+vcw8iAY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Common.Helpers.LocalizationHelper.RecursiveCaller.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Common.Helpers.LocalizationHelper.RecursiveCaller.html",
+          "hash": "ES36g05O5S64Dg2gjWaz1xNKOcRBMq9bKSPXrI8AAzg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Common.Helpers.LocalizationHelper.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Common.Helpers.LocalizationHelper.html",
+          "hash": "2+tkkJIgE9YyICnjRpoiHmLbuUZoocI9Xsyj/zFxXpo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Common.Helpers.ModuleInfoHelper.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Common.Helpers.ModuleInfoHelper.html",
+          "hash": "HB5vDmb488hVdEttpFFVuShcYvhZXrktdC0A3L+oSvs="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Common.Helpers.SymbolExtensions2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Common.Helpers.SymbolExtensions2.html",
+          "hash": "qNiqNm6AF6wag3TDC8znkqUaFBB83a/naLl7VtIOT0s="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Common.Helpers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Common.Helpers.html",
+          "hash": "6T0tMAh01atBNPT0azERzzZzsPhKqL6iGUIs/otojX8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.DelayedSubModule.DelayedSubModuleManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.DelayedSubModule.DelayedSubModuleManager.html",
+          "hash": "rhp5LjGDpM0SYyjmNTlzgAJQsMETQEKX/3p4eK6et7w="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.DelayedSubModule.SubscriptionEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.DelayedSubModule.SubscriptionEventArgs.html",
+          "hash": "NiKZD6n7GDAJgB7GmXsqzaE/Chtngo12F8hmiEveg5g="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.DelayedSubModule.SubscriptionGlobalEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.DelayedSubModule.SubscriptionGlobalEventArgs.html",
+          "hash": "VSazYAp7Ve5gWJWCRn5uRBx1yo2OFnblLMCD1U7NuZ0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.DelayedSubModule.SubscriptionType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.DelayedSubModule.SubscriptionType.html",
+          "hash": "XsfzECOrQe8xrH9rnND5J4bNodMA/DIsj4pn3dfIXrY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.DelayedSubModule.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.DelayedSubModule.html",
+          "hash": "H6JIefbwEH/FLFQznqcpQ2Yo4SCiKnSfxgb0ejj9lWo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix-1.html",
+          "hash": "x1Ht9pWxw8yt/39oHI1e0SqVmvzcWOqgwGb1t1eEDP4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix.html",
+          "hash": "/ZlA7WT5l9wz/cnyrJoXrpn571qQ54dTxwp/awtqApM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.DistanceMatrix.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.DistanceMatrix.html",
+          "hash": "JWasJcORZ0bWa169NuoeqgtZ7TLQ2h49aMEdLPNxWlI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.DynamicAPI.DynamicAPIClassAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.DynamicAPI.DynamicAPIClassAttribute.html",
+          "hash": "jTdMeEPeTNsRJkpMoszhql553cGxnWyZDX7EziPfw8w="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.DynamicAPI.DynamicAPIMethodAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.DynamicAPI.DynamicAPIMethodAttribute.html",
+          "hash": "FToRPxdUuXT+Vz6OYO+LsnYM3Q6PfcSlaOxRAtFMwAM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.DynamicAPI.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.DynamicAPI.html",
+          "hash": "PEre74CG2B8jnbrH9Poys3jgwbhqBLYyCcy+2KCvGgU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.ExceptionHandler.WinForms.HtmlCrashReportForm.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.ExceptionHandler.WinForms.HtmlCrashReportForm.html",
+          "hash": "oq1eLEb0eZfl4+lu+w7WsUmOuo1lXqjmQg2jQ7TZVic="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.ExceptionHandler.WinForms.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.ExceptionHandler.WinForms.html",
+          "hash": "EfmPGbBbK+Kvy55vnnYHFnJ/8TbY/G+72V+VbAGkP5w="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Helpers.ModuleInfo.ModuleSorter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Helpers.ModuleInfo.ModuleSorter.html",
+          "hash": "3TThbC8uSO299jjBkNF0H6BEL0WVuVybhudHzfaQPRY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Helpers.ModuleInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Helpers.ModuleInfo.html",
+          "hash": "Q/+OBxuRUUwY36Q/aLhN9HiG6nDP+8GK2RROnSKlPHg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.HotKeys.HotKeyBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.HotKeys.HotKeyBase.html",
+          "hash": "nENzmcIGY2xqCI+XQQinQqtw+1+gocLpm+ntIt/ZGko="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.HotKeys.HotKeyCategory.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.HotKeys.HotKeyCategory.html",
+          "hash": "gZ07/fvEHA9Jq5JQk71TefzqVurUlCqp9kAQofDL+HM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.HotKeys.HotKeyManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.HotKeys.HotKeyManager.html",
+          "hash": "XYYFGrtSCDyspkSRhGueHX32mdx/w1D+OtMr+fe8ftw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.HotKeys.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.HotKeys.html",
+          "hash": "Nya/HpOgp4BXGIDCv12f+i9tdmLRA2GEmR5UYiDg07s="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.ImplementationLoaderSubModule.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.ImplementationLoaderSubModule.html",
+          "hash": "6X+Zf9PqM04sSGh4iTadORGPzW+aTsZcoV9rmugKe5A="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Logger.Extensions.LoggerExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Logger.Extensions.LoggerExtensions.html",
+          "hash": "AG0FwXt9JospOTPJctOmwfM+AehKZGBTU+9mg5KTlDw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Logger.Extensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Logger.Extensions.html",
+          "hash": "4I0GJrY2CWBZdyZhPtEw93s9wnlXbL3H+0VGyWDpSkY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.MBSubModuleBaseExtended.MBSubModuleBaseEx.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.MBSubModuleBaseExtended.MBSubModuleBaseEx.html",
+          "hash": "zFZZ+aQaKUu6SEZ3dZFbrDKeH1XdWv4LgVLmo7u+nJg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.MBSubModuleBaseExtended.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.MBSubModuleBaseExtended.html",
+          "hash": "xN0JlgPx28xLClmr5gcPElSPiabfKV+sUCszwu+QhTc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.ObjectSystem.Extensions.MBObjectBaseExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.ObjectSystem.Extensions.MBObjectBaseExtensions.html",
+          "hash": "4gTpUO/F1dkGlWxxRrKhrlCba+Re7uyvHI6gKcNw/Xk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.ObjectSystem.Extensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.ObjectSystem.Extensions.html",
+          "hash": "nBVdZWj2+ELkmpnh0CI5b18cMR0Tbpojb1gBtH1sK9I="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.ObjectSystem.IMBObjectFinder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.ObjectSystem.IMBObjectFinder.html",
+          "hash": "2hE35ACFRxTuE56XYv9WipZPod7RyvqRN3jfdi9w52Y="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.ObjectSystem.IMBObjectKeeper.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.ObjectSystem.IMBObjectKeeper.html",
+          "hash": "9ZJ3FWzD/gK9VdFxAvU9WTHqB+3R3zk2iidoU5lAdGU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.ObjectSystem.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.ObjectSystem.html",
+          "hash": "W2aHJl3lQRmvN5PDIUsnPoIcO8fGMO6IAchgkJS5NvM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Options.ButterLibOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Options.ButterLibOptions.html",
+          "hash": "MVZiQTDs3J5hYUBGApYTyIdIMbko3tjdUl5N2iPyTnw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Options.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Options.html",
+          "hash": "TgjIGAnhG90Gmna7W9s5tYDJbiWxy4yH32A1+k7M5JI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SaveSystem.DictionaryToArrayConverter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SaveSystem.DictionaryToArrayConverter.html",
+          "hash": "3MfKFJYNbWGJeJLkZeft/TVROj04m2rArQ9qcByU23s="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SaveSystem.Extensions.IDataStoreExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SaveSystem.Extensions.IDataStoreExtensions.html",
+          "hash": "gq6k2pFT94KIADoZjOs0lGJkTtnNpu3JjOCCD20rN3A="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SaveSystem.Extensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SaveSystem.Extensions.html",
+          "hash": "jmXJHR06A0JtBwwUdDcbefi8Xgi29ye3bIBOLNhRtgk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SaveSystem.MBGUIDConverter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SaveSystem.MBGUIDConverter.html",
+          "hash": "NdtgkZ/hIVF2NCsHBDrXpPEEm9dH+OtmeAQyk4crA9k="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SaveSystem.MBObjectBaseConverter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SaveSystem.MBObjectBaseConverter.html",
+          "hash": "M4t+TI2XrCixdtGM4iPCHSKEaFO+rKpV9ZbF+d4/0As="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SaveSystem.TaleWorldsContractResolver.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SaveSystem.TaleWorldsContractResolver.html",
+          "hash": "5TYlhI83khHAzpbI1DDaKRJr/mVRBT9LgO1CyIb3+Mo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SaveSystem.TaleWorldsContractResolver2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SaveSystem.TaleWorldsContractResolver2.html",
+          "hash": "gPvoZ50SsxudXOlAkl4S3KDsF3ENvcOEppfxxEFUjF8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SaveSystem.TaleWorldsContractResolverBase.IsContainerDelegate.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SaveSystem.TaleWorldsContractResolverBase.IsContainerDelegate.html",
+          "hash": "Z57Yc2T7Ox/LzFUVY3omqxQYeg/XXXWFJ5JqEZMyNo0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SaveSystem.TaleWorldsContractResolverBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SaveSystem.TaleWorldsContractResolverBase.html",
+          "hash": "IZ+OR/Stqq+5KO+yJovJtzs8IRsz2nt/yqFmwCjAjos="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SaveSystem.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SaveSystem.html",
+          "hash": "K7QYES9hMowsl/4XYotaWpbsfmjDVeK1ZgKME1RNJP8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SubModuleWrappers.MBSubModuleBaseListWrapper.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SubModuleWrappers.MBSubModuleBaseListWrapper.html",
+          "hash": "fE4enGBDYLKJ1TzvCcoKgFhPx/4za6e5+Szu9n+PQpc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SubModuleWrappers.MBSubModuleBaseWrapper.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SubModuleWrappers.MBSubModuleBaseWrapper.html",
+          "hash": "jivbhLy8Wgbenodtp80iUvFtutI4sFvh+CzMdCCI264="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SubModuleWrappers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SubModuleWrappers.html",
+          "hash": "hEtUNsrmuSOZwqB3dRoEVqRsugjUmnhsmdfuU9DlHWk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SubSystems.ISubSystem.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SubSystems.ISubSystem.html",
+          "hash": "cpFiR74NUiyOX+SgSupvsVXT18PR77OxHGhBlONChDA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SubSystems.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SubSystems.html",
+          "hash": "mzBn5d+t7fcxc3LfiN4sB0AydituzolkitpFzwZnHwo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.html",
+          "hash": "aa7XolQphhNl49CV1fShluTI6nR8l1nZKt5Xq5yMyNk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "api/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/toc.html",
+          "hash": "6wxiQAr4aXqRtmjCWxe9qRyTYaY+kIOFu36p0F/92Ic="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/AssemblyVerifier/Overview.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/AssemblyVerifier/Overview.html",
+          "hash": "7ueYSfBCQ+43IBT25xrY4eNjGkI43oibcn836f7CCTs="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/CampaignIdentifier/Overview.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/CampaignIdentifier/Overview.html",
+          "hash": "vsHMCZy9dZFHr7c4ERJ2ZPHja8qNVU50gKpQPpW/1GI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "log_codes": [
+        "UidNotFound"
+      ],
+      "type": "Conceptual",
+      "source_relative_path": "articles/Common/Extensions/Overview.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/Common/Extensions/Overview.html",
+          "hash": "SRnLHCZ2ifEKpXT4btaGzCtGIYKmsKTNHEpC2UTzjM8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "log_codes": [
+        "UidNotFound"
+      ],
+      "type": "Conceptual",
+      "source_relative_path": "articles/Common/Helpers/Overview.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/Common/Helpers/Overview.html",
+          "hash": "MgMC46mZF+Zqu3g5+/fKAWsIcCKEiigAg1mVgcIZkLQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/Common/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/Common/index.html",
+          "hash": "jfyq63VRYn+uIw/9wG1vzuTcME67tGvs6BRZQnYerZY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/DelayedSubModule/Overview.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/DelayedSubModule/Overview.html",
+          "hash": "1Xt00ssguKVZ/SpTVPyU+aU9/gbw0hn/T5WNfbHvHls="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/Development/Overview.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/Development/Overview.html",
+          "hash": "SLlvrR46T/8Swh3Hyz2xB8D8E29D99SdR1BWgSKgLo0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/DistanceMatrix/Overview.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/DistanceMatrix/Overview.html",
+          "hash": "WhkzQyaIF8ktuuxyiACOtQkyXNxYrS7XKkY9xLP3phA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/HotKeys/Overview.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/HotKeys/Overview.html",
+          "hash": "ybWwEUHBa37WJ5eUSqWmRUSmVPf8pO+14ZQhHSO9HME="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/MBSubModuleBaseExtended/Overview.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/MBSubModuleBaseExtended/Overview.html",
+          "hash": "5m9KOhNi7v4TB4sESCMAudkAfIytv47Uqxxrew32gmg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/Optional/DependencyInjection/Initialization-Stages.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/Optional/DependencyInjection/Initialization-Stages.html",
+          "hash": "+gam0V/XEQv/2b0+7yucisFYAdB9tMLy4gMThK0dmBg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/Optional/DependencyInjection/Overview.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/Optional/DependencyInjection/Overview.html",
+          "hash": "J2fdPhSzCDJF3ZIjYdI+G+se9vxUefpZ6OIeZKoQLkg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/Optional/DependencyInjection/Stage-1.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/Optional/DependencyInjection/Stage-1.html",
+          "hash": "bt9ERXy/bAaqr31Hsnvg7r7+BfOvg80s9BHp0T2R55A="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/Optional/DependencyInjection/Stage-2.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/Optional/DependencyInjection/Stage-2.html",
+          "hash": "mWh7qLIcFcDWN7TVREl9GTwVU/AnYvGNajsXp0cx8p4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/Optional/DependencyInjection/Stage-3.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/Optional/DependencyInjection/Stage-3.html",
+          "hash": "vJP1YLTh2a7tGtbCQOoQHeUa91EF51SYpXOjQDblUhg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/Optional/Logging/Overview.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/Optional/Logging/Overview.html",
+          "hash": "ozRd7hINC15Xhj56KBTrbWvZ/UkunGGO6WpZFY7w6Vk="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/Optional/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/Optional/index.html",
+          "hash": "S+PjNy+eoHJHOCaRGYculyfXd19qh3Ivo4275fMRCf4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "log_codes": [
+        "UidNotFound"
+      ],
+      "type": "Conceptual",
+      "source_relative_path": "articles/SaveSystem/Overview.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/SaveSystem/Overview.html",
+          "hash": "tzDiLPlPUPqFupmUnINw36t7CDeXsSr/yD9q5WNt1gw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/SubModuleWrappers/Overview.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/SubModuleWrappers/Overview.html",
+          "hash": "e55LcG4ts4Kksn/nf/qAOTW4hzzzdWsMmj+FgTKV6vU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/index.html",
+          "hash": "rviauMITi1RtBOAnDscIKa8t0YPbN9Uxhq5CV3InXxo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "articles/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "articles/toc.html",
+          "hash": "yCDcJ57XL1oRaQj2ejOYQ1nr96Xq5h8M8T5XKu4bc18="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html",
+          "hash": "4N7usG6/S2mjJYBu9Z4K3MXw0gaBjj63l0cOu/eLihY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "langwordMapping.yml",
+      "output": {
+        "resource": {
+          "relative_path": "langwordMapping.yml"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html",
+          "hash": "iathQ7brc3wXGisrhf9Hm7aJsop05p4gGG87Fv6NwOE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    }
+  ],
+  "incremental_info": [
+    {
+      "status": {
+        "can_incremental": false,
+        "details": "Cannot build incrementally because last build info is missing.",
+        "incrementalPhase": "build",
+        "total_file_count": 0,
+        "skipped_file_count": 0,
+        "full_build_reason_code": "NoAvailableBuildCache"
+      },
+      "processors": {
+        "ConceptualDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 21,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 80,
+          "skipped_file_count": 0
+        },
+        "ResourceDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        }
+      }
+    },
+    {
+      "status": {
+        "can_incremental": false,
+        "details": "Cannot support incremental post processing, the reason is: should not trace intermediate info.",
+        "incrementalPhase": "postProcessing",
+        "total_file_count": 0,
+        "skipped_file_count": 0
+      },
+      "processors": {}
+    }
+  ],
+  "version_info": {},
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}

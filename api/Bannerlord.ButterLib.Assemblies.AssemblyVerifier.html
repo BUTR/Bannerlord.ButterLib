@@ -1,0 +1,301 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class AssemblyVerifier
+   | ButterLib Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class AssemblyVerifier
+   | ButterLib Documentation ">
+    <meta name="generator" content="docfx 2.58.0.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <link rel="stylesheet" href="../styles/collapse-container.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+                  </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="Bannerlord.ButterLib.Assemblies.AssemblyVerifier">
+  <h1 id="Bannerlord_ButterLib_Assemblies_AssemblyVerifier" data-uid="Bannerlord.ButterLib.Assemblies.AssemblyVerifier">Class AssemblyVerifier
+  </h1>
+  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 conceptual"></div>
+  
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">AssemblyVerifier</span></div>
+  </div>
+  
+  
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.tostring#system-object-tostring">Object.ToString()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">Object.Equals(Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">Object.Equals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.referenceequals#system-object-referenceequals(system-object-system-object)">Object.ReferenceEquals(Object, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gethashcode#system-object-gethashcode">Object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.gettype#system-object-gettype">Object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.object.memberwiseclone#system-object-memberwiseclone">Object.MemberwiseClone()</a>
+    </div>
+  </div>
+  
+  <h6><strong>Namespace</strong>: <a class="xref" href="Bannerlord.ButterLib.Assemblies.html">Bannerlord.ButterLib.Assemblies</a></h6>
+  <h6><strong>Assembly</strong>: Bannerlord.ButterLib.dll</h6>
+  
+  <h5 id="Bannerlord_ButterLib_Assemblies_AssemblyVerifier_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Manipulations with AppDomain are not recommended&quot;, true)]
+public sealed class AssemblyVerifier : IDisposable</code></pre>
+  </div>
+  
+  
+  
+  
+  
+  <h3 id="constructors">Constructors
+  </h3>
+  
+  <span class="small pull-right mobile-hide">
+    <span class="divider"> </span>
+    <a href="https://github.com/BUTR/Bannerlord.ButterLib/new/dev/apiSpec/new?filename=Bannerlord_ButterLib_Assemblies_AssemblyVerifier__ctor_System_String_.md&amp;value=---%0Auid%3A%20Bannerlord.ButterLib.Assemblies.AssemblyVerifier.%23ctor(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" title="Improve this Doc"><i class="fa fa-pencil"></i></a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/src/Bannerlord.ButterLib/Assemblies/AssemblyVerifier.cs/#L10" title="View Source"><i class="fa fa-code"></i></a>
+  </span>
+  
+  <a id="Bannerlord_ButterLib_Assemblies_AssemblyVerifier__ctor_" data-uid="Bannerlord.ButterLib.Assemblies.AssemblyVerifier.#ctor*"></a>
+  
+  <h4 id="Bannerlord_ButterLib_Assemblies_AssemblyVerifier__ctor_System_String_" data-uid="Bannerlord.ButterLib.Assemblies.AssemblyVerifier.#ctor(System.String)"><a href="#collapsible-Bannerlord_ButterLib_Assemblies_AssemblyVerifier__ctor_System_String_" class="expander" data-toggle="collapse">AssemblyVerifier(String)</a></h4>
+  
+  <div id="collapsible-Bannerlord_ButterLib_Assemblies_AssemblyVerifier__ctor_System_String_" class="collapse in">
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public AssemblyVerifier(string name)</code></pre>
+  </div>
+  
+  <h5 class="parameters">Parameters</h5>
+  <table>
+    <tr>
+      <td>
+        <span class="pull-right"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></span>
+        <span class="parametername">name</span>
+        <p>
+      </td>
+    </tr>
+  </table>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  </div>
+  <h3 id="methods">Methods
+  </h3>
+  
+  <span class="small pull-right mobile-hide">
+    <span class="divider"> </span>
+    <a href="https://github.com/BUTR/Bannerlord.ButterLib/new/dev/apiSpec/new?filename=Bannerlord_ButterLib_Assemblies_AssemblyVerifier_Dispose.md&amp;value=---%0Auid%3A%20Bannerlord.ButterLib.Assemblies.AssemblyVerifier.Dispose%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" title="Improve this Doc"><i class="fa fa-pencil"></i></a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/src/Bannerlord.ButterLib/Assemblies/AssemblyVerifier.cs/#L18" title="View Source"><i class="fa fa-code"></i></a>
+  </span>
+  
+  <a id="Bannerlord_ButterLib_Assemblies_AssemblyVerifier_Dispose_" data-uid="Bannerlord.ButterLib.Assemblies.AssemblyVerifier.Dispose*"></a>
+  
+  <h4 id="Bannerlord_ButterLib_Assemblies_AssemblyVerifier_Dispose" data-uid="Bannerlord.ButterLib.Assemblies.AssemblyVerifier.Dispose"><a href="#collapsible-Bannerlord_ButterLib_Assemblies_AssemblyVerifier_Dispose" class="expander" data-toggle="collapse">Dispose()</a></h4>
+  
+  <div id="collapsible-Bannerlord_ButterLib_Assemblies_AssemblyVerifier_Dispose" class="collapse in">
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Dispose()</code></pre>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  <h5 class="implements">Implements</h5>
+      <div><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.idisposable.dispose#system-idisposable-dispose">IDisposable.Dispose()</a></div>
+  
+  
+  
+  
+  </div>
+  
+  <span class="small pull-right mobile-hide">
+    <span class="divider"> </span>
+    <a href="https://github.com/BUTR/Bannerlord.ButterLib/new/dev/apiSpec/new?filename=Bannerlord_ButterLib_Assemblies_AssemblyVerifier_GetLoader_System_Exception__.md&amp;value=---%0Auid%3A%20Bannerlord.ButterLib.Assemblies.AssemblyVerifier.GetLoader(System.Exception%40)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" title="Improve this Doc"><i class="fa fa-pencil"></i></a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/src/Bannerlord.ButterLib/Assemblies/AssemblyVerifier.cs/#L12" title="View Source"><i class="fa fa-code"></i></a>
+  </span>
+  
+  <a id="Bannerlord_ButterLib_Assemblies_AssemblyVerifier_GetLoader_" data-uid="Bannerlord.ButterLib.Assemblies.AssemblyVerifier.GetLoader*"></a>
+  
+  <h4 id="Bannerlord_ButterLib_Assemblies_AssemblyVerifier_GetLoader_System_Exception__" data-uid="Bannerlord.ButterLib.Assemblies.AssemblyVerifier.GetLoader(System.Exception@)"><a href="#collapsible-Bannerlord_ButterLib_Assemblies_AssemblyVerifier_GetLoader_System_Exception__" class="expander" data-toggle="collapse">GetLoader(out Exception)</a></h4>
+  
+  <div id="collapsible-Bannerlord_ButterLib_Assemblies_AssemblyVerifier_GetLoader_System_Exception__" class="collapse in">
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IAssemblyLoader GetLoader(out Exception exception)</code></pre>
+  </div>
+  
+  <h5 class="parameters">Parameters</h5>
+  <table>
+    <tr>
+      <td>
+        <span class="pull-right"><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.exception">Exception</a></span>
+        <span class="parametername">exception</span>
+        <p>
+      </td>
+    </tr>
+  </table>
+  
+  <h5 class="returns">Returns</h5>
+  <table>
+    <tr>
+      <td>
+        <a class="xref" href="Bannerlord.ButterLib.Assemblies.IAssemblyLoader.html">IAssemblyLoader</a>
+        <p>
+      </td>
+    </tr>
+  </table>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  </div>
+  
+  
+</article>
+          </div>
+          <div class="contribution-panel mobile-hide">
+              <a href="https://github.com/BUTR/Bannerlord.ButterLib/new/dev/apiSpec/new?filename=Bannerlord_ButterLib_Assemblies_AssemblyVerifier.md&amp;value=---%0Auid%3A%20Bannerlord.ButterLib.Assemblies.AssemblyVerifier%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" title="Improve this Doc" class="fab btn-warning pull-right"><i class="glyphicon glyphicon-pencil"></i></a>
+              <a href="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/src/Bannerlord.ButterLib/Assemblies/AssemblyVerifier.cs/#L5" title="View Source" class="fab btn-info pull-right"><i class="fa fa-code"></i></a>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            © 2020 BUTR
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

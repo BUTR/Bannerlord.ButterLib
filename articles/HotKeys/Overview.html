@@ -1,0 +1,174 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>HotKeys | ButterLib Documentation </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="HotKeys | ButterLib Documentation ">
+    <meta name="generator" content="docfx 2.58.0.0">
+    
+    <link rel="shortcut icon" href="../../favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="stylesheet" href="../../styles/collapse-container.css">
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+                  </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="hotkeys">HotKeys</h1>
+
+<p>The <code>HotKeyManager</code> type and associated views and functionality inside of Bannerlord is incredibly convoluted to work with, there are lots of gotchas and having conflicts between different mods registering hotkeys with the same ID's or mod names is almost a certainty, so this simple wrapper around it was created that handles the finer details and handles input polling so the entire thing is event based.</p>
+<h2 id="usage">Usage</h2>
+<pre><code class="lang-csharp">public class MySubModule : MBSubModuleBase
+{
+    private bool _campaignIsStarted;
+    protected override void OnBeforeInitialModuleScreenSetAsRoot()
+    {
+        // Create a new HotKeyManager for your mod.
+        var hkm = HotKeyManager.Create(&quot;MyMod&quot;);
+        // Add your HotKeyBase derived class to the manager.
+        // You can add as many hotkeys as you'd like before building them up.
+        // You can also use `hkm.Add(new TestKey(SomeExampleArgument))` if you'd like to have a non-default constructor.
+        var rslt = hkm.Add&lt;TestKey1&gt;();
+        // var rslt = hkm.Add&lt;TestKey2&gt;();
+        // It's not necessary to supply a predicate, it's just a convenience.
+        // You can also manually set IsEnabled to more simply enable/disable a keys functionality.
+        rslt.Predicate = () =&gt; _campaignIsStarted;
+        // Subscribe to each of the events on the hotkey at any time.
+        rslt.OnReleasedEvent += () =&gt;
+            InformationManager.DisplayMessage(new InformationMessage(&quot;Test Key Released!&quot;, Colors.Magenta));
+        // Call this to build up all the hotkeys you added.
+        hkm.Build();
+    }
+
+    protected override void OnGameStart(Game game, IGameStarter gameStarterObject)
+    {
+        // An example just to demonstrate functionality.
+        if (game.GameType is Campaign) _campaignIsStarted = true;
+    }
+}
+
+public class TestKey1 : HotKeyBase
+{
+    protected override string DisplayName { get; }
+    protected override string Description { get; }
+    protected override InputKey DefaultKey { get; }
+    protected override string Category { get; }
+
+    public TestKey1() : base(nameof(TestKey1))
+    {
+        DisplayName = &quot;My Test Key&quot;;
+        Description = &quot;This is a test key.&quot;;
+        DefaultKey = InputKey.Comma;
+        Category = HotKeyManager.Categories[HotKeyCategory.CampaignMap];
+    }
+
+    protected override void OnReleased()
+    {
+        // You can also override methods relating to keypresses within the key itself.
+    }
+}
+public class TestKey2 : HotKeyBase
+{
+    public TestKey2() : base(nameof(TestKey2), &quot;My Test Key&quot;, &quot;This is a test key.&quot;, InputKey.Comma, HotKeyManager.Categories[HotKeyCategory.CampaignMap]) { }
+
+    protected override void OnReleased()
+    {
+        // You can also override methods relating to keypresses within the key itself.
+    }
+}
+</code></pre>
+<h1 id="credit">Credit</h1>
+<p>Original code taken from <a href="https://github.com/sirdoombox/BannerLib/tree/d721fb572f33a702ab7b724b866fe06d86d60d1a/BannerLib.Input">BannerLib</a> by <a href="https://github.com/sirdoombox">sirdoombox</a>.</p>
+</article>
+          </div>
+          <div class="contribution-panel mobile-hide">
+              <a href="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/docs/articles/HotKeys/Overview.md/#L1" title="Improve this Doc" class="fab btn-warning pull-right"><i class="glyphicon glyphicon-pencil"></i></a>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            © 2020 BUTR
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>
