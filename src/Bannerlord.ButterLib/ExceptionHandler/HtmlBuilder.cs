@@ -8,6 +8,7 @@ using HarmonyLib;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
@@ -32,7 +33,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
     <title>Bannerlord Crash Report</title>
     <meta charset='utf-8'>
     <game version='{ApplicationVersionHelper.GameVersionStr()}'>
-    <report id='{crashReport.Id}'>
+    <report id='{crashReport.Id}' version='2'>
     <style>
         .headers {{
             font-family: ""Consolas"", monospace;
@@ -128,6 +129,12 @@ namespace Bannerlord.ButterLib.ExceptionHandler
       </div>
     </div>
     <div class='root-container'>
+      <h2><a href='javascript:;' class='headers' onclick='showHideById(this, ""involved-modules"")'>+ Involved Modules</a></h2>
+      <div id='involved-modules' class='headers-container'>
+      {GetInvolvedModuleListHtml(crashReport)}
+      </div>
+    </div>
+    <div class='root-container'>
       <h2><a href='javascript:;' class='headers' onclick='showHideById(this, ""installed-modules"")'>+ Installed Modules</a></h2>
       <div id='installed-modules' class='headers-container'>
       {GetModuleListHtml(crashReport)}
@@ -182,6 +189,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
       }}
       function changeFontSize(fontSize) {{
           document.getElementById('exception').style.fontSize = fontSize.value;
+          document.getElementById('involved-modules').style.fontSize = fontSize.value;
           document.getElementById('installed-modules').style.fontSize = fontSize.value;
           document.getElementById('assemblies').style.fontSize = fontSize.value;
           document.getElementById('harmony-patches').style.fontSize = fontSize.value;
@@ -208,6 +216,28 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             .AppendLine(!string.IsNullOrWhiteSpace(ex.StackTrace) ? $"</br>{NL}CallStack:{NL}</br>{NL}<ol>{NL}<li>{string.Join($"</li>{NL}<li>", ex.StackTrace.Split(new[] { NL }, StringSplitOptions.RemoveEmptyEntries))}</li>{NL}</ol>" : string.Empty)
             .AppendLine(ex.InnerException != null ? $"<br/>{NL}<br/>{NL}Inner {GetRecursiveExceptionHtml(ex.InnerException)}" : string.Empty)
             .ToString();
+
+        private static string GetInvolvedModuleListHtml(CrashReport crashReport)
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("<ul>");
+            foreach (var modules in crashReport.InvolvedModules.GroupBy(m => m.ModuleInfo))
+            {
+                sb.Append("<li>")
+                    .Append($"<a href='javascript:;' onclick='document.getElementById(\"{modules.Key.Id}\").scrollIntoView(false)'>").Append(modules.Key.Id).Append("</a></br>")
+                    .Append("<ul>");
+                foreach (var (method, _, stackFrameDescription) in modules)
+                {
+                    sb.Append("<li>")
+                        .Append($"Method: {method.FullDescription()}</br>")
+                        .Append($"Frame: {stackFrameDescription}</br>")
+                        .Append("</li>");
+                }
+                sb.AppendLine("</ul></li>");
+            }
+            sb.AppendLine("</ul>");
+            return sb.ToString();
+        }
 
         private static string GetModuleListHtml(CrashReport crashReport)
         {
