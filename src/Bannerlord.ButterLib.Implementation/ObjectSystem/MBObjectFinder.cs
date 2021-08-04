@@ -28,7 +28,7 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
                 return null;
             }
         }
-#elif e160
+#elif e160 || e161
 
         private static readonly AccessTools.FieldRef<CampaignObjectManager, object[]>? CampaignObjectTypeObjects =
             AccessTools2.FieldRefAccess<CampaignObjectManager, object[]>("_objects");
