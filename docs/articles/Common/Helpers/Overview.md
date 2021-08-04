@@ -10,9 +10,6 @@ Alphanumeric sort. This sorting algorithm logically handles numbers in strings. 
 ### [``ApplicationVersionUtils``](xref:Bannerlord.ButterLib.Common.Helpers.ApplicationVersionUtils)
   
 
-### [``ConstructorHelper``](xref:Bannerlord.ButterLib.Common.Helpers.ConstructorHelper)
-  
-
 ### [``ElegantPairHelper``](xref:Bannerlord.ButterLib.Common.Helpers.ElegantPairHelper)
   
 

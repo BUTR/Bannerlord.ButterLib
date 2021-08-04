@@ -19,7 +19,6 @@
   <ItemGroup>
     <Compile Include="..\Bannerlord.ButterLib\Extensions\ApplicationVersionExtensions.cs" Link="ButterLib\ApplicationVersionExtensions.cs" />
     <Compile Include="..\Bannerlord.ButterLib\Helpers\ApplicationVersionUtils.cs" Link="ButterLib\ApplicationVersionUtils.cs" />
-    <Compile Include="..\Bannerlord.ButterLib\Helpers\ConstructorHelper.cs" Link="ButterLib\ConstructorHelper.cs" />
     <Compile Include="..\Bannerlord.ButterLib\Helpers\Harmony\AccessTools2.cs" Link="ButterLib\AccessTools2.cs" />
     <Compile Include="..\Bannerlord.ButterLib\Helpers\ModuleInfoHelper.cs" Link="ButterLib\ModuleInfoHelper.cs" />
     <Compile Include="..\Bannerlord.ButterLib\SubModuleWrappers\MBSubModuleBaseWrapper.cs" Link="ButterLib\MBSubModuleBaseWrapper.cs" />
