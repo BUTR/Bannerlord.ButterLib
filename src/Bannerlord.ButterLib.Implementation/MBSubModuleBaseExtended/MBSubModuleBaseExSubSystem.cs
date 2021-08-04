@@ -41,8 +41,9 @@ namespace Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended
             ModulePatch.Enable(_harmony);
             MBGameManagerPatch.Enable(_harmony);
 
-            //There is no way to patch Module.InitializeSubModules to add OnAllSubModulesLoaded, so we patch last loaded submodule instead
-            DSM_OnAllSubModulesLoadedPatch();
+            //There is no way to patch Module.InitializeSubModules to add OnAllSubModulesLoaded.
+            //We tried to patch the last loaded submodule instead, but that caused problems if it had PatchAll() called in it.
+            //So for now we removed OnAllSubModulesLoaded event entirely.
         }
         public void Disable()
         {
@@ -82,27 +83,6 @@ namespace Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended
                 return false;
             }
             return true;
-        }
-
-        private static void DSM_OnAllSubModulesLoadedPatch()
-        {
-            var loadedSubmoduleTypesField = AccessTools2.FieldRefAccess<TWModule, Dictionary<string, Type>>("_loadedSubmoduleTypes");
-            var loadedSubmoduleTypes = loadedSubmoduleTypesField!(TWModule.CurrentModule);
-            Type? lastLoadedSubModuleType = loadedSubmoduleTypes.LastOrDefault().Value;
-
-            EventHandler<SubscriptionEventArgs> @delegate = (s, e) =>
-            {
-                if (e.IsBase)
-                {
-                    foreach (MBSubModuleBaseEx submodule in TWModule.CurrentModule.SubModules.Where(s => s is MBSubModuleBaseEx))
-                        submodule.OnAllSubModulesLoaded();
-                }
-            };
-
-            DelayedSubModuleManager.Register(lastLoadedSubModuleType);
-            typeof(DelayedSubModuleManager).GetMethod("Subscribe", new[] { typeof(MBSubModuleBase), typeof(string), typeof(SubscriptionType), typeof(EventHandler<SubscriptionEventArgs>) })
-                                           .MakeGenericMethod(lastLoadedSubModuleType)
-                                           .Invoke(null, new object[] { SubModule.Instance!, "OnSubModuleLoad", SubscriptionType.AfterMethod, @delegate });
         }
     }
 }

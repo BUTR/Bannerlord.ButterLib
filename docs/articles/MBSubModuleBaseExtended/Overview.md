@@ -6,11 +6,6 @@ To access additional events you should derive your submodule from [``MBSubModule
 ```csharp
 public class SubModule : MBSubModuleBaseEx
 {
-    protected internal override void OnAllSubModulesLoaded()
-    {
-        base.OnAllSubModulesLoaded();
-    }
-
     protected internal override void OnAllSubModulesUnLoaded()
     {
         base.OnAllSubModulesUnLoaded();

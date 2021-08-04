@@ -9,10 +9,6 @@ namespace Bannerlord.ButterLib.MBSubModuleBaseExtended
     public abstract class MBSubModuleBaseEx : MBSubModuleBase
     {
         /// <summary>
-        /// Event that takes place right after OnSubModuleLoad events of all loaded submodules were handled.
-        /// </summary>
-        protected internal virtual void OnAllSubModulesLoaded() { }
-        /// <summary>
         /// Event that takes place right after OnSubModuleUnloaded events of all loaded submodules were handled.
         /// </summary>
         protected internal virtual void OnAllSubModulesUnLoaded() { }
