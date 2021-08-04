@@ -11,6 +11,6 @@ namespace Bannerlord.ButterLib
         private const int ButterLibBase = 2002018000;
         protected ButterLibSaveableTypeDefiner(int saveBaseId) : base(ButterLibBase + saveBaseId) { }
         //Reserves:
-        //--CampaignIdentifier: 00-09.
+        //--CampaignIdentifier: 00-04.
     }
 }
