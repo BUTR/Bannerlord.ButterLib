@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 
+// ReSharper disable once CheckNamespace
 namespace System.Diagnostics.Logger
 {
     internal class LoggerTraceListener : TraceListener

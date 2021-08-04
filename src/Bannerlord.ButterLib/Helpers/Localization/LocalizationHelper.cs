@@ -32,14 +32,14 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// </summary>
         public const string SPECIFIC_PLURAL_FORM_TAG = "SPECIFIC_PLURAL_FORM";
 
-        private static readonly ReadOnlyCollection<int> EasternSlavicPluralExceptions = new(new List<int>() { 11, 12, 13, 14 });
-        private static readonly ReadOnlyCollection<int> EasternSlavicSingularNumerics = new(new List<int>() { 1, 2, 3, 4 });
+        private static readonly ReadOnlyCollection<int> EasternSlavicPluralExceptions = new(new List<int> { 11, 12, 13, 14 });
+        private static readonly ReadOnlyCollection<int> EasternSlavicSingularNumerics = new(new List<int> { 1, 2, 3, 4 });
 
-        private static readonly ReadOnlyCollection<int> WesternSlavicPluralExceptions = new(new List<int>() { 12, 13, 14 });
-        private static readonly ReadOnlyCollection<int> WesternSlavicSingularNumerics = new(new List<int>() { 2, 3, 4 });
+        private static readonly ReadOnlyCollection<int> WesternSlavicPluralExceptions = new(new List<int> { 12, 13, 14 });
+        private static readonly ReadOnlyCollection<int> WesternSlavicSingularNumerics = new(new List<int> { 2, 3, 4 });
 
-        private static readonly ReadOnlyCollection<string> EasternSlavicGroupLanguageIDs = new(new List<string>() { "Russian", "Русский", "Ukrainian", "Українська", "Belarusian", "Беларускі" });
-        private static readonly ReadOnlyCollection<string> WesternSlavicGroupLanguageIDs = new(new List<string>() { "Polish", "Polski" });
+        private static readonly ReadOnlyCollection<string> EasternSlavicGroupLanguageIDs = new(new List<string> { "Russian", "Русский", "Ukrainian", "Українська", "Belarusian", "Беларускі" });
+        private static readonly ReadOnlyCollection<string> WesternSlavicGroupLanguageIDs = new(new List<string> { "Polish", "Polski" });
 
         private static RecursiveCaller GetRecursiveCaller(RecursiveCaller currentCaller, RecursiveCaller receivedCaller)
         {
@@ -54,7 +54,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
                 Settlement _ => RecursiveCaller.Settlement,
                 Clan _ => RecursiveCaller.Clan,
                 Kingdom _ => RecursiveCaller.Kingdom,
-                _ => throw new ArgumentException(string.Format("{0} is not supported type", entity.GetType().FullName), nameof(entity)),
+                _ => throw new ArgumentException($"{entity.GetType().FullName} is not supported type", nameof(entity)),
             };
         }
 
@@ -63,7 +63,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
             switch (entity)
             {
                 case Hero hero:
-                    TextObject? characterProperties = TextObjectHelper.Create(string.Empty);
+                    var characterProperties = TextObjectHelper.Create(string.Empty);
                     characterProperties!.SetTextVariable("NAME", hero.Name);
                     characterProperties.SetTextVariable("AGE", (int)hero.Age);
                     characterProperties.SetTextVariable("GENDER", hero.IsFemale ? 1 : 0);
@@ -71,7 +71,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
                     characterProperties.SetTextVariable("FIRSTNAME", hero.FirstName ?? hero.Name);
                     return characterProperties;
                 case Settlement settlement:
-                    TextObject? settlementProperties = TextObjectHelper.Create(string.Empty);
+                    var settlementProperties = TextObjectHelper.Create(string.Empty);
                     settlementProperties!.SetTextVariable("NAME", settlement.Name);
                     settlementProperties.SetTextVariable("IS_TOWN", settlement.IsTown ? 1 : 0);
                     settlementProperties.SetTextVariable("IS_CASTLE", settlement.IsCastle ? 1 : 0);
@@ -79,19 +79,19 @@ namespace Bannerlord.ButterLib.Common.Helpers
                     settlementProperties.SetTextVariable("LINK", settlement.EncyclopediaLinkWithName);
                     return settlementProperties;
                 case Clan clan:
-                    TextObject? clanProperties = TextObjectHelper.Create(string.Empty);
+                    var clanProperties = TextObjectHelper.Create(string.Empty);
                     clanProperties!.SetTextVariable("NAME", clan.Name);
                     clanProperties.SetTextVariable("MINOR_FACTION", clan.IsMinorFaction ? 1 : 0);
                     clanProperties.SetTextVariable("UNDER_CONTRACT", clan.IsUnderMercenaryService ? 1 : 0);
                     clanProperties.SetTextVariable("LINK", clan.EncyclopediaLinkWithName);
                     return clanProperties;
                 case Kingdom kingdom:
-                    TextObject? kingdomProperties = TextObjectHelper.Create(string.Empty);
+                    var kingdomProperties = TextObjectHelper.Create(string.Empty);
                     kingdomProperties!.SetTextVariable("NAME", kingdom.Name);
                     kingdomProperties.SetTextVariable("LINK", kingdom.EncyclopediaLinkWithName);
                     return kingdomProperties;
                 default:
-                    throw new ArgumentException(string.Format("{0} is not supported type", entity.GetType().FullName), nameof(entity));
+                    throw new ArgumentException($"{entity.GetType().FullName} is not supported type", nameof(entity));
             }
         }
 
@@ -122,7 +122,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
                     }
                     break;
                 default:
-                    throw new ArgumentException(string.Format("{0} is not supported type", entity.GetType().FullName), nameof(entity));
+                    throw new ArgumentException($"{entity.GetType().FullName} is not supported type", nameof(entity));
             }
         }
 
@@ -137,7 +137,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// <param name="entity">An instance of the entity to be stored.</param>
         /// <param name="addLeaderInfo">An optional argument, specifying if information about leaders should be also stored, when applicable.</param>
         /// <param name="recursiveCaller">An optional argument, specifying if method is called from itself, adding information on some related entity.</param>
-        public static void SetEntityProperties<T>(TextObject? parentTextObject, string tag, T entity, bool addLeaderInfo = false, RecursiveCaller recursiveCaller = RecursiveCaller.None) where T : class
+        public static void SetEntityProperties<T>(TextObject? parentTextObject, string tag, T? entity, bool addLeaderInfo = false, RecursiveCaller recursiveCaller = RecursiveCaller.None) where T : class
         {
             if (string.IsNullOrEmpty(tag) || entity is null || recursiveCaller == GetCurrentCaller(entity))
             {
@@ -156,8 +156,8 @@ namespace Bannerlord.ButterLib.Common.Helpers
 
         private static PluralForm GetEasternSlavicPluralFormInternal(int number)
         {
-            int absNumber = Math.Abs(number);
-            int lastDigit = absNumber % 10;
+            var absNumber = Math.Abs(number);
+            var lastDigit = absNumber % 10;
             return
               EasternSlavicPluralExceptions.Contains(absNumber % 100) || !EasternSlavicSingularNumerics.Contains(lastDigit)
                 ? PluralForm.Plural
@@ -167,8 +167,8 @@ namespace Bannerlord.ButterLib.Common.Helpers
 
         private static PluralForm GetWesternSlavicPluralFormInternal(int number)
         {
-            int absNumber = Math.Abs(number);
-            int lastDigit = absNumber % 10;
+            var absNumber = Math.Abs(number);
+            var lastDigit = absNumber % 10;
             return
               absNumber > 1 && (WesternSlavicPluralExceptions.Contains(absNumber % 100) || !WesternSlavicSingularNumerics.Contains(lastDigit))
                 ? PluralForm.Plural
@@ -208,8 +208,8 @@ namespace Bannerlord.ButterLib.Common.Helpers
             new()
             {
                 [PLURAL_FORM_TAG] = TextObjectHelper.Create(pluralForm == PluralForm.Plural ? 1 : 0),
-                [SPECIFIC_PLURAL_FORM_TAG] = TextObjectHelper.Create(pluralForm != PluralForm.SpecificPlural ? 1 : 0),
-                [SPECIFIC_SINGULAR_FORM_TAG] = TextObjectHelper.Create(pluralForm != PluralForm.SpecificSingular ? 1 : 0)
+                [SPECIFIC_PLURAL_FORM_TAG] = TextObjectHelper.Create(pluralForm == PluralForm.SpecificPlural ? 1 : 0),
+                [SPECIFIC_SINGULAR_FORM_TAG] = TextObjectHelper.Create(pluralForm == PluralForm.SpecificSingular ? 1 : 0)
             };
 
         /// <summary>Sets a numeric variable along with the appropriate <see cref="PluralForm" /> tag in accordance with the grammar rules of the game language.</summary>

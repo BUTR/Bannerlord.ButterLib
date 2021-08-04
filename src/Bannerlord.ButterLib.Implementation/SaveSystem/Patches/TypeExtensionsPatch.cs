@@ -15,15 +15,13 @@ using TaleWorlds.SaveSystem;
 
 namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
 {
-    /*
-     * <summary>
-     * Replaces TaleWorlds.SaveSystem.TypeExtensions.IsContainer(this Type, out ContainerType)
-     * </summary>
-     * <remarks>
-     * Our implementation is much more flexible and allows for the SaveSystem to support many more types of containers
-     * in a safe way (i.e., no issues with the deserialization of these containers if ButterLib is removed).
-     * </remarks>
-     */
+    /// <summary>
+    /// Replaces TaleWorlds.SaveSystem.TypeExtensions.IsContainer(this Type, out ContainerType)
+    /// </summary>
+    /// <remarks>
+    /// Our implementation is much more flexible and allows for the SaveSystem to support many more types of containers
+    /// in a safe way (i.e., no issues with the deserialization of these containers if ButterLib is removed).
+    /// </remarks>
     internal sealed class TypeExtensionsPatch
     {
         private static ILogger _log = default!;

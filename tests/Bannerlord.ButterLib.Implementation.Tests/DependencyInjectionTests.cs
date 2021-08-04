@@ -90,7 +90,7 @@ namespace Bannerlord.ButterLib.Implementation.Tests
             var harmony = new Harmony($"{nameof(DependencyInjectionTests)}.{nameof(Setup)}");
             harmony.Patch(SymbolExtensions.GetMethodInfo(() => FSIOHelper.GetConfigPath()),
                 prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetConfigPath)));
-            harmony.Patch(SymbolExtensions2.GetPropertyInfo(() => TWCommon.ConfigName).GetMethod,
+            harmony.Patch(SymbolExtensions2.GetPropertyInfo(() => TWCommon.ConfigName!).GetMethod,
                 prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetConfigName)));
             var engineUtilitiesType = Type.GetType("TaleWorlds.Engine.Utilities, TaleWorlds.Engine", false);
             harmony.Patch(engineUtilitiesType?.GetMethod("GetModulesNames", BindingFlags.Public | BindingFlags.Static),
@@ -133,7 +133,7 @@ namespace Bannerlord.ButterLib.Implementation.Tests
             var hero = (Hero) FormatterServices.GetUninitializedObject(typeof(Hero));
 #if e143 || e150 || e151 || e152 || e153 || e154 || e155 || e156 || e157 || e158 || e159
             AccessTools.Field(typeof(Hero), "Name").SetValue(hero, new TextObject("TestHero"));
-#elif e1510 || e160
+#elif e1510 || e160 || e161
             AccessTools.Property(typeof(Hero), "Name").SetValue(hero, new TextObject("TestHero"));
 #else
 #error ConstGameVersionWithPrefix is not handled!

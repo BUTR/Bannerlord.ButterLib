@@ -29,19 +29,9 @@ namespace Bannerlord.ButterLib
     /// </summary>
     public sealed partial class ButterLibSubModule : MBSubModuleBase
     {
+        // We can't rely on EN since the game assumes that the default locale is always English
         private const string SWarningTitle =
 @"{=BguqytVG3q}Warning from Bannerlord.ButterLib!";
-        private const string SErrorHarmonyNotFound =
-@"{=EEVJa5azpB}Bannerlord.Harmony module was not found!";
-        private const string SErrorModuleLoaderNotFound =
-@"{=j3DZ87zFMB}Bannerlord.ModuleLoader module was not found!";
-        private const string SErrorButterLibNotFound =
-@"{=5EDzm7u4mS}Bannerlord.ButterLib module was not found!";
-        private const string SErrorOfficialModulesLoadedBeforeButterLib =
-@"{=GDkjThJcH6}ButterLib is loaded after the official modules!
-Make sure ButterLib is loaded before them!";
-        private const string SErrorOfficialModules =
-@"{=5k4Eqevh53}The following modules were loaded before ButterLib:";
         private const string SMessageContinue =
 @"{=eXs6FLm5DP}It's strongly recommended to terminate the game now. Do you wish to terminate it?";
 
@@ -185,56 +175,16 @@ Make sure ButterLib is loaded before them!";
 
         private static void CheckLoadOrder()
         {
-            var loadedModules = BUTR.Shared.Helpers.ModuleInfoHelper.GetLoadedModules().ToList();
+            var loadedModules = ModuleInfoHelper.GetLoadedModules().ToList();
             if (loadedModules.Count == 0) return;
 
             var sb = new StringBuilder();
-
-            var harmonyModule = loadedModules.SingleOrDefault(x => x.Id == "Bannerlord.Harmony");
-
-            var harmonyModuleIndex = harmonyModule is not null ? loadedModules.IndexOf(harmonyModule) : -1;
-            if (harmonyModuleIndex == -1)
+            if (!ModuleInfoHelper.ValidateLoadOrder(typeof(ButterLibSubModule), out var report))
             {
-                if (sb.Length != 0) sb.AppendLine();
-                sb.AppendLine(TextObjectHelper.Create(SErrorHarmonyNotFound)?.ToString());
-            }
-
-            // TODO: Keep it optional for now
-            /*
-            var moduleLoaderModule = loadedModules.SingleOrDefault(x => x.Id == "Bannerlord.ModuleLoader");
-            var moduleLoaderIndex = moduleLoaderModule is not null ? loadedModules.IndexOf(moduleLoaderModule) : -1;
-            if (moduleLoaderIndex == -1)
-            {
-                if (sb.Length != 0) sb.AppendLine();
-                sb.AppendLine(TextObjectHelper.Create((SErrorModuleLoaderNotFound).ToString());
-            }
-            */
-
-            var butterLibModule = loadedModules.SingleOrDefault(x => x.Id == "Bannerlord.ButterLib");
-            var butterLibModuleIndex = butterLibModule is not null ? loadedModules.IndexOf(butterLibModule) : -1;
-            if (butterLibModuleIndex == -1)
-            {
-                if (sb.Length != 0) sb.AppendLine();
-                sb.AppendLine(TextObjectHelper.Create(SErrorButterLibNotFound)?.ToString());
-            }
-
-            var officialModules = loadedModules.Where(x => x.IsOfficial).Select(x => (Module: x, Index: loadedModules.IndexOf(x)));
-            var modulesLoadedBeforeButterLib = officialModules.Where(tuple => tuple.Index < butterLibModuleIndex).ToList();
-            if (modulesLoadedBeforeButterLib.Count > 0)
-            {
-                if (sb.Length != 0) sb.AppendLine();
-                sb.AppendLine(TextObjectHelper.Create(SErrorOfficialModulesLoadedBeforeButterLib)?.ToString());
-                sb.AppendLine(TextObjectHelper.Create(SErrorOfficialModules)?.ToString());
-                foreach (var (module, _) in modulesLoadedBeforeButterLib)
-                    sb.AppendLine(module.Id);
-            }
-
-            if (sb.Length > 0)
-            {
+                sb.AppendLine(report);
                 sb.AppendLine();
-                sb.AppendLine(TextObjectHelper.Create(SMessageContinue)?.ToString());
-
-                switch (MessageBox.Show(sb.ToString(), TextObjectHelper.Create(SWarningTitle)?.ToString(), MessageBoxButtons.YesNo))
+                sb.AppendLine(TextObjectHelper.Create(SMessageContinue)?.ToString() ?? "ERROR");
+                switch (MessageBox.Show(sb.ToString(), TextObjectHelper.Create(SWarningTitle)?.ToString() ?? "ERROR", MessageBoxButtons.YesNo))
                 {
                     case DialogResult.Yes:
                         Environment.Exit(1);

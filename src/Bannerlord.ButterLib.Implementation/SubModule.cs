@@ -9,6 +9,7 @@ using Bannerlord.ButterLib.Implementation.Common.Extensions;
 using Bannerlord.ButterLib.Implementation.DistanceMatrix;
 using Bannerlord.ButterLib.Implementation.HotKeys;
 using Bannerlord.ButterLib.Implementation.Logging;
+using Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended;
 using Bannerlord.ButterLib.Implementation.ObjectSystem;
 using Bannerlord.ButterLib.Implementation.SaveSystem;
 using Bannerlord.ButterLib.ObjectSystem;
@@ -26,6 +27,7 @@ namespace Bannerlord.ButterLib.Implementation
     public sealed class SubModule : MBSubModuleBase
     {
         internal static ILogger? Logger { get; private set; }
+        internal static SubModule? Instance { get; private set; }
 
         private bool ServiceRegistrationWasCalled { get; set; }
         private bool OnBeforeInitialModuleScreenSetAsRootWasCalled { get; set; }
@@ -45,13 +47,15 @@ namespace Bannerlord.ButterLib.Implementation
                 services.AddSingleton<ICampaignExtensions, CampaignExtensionsImplementation>();
 #if e143 || e150 || e151 || e152 || e153
                 services.AddTransient<ICampaignDescriptorProvider, JsonCampaignDescriptorProvider>();
-#elif e154 || e155 || e156 || e157 || e158 || e159 || e1510 || e160
+#elif e154 || e155 || e156 || e157 || e158 || e159 || e1510 || e160 || e161
                 services.AddTransient<ICampaignDescriptorProvider, BlankCampaignDescriptorProvider>();
 #else
 #error ConstGameVersionWithPrefix is not handled!
 #endif
 
                 services.AddScoped<IMBObjectExtensionDataStore, MBObjectExtensionDataStore>();
+                services.AddScoped<IMBObjectFinder, MBObjectFinder>();
+                services.AddScoped<IMBObjectKeeper, MBObjectKeeper>();
 
                 services.AddScoped<HotKeyManager, HotKeyManagerImplementation>();
                 services.AddSingleton<IHotKeyManagerStatic, HotKeyManagerStaticImplementation>();
@@ -59,6 +63,7 @@ namespace Bannerlord.ButterLib.Implementation
                 services.AddSubSystem<CampaignIdentifierSubSystem>();
                 services.AddSubSystem<DistanceMatrixSubSystem>();
                 services.AddSubSystem<HotKeySubSystem>();
+                services.AddSubSystem<MBSubModuleBaseExSubSystem>();
                 services.AddSubSystem<ObjectSystemSubSystem>();
                 services.AddSubSystem<SaveSystemSubSystem>();
             }
@@ -68,6 +73,7 @@ namespace Bannerlord.ButterLib.Implementation
         {
             base.OnSubModuleLoad();
 
+            Instance = this;
             var serviceProvider = ServiceRegistrationWasCalled ? this.GetServiceProvider() : this.GetTempServiceProvider();
 
             if (!ServiceRegistrationWasCalled)
@@ -80,6 +86,7 @@ namespace Bannerlord.ButterLib.Implementation
             Debug.DebugManager = new DebugManagerWrapper(Debug.DebugManager, serviceProvider!);
 
             HotKeySubSystem.Instance?.Enable();
+            MBSubModuleBaseExSubSystem.Instance?.Enable();
             SaveSystemSubSystem.Instance?.Enable();
 
             Logger.LogTrace("ButterLib.Implementation: OnSubModuleLoad: Done");

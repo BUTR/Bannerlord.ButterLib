@@ -11,7 +11,7 @@ using TaleWorlds.ObjectSystem;
 namespace Bannerlord.ButterLib.DistanceMatrix
 {
     /// <summary>
-    /// An abstrat class used in a <see cref="T:Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix`1" /> derived class,
+    /// An abstract class used in a <see cref="T:Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix`1" /> derived class,
     /// that pairs given objects of type <typeparamref name="T"/>
     /// and for each pair calculates the distance between the objects that formed it.
     /// </summary>
@@ -75,7 +75,7 @@ namespace Bannerlord.ButterLib.DistanceMatrix
         /// <summary>Calculates distance between two given <see cref="Kingdom"/> objects.</summary>
         /// <param name="kingdom1">First of the kingdoms to calculate distance between.</param>
         /// <param name="kingdom2">Second of the kingdoms to calculate distance between.</param>
-        /// <param name="settlementDistanceMatrix">Settlement distance matrix .</param>
+        /// <param name="clanDistanceMatrix">Settlement distance matrix .</param>
         /// <returns>
         /// A floating-point number representing the distance between two specified <see cref="Kingdom"/> objects
         /// or <see cref="float.NaN" /> if distance could not be calculated.
