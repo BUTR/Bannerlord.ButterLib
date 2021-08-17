@@ -1,31 +1,51 @@
 # Bannerlord.ButterLib
 <p align="center">
   <a href="https://github.com/BUTR/Bannerlord.ButterLib" alt="Logo">
-  <img src="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/resources/Butter.png?raw=true" /></a>
+    <img src="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/resources/Butter.png?raw=true" />
+  </a>
   </br>
   <a href="https://github.com/BUTR/Bannerlord.ButterLib" alt="Lines Of Code">
-  <img src="https://tokei.rs/b1/github/BUTR/Bannerlord.ButterLib?category=code" /></a>
-  <a href="https://www.codefactor.io/repository/github/butr/bannerlord.butterlib"><img src="https://www.codefactor.io/repository/github/butr/bannerlord.butterlib/badge" alt="CodeFactor" /></a>
+    <img src="https://tokei.rs/b1/github/BUTR/Bannerlord.ButterLib?category=code" />
+  </a>
+  <a href="https://www.codefactor.io/repository/github/butr/bannerlord.butterlib">
+    <img src="https://www.codefactor.io/repository/github/butr/bannerlord.butterlib/badge" alt="CodeFactor" />
+  </a>
+  <a href="https://codeclimate.com/github/BUTR/Bannerlord.ButterLib/maintainability">
+    <img alt="Code Climate maintainability" src="https://img.shields.io/codeclimate/maintainability-percentage/BUTR/Bannerlord.ButterLib">
+  </a>
+  <a href="https://butr.github.io/Bannerlord.ButterLib" alt="Documentation">
+    <img src="https://img.shields.io/badge/Documentation-%F0%9F%94%8D-blue?style=flat" />
+  </a>
   </br>
-  <a href="https://github.com/BUTR/Bannerlord.ButterLib/actions?query=workflow%3ATest"><img src="https://github.com/BUTR/Bannerlord.ButterLib/workflows/Test/badge.svg?branch=dev&event=push" alt="Test" /></a>
-  <a href="https://codecov.io/gh/BUTR/Bannerlord.ButterLib"><img src="https://codecov.io/gh/BUTR/Bannerlord.ButterLib/branch/dev/graph/badge.svg" /></a>
-  <a href="https://www.deepcode.ai/app/gh/BUTR/Bannerlord.ButterLib/_/dashboard?utm_content=gh%2FBUTR%2FBannerlord.ButterLib"><img src="https://www.deepcode.ai/api/gh/badge?key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwbGF0Zm9ybTEiOiJnaCIsIm93bmVyMSI6IkJVVFIiLCJyZXBvMSI6IkJhbm5lcmxvcmQuQnV0dGVyTGliIiwiaW5jbHVkZUxpbnQiOmZhbHNlLCJhdXRob3JJZCI6MjY3ODMsImlhdCI6MTYyMzQ0MDM5Mn0.d3ktydJ0eVQ9BrtkNoKc0h_Gfq5igp36VZ0TkwxqT4k" /></a>
+  <a href="https://github.com/BUTR/Bannerlord.ButterLib/actions/workflows/test.yml?query=branch%3Adev">
+    <img alt="GitHub Workflow Status (event)" src="https://img.shields.io/github/workflow/status/BUTR/Bannerlord.ButterLib/Test?branch=dev&label=Game%20Stable%20and%20Beta">
+  </a>
+  <a href="https://github.com/BUTR/Bannerlord.ButterLib/actions/workflows/test-full.yml?query=branch%3Adev">
+    <img alt="GitHub Workflow Status (event)" src="https://img.shields.io/github/workflow/status/BUTR/Bannerlord.ButterLib/Test%20Fully?ranch=dev&label=Supported%20Game%20Versions">
+  </a>
+  <a href="https://codecov.io/gh/BUTR/Bannerlord.ButterLib">
+    <img src="https://codecov.io/gh/BUTR/Bannerlord.ButterLib/branch/dev/graph/badge.svg" />
+  </a>
   </br>
   <a href="https://www.nuget.org/packages/Bannerlord.ButterLib" alt="NuGet Bannerlord.ButterLib">
-  <img src="https://img.shields.io/nuget/v/Bannerlord.ButterLib.svg?label=NuGet%20Bannerlord.ButterLib&colorB=blue" /></a>
-  <a href="https://butr.github.io/Bannerlord.ButterLib" alt="Documentation">
-  <img src="https://img.shields.io/badge/Documentation-%F0%9F%94%8D-blue?style=flat" /></a>
+  <img src="https://img.shields.io/nuget/v/Bannerlord.ButterLib.svg?label=NuGet%20Bannerlord.ButterLib&colorB=blue" />
+  </a>
   </br>
   <a href="https://www.nexusmods.com/mountandblade2bannerlord/mods/2018" alt="NexusMods ButterLib">
-  <img src="https://img.shields.io/badge/NexusMods-ButterLib-yellow.svg" /></a>
+    <img src="https://img.shields.io/badge/NexusMods-ButterLib-yellow.svg" />
+  </a>
   <a href="https://www.nexusmods.com/mountandblade2bannerlord/mods/2018" alt="NexusMods ButterLib">
-  <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fnexusmods-version-pzk4e0ejol6j.runkit.sh%3FgameId%3Dmountandblade2bannerlord%26modId%3D2018" /></a>
+    <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fnexusmods-version-pzk4e0ejol6j.runkit.sh%3FgameId%3Dmountandblade2bannerlord%26modId%3D2018" />
+  </a>
   <a href="https://www.nexusmods.com/mountandblade2bannerlord/mods/2018" alt="NexusMods ButterLib">
-  <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fnexusmods-downloads-ayuqql60xfxb.runkit.sh%2F%3Ftype%3Dunique%26gameId%3D3174%26modId%3D2018" /></a>
+    <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fnexusmods-downloads-ayuqql60xfxb.runkit.sh%2F%3Ftype%3Dunique%26gameId%3D3174%26modId%3D2018" />
+  </a>
   <a href="https://www.nexusmods.com/mountandblade2bannerlord/mods/2018" alt="NexusMods ButterLib">
-  <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fnexusmods-downloads-ayuqql60xfxb.runkit.sh%2F%3Ftype%3Dtotal%26gameId%3D3174%26modId%3D2018" /></a>
+    <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fnexusmods-downloads-ayuqql60xfxb.runkit.sh%2F%3Ftype%3Dtotal%26gameId%3D3174%26modId%3D2018" />
+  </a>
   <a href="https://www.nexusmods.com/mountandblade2bannerlord/mods/2018" alt="NexusMods ButterLib">
-  <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fnexusmods-downloads-ayuqql60xfxb.runkit.sh%2F%3Ftype%3Dviews%26gameId%3D3174%26modId%3D2018" /></a>
+    <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fnexusmods-downloads-ayuqql60xfxb.runkit.sh%2F%3Ftype%3Dviews%26gameId%3D3174%26modId%3D2018" />
+  </a>
   </br>
 </p>
 
