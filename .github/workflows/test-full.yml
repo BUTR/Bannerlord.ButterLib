@@ -32,6 +32,7 @@ env:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   # Disable sending .NET CLI telemetry to Microsoft.
   DOTNET_CLI_TELEMETRY_OPTOUT: true
+  TEST_FILTERS: "+[Bannerlord.ButterLib*]* -[Bannerlord.ButterLib*.Tests]* -[*]System.Diagnostics.CodeAnalysis* -[*]BUTR.DependencyInjection* -[*]Bannerlord.BUTR.Shared* -[*]HarmonyLib.BUTR*"
 
 jobs:
   test:
@@ -86,7 +87,7 @@ jobs:
         $testproj = "$PWD/tests/Bannerlord.ButterLib.Tests/Bannerlord.ButterLib.Tests.csproj";
         $testprojimpl = "$PWD/tests/Bannerlord.ButterLib.Implementation.Tests/Bannerlord.ButterLib.Implementation.Tests.csproj";
 
-        $filter = "+[Bannerlord.ButterLib*]* -[Bannerlord.ButterLib*.Tests]*";
+        $filter = "${{env.TEST_FILTERS}}";
 
         $gameversions = Get-Content -Path supported-game-versions.txt;
 
