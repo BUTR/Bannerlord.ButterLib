@@ -8,3 +8,4 @@ updates:
       - dependency-name: "Newtonsoft.Json"
       - dependency-name: "Bannerlord.ReferenceAssemblies.*"
       - dependency-name: "Lib.Harmony"
+      - dependency-name: "Microsoft.Extensions.*"
