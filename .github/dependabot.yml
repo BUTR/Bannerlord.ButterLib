@@ -7,3 +7,4 @@ updates:
     ignore:
       - dependency-name: "Newtonsoft.Json"
       - dependency-name: "Bannerlord.ReferenceAssemblies.*"
+      - dependency-name: "Lib.Harmony"
