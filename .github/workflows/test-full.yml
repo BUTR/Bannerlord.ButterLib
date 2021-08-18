@@ -6,11 +6,11 @@ on:
       # If a new version of the game is released, test the repo against it.
       # This way we will always know if the repo is broken on a new update.
       - game_version_update
-#  push:
-#    branches:
-#      - dev
-#    paths:
-#      - '.github/workflows/test-full.yml'
+  push:
+    branches:
+      - dev
+    paths:
+      - '.github/workflows/test-full.yml'
 #      - 'src/**'
 #      - 'tests/**'
 #      - 'build/**'
