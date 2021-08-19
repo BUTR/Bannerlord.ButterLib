@@ -39,59 +39,16 @@ jobs:
     name: Test
     runs-on: windows-latest
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
-
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@master
+    - name: Tests Setup
+      uses: butr/actions-tests-setup@v1.4
       with:
-        dotnet-version: 5.0.x
-
-    - name: Setup BUTR GPR
-      uses: actions/setup-dotnet@master
-      with:
-        source-url: https://nuget.pkg.github.com/BUTR/index.json
-      env:
-        NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-
-    - name: Download DepotDownloader_2.3.6
-      uses: i3h/download-release-asset@v1
-      with:
-        owner: SteamRE
-        repo: DepotDownloader
-        tag: DepotDownloader_2.3.6
-        file: depotdownloader-2.3.6.zip
-
-    - name: Extract DepotDownloader_2.3.6
-      uses: DuckSoft/extract-7z-action@v1.0
-      with:
-        pathSource: depotdownloader-2.3.6.zip
-        pathTarget: depotdownloader
-
-    - name: Download Bannerlord binaries (Stable)
-      run: >-
-        dotnet depotdownloader/DepotDownloader.dll -app 261550 -depot 261551 -beta ${{secrets.SYNCED_GAME_STABLE_VERSION}} -username ${{secrets.STEAM_LOGIN}}
-        -password ${{secrets.STEAM_PASSWORD}} -filelist ./.github/resources/FileFilters.regexp -dir bannerlord-stable
-      shell: pwsh
-    - name: Download Bannerlord binaries (Beta)
-      run: >-
-        dotnet depotdownloader/DepotDownloader.dll -app 261550 -depot 261551 -beta ${{secrets.SYNCED_GAME_BETA_VERSION}} -username ${{secrets.STEAM_LOGIN}}
-        -password ${{secrets.STEAM_PASSWORD}} -filelist ./.github/resources/FileFilters.regexp -dir bannerlord-beta
-      shell: pwsh
-
-    - name: Download opencover.4.7.922
-      uses: i3h/download-release-asset@v1
-      with:
-        owner: OpenCover
-        repo: opencover
-        tag: 4.7.922
-        file: opencover.4.7.922.zip
-
-    - name: Extract opencover.4.7.922
-      uses: DuckSoft/extract-7z-action@v1.0
-      with:
-        pathSource: opencover.4.7.922.zip
-        pathTarget: opencover
+        github-token: ${{secrets.GITHUB_TOKEN}}
+        steam-login: ${{secrets.STEAM_LOGIN}}
+        steam-password: ${{secrets.STEAM_PASSWORD}}
+        stable-version: ${{secrets.SYNCED_GAME_STABLE_VERSION}}
+        beta-version: ${{secrets.SYNCED_GAME_BETA_VERSION}}
+        stable-directory: 'bannerlord-stable'
+        beta-directory: 'bannerlord-beta'
 
     - name: Test
       run: >-
