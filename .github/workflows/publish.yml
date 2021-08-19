@@ -113,7 +113,7 @@ jobs:
       shell: bash
 
     - name: Start Selenoid
-      uses: Xotabu4/selenoid-github-action@v1
+      uses: Xotabu4/selenoid-github-action@v2
 
     - name: Run NexusmodsUploader
       run: >-
