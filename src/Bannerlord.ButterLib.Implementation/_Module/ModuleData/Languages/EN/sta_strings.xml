@@ -14,9 +14,11 @@
     <string id="25Ts3iQnv6" text="This is a standalone campaign and must be assigned a new ID." />
 
     <string id="BguqytVG3q" text="Warning from Bannerlord.ButterLib!" />
-    <string id="FE6ya1gzZR" text="{DEPENDENT_MODULE} module was not found!" />
-    <string id="5G9zffrgMh" text="{MODULE} is loaded before the {DEPENDENT_MODULE}!{NL}Make sure {MODULE} is loaded after it!" />
-    <string id="UZ8zfvudMs" text="{MODULE} is loaded after the {DEPENDENT_MODULE}!{NL}Make sure {MODULE} is loaded before it!" />
+    <string id="FE6ya1gzZR" text="{REQUIRED_MODULE} module was not found!" />
+	<string id="EvI6KPAqTT" text="Incompatible module {DENIED_MODULE} was found!" />
+    <string id="5G9zffrgMh" text="{MODULE} is loaded before the {REQUIRED_MODULE}!{NL}Make sure {MODULE} is loaded after it!" />
+    <string id="UZ8zfvudMs" text="{MODULE} is loaded after the {REQUIRED_MODULE}!{NL}Make sure {MODULE} is loaded before it!" />
+	<string id="FcR4BXnhx8" text="{MODULE} has mutually exclusive mod order directives specified for the {REQUIRED_MODULE}!" />
     <string id="eXs6FLm5DP" text="It's strongly recommended to terminate the game now. Do you wish to terminate it?" />
   </strings>
 </base>
