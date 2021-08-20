@@ -16,7 +16,7 @@ namespace Bannerlord.ButterLib.Implementation.Common.Extensions
             return campaign.GameStarted && campaign.GetCampaignBehavior<CampaignIdentifierBehavior>() is { } identifierBehavior
                 ? identifierBehavior.CampaignId
                 : null;
-#elif e154 || e155 || e156 || e157 || e158 || e159 || e1510 || e160 || e161
+#elif e154 || e155 || e156 || e157 || e158 || e159 || e1510 || e160 || e161 || e162
             return Campaign.Current.UniqueGameId;
 #else
 #error ConstGameVersionWithPrefix is not handled!
@@ -30,7 +30,7 @@ namespace Bannerlord.ButterLib.Implementation.Common.Extensions
             return campaign.GameStarted && campaign.GetCampaignBehavior<CampaignIdentifierBehavior>() is { } identifierBehavior
                 ? identifierBehavior.CampaignDescriptor
                 : null;
-#elif e154 || e155 || e156 || e157 || e158 || e159 || e1510 || e160 || e161
+#elif e154 || e155 || e156 || e157 || e158 || e159 || e1510 || e160 || e161 || e162
             return new BlankCampaignDescriptor(Campaign.Current);
 #else
 #error ConstGameVersionWithPrefix is not handled!
