@@ -25,39 +25,10 @@ jobs:
     name: DocFX documentation
     runs-on: windows-latest
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
+    - name: DocFX Setup
+      uses: butr/actions-docfx-setup@v1.1
       with:
-        submodules: recursive
-        fetch-depth: 0
-
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@master
-      with:
-        dotnet-version: 3.1.x
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@master
-      with:
-        dotnet-version: 5.0.x
-    - name: Setup BUTR GPR
-      uses: actions/setup-dotnet@master
-      with:
-        source-url: https://nuget.pkg.github.com/BUTR/index.json
-      env:
-        NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-
-    - name: Setup NuGet
-      uses: nuget/setup-nuget@v1
-      with:
-        nuget-version: 'latest'
-
-    - name: Generating Newtonsoft.Json xref maps
-      run: >-
-        dotnet run -p build/SandcastleXrefGenerator -- `
-            Newtonsoft.Json 11.0.2 netstandard2.0 `
-            https://www.newtonsoft.com/json/help/html/ `
-            $PWD/docs/xrefs/Newtonsoft.Json-xrefmap.yml
-      shell: pwsh
+        github-token: ${{secrets.GITHUB_TOKEN}}
 
     - name: Build Bannerlord.ButterLib and DocFx.Plugin.LastModified
       run: >-

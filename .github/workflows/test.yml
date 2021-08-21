@@ -32,65 +32,23 @@ env:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   # Disable sending .NET CLI telemetry to Microsoft.
   DOTNET_CLI_TELEMETRY_OPTOUT: true
+  TEST_FILTERS: "+[Bannerlord.ButterLib*]* -[Bannerlord.ButterLib*.Tests]* -[*]System.Diagnostics.CodeAnalysis* -[*]BUTR.DependencyInjection* -[*]Bannerlord.BUTR.Shared* -[*]HarmonyLib.BUTR*"
 
 jobs:
   test:
     name: Test
     runs-on: windows-latest
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
-
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@master
+    - name: Tests Setup
+      uses: butr/actions-tests-setup@v1.4
       with:
-        dotnet-version: 5.0.x
-
-    - name: Setup BUTR GPR
-      uses: actions/setup-dotnet@master
-      with:
-        source-url: https://nuget.pkg.github.com/BUTR/index.json
-      env:
-        NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-
-    - name: Download DepotDownloader_2.3.6
-      uses: i3h/download-release-asset@v1
-      with:
-        owner: SteamRE
-        repo: DepotDownloader
-        tag: DepotDownloader_2.3.6
-        file: depotdownloader-2.3.6.zip
-
-    - name: Extract DepotDownloader_2.3.6
-      uses: DuckSoft/extract-7z-action@v1.0
-      with:
-        pathSource: depotdownloader-2.3.6.zip
-        pathTarget: depotdownloader
-
-    - name: Download Bannerlord binaries (Stable)
-      run: >-
-        dotnet depotdownloader/DepotDownloader.dll -app 261550 -depot 261551 -beta ${{secrets.SYNCED_GAME_STABLE_VERSION}} -username ${{secrets.STEAM_LOGIN}}
-        -password ${{secrets.STEAM_PASSWORD}} -filelist ./.github/resources/FileFilters.regexp -dir bannerlord-stable
-      shell: pwsh
-    - name: Download Bannerlord binaries (Beta)
-      run: >-
-        dotnet depotdownloader/DepotDownloader.dll -app 261550 -depot 261551 -beta ${{secrets.SYNCED_GAME_BETA_VERSION}} -username ${{secrets.STEAM_LOGIN}}
-        -password ${{secrets.STEAM_PASSWORD}} -filelist ./.github/resources/FileFilters.regexp -dir bannerlord-beta
-      shell: pwsh
-
-    - name: Download opencover.4.7.922
-      uses: i3h/download-release-asset@v1
-      with:
-        owner: OpenCover
-        repo: opencover
-        tag: 4.7.922
-        file: opencover.4.7.922.zip
-
-    - name: Extract opencover.4.7.922
-      uses: DuckSoft/extract-7z-action@v1.0
-      with:
-        pathSource: opencover.4.7.922.zip
-        pathTarget: opencover
+        github-token: ${{secrets.GITHUB_TOKEN}}
+        steam-login: ${{secrets.STEAM_LOGIN}}
+        steam-password: ${{secrets.STEAM_PASSWORD}}
+        stable-version: ${{secrets.SYNCED_GAME_STABLE_VERSION}}
+        beta-version: ${{secrets.SYNCED_GAME_BETA_VERSION}}
+        stable-directory: 'bannerlord-stable'
+        beta-directory: 'bannerlord-beta'
 
     - name: Test
       run: >-
@@ -111,16 +69,16 @@ jobs:
 
     - name: Test Coverage
       run: >-
-          opencover/OpenCover.Console.exe -register -target:"dotnet.exe" -targetargs:"test tests/Bannerlord.ButterLib.Tests/Bannerlord.ButterLib.Tests.csproj --configuration Debug --no-build" -filter:"+[Bannerlord.ButterLib*]* -[Bannerlord.ButterLib*.Tests]*" -output:coverage_butterlib_stable_debug.xml -mergebyhash;
-          opencover/OpenCover.Console.exe -register -target:"dotnet.exe" -targetargs:"test tests/Bannerlord.ButterLib.Tests/Bannerlord.ButterLib.Tests.csproj --configuration Release --no-build" -filter:"+[Bannerlord.ButterLib*]* -[Bannerlord.ButterLib*.Tests]*" -output:coverage_butterlib_stable_release.xml -mergebyhash;
-          opencover/OpenCover.Console.exe -register -target:"dotnet.exe" -targetargs:"test tests/Bannerlord.ButterLib.Implementation.Tests/Bannerlord.ButterLib.Implementation.Tests.csproj --configuration Stable_Debug --no-build" -filter:"+[Bannerlord.ButterLib*]* -[Bannerlord.ButterLib*.Tests]*" -output:coverage_butterlib_impl_stable_debug.xml -mergebyhash;
-          opencover/OpenCover.Console.exe -register -target:"dotnet.exe" -targetargs:"test tests/Bannerlord.ButterLib.Implementation.Tests/Bannerlord.ButterLib.Implementation.Tests.csproj --configuration Stable_Release --no-build" -filter:"+[Bannerlord.ButterLib*]* -[Bannerlord.ButterLib*.Tests]*" -output:coverage_butterlib_impl_stable_release.xml -mergebyhash;
-          opencover/OpenCover.Console.exe -register -target:"dotnet.exe" -targetargs:"test tests/Bannerlord.ButterLib.Implementation.Tests/Bannerlord.ButterLib.Implementation.Tests.csproj --configuration Beta_Debug --no-build" -filter:"+[Bannerlord.ButterLib*]* -[Bannerlord.ButterLib*.Tests]*" -output:coverage_butterlib_impl_beta_debug.xml -mergebyhash;
-          opencover/OpenCover.Console.exe -register -target:"dotnet.exe" -targetargs:"test tests/Bannerlord.ButterLib.Implementation.Tests/Bannerlord.ButterLib.Implementation.Tests.csproj --configuration Beta_Release --no-build" -filter:"+[Bannerlord.ButterLib*]* -[Bannerlord.ButterLib*.Tests]*" -output:coverage_butterlib_impl_beta_release.xml -mergebyhash;
+          opencover/OpenCover.Console.exe -register -target:"dotnet.exe" -targetargs:"test tests/Bannerlord.ButterLib.Tests/Bannerlord.ButterLib.Tests.csproj --configuration Debug --no-build" -filter:"${{env.TEST_FILTERS}}" -output:coverage_butterlib_stable_debug.xml -mergebyhash;
+          opencover/OpenCover.Console.exe -register -target:"dotnet.exe" -targetargs:"test tests/Bannerlord.ButterLib.Tests/Bannerlord.ButterLib.Tests.csproj --configuration Release --no-build" -filter:"${{env.TEST_FILTERS}}" -output:coverage_butterlib_stable_release.xml -mergebyhash;
+          opencover/OpenCover.Console.exe -register -target:"dotnet.exe" -targetargs:"test tests/Bannerlord.ButterLib.Implementation.Tests/Bannerlord.ButterLib.Implementation.Tests.csproj --configuration Stable_Debug --no-build" -filter:"${{env.TEST_FILTERS}}" -output:coverage_butterlib_impl_stable_debug.xml -mergebyhash;
+          opencover/OpenCover.Console.exe -register -target:"dotnet.exe" -targetargs:"test tests/Bannerlord.ButterLib.Implementation.Tests/Bannerlord.ButterLib.Implementation.Tests.csproj --configuration Stable_Release --no-build" -filter:"${{env.TEST_FILTERS}}" -output:coverage_butterlib_impl_stable_release.xml -mergebyhash;
+          opencover/OpenCover.Console.exe -register -target:"dotnet.exe" -targetargs:"test tests/Bannerlord.ButterLib.Implementation.Tests/Bannerlord.ButterLib.Implementation.Tests.csproj --configuration Beta_Debug --no-build" -filter:"${{env.TEST_FILTERS}}" -output:coverage_butterlib_impl_beta_debug.xml -mergebyhash;
+          opencover/OpenCover.Console.exe -register -target:"dotnet.exe" -targetargs:"test tests/Bannerlord.ButterLib.Implementation.Tests/Bannerlord.ButterLib.Implementation.Tests.csproj --configuration Beta_Release --no-build" -filter:"${{env.TEST_FILTERS}}" -output:coverage_butterlib_impl_beta_release.xml -mergebyhash;
       shell: pwsh
 
     - name: ReportGenerator
-      uses: danielpalme/ReportGenerator-GitHub-Action@4.6.1
+      uses: danielpalme/ReportGenerator-GitHub-Action@4.8.12
       with:
         reports: 'coverage_butterlib_stable_debug.xml;coverage_butterlib_stable_release.xml;coverage_butterlib_impl_stable_debug.xml;coverage_butterlib_impl_stable_release.xml;coverage_butterlib_impl_beta_debug.xml;coverage_butterlib_impl_beta_release.xml;'
         targetdir: 'coveragereport'
@@ -135,7 +93,7 @@ jobs:
         path: coveragereport
 
     - name: Upload ReportGenerator to CodeCov
-      uses: codecov/codecov-action@v1
+      uses: codecov/codecov-action@v2.0.2
       with:
         token: ${{secrets.CODECOV_TOKEN}}
         file: coveragereport/Cobertura.xml

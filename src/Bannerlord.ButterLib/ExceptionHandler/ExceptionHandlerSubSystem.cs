@@ -1,5 +1,4 @@
-﻿using Bannerlord.ButterLib.Common.Helpers;
-using Bannerlord.ButterLib.SubSystems;
+﻿using Bannerlord.ButterLib.SubSystems;
 
 using HarmonyLib;
 
@@ -38,10 +37,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
 
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            if (BUTR.Shared.Helpers.ModuleInfoHelper.GetLoadedModules().Any(m => string.Equals(m.Id, "BetterExceptionWindow", StringComparison.InvariantCultureIgnoreCase)))
-            {
-                BEWPatch.Enable(Harmony);
-            }
+            BEWPatch.Enable(Harmony);
 
             // re-enable BetterExceptionWindow and keep it as it is. It has now features we have yet to match.
             if (BUTR.Shared.Helpers.ModuleInfoHelper.GetLoadedModules().Any(m => string.Equals(m.Id, "BetterExceptionWindow", StringComparison.InvariantCultureIgnoreCase)))
