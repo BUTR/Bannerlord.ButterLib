@@ -70,7 +70,7 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehavio
                 if (type is not null)
                     return type;
 
-                var tokens = typeName.Split(new []  {"[[", "]]", "],["}, StringSplitOptions.RemoveEmptyEntries);
+                var tokens = typeName.Split(new[] { "[[", "]]", "],[" }, StringSplitOptions.RemoveEmptyEntries);
                 if (tokens.Length == 1)
                     return Type.GetType(typeName, true);
 
@@ -98,7 +98,7 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehavio
             public override void BindToName(Type serializedType, out string assemblyName, out string typeName)
             {
                 assemblyName = "Bannerlord.ButterLib.Implementation";
-                typeName     = serializedType.FullName!;
+                typeName = serializedType.FullName!;
             }
         }
     }

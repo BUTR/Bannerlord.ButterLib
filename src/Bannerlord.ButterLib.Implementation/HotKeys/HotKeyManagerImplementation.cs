@@ -34,7 +34,7 @@ namespace Bannerlord.ButterLib.Implementation.HotKeys
 
         public override T Add<T>(T hotkey)
         {
-            if(_hotKeys.Any(x => string.Equals(x.Uid, hotkey.Uid, StringComparison.OrdinalIgnoreCase)))
+            if (_hotKeys.Any(x => string.Equals(x.Uid, hotkey.Uid, StringComparison.OrdinalIgnoreCase)))
                 throw new ArgumentException($"A hotkey called {hotkey.Uid} already exists", nameof(hotkey));
             _hotKeys.Add(hotkey);
             hotkey.Id = _currentId;

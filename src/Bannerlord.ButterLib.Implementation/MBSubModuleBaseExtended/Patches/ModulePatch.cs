@@ -15,6 +15,7 @@ using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
 
 using TaleWorlds.MountAndBlade;
+
 using TWModule = TaleWorlds.MountAndBlade.Module;
 
 namespace Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended.Patches
@@ -85,7 +86,7 @@ namespace Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended.Patches
                                                                                 new CodeInstruction(opcode: OpCodes.Call, operand: miDelayedScreenAsRootEventCaller) });
                     codes[finallyIndex + 1].MoveLabelsFrom(codes[finallyIndex + 3]);
                 }
-                
+
                 return codes.AsEnumerable();
             }
             catch (Exception ex)

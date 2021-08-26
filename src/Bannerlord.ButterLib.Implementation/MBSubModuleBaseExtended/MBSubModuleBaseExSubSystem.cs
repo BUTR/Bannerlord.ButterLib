@@ -15,6 +15,7 @@ using System.Reflection;
 using System.Text;
 
 using TaleWorlds.MountAndBlade;
+
 using TWModule = TaleWorlds.MountAndBlade.Module;
 
 namespace Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended

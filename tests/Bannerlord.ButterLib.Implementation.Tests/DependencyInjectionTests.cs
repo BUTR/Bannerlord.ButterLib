@@ -1,4 +1,4 @@
-using Bannerlord.BUTR.Shared.Helpers;
+﻿using Bannerlord.BUTR.Shared.Helpers;
 using Bannerlord.ButterLib.CampaignIdentifier;
 using Bannerlord.ButterLib.Common.Extensions;
 using Bannerlord.ButterLib.Common.Helpers;

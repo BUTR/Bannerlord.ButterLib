@@ -16,7 +16,7 @@ namespace Bannerlord.ButterLib.SaveSystem
         protected static readonly IsContainerDelegate? _isContainerDelegate =
             AccessTools2.GetDelegate<IsContainerDelegate>(
                 AccessTools.Method(
-                    typeof(SaveableRootClassAttribute).Assembly.GetType("TaleWorlds.SaveSystem.TypeExtensions"), "IsContainer", new [] { typeof(Type) }));
+                    typeof(SaveableRootClassAttribute).Assembly.GetType("TaleWorlds.SaveSystem.TypeExtensions"), "IsContainer", new[] { typeof(Type) }));
 
         protected static bool IsContainerFallback(Type type)
         {

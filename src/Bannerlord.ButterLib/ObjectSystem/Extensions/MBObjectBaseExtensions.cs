@@ -65,7 +65,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Extensions
         /// <param name="object">A game object.</param>
         /// <param name="name">The variable's name.</param>
         /// <param name="value">The variable value or <see langword="default"/> if nonexistent.</param>
-         internal static bool TryGetVariable<T>(this MBObjectBase @object, string name, out T value)
+        internal static bool TryGetVariable<T>(this MBObjectBase @object, string name, out T value)
         {
             if (name is null!)
                 throw new ArgumentNullException(nameof(name));

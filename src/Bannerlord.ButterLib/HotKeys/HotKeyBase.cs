@@ -93,7 +93,7 @@ namespace Bannerlord.ButterLib.HotKeys
         /// </summary>
         /// <param name="hotKey"><see cref="HotKeyBase"/> to convert.</param>
         /// <returns>The <see cref="GameKey"/> stored internally.</returns>
-        public static implicit operator GameKey(HotKeyBase hotKey) => hotKey.GameKey  ?? throw new Exception();
+        public static implicit operator GameKey(HotKeyBase hotKey) => hotKey.GameKey ?? throw new Exception();
 
         /// <inheritdoc cref="OnPressedEvent"/>
         protected virtual void OnPressed() { }

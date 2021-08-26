@@ -78,14 +78,14 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
 
         private static (MobileParty? mobileParty, Settlement? settlement) GetMapPosition(Hero hero) =>
             hero.IsPrisoner && hero.PartyBelongedToAsPrisoner is not null
-                ? hero.PartyBelongedToAsPrisoner.IsSettlement ? ((MobileParty?)null, hero.PartyBelongedToAsPrisoner.Settlement) : (hero.PartyBelongedToAsPrisoner.MobileParty, null)
+                ? hero.PartyBelongedToAsPrisoner.IsSettlement ? ((MobileParty?) null, hero.PartyBelongedToAsPrisoner.Settlement) : (hero.PartyBelongedToAsPrisoner.MobileParty, null)
                 : hero.CurrentSettlement is not null && !hero.IsFugitive
-                    ? ((MobileParty?)null, hero.CurrentSettlement)
-                    : hero.PartyBelongedTo is not null ? (hero.PartyBelongedTo, (Settlement?)null) : (null, null);
+                    ? ((MobileParty?) null, hero.CurrentSettlement)
+                    : hero.PartyBelongedTo is not null ? (hero.PartyBelongedTo, (Settlement?) null) : (null, null);
 
         private static float GetWeightedMeanDistance(IReadOnlyCollection<(float Distance, float Weight)> settlementDistances) =>
             settlementDistances.Any(x => x.Weight > 0)
-                ? (float)((settlementDistances.Sum(x => x.Distance * x.Weight) + 1.0) / (settlementDistances.Sum(x => x.Weight) + 1.0))
+                ? (float) ((settlementDistances.Sum(x => x.Distance * x.Weight) + 1.0) / (settlementDistances.Sum(x => x.Weight) + 1.0))
                 : float.NaN;
 
         private static float GetSettlementWeight(Settlement settlement) => settlement.IsTown ? 2f : settlement.IsCastle ? 1f : settlement.IsVillage ? 0.5f : 0f;

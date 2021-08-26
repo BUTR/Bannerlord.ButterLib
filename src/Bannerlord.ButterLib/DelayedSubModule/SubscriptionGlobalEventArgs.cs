@@ -75,7 +75,7 @@ namespace Bannerlord.ButterLib.DelayedSubModule
             MethodName = methodName;
         }
 
-        public bool IsValid<T>(string methodName, SubscriptionType subscriptionType) where T: MBSubModuleBase
+        public bool IsValid<T>(string methodName, SubscriptionType subscriptionType) where T : MBSubModuleBase
         {
             return Type == typeof(T) && MethodName == methodName && SubscriptionType == subscriptionType;
         }

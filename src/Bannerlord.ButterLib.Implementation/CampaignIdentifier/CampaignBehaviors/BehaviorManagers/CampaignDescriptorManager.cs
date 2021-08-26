@@ -86,7 +86,7 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehavio
                         string.Join(" - ", existingDescriptor.Descriptor, existingDescriptor.KeyValue)));
 
                 var newIdTextObject = TextObjectHelper.Create("{=wF4qRrhmEu}Assign new ID");
-                var inquiryBody = $"{TextObjectHelper.Create(InquiryUpperBody)}\n \n{TextObjectHelper.Create(InquiryLowerBody, new Dictionary<string, TextObject> {["NEW_ID"] = newIdTextObject})}";
+                var inquiryBody = $"{TextObjectHelper.Create(InquiryUpperBody)}\n \n{TextObjectHelper.Create(InquiryLowerBody, new Dictionary<string, TextObject> { ["NEW_ID"] = newIdTextObject })}";
                 inquiryElements.Add(new InquiryElement(null, newIdTextObject.ToString(),
                     new ImageIdentifier(), true,
                     TextObjectHelper.Create("{=25Ts3iQnv6}This is a standalone campaign and must be assigned a new ID.").ToString()));

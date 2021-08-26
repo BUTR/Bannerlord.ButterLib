@@ -10,7 +10,8 @@ namespace System.Diagnostics.Logger
 
         private readonly ILogger _logger;
 
-        public LoggerTraceListener(ILogger logger) {
+        public LoggerTraceListener(ILogger logger)
+        {
             _logger = logger;
         }
 
