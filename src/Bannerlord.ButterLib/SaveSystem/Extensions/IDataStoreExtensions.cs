@@ -14,7 +14,7 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
         private static IEnumerable<string> ToChunks(string str, int maxChunkSize)
         {
             for (var i = 0; i < str.Length; i += maxChunkSize)
-                yield return str.Substring(i, Math.Min(maxChunkSize, str.Length-i));
+                yield return str.Substring(i, Math.Min(maxChunkSize, str.Length - i));
         }
 
         private static string ChunksToString(string[] chunks)

@@ -16,9 +16,9 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// <returns>A 64-bit signed integer representing the initial pair.</returns>
         public static long Pair(int a, int b)
         {
-            var A = (ulong)(a >= 0 ? 2 * (long)a : -2 * (long)a - 1);
-            var B = (ulong)(b >= 0 ? 2 * (long)b : -2 * (long)b - 1);
-            var C = (long)((A >= B ? A * A + A + B : A + B * B) / 2);
+            var A = (ulong) (a >= 0 ? 2 * (long) a : -2 * (long) a - 1);
+            var B = (ulong) (b >= 0 ? 2 * (long) b : -2 * (long) b - 1);
+            var C = (long) ((A >= B ? A * A + A + B : A + B * B) / 2);
             return a < 0 && b < 0 || a >= 0 && b >= 0
                 ? C
                 : -C - 1;
@@ -43,9 +43,9 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// <returns>A 32-bit signed integer representing the initial pair.</returns>
         public static int Pair(short a, short b)
         {
-            var A = (uint)(a >= 0 ? 2 * a : -2 * a - 1);
-            var B = (uint)(b >= 0 ? 2 * b : -2 * b - 1);
-            var C = (int)((A >= B ? A * A + A + B : A + B * B) / 2);
+            var A = (uint) (a >= 0 ? 2 * a : -2 * a - 1);
+            var B = (uint) (b >= 0 ? 2 * b : -2 * b - 1);
+            var C = (int) ((A >= B ? A * A + A + B : A + B * B) / 2);
             return a < 0 && b < 0 || a >= 0 && b >= 0
                 ? C
                 : -C - 1;
@@ -78,8 +78,8 @@ namespace Bannerlord.ButterLib.Common.Helpers
             var sqrt = IntegerSqrt(pairValue);
             var remainder = pairValue - sqrt * sqrt;
             return remainder < sqrt
-                ? ((uint)remainder, (uint)sqrt)
-                : ((uint)sqrt, (uint)(remainder - sqrt));
+                ? ((uint) remainder, (uint) sqrt)
+                : ((uint) sqrt, (uint) (remainder - sqrt));
         }
 
         /// <summary>Unpairs an 64-bit signed integer representing the pair into two 32-bit signed integers with regard to their initial positions before pairing.</summary>
@@ -89,7 +89,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
         public static (int A, int B) UnPair(long pairValue)
         {
             var z = pairValue >= 0 ? pairValue : -pairValue - 1;
-            var Z = 2 * (ulong)z;
+            var Z = 2 * (ulong) z;
 
             var uRes = UnPair(Z);
             var firstPossibleResult = GetSignedTuple(uRes);
@@ -107,8 +107,8 @@ namespace Bannerlord.ButterLib.Common.Helpers
             var sqrt = IntegerSqrt(pairValue);
             var remainder = pairValue - sqrt * sqrt;
             return remainder < sqrt
-                ? ((ushort)remainder, (ushort)sqrt)
-                : ((ushort)sqrt, (ushort)(remainder - sqrt));
+                ? ((ushort) remainder, (ushort) sqrt)
+                : ((ushort) sqrt, (ushort) (remainder - sqrt));
         }
 
         /// <summary>Unpairs an 32-bit signed integer representing the pair into two 16-bit signed integers with regard to their initial positions before pairing.</summary>
@@ -118,14 +118,14 @@ namespace Bannerlord.ButterLib.Common.Helpers
         public static (short A, short B) UnPair(int pairValue)
         {
             var z = pairValue >= 0 ? pairValue : -pairValue - 1;
-            var Z = 2 * (uint)z;
+            var Z = 2 * (uint) z;
 
             var uRes = UnPair(Z);
-            var firstPossibleResult = ((short A, short B))GetSignedTuple(uRes);
+            var firstPossibleResult = ((short A, short B)) GetSignedTuple(uRes);
 
             return Pair(firstPossibleResult.A, firstPossibleResult.B) == pairValue
                 ? firstPossibleResult
-                : ((short A, short B))GetSignedTuple(UnPair(Z + 1));
+                : ((short A, short B)) GetSignedTuple(UnPair(Z + 1));
         }
 
         /// <summary>
@@ -141,7 +141,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
         private static ulong IntegerSqrt(ulong a)
         {
             var min = (ulong) 0;
-            var max = ((ulong)1) << 32;
+            var max = ((ulong) 1) << 32;
             while (true)
             {
                 if (max <= 1 + min)
@@ -171,7 +171,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
         private static uint IntegerSqrt(uint a)
         {
             var min = (uint) 0;
-            var max = ((uint)1) << 16;
+            var max = ((uint) 1) << 16;
             while (true)
             {
                 if (max <= 1 + min)
@@ -202,11 +202,11 @@ namespace Bannerlord.ButterLib.Common.Helpers
         {
             return (
                 A: unsignedTuple.A % 2 == 0
-                    ? (int)unsignedTuple.A / 2
-                    : (int)((unsignedTuple.A + 1) / -2),
+                    ? (int) unsignedTuple.A / 2
+                    : (int) ((unsignedTuple.A + 1) / -2),
                 B: unsignedTuple.B % 2 == 0
-                    ? (int)unsignedTuple.B / 2
-                    : (int)((unsignedTuple.B + 1) / -2));
+                    ? (int) unsignedTuple.B / 2
+                    : (int) ((unsignedTuple.B + 1) / -2));
         }
     }
 }

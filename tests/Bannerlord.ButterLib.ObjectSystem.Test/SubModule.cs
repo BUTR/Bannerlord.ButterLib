@@ -43,7 +43,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
 
             if (game.GameType is Campaign)
             {
-                var initializer = (CampaignGameStarter)starterObject;
+                var initializer = (CampaignGameStarter) starterObject;
                 initializer.AddBehavior(new TestCampaignBehavior());
                 _logger.LogTrace($"Added campaign behavior: {nameof(TestCampaignBehavior)}");
             }

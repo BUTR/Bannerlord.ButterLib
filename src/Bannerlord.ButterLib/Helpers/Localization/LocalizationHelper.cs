@@ -43,7 +43,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
 
         private static RecursiveCaller GetRecursiveCaller(RecursiveCaller currentCaller, RecursiveCaller receivedCaller)
         {
-            return (RecursiveCaller)Math.Max((byte)currentCaller, (byte)receivedCaller);
+            return (RecursiveCaller) Math.Max((byte) currentCaller, (byte) receivedCaller);
         }
 
         private static RecursiveCaller GetCurrentCaller<T>(T entity) where T : class
@@ -65,7 +65,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
                 case Hero hero:
                     var characterProperties = TextObjectHelper.Create(string.Empty);
                     characterProperties!.SetTextVariable("NAME", hero.Name);
-                    characterProperties.SetTextVariable("AGE", (int)hero.Age);
+                    characterProperties.SetTextVariable("AGE", (int) hero.Age);
                     characterProperties.SetTextVariable("GENDER", hero.IsFemale ? 1 : 0);
                     characterProperties.SetTextVariable("LINK", hero.EncyclopediaLinkWithName);
                     characterProperties.SetTextVariable("FIRSTNAME", hero.FirstName ?? hero.Name);
@@ -199,7 +199,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
         {
             if (EasternSlavicGroupLanguageIDs.Contains(BannerlordConfig.Language))
             {
-                return GetEasternSlavicPluralFormInternal((int)Math.Floor(number));
+                return GetEasternSlavicPluralFormInternal((int) Math.Floor(number));
             }
             return number != 1 ? PluralForm.Plural : PluralForm.Singular;
         }

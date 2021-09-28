@@ -5,6 +5,7 @@ using HarmonyLib;
 using NUnit.Framework;
 
 using System.Runtime.CompilerServices;
+
 using TaleWorlds.Library;
 
 namespace Bannerlord.ButterLib.Tests
