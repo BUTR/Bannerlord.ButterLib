@@ -108,7 +108,7 @@ namespace Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended.Patches
         [MethodImpl(MethodImplOptions.NoInlining)]
         private static void FinalizeSubModulesPostfix(TWModule __instance)
         {
-            foreach (MBSubModuleBaseEx submodule in __instance.SubModules.Where(s => s is MBSubModuleBaseEx))
+            foreach (IMBSubModuleBaseEx submodule in __instance.SubModules.Where(s => s is IMBSubModuleBaseEx))
             {
                 submodule.OnAllSubModulesUnLoaded();
             }
@@ -117,7 +117,7 @@ namespace Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended.Patches
         [MethodImpl(MethodImplOptions.NoInlining)]
         private static void DelayedScreenAsRootEvent(TWModule instance)
         {
-            foreach (MBSubModuleBaseEx submodule in instance.SubModules.Where(s => s is MBSubModuleBaseEx))
+            foreach (IMBSubModuleBaseEx submodule in instance.SubModules.Where(s => s is IMBSubModuleBaseEx))
             {
                 submodule.OnBeforeInitialModuleScreenSetAsRootDelayed();
             }

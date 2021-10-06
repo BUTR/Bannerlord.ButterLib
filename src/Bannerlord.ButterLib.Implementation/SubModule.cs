@@ -12,10 +12,13 @@ using Bannerlord.ButterLib.Implementation.Logging;
 using Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended;
 using Bannerlord.ButterLib.Implementation.ObjectSystem;
 using Bannerlord.ButterLib.Implementation.SaveSystem;
+using Bannerlord.ButterLib.MBSubModuleBaseExtended;
 using Bannerlord.ButterLib.ObjectSystem;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+
+using System.Linq;
 
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
@@ -47,7 +50,7 @@ namespace Bannerlord.ButterLib.Implementation
                 services.AddSingleton<ICampaignExtensions, CampaignExtensionsImplementation>();
 #if e143 || e150 || e151 || e152 || e153
                 services.AddTransient<ICampaignDescriptorProvider, JsonCampaignDescriptorProvider>();
-#elif e154 || e155 || e156 || e157 || e158 || e159 || e1510 || e160 || e161 || e162
+#elif e154 || e155 || e156 || e157 || e158 || e159 || e1510 || e160 || e161 || e162 || e163
                 services.AddTransient<ICampaignDescriptorProvider, BlankCampaignDescriptorProvider>();
 #else
 #error ConstGameVersionWithPrefix is not handled!
@@ -88,6 +91,14 @@ namespace Bannerlord.ButterLib.Implementation
             HotKeySubSystem.Instance?.Enable();
             MBSubModuleBaseExSubSystem.Instance?.Enable();
             SaveSystemSubSystem.Instance?.Enable();
+
+            if (MBSubModuleBaseExSubSystem.Instance?.IsEnabled ?? false)
+            {
+                foreach (IMBSubModuleBaseEx submodule in Module.CurrentModule.SubModules.OfType<IMBSubModuleBaseEx>())
+                {
+                    submodule.OnBeforeSubModuleLoad();
+                }
+            }
 
             Logger.LogTrace("ButterLib.Implementation: OnSubModuleLoad: Done");
         }

@@ -14,7 +14,7 @@ Alphanumeric sort. This sorting algorithm logically handles numbers in strings. 
   
 
 ### [``LocalizationHelper``](xref:Bannerlord.ButterLib.Common.Helpers.LocalizationHelper)
-  
+A number of useful methods to work with [``TextObjects``](xref:TaleWorlds.Localization.TextObject) for easier and more efficient localization.
 
 ### [``ModuleInfoHelper``](xref:Bannerlord.ButterLib.Common.Helpers.ModuleInfoHelper)
   

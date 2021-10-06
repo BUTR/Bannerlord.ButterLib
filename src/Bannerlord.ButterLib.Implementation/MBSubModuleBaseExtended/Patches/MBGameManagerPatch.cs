@@ -137,7 +137,7 @@ namespace Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended.Patches
         [MethodImpl(MethodImplOptions.NoInlining)]
         private static void DelayedOnGameStartEvent(Game game, IGameStarter gameStarter)
         {
-            foreach (var submodule in Module.CurrentModule.SubModules.OfType<MBSubModuleBaseEx>())
+            foreach (var submodule in Module.CurrentModule.SubModules.OfType<IMBSubModuleBaseEx>())
             {
                 submodule.OnGameStartDelayed(game, gameStarter);
             }
@@ -146,7 +146,7 @@ namespace Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended.Patches
         [MethodImpl(MethodImplOptions.NoInlining)]
         private static void DelayedOnGameEndEvent(Game game)
         {
-            foreach (var submodule in Module.CurrentModule.SubModules.OfType<MBSubModuleBaseEx>())
+            foreach (var submodule in Module.CurrentModule.SubModules.OfType<IMBSubModuleBaseEx>())
             {
                 submodule.OnGameEndDelayed(game);
             }
