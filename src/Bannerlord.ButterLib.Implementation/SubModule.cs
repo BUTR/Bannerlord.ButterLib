@@ -12,13 +12,10 @@ using Bannerlord.ButterLib.Implementation.Logging;
 using Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended;
 using Bannerlord.ButterLib.Implementation.ObjectSystem;
 using Bannerlord.ButterLib.Implementation.SaveSystem;
-using Bannerlord.ButterLib.MBSubModuleBaseExtended;
 using Bannerlord.ButterLib.ObjectSystem;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-
-using System.Linq;
 
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
@@ -91,14 +88,6 @@ namespace Bannerlord.ButterLib.Implementation
             HotKeySubSystem.Instance?.Enable();
             MBSubModuleBaseExSubSystem.Instance?.Enable();
             SaveSystemSubSystem.Instance?.Enable();
-
-            if (MBSubModuleBaseExSubSystem.Instance?.IsEnabled ?? false)
-            {
-                foreach (IMBSubModuleBaseEx submodule in Module.CurrentModule.SubModules.OfType<IMBSubModuleBaseEx>())
-                {
-                    submodule.OnBeforeSubModuleLoad();
-                }
-            }
 
             Logger.LogTrace("ButterLib.Implementation: OnSubModuleLoad: Done");
         }

@@ -9,11 +9,6 @@ namespace Bannerlord.ButterLib.MBSubModuleBaseExtended
     public abstract class MBSubModuleBaseEx : MBSubModuleBase, IMBSubModuleBaseEx
     {
         /// <summary>
-        /// Event that takes place before the module is loaded into the game. Butterlib calls this inside the <see cref="ButterLibSubModule.OnSubModuleLoad"/> for every <see cref="IMBSubModuleBaseEx"/>-derived MBSubModule loaded by the game.
-        /// </summary>
-        /// <remarks>Any ServiceCollection registration should go here.</remarks>
-        public virtual void OnBeforeSubModuleLoad() { }
-        /// <summary>
         /// Event that takes place right after OnSubModuleUnloaded events of all loaded submodules were handled.
         /// </summary>
         public virtual void OnAllSubModulesUnLoaded() { }
