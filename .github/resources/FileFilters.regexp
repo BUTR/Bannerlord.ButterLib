@@ -1,3 +1,4 @@
+bin/Win64_Shipping_Client/Epic.OnlineServices.dll
 regex:bin\/Win64_Shipping_Client\/[^\/]*TaleWorlds.+
 regex:Modules\/CustomBattle\/bin\/Win64_Shipping_Client\/[^\/]+dll
 regex:Modules\/SandBox\/bin\/Win64_Shipping_Client\/[^\/]+dll
