@@ -51,14 +51,13 @@ jobs:
         
         function Exec
         {
-            [CmdletBinding()]
-            param(
-                [Parameter(Position=0,Mandatory=1)][scriptblock]$cmd,
-                [Parameter(Position=1,Mandatory=0)][string]$errorMessage = ("Error executing command {0}" -f $cmd)
+            param (
+                [scriptblock]$ScriptBlock,
+                [string]$ErrorAction = $ErrorActionPreference
             )
-            & $cmd
-            if ($lastexitcode -ne 0) {
-                throw ("Exec: " + $errorMessage)
+            & @ScriptBlock
+            if (($lastexitcode -ne 0) -and $ErrorAction -eq "Stop") {
+                exit $lastexitcode
             }
         }
         
