@@ -13,6 +13,8 @@
     <string id="wF4qRrhmEu" text="Assign new ID" />
     <string id="25Ts3iQnv6" text="This is a standalone campaign and must be assigned a new ID." />
 
+    <string id="JLkq0ZkOSI" text="{START}{?IS_PLURAL} and {?}{\\?}{END}" />
+
     <string id="BguqytVG3q" text="Warning from Bannerlord.ButterLib!" />
     <string id="FE6ya1gzZR" text="{REQUIRED_MODULE} module was not found!" />
     <string id="EvI6KPAqTT" text="Incompatible module {DENIED_MODULE} was found!" />

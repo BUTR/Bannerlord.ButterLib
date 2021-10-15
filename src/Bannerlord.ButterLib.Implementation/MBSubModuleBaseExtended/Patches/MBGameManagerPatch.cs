@@ -13,8 +13,10 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
+
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
+
 using Module = TaleWorlds.MountAndBlade.Module;
 
 namespace Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended.Patches
@@ -87,7 +89,7 @@ namespace Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended.Patches
 
         private static bool CheckRequiredMethodInfos() =>
             MBSubModuleBaseExSubSystem.NotNull(_log, TargetType, nameof(TargetType))
-            & MBSubModuleBaseExSubSystem.NotNull(_log, miTargetMethodGameStart, nameof(miTargetMethodGameStart))            
+            & MBSubModuleBaseExSubSystem.NotNull(_log, miTargetMethodGameStart, nameof(miTargetMethodGameStart))
             & MBSubModuleBaseExSubSystem.NotNull(_log, miTargetMethodGameEnd, nameof(miTargetMethodGameEnd))
             & MBSubModuleBaseExSubSystem.NotNull(_log, miPatchMethod, nameof(miPatchMethod))
             & MBSubModuleBaseExSubSystem.NotNull(_log, miMBSubModuleBaseOnGameStartEvent, nameof(miMBSubModuleBaseOnGameStartEvent))
@@ -98,8 +100,8 @@ namespace Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended.Patches
             try
             {
                 int originalCallIndex = -1, finallyIndex = -1;
-                List<CodeInstruction> codes = new(instructions);
-                for (int i = 0; i < codes.Count; ++i)
+                var codes = new List<CodeInstruction>(instructions);
+                for (var i = 0; i < codes.Count; ++i)
                 {
                     if (originalCallIndex < 0 && codes[i].Calls(miToSearchFor))
                     {
@@ -135,7 +137,7 @@ namespace Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended.Patches
         [MethodImpl(MethodImplOptions.NoInlining)]
         private static void DelayedOnGameStartEvent(Game game, IGameStarter gameStarter)
         {
-            foreach (MBSubModuleBaseEx submodule in Module.CurrentModule.SubModules.Where(s => s is MBSubModuleBaseEx))
+            foreach (var submodule in Module.CurrentModule.SubModules.OfType<IMBSubModuleBaseEx>())
             {
                 submodule.OnGameStartDelayed(game, gameStarter);
             }
@@ -144,7 +146,7 @@ namespace Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended.Patches
         [MethodImpl(MethodImplOptions.NoInlining)]
         private static void DelayedOnGameEndEvent(Game game)
         {
-            foreach (MBSubModuleBaseEx submodule in Module.CurrentModule.SubModules.Where(s => s is MBSubModuleBaseEx))
+            foreach (var submodule in Module.CurrentModule.SubModules.OfType<IMBSubModuleBaseEx>())
             {
                 submodule.OnGameEndDelayed(game);
             }

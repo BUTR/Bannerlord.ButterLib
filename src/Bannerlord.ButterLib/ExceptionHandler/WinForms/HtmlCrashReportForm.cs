@@ -154,7 +154,7 @@ if (!document.getElementsByClassName) {
 
         private void HtmlRender_Navigating(object sender, WebBrowserNavigatingEventArgs e)
         {
-            if (e.Url.ToString() is {} uri && UriIsValid(uri))
+            if (e.Url.ToString() is { } uri && UriIsValid(uri))
             {
                 e.Cancel = true;
                 Process.Start(uri);

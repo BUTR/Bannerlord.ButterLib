@@ -1,21 +1,13 @@
-﻿using Bannerlord.ButterLib.DelayedSubModule;
-using Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended.Patches;
-using Bannerlord.ButterLib.MBSubModuleBaseExtended;
+﻿using Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended.Patches;
 using Bannerlord.ButterLib.SubSystems;
 
 using HarmonyLib;
-using HarmonyLib.BUTR.Extensions;
 
 using Microsoft.Extensions.Logging;
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Text;
-
-using TaleWorlds.MountAndBlade;
-using TWModule = TaleWorlds.MountAndBlade.Module;
 
 namespace Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended
 {

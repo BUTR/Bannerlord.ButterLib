@@ -57,7 +57,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
 
 #if e143 || e150 || e151 || e152 || e153 || e154 || e155 || e156 || e157 || e158 || e159 || e1510
             foreach (var h in Hero.All)
-#elif e160 || e161 || e162
+#elif e160 || e161 || e162 || e163 || e164
             foreach (var h in Hero.AllAliveHeroes)
 #else
 #error ConstGameVersionWithPrefix is not handled!
@@ -88,7 +88,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
 
 #if e143 || e150 || e151 || e152 || e153 || e154 || e155 || e156 || e157 || e158 || e159 || e1510
             foreach (var h in Hero.All)
-#elif e160 || e161 || e162
+#elif e160 || e161 || e162 || e163 || e164
             foreach (var h in Hero.AllAliveHeroes)
 #else
 #error ConstGameVersionWithPrefix is not handled!
@@ -235,13 +235,13 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
             internal HeroTest(Hero h)
             {
                 Hero = h;
-                Age = (int)h.Age;
+                Age = (int) h.Age;
                 Spouse = h.Spouse;
                 Kingdom = h.Clan?.Kingdom;
-                StaticBodyProp = (StaticBodyProperties)AccessTools.Property(typeof(Hero), "StaticBodyProperties").GetValue(h);
+                StaticBodyProp = (StaticBodyProperties) AccessTools.Property(typeof(Hero), "StaticBodyProperties").GetValue(h);
                 NameLink = h.EncyclopediaLinkWithName;
                 StateEnum = h.HeroState;
-                CustomEnum = (ElectionCandidate)(h.Id.InternalValue % 3 + 1);
+                CustomEnum = (ElectionCandidate) (h.Id.InternalValue % 3 + 1);
                 Position = h.PartyBelongedTo is null
                     ? new Position2D { x = 6969f, y = -6969f }
                     : new Position2D { x = h.PartyBelongedTo.Position2D.X, y = h.PartyBelongedTo.Position2D.Y };

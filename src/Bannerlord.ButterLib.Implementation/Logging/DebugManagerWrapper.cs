@@ -81,7 +81,7 @@ namespace Bannerlord.ButterLib.Implementation.Logging
             OriginalDebugManager.Assert(condition, message, callerFile, callerMethod, callerLine);
         }
 
-        public void SilentAssert(bool condition, string message = "", bool getDump = false, [CallerFilePath] string callerFile = "",  [CallerMemberName] string callerMethod = "",  [CallerLineNumber] int callerLine = 0)
+        public void SilentAssert(bool condition, string message = "", bool getDump = false, [CallerFilePath] string callerFile = "", [CallerMemberName] string callerMethod = "", [CallerLineNumber] int callerLine = 0)
         {
             if (!condition)
                 _debugManagerLogger.LogError("Silent Assert Failed!: {message}; CallerFilePath: {callerFile}; CallerMemberName: {callerMethod}; CallerLineNumber: {callerLine}", message, callerFile, callerMethod, callerLine);
@@ -102,5 +102,16 @@ namespace Bannerlord.ButterLib.Implementation.Logging
         public void EndTelemetryScope() => OriginalDebugManager.EndTelemetryScope();
 
         public Vec3 GetDebugVector() => OriginalDebugManager.GetDebugVector();
+
+#if e143 || e150 || e151 || e152 || e153 || e154 || e155 || e156 || e157 || e158 || e159 || e1510 || e160 || e161 || e162 || e163
+#elif e164
+        public void ShowError(string message)
+        {
+            _debugManagerLogger.LogError("{message}", message);
+            OriginalDebugManager.ShowError(message);
+        }
+#else
+#error ConstGameVersionWithPrefix is not handled!
+#endif
     }
 }

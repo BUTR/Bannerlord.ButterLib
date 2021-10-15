@@ -13,6 +13,8 @@
     <string id="wF4qRrhmEu" text="Присвоить новый ID" />
     <string id="25Ts3iQnv6" text="Это отдельная кампания, и ей должен быть присвоен новый идентификатор." />
 
+    <string id="JLkq0ZkOSI" text="{START}{?IS_PLURAL} и {?}{\\?}{END}" />
+
     <string id="BguqytVG3q" text="Предупреждение от Bannerlord.ButterLib!" />
     <string id="FE6ya1gzZR" text="{REQUIRED_MODULE} не найден!" />
     <string id="EvI6KPAqTT" text="Обнаружен несовместимый модуль {DENIED_MODULE}!" />

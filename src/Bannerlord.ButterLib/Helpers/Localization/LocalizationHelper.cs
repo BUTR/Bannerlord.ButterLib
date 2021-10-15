@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Localization;
@@ -32,6 +33,27 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// </summary>
         public const string SPECIFIC_PLURAL_FORM_TAG = "SPECIFIC_PLURAL_FORM";
 
+        /// <summary>
+        /// A string tag used in <see cref="SetListVariable" /> method.
+        /// Indicates that list has more than 1 elements.
+        /// </summary>
+        public const string LIST_HAS_MULTIPLE_ITEMS_TAG = "IS_PLURAL";
+
+        /// <summary>
+        /// A string tag used in <see cref="SetListVariable" /> method.
+        /// Will contain all the elements of the list except the last one, separated by a comma.
+        /// For empty lists or lists with a single element it will contain an empty string.
+        /// </summary>
+        public const string LIST_START_TAG = "START";
+
+        /// <summary>
+        /// A string tag used in <see cref="SetListVariable" /> method.
+        /// Will contain the last element of the list.
+        /// </summary>
+        public const string LIST_END_TAG = "END";
+
+        private const string BUILT_IN_AGGREGATION_STRING = "{=JLkq0ZkOSI}{START}{?IS_PLURAL} and {?}{\\?}{END}";
+
         private static readonly ReadOnlyCollection<int> EasternSlavicPluralExceptions = new(new List<int> { 11, 12, 13, 14 });
         private static readonly ReadOnlyCollection<int> EasternSlavicSingularNumerics = new(new List<int> { 1, 2, 3, 4 });
 
@@ -43,7 +65,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
 
         private static RecursiveCaller GetRecursiveCaller(RecursiveCaller currentCaller, RecursiveCaller receivedCaller)
         {
-            return (RecursiveCaller)Math.Max((byte)currentCaller, (byte)receivedCaller);
+            return (RecursiveCaller) Math.Max((byte) currentCaller, (byte) receivedCaller);
         }
 
         private static RecursiveCaller GetCurrentCaller<T>(T entity) where T : class
@@ -65,7 +87,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
                 case Hero hero:
                     var characterProperties = TextObjectHelper.Create(string.Empty);
                     characterProperties!.SetTextVariable("NAME", hero.Name);
-                    characterProperties.SetTextVariable("AGE", (int)hero.Age);
+                    characterProperties.SetTextVariable("AGE", (int) hero.Age);
                     characterProperties.SetTextVariable("GENDER", hero.IsFemale ? 1 : 0);
                     characterProperties.SetTextVariable("LINK", hero.EncyclopediaLinkWithName);
                     characterProperties.SetTextVariable("FIRSTNAME", hero.FirstName ?? hero.Name);
@@ -199,7 +221,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
         {
             if (EasternSlavicGroupLanguageIDs.Contains(BannerlordConfig.Language))
             {
-                return GetEasternSlavicPluralFormInternal((int)Math.Floor(number));
+                return GetEasternSlavicPluralFormInternal((int) Math.Floor(number));
             }
             return number != 1 ? PluralForm.Plural : PluralForm.Singular;
         }
@@ -258,6 +280,65 @@ namespace Bannerlord.ButterLib.Common.Helpers
             var explainedTextObject = string.IsNullOrEmpty(format)
                 ? TextObjectHelper.Create(variableValue.ToString("R"), attributes)
                 : TextObjectHelper.Create(variableValue.ToString(format), attributes);
+            if (textObject is null)
+            {
+                MBTextManager.SetTextVariable(tag, explainedTextObject);
+            }
+            else
+            {
+                textObject.SetTextVariable(tag, explainedTextObject);
+            }
+        }
+
+        private static Dictionary<string, TextObject?> GetListAttributes(List<string> valuesList, string separator = ", ", bool useDistinctValues = true)
+        {
+            var localValues = useDistinctValues ? valuesList.Distinct() : valuesList;
+            return localValues.Any()
+                ? (new()
+                {
+                    [LIST_HAS_MULTIPLE_ITEMS_TAG] = TextObjectHelper.Create((localValues.Count() != 1) ? 1 : 0),
+                    [LIST_START_TAG] = TextObjectHelper.Create(string.Join(separator, localValues.Take(localValues.Count() - 1))),
+                    [LIST_END_TAG] = TextObjectHelper.Create(localValues.Last())
+                })
+                : (new()
+                {
+                    [LIST_HAS_MULTIPLE_ITEMS_TAG] = TextObjectHelper.Create(0),
+                    [LIST_START_TAG] = TextObjectHelper.Create(string.Empty),
+                    [LIST_END_TAG] = TextObjectHelper.Create(string.Empty)
+                });
+        }
+
+        /// <summary>Sets a variable containing a list of strings to the specified tag so that all elements are correctly listed according to the grammar rules of the game language.</summary>
+        /// <param name="textObject">
+        /// The <see cref="TextObject" /> to set a <see cref="List{T}" /> variable into.
+        /// Null means that information will be stored into <see cref="MBTextManager" />.
+        /// </param>
+        /// <param name="tag">A string tag that will be used to store information about the strings in the provided list.</param>
+        /// <param name="valuesList">A set of strings that has to be listed.</param>
+        /// <param name="separator">An optional argument specifying the string separator to be used for the listing.</param>
+        /// <param name="useDistinctValues">An optional argument specifying whether only unique strings should be listed.</param>
+        /// <remarks>
+        /// The tag parameter will contain a <see cref="TextObject" /> with both the ready-to-use result of the built-in concatenation of the provided list of strings
+        /// and all the necessary attributes to create custom concatenations.
+        /// Please note that built-in concatenation uses the "{=JLkq0ZkOSI}{START}{?IS_PLURAL} and {?}{\\?}{END}" string from the "..\Bannerlord.ButterLib\ModuleData\Languages\EN\sta_strings.xml".
+        /// If you are planning to use it explicitly, it is advised to duplicate it in your own localization xml files for the sake of clarity.
+        /// </remarks>
+        /// <example>
+        /// <code>
+        /// var lst = new [] { "First Entry", "Second Entry", "Third Entry", "Second Entry" }.ToList();
+        /// TextObject? txt = TextObjectHelper.Create("Here is the built-in text: '{TEST_TAG}'. Here is custom text: '{TEST_TAG.START}{?TEST_TAG.IS_PLURAL} and last but not least the {?}{\\?}{TEST_TAG.END}'");
+        /// LocalizationHelper.SetListVariable(txt, "TEST_TAG", lst);
+        /// InformationManager.DisplayMessage(new InformationMessage(txt!.ToString(), Color.FromUint(0x00F16D26)));
+        /// </code>
+        /// </example>
+        public static void SetListVariable(TextObject? textObject, string tag, List<string> valuesList, string separator = ", ", bool useDistinctValues = true)
+        {
+            if (string.IsNullOrEmpty(tag))
+            {
+                return;
+            }
+            var attributes = GetListAttributes(valuesList, separator, useDistinctValues);
+            var explainedTextObject = TextObjectHelper.Create(BUILT_IN_AGGREGATION_STRING, attributes);
             if (textObject is null)
             {
                 MBTextManager.SetTextVariable(tag, explainedTextObject);

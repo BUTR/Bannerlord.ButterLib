@@ -1,4 +1,4 @@
-using Bannerlord.ButterLib.Common.Helpers;
+﻿using Bannerlord.ButterLib.Common.Helpers;
 using Bannerlord.ButterLib.DelayedSubModule;
 using Bannerlord.ButterLib.SubModuleWrappers;
 

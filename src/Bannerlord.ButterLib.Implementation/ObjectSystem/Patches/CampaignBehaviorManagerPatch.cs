@@ -47,8 +47,8 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem.Patches
                 _log.LogError($"{nameof(CampaignBehaviorDataStoreT)} is null");
 
             if (OnGameLoadedTargetMI is null || OnBeforeSaveTargetMI is null ||
-                OnGameLoadedPatchMI is null  || OnBeforeSavePatchMI is null  ||
-                LoadBehaviorDataMI is null   || SaveBehaviorDataMI is null   ||
+                OnGameLoadedPatchMI is null || OnBeforeSavePatchMI is null ||
+                LoadBehaviorDataMI is null || SaveBehaviorDataMI is null ||
                 CampaignBehaviorDataStoreT is null)
             {
                 return;

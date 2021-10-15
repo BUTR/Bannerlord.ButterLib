@@ -16,7 +16,7 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
     internal sealed class MBObjectExtensionDataStore : CampaignBehaviorBase, IMBObjectExtensionDataStore
     {
         private ConcurrentDictionary<DataKey, object?> _vars = new();
-        private ConcurrentDictionary<DataKey, bool>   _flags = new();
+        private ConcurrentDictionary<DataKey, bool> _flags = new();
 
         public override void RegisterEvents() { }
 
@@ -48,7 +48,7 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
                 {
                     return MBObjectManager.Instance.GetObject(objectId) == default;
                 }
-                catch (Exception e) when(e is MBTypeNotRegisteredException)
+                catch (Exception e) when (e is MBTypeNotRegisteredException)
                 {
                     return true;
                 }
@@ -80,7 +80,7 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
         {
             if (_vars.TryGetValue(DataKey.Make(@object, name), out var val) && (val is T || val is null))
             {
-                value = (T)val;
+                value = (T) val;
                 return true;
             }
 
