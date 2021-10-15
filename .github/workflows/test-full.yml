@@ -46,7 +46,6 @@ jobs:
 
     - name: Test
       run: |
-        $ErrorView = "NormalView";
         $ErrorActionPreference = "Stop";
         
         $testproj = "$PWD/tests/Bannerlord.ButterLib.Tests/Bannerlord.ButterLib.Tests.csproj";
