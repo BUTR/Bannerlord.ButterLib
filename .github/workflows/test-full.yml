@@ -46,6 +46,8 @@ jobs:
 
     - name: Test
       run: |
+        $ErrorActionPreference = "Stop";
+        
         $testproj = "$PWD/tests/Bannerlord.ButterLib.Tests/Bannerlord.ButterLib.Tests.csproj";
         $testprojimpl = "$PWD/tests/Bannerlord.ButterLib.Implementation.Tests/Bannerlord.ButterLib.Implementation.Tests.csproj";
 
