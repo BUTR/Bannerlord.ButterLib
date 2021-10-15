@@ -102,5 +102,11 @@ namespace Bannerlord.ButterLib.Implementation.Logging
         public void EndTelemetryScope() => OriginalDebugManager.EndTelemetryScope();
 
         public Vec3 GetDebugVector() => OriginalDebugManager.GetDebugVector();
+
+        public void ShowError(string message)
+        {
+            _debugManagerLogger.LogError("{message}", message);
+            OriginalDebugManager.ShowError(message);
+        }
     }
 }
