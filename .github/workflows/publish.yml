@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Setup
-      uses: butr/actions-common-setup@v1.2
+      uses: butr/actions-common-setup@v1.3
       with:
         github-token: ${{secrets.GITHUB_TOKEN}}
 
@@ -79,7 +79,7 @@ jobs:
     if: ${{false}}
     steps:
     - name: Setup
-      uses: butr/actions-common-setup@v1.2
+      uses: butr/actions-common-setup@v1.3
       with:
         github-token: ${{secrets.GITHUB_TOKEN}}
 
@@ -143,7 +143,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Setup
-      uses: butr/actions-common-setup@v1.2
+      uses: butr/actions-common-setup@v1.3
       with:
         github-token: ${{secrets.GITHUB_TOKEN}}
 
@@ -188,7 +188,7 @@ jobs:
     needs: build
     steps:
     - name: Setup
-      uses: butr/actions-common-setup@v1.2
+      uses: butr/actions-common-setup@v1.3
       with:
         github-token: ${{secrets.GITHUB_TOKEN}}
 
