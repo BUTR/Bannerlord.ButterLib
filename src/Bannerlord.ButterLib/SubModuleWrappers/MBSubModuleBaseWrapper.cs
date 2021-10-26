@@ -126,6 +126,7 @@ namespace Bannerlord.ButterLib.SubModuleWrappers
 
             SubModule.OnGameInitializationFinished(game);
         }
+        /* They renamed it in e165
         /// <exclude/>
         public override void OnMissionBehaviourInitialize(Mission mission)
         {
@@ -133,6 +134,7 @@ namespace Bannerlord.ButterLib.SubModuleWrappers
 
             SubModule.OnMissionBehaviourInitialize(mission);
         }
+        */
         /// <exclude/>
         public override void OnMultiplayerGameStart(Game game, object starterObject)
         {
