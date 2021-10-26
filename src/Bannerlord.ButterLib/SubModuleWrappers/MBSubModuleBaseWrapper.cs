@@ -17,6 +17,7 @@ namespace Bannerlord.ButterLib.SubModuleWrappers
         private delegate void OnGameStartDelegate(Game game, IGameStarter gameStarterObject);
         private delegate void OnApplicationTickDelegate(float dt);
         private delegate void OnServiceRegistrationDelegate();
+        private delegate void OnMissionBehaviorInitializeDelegate(Mission mission);
 
 
         private OnSubModuleLoadDelegate? OnSubModuleLoadInstance { get; }
@@ -25,6 +26,9 @@ namespace Bannerlord.ButterLib.SubModuleWrappers
         private OnGameStartDelegate? OnGameStartInstance { get; }
         private OnApplicationTickDelegate? OnApplicationTickInstance { get; }
         private OnServiceRegistrationDelegate? OnServiceRegistrationInstance { get; }
+        private OnMissionBehaviorInitializeDelegate? OnMissionBehaviorInitializeInstance { get; }
+
+
 
         private MBSubModuleBase SubModule { get; }
 
@@ -38,6 +42,8 @@ namespace Bannerlord.ButterLib.SubModuleWrappers
             OnGameStartInstance = AccessTools2.GetDelegate<OnGameStartDelegate, MBSubModuleBase>(subModule, "OnGameStart");
             OnApplicationTickInstance = AccessTools2.GetDelegate<OnApplicationTickDelegate, MBSubModuleBase>(subModule, "OnApplicationTick");
             OnServiceRegistrationInstance = AccessTools2.GetDelegate<OnServiceRegistrationDelegate, MBSubModuleBase>(subModule, "OnServiceRegistration");
+            OnMissionBehaviorInitializeInstance = AccessTools2.GetDelegate<OnMissionBehaviorInitializeDelegate, MBSubModuleBase>(subModule, "OnMissionBehaviorInitialize")
+                                                  ?? AccessTools2.GetDelegate<OnMissionBehaviorInitializeDelegate, MBSubModuleBase>(subModule, "OnMissionBehaviourInitialize");
         }
 
         protected override void OnSubModuleLoad()
@@ -126,15 +132,14 @@ namespace Bannerlord.ButterLib.SubModuleWrappers
 
             SubModule.OnGameInitializationFinished(game);
         }
-        /* They renamed it in e165
+         
         /// <exclude/>
-        public override void OnMissionBehaviourInitialize(Mission mission)
+        public new void OnMissionBehaviorInitialize(Mission mission)
         {
-            base.OnMissionBehaviourInitialize(mission);
-
-            SubModule.OnMissionBehaviourInitialize(mission);
+            //base.OnMissionBehaviourInitialize(mission); - how to call this and should we?
+            OnMissionBehaviorInitializeInstance?.Invoke(mission);
         }
-        */
+        
         /// <exclude/>
         public override void OnMultiplayerGameStart(Game game, object starterObject)
         {
