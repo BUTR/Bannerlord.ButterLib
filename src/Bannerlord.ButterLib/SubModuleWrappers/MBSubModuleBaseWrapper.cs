@@ -132,14 +132,14 @@ namespace Bannerlord.ButterLib.SubModuleWrappers
 
             SubModule.OnGameInitializationFinished(game);
         }
-         
+
         /// <exclude/>
         public new void OnMissionBehaviorInitialize(Mission mission)
         {
             //base.OnMissionBehaviourInitialize(mission); - how to call this and should we?
             OnMissionBehaviorInitializeInstance?.Invoke(mission);
         }
-        
+
         /// <exclude/>
         public override void OnMultiplayerGameStart(Game game, object starterObject)
         {
