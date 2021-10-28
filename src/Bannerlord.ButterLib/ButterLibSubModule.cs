@@ -6,6 +6,9 @@ using Bannerlord.ButterLib.DelayedSubModule;
 using Bannerlord.ButterLib.ExceptionHandler;
 using Bannerlord.ButterLib.ObjectSystem.Extensions;
 using Bannerlord.ButterLib.Options;
+using Bannerlord.ButterLib.SubModuleWrappers.Patches;
+
+using HarmonyLib;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -42,6 +45,8 @@ namespace Bannerlord.ButterLib
         private bool ServiceRegistrationWasCalled { get; set; }
         private bool OnBeforeInitialModuleScreenSetAsRootWasCalled { get; set; }
 
+        private readonly Harmony _harmonyWrappers = new("Bannerlord.ButterLib.SubModuleWrappers");
+
         private TextWriterTraceListener? TextWriterTraceListener { get; set; }
 
         public ButterLibSubModule()
@@ -71,6 +76,8 @@ namespace Bannerlord.ButterLib
             this.AddDefaultSerilogLogger();
             this.AddSerilogLoggerProvider("butterlib.txt", new[] { "Bannerlord.ButterLib.*" });
             this.AddSerilogLoggerProvider("trace.txt", new[] { "System.Diagnostics.Logger.*" });
+
+            _ = MBSubModuleBasePatch.Enable(_harmonyWrappers);
 
             Services.AddSubSystem<DelayedSubModuleSubSystem>();
             Services.AddSubSystem<ExceptionHandlerSubSystem>();

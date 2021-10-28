@@ -114,12 +114,16 @@ namespace Bannerlord.ButterLib.SubModuleWrappers
                 subModule.OnGameInitializationFinished(game);
         }
         /// <exclude/>
-        public override void OnMissionBehaviourInitialize(Mission mission)
+        public new void OnMissionBehaviourInitialize(Mission mission)
         {
-            base.OnMissionBehaviourInitialize(mission);
-
             foreach (var subModule in SubModules)
                 subModule.OnMissionBehaviourInitialize(mission);
+        }
+        /// <exclude/>
+        public new void OnMissionBehaviorInitialize(Mission mission)
+        {
+            foreach (var subModule in SubModules)
+                subModule.OnMissionBehaviorInitialize(mission);
         }
         /// <exclude/>
         public override void OnMultiplayerGameStart(Game game, object starterObject)
