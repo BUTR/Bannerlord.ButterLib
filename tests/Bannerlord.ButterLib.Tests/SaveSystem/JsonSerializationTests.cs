@@ -64,12 +64,22 @@ namespace Bannerlord.ButterLib.Tests.SaveSystem
             var saveableClassTypes = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(a =>
                 {
-                    IEnumerable<Type> Filter(Type[] types)
+                    IEnumerable<Type> Filter(IEnumerable<Type> types)
                     {
-                        return types.Where(t => t is not null && !t.IsAbstract && !t.IsGenericType &&
-                                                t.GetMembers().Any(m => m.GetCustomAttributes(true).Any(
-                                                    att => att.GetType() == typeof(SaveableFieldAttribute) ||
-                                                           att.GetType() == typeof(SaveablePropertyAttribute))));
+                        return types.Where(t =>
+                        {
+                            try
+                            {
+                                return t is not null && !t.IsAbstract && !t.IsGenericType &&
+                                       t.GetMembers().Any(m => m.GetCustomAttributes(true).Any(
+                                           att => att.GetType() == typeof(SaveableFieldAttribute) ||
+                                                  att.GetType() == typeof(SaveablePropertyAttribute)));
+                            }
+                            catch (FileNotFoundException e)
+                            {
+                                return false;
+                            }
+                        });
                     }
                     try
                     {
@@ -123,10 +133,20 @@ namespace Bannerlord.ButterLib.Tests.SaveSystem
                 {
                     IEnumerable<Type> Filter(Type[] types)
                     {
-                        return types.Where(t => t is not null && !t.IsAbstract && !t.IsGenericType &&
-                                                t.GetMembers().Any(m => m.GetCustomAttributes(true).Any(
-                                                    att => att.GetType() == typeof(SaveableFieldAttribute) ||
-                                                           att.GetType() == typeof(SaveablePropertyAttribute))));
+                        return types.Where(t =>
+                        {
+                            try
+                            {
+                                return t is not null && !t.IsAbstract && !t.IsGenericType &&
+                                       t.GetMembers().Any(m => m.GetCustomAttributes(true).Any(
+                                           att => att.GetType() == typeof(SaveableFieldAttribute) ||
+                                                  att.GetType() == typeof(SaveablePropertyAttribute)));
+                            }
+                            catch (FileNotFoundException e)
+                            {
+                                return false;
+                            }
+                        });
                     }
                     try
                     {
