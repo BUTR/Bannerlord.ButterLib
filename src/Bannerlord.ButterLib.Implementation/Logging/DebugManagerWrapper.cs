@@ -103,24 +103,22 @@ namespace Bannerlord.ButterLib.Implementation.Logging
 
         public Vec3 GetDebugVector() => OriginalDebugManager.GetDebugVector();
 
-#if e143 || e150 || e151 || e152 || e153 || e154 || e155 || e156 || e157 || e158 || e159 || e1510 || e160 || e161 || e162 || e163
-#elif e164 
+#if e164 || e165 || e170
         public void ShowError(string message)
         {
             _debugManagerLogger.LogError("{message}", message);
             OriginalDebugManager.ShowError(message);
         }
-#elif e165
-        public void ShowError(string message)
-        {
-            _debugManagerLogger.LogError("{message}", message);
-            OriginalDebugManager.ShowError(message);
-        }
-
+#endif
+#if e165 || e170
         public void BeginTelemetryScopeBaseLevel(TelemetryLevelMask levelMask, string scopeName) => OriginalDebugManager.BeginTelemetryScopeBaseLevel(levelMask, scopeName);
         public void EndTelemetryScopeBaseLevel() => OriginalDebugManager.EndTelemetryScopeBaseLevel();
-#else
-#error ConstGameVersionWithPrefix is not handled!
+#endif
+#if e170
+        public void RenderDebugText3D(Vec3 position, string text, uint color = uint.MaxValue, int screenPosOffsetX = 0, int screenPosOffsetY = 0, float time = 0)
+        {
+            throw new NotImplementedException();
+        }
 #endif
     }
 }
