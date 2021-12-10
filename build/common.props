@@ -4,7 +4,7 @@
   <!--Development Variables-->
   <PropertyGroup>
     <!--Module Version-->
-    <Version>1.0.30</Version>
+    <Version>1.0.31</Version>
     <!--Harmony Version-->
     <HarmonyVersion>2.1.1</HarmonyVersion>
     <!--Microsoft Extension Libraries Version-->
@@ -12,7 +12,7 @@
     <!--BuildResources Version-->
     <BuildResourcesVersion>1.0.0.39</BuildResourcesVersion>
     <BUTRSharedVersion>1.6.1.61</BUTRSharedVersion>
-    <HarmonyExtensionsVersion>2.0.0.49</HarmonyExtensionsVersion>
+    <HarmonyExtensionsVersion>2.0.0.51</HarmonyExtensionsVersion>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -98,7 +98,7 @@
   </PropertyGroup>
   <!--SorceLink-->
   <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All"/>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All"/>
   </ItemGroup>
   <!--CI Builds-->
   <ItemGroup Condition="$(TargetFramework) == 'net472' AND $(OS) != 'Windows_NT'">

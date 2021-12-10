@@ -21,7 +21,7 @@ namespace Bannerlord.ButterLib.SubModuleWrappers.Patches
         private static ILogger _log = default!;
 
         private static readonly Type? TargetType = typeof(MBSubModuleBase);
-        
+
         private static readonly MethodInfo? TargetMethod = AccessTools.Method(TargetType, "OnMissionBehaviorInitialize") ?? AccessTools.Method(TargetType, "OnMissionBehaviourInitialize");
         private static readonly MethodInfo? PatchMethod = AccessTools.Method(typeof(MBSubModuleBasePatch), nameof(CallPostfix));
 

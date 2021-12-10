@@ -14,7 +14,7 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
 
         public void Keep(MBObjectBase mbObject)
         {
-            if (mbObject is null!) return;
+            if (mbObject is null) return;
 
             _references[mbObject.Id] = mbObject;
         }

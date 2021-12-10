@@ -2,10 +2,7 @@ name: Test Fully
 
 on:
   repository_dispatch:
-    types:
-      # If a new version of the game is released, test the repo against it.
-      # This way we will always know if the repo is broken on a new update.
-      - game_version_update
+    types: [game_version_update, game_version_update_patch]
   push:
     branches:
       - dev
@@ -61,20 +58,20 @@ jobs:
             dotnet depotdownloader/DepotDownloader.dll -app 261550 -depot 261551 -beta $gameversion -filelist "$PWD/.github/resources/FileFilters.regexp" -username "${{secrets.STEAM_LOGIN}}" -password "${{secrets.STEAM_PASSWORD}}" -dir "$gamefolder";
         }
 
-        opencover/OpenCover.Console.exe -returntargetcode -register -target:"dotnet.exe" -targetargs:"test $testproj --configuration Debug  -p:OverrideGameVersion=$($gameversions[-1]) -p:GameFolder=""$PWD/bannerlord-$($gameversions[-1])""" -filter:"${{env.TEST_FILTERS}}" -output:"coverage_butterlib_$($gameversions[-1])_debug.xml" -mergebyhash;
-        opencover/OpenCover.Console.exe -returntargetcode -register -target:"dotnet.exe" -targetargs:"test $testproj --configuration Release  -p:OverrideGameVersion=$($gameversions[-1]) -p:GameFolder=""$PWD/bannerlord-$($gameversions[-1])""" -filter:"${{env.TEST_FILTERS}}" -output:"coverage_butterlib_$($gameversions[-1])_release.xml" -mergebyhash;
+        opencover/OpenCover.Console.exe -returntargetcode -register -target:"dotnet.exe" -targetargs:"test $testproj --configuration Debug  -p:OverrideGameVersion=$($gameversions[-1]) -p:GameFolder=""$PWD/bannerlord-$($gameversions[-1])""" -filter:"${{env.TEST_FILTERS}}" -excludebyattribute:"*.ExcludeFromCodeCoverage*" -output:"coverage_butterlib_$($gameversions[-1])_debug.xml" -mergebyhash;
+        opencover/OpenCover.Console.exe -returntargetcode -register -target:"dotnet.exe" -targetargs:"test $testproj --configuration Release  -p:OverrideGameVersion=$($gameversions[-1]) -p:GameFolder=""$PWD/bannerlord-$($gameversions[-1])""" -filter:"${{env.TEST_FILTERS}}" -excludebyattribute:"*.ExcludeFromCodeCoverage*" -output:"coverage_butterlib_$($gameversions[-1])_release.xml" -mergebyhash;
         For ($i = 0; $i -le $gameversions.Length - 1; $i++)
         {
             $gameversion = $gameversions[$i];
             $gamefolder = "$PWD/bannerlord-$gameversion";
 
-            opencover/OpenCover.Console.exe -returntargetcode -register -target:"dotnet.exe" -targetargs:"test $testprojimpl --configuration Debug -p:OverrideGameVersion=$gameversion -p:GameFolder=""$gamefolder""" -filter:"${{env.TEST_FILTERS}}" -output:"coverage_butterlib_impl_$($gameversion)_debug.xml" -mergebyhash;
-            opencover/OpenCover.Console.exe -returntargetcode -register -target:"dotnet.exe" -targetargs:"test $testprojimpl --configuration Release -p:OverrideGameVersion=$gameversion -p:GameFolder=""$gamefolder""" -filter:"${{env.TEST_FILTERS}}" -output:"coverage_butterlib_impl_$($gameversion)_release.xml" -mergebyhash;
+            opencover/OpenCover.Console.exe -returntargetcode -register -target:"dotnet.exe" -targetargs:"test $testprojimpl --configuration Debug -p:OverrideGameVersion=$gameversion -p:GameFolder=""$gamefolder""" -filter:"${{env.TEST_FILTERS}}" -excludebyattribute:"*.ExcludeFromCodeCoverage*" -output:"coverage_butterlib_impl_$($gameversion)_debug.xml" -mergebyhash;
+            opencover/OpenCover.Console.exe -returntargetcode -register -target:"dotnet.exe" -targetargs:"test $testprojimpl --configuration Release -p:OverrideGameVersion=$gameversion -p:GameFolder=""$gamefolder""" -filter:"${{env.TEST_FILTERS}}" -excludebyattribute:"*.ExcludeFromCodeCoverage*" -output:"coverage_butterlib_impl_$($gameversion)_release.xml" -mergebyhash;
         }
       shell: pwsh
 
     - name: ReportGenerator
-      uses: danielpalme/ReportGenerator-GitHub-Action@4.8.12
+      uses: danielpalme/ReportGenerator-GitHub-Action@5.0.0
       with:
         reports: '*.xml'
         targetdir: 'coveragereport'
