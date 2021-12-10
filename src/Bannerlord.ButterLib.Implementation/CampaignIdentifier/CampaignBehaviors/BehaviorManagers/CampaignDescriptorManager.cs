@@ -50,7 +50,7 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehavio
         internal void CheckCampaignDescriptor()
         {
             // There is no guarantee that Load() will not yield a non null
-            if (_campaignDescriptor is null!)
+            if (_campaignDescriptor is null)
             {
                 AddDescriptorToExistingCampaign();
             }
@@ -147,7 +147,7 @@ namespace Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehavio
 
         internal void Sync()
         {
-            if (_descriptorToBeAssigned is not null && _campaignDescriptor is not null! && _descriptorToBeAssigned == _campaignDescriptor)
+            if (_descriptorToBeAssigned is not null && _campaignDescriptor is not null && _descriptorToBeAssigned == _campaignDescriptor)
             {
                 UpdateSavedDescriptors();
             }
