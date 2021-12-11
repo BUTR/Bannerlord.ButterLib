@@ -70,9 +70,9 @@ namespace Bannerlord.ButterLib.ExceptionHandler
         {
             if (e.ExceptionObject is Exception exception)
             {
-                if (BEWPatch.SuppressedExceptions.Contains(exception))
+                if (BEWPatch.SuppressedExceptions.Contains((BEWPatch.ExceptionIdentifier.FromException(exception))))
                 {
-                    BEWPatch.SuppressedExceptions.Remove(exception);
+                    BEWPatch.SuppressedExceptions.Remove(BEWPatch.ExceptionIdentifier.FromException(exception));
                     return;
                 }
 

@@ -57,7 +57,6 @@ namespace Bannerlord.ButterLib.ExceptionHandler
 
         internal static void Enable(Harmony harmony)
         {
-
             harmony.Patch(ManagedApplicationTickMethod, finalizer: new HarmonyMethod(FinalizerMethod, before: bew));
             harmony.Patch(ModuleApplicationTickMethod, finalizer: new HarmonyMethod(FinalizerMethod, before: bew));
             harmony.Patch(ScreenManagerTickMethod, finalizer: new HarmonyMethod(FinalizerMethod, before: bew));
