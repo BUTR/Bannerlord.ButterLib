@@ -35,7 +35,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
         private static readonly string[] bew = { "org.calradia.admiralnelson.betterexceptionwindow" };
 
         private static readonly MethodInfo? ManagedApplicationTickMethod = AccessTools2.Method("TaleWorlds.DotNet.Managed:ApplicationTick");
-        private static readonly MethodInfo? ModuleApplicationTickMethod = AccessTools2.Method("TaleWorlds.MountAndBlade.Module:ApplicationTick");
+        private static readonly MethodInfo? ModuleOnApplicationTickMethod = AccessTools2.Method("TaleWorlds.MountAndBlade.Module:OnApplicationTick");
         private static readonly MethodInfo? ScreenManagerTickMethod = AccessTools2.Method("TaleWorlds.Engine.Screens.ScreenManager:Tick");
         private static readonly MethodInfo? ManagedScriptHolderTickComponentsMethod = AccessTools2.Method("TaleWorlds.Engine.ManagedScriptHolder:TickComponents");
         private static readonly MethodInfo? MissionTickMethod = AccessTools2.Method("TaleWorlds.MountAndBlade.Mission:Tick");
@@ -58,7 +58,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
         internal static void Enable(Harmony harmony)
         {
             harmony.Patch(ManagedApplicationTickMethod, finalizer: new HarmonyMethod(FinalizerMethod, before: bew));
-            harmony.Patch(ModuleApplicationTickMethod, finalizer: new HarmonyMethod(FinalizerMethod, before: bew));
+            harmony.Patch(ModuleOnApplicationTickMethod, finalizer: new HarmonyMethod(FinalizerMethod, before: bew));
             harmony.Patch(ScreenManagerTickMethod, finalizer: new HarmonyMethod(FinalizerMethod, before: bew));
             harmony.Patch(ManagedScriptHolderTickComponentsMethod, finalizer: new HarmonyMethod(FinalizerMethod, before: bew));
             harmony.Patch(MissionTickMethod, finalizer: new HarmonyMethod(FinalizerMethod, before: bew));
