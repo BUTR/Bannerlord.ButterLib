@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
+using TaleWorlds.MountAndBlade;
+
 using Module = TaleWorlds.MountAndBlade.Module;
 
 namespace Bannerlord.ButterLib.ExceptionHandler
@@ -119,7 +121,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             foreach (var (_, type) in dict)
             {
                 var method = AccessTools2.Method(type, "OnSubModuleLoad");
-                if (method is null)
+                if (method is null || method.DeclaringType == typeof(MBSubModuleBase))
                     continue;
 
                 harmony.Patch(method, finalizer: new HarmonyMethod(FinalizerMethod, before: bew));
