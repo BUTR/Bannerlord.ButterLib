@@ -31,7 +31,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
     // TaleWorlds.MountAndBlade.Mission:Tick                                  -> Replicated
     // TaleWorlds.MountAndBlade.MissionBehaviour:OnMissionTick                -> Called by TaleWorlds.MountAndBlade.Mission:Tick
 
-    //[BUTRLoaderInterceptor]
+    [BUTRLoaderInterceptor]
     internal sealed class BEWPatch
     {
         internal record ExceptionIdentifier(Type Type, string StackTrace, string Message)
@@ -188,10 +188,10 @@ namespace Bannerlord.ButterLib.ExceptionHandler
 
         // BUTRLoader gives un the ability to intercept every exception call.
         // We will use the earlier entrypoint instead
-        //private static void OnInitializeSubModulesPrefix()
-        //{
-        //    _wasButrLoaderInterceptorCalled = true;
-        //    PatchSubModules(new Harmony("Bannerlord.ButterLib.ExceptionHandler.BUTRLoadingInterceptor"));
-        //}
+        private static void OnInitializeSubModulesPrefix()
+        {
+            _wasButrLoaderInterceptorCalled = true;
+            PatchSubModules(new Harmony("Bannerlord.ButterLib.ExceptionHandler.BUTRLoadingInterceptor"));
+        }
     }
 }

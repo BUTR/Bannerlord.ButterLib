@@ -33,7 +33,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
     <title>Bannerlord Crash Report</title>
     <meta charset='utf-8'>
     <game version='{ApplicationVersionHelper.GameVersionStr()}'>
-    <report id='{crashReport.Id}' version='2'>
+    <report id='{crashReport.Id}' version='3'>
     <style>
         .headers {{
             font-family: ""Consolas"", monospace;
@@ -247,58 +247,87 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             var tagsBuilder = new StringBuilder();
             var additionalAssembliesBuilder = new StringBuilder();
             var dependenciesBuilder = new StringBuilder();
-            var dependenciesMetadataBuilder = new StringBuilder();
+
 
             void AppendDependencies(ModuleInfoExtended module)
             {
+                var deps = new Dictionary<string, string>();
+                var tmp = new StringBuilder();
+                foreach (var dependentModule in module.DependentModules)
+                {
+                    deps[dependentModule.Id] = tmp.Clear()
+                        .Append("Load ").Append(DependentModuleMetadata.GetLoadType(LoadType.LoadBeforeThis))
+                        .Append($"<a href='javascript:;' onclick='document.getElementById(\"{dependentModule.Id}\").scrollIntoView(false)'>")
+                        .Append(dependentModule.Id)
+                        .Append("</a>")
+                        .Append(dependentModule.IsOptional ? " (optional)" : string.Empty)
+                        .ToString();
+                }
+                foreach (var dependentModule in module.IncompatibleModules)
+                {
+                    deps[dependentModule.Id] = tmp.Clear()
+                        .Append("Incompatible ")
+                        .Append($"<a href='javascript:;' onclick='document.getElementById(\"{dependentModule.Id}\").scrollIntoView(false)'>")
+                        .Append(dependentModule.Id)
+                        .Append("</a>")
+                        .ToString();
+                }
+                foreach (var dependentModule in module.ModulesToLoadAfterThis)
+                {
+                    deps[dependentModule.Id] = tmp.Clear()
+                        .Append("Load ").Append(DependentModuleMetadata.GetLoadType(LoadType.LoadAfterThis))
+                        .Append($"<a href='javascript:;' onclick='document.getElementById(\"{dependentModule.Id}\").scrollIntoView(false)'>")
+                        .Append(dependentModule.Id)
+                        .Append("</a>")
+                        .ToString();
+                }
+                foreach (var dependentModule in module.DependentModuleMetadatas)
+                {
+                    if (dependentModule.IsIncompatible)
+                    {
+                        deps[dependentModule.Id] = tmp.Clear()
+                            .Append("Incompatible ")
+                            .Append($"<a href='javascript:;' onclick='document.getElementById(\"{dependentModule.Id}\").scrollIntoView(false)'>")
+                            .Append(dependentModule.Id)
+                            .Append("</a>")
+                            .Append(dependentModule.IsOptional ? " (optional)" : string.Empty)
+                            .ToString();
+                    }
+                    else if (dependentModule.LoadType == LoadType.LoadAfterThis)
+                    {
+                        deps[dependentModule.Id] = tmp.Clear()
+                            .Append("Load ").Append(DependentModuleMetadata.GetLoadType(LoadType.LoadAfterThis))
+                            .Append($"<a href='javascript:;' onclick='document.getElementById(\"{dependentModule.Id}\").scrollIntoView(false)'>")
+                            .Append(dependentModule.Id)
+                            .Append("</a>")
+                            .Append(dependentModule.IsOptional ? " (optional)" : string.Empty)
+                            .ToString();
+                    }
+                    else
+                    {
+                        deps[dependentModule.Id] = tmp.Clear()
+                            .Append("Load ").Append(DependentModuleMetadata.GetLoadType(dependentModule.LoadType))
+                            .Append($"<a href='javascript:;' onclick='document.getElementById(\"{dependentModule.Id}\").scrollIntoView(false)'>")
+                            .Append(dependentModule.Id)
+                            .Append("</a>")
+                            .Append(dependentModule.IsOptional ? " (optional)" : string.Empty)
+                            .ToString();
+                    }
+                }
+
                 dependenciesBuilder.Clear();
-                foreach (var dependedModule in module.DependentModules)
+                foreach (var (id, line) in deps)
                 {
-                    var dependentModule = crashReport.LoadedModules.Find(m => m.Id == dependedModule.Id);
-                    if (dependentModule == null)
-                    {
-                        dependenciesBuilder.Append("<li>")
-                            .Append("MODULE WITH ID: ").Append(dependedModule.Id).Append(" NOT FOUND!")
-                            .AppendLine("</li>");
-                    }
-                    else
-                    {
-                        dependenciesBuilder.Append("<li>")
-                            .Append($"<a href='javascript:;' onclick='document.getElementById(\"{dependedModule.Id}\").scrollIntoView(false)'>").Append(dependedModule.Id)
-                            .AppendLine("</a></li>");
-                    }
+                    dependenciesBuilder.Append("<li>").Append(line).AppendLine("</li>");
                 }
             }
-
-            void AppendDependenciesMetadata(ModuleInfoExtended module)
-            {
-                dependenciesMetadataBuilder.Clear();
-                foreach (var dependedModuleMetadata in module.DependentModuleMetadatas)
-                {
-                    var dependentModule = crashReport.LoadedModules.Find(m => m.Id == dependedModuleMetadata.Id);
-                    if (dependentModule == null && !dependedModuleMetadata.IsOptional)
-                    {
-                        dependenciesMetadataBuilder.Append("<li>")
-                            .Append("ERROR! MODULE WITH ID '").Append(dependedModuleMetadata.Id).Append("' NOT FOUND!")
-                            .AppendLine("</li>");
-                    }
-                    else
-                    {
-                        dependenciesMetadataBuilder.Append("<li>")
-                            .Append("Load ").Append(DependentModuleMetadata.GetLoadType(dependedModuleMetadata.LoadType))
-                            .Append($"<a href='javascript:;' onclick='document.getElementById(\"{dependedModuleMetadata.Id}\").scrollIntoView(false)'>")
-                            .Append(dependedModuleMetadata.Id)
-                            .AppendLine("</a></li>");
-                    }
-                }
-            }
-
+            
             void AppendSubModules(ModuleInfoExtended module)
             {
                 subModulesBuilder.Clear();
                 foreach (var subModule in module.SubModules)
                 {
-                    if (!ModuleInfoHelper.CheckIfSubModuleCanBeLoadable(subModule))
+                    if (!ModuleInfoHelper.CheckIfSubModuleCanBeLoaded(subModule))
                         continue;
 
                     assembliesBuilder.Clear();
@@ -319,7 +348,6 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                         .Append("Name: ").Append(subModule.Name).AppendLine("</br>")
                         .Append("DLLName: ").Append(subModule.DLLName).AppendLine("</br>")
                         .Append("SubModuleClassType: ").Append(subModule.SubModuleClassType).AppendLine("</br>")
-                        //.Append("Verified: ").Append(subModule.IsVerifiedDLL).AppendLine("</br>")
                         .Append(tagsBuilder.Length == 0 ? "" : $"Tags:</br>{NL}")
                         .Append(tagsBuilder.Length == 0 ? "" : $"<ul>{NL}")
                         .Append(tagsBuilder.Length == 0 ? "" : $"{tagsBuilder}{NL}")
@@ -352,7 +380,6 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             foreach (var module in crashReport.LoadedModules)
             {
                 AppendDependencies(module);
-                AppendDependenciesMetadata(module);
                 AppendSubModules(module);
                 AppendAdditionalAssemblies(module);
 
@@ -362,18 +389,14 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                     .AppendLine($"<div id='{module.Id}' style='display: none'>")
                     .Append("Id: ").Append(module.Id).AppendLine("</br>")
                     .Append("Name: ").Append(module.Name).AppendLine("</br>")
-                    .Append("Version: ").Append(module.Version.ToString()).AppendLine("</br>")
-                    .Append("Official: ").Append(module.IsOfficial.ToString()).AppendLine("</br>")
-                    .Append("Singleplayer: ").Append(module.IsSingleplayerModule.ToString()).AppendLine("</br>")
-                    .Append("Multiplayer: ").Append(module.IsMultiplayerModule.ToString()).AppendLine("</br>")
+                    .Append("Version: ").Append(module.Version).AppendLine("</br>")
+                    .Append("Official: ").Append(module.IsOfficial).AppendLine("</br>")
+                    .Append("Singleplayer: ").Append(module.IsSingleplayerModule).AppendLine("</br>")
+                    .Append("Multiplayer: ").Append(module.IsMultiplayerModule).AppendLine("</br>")
                     .Append(dependenciesBuilder.Length == 0 ? "" : $"Dependencies:</br>{NL}")
                     .Append(dependenciesBuilder.Length == 0 ? "" : $"<ul>{NL}")
                     .Append(dependenciesBuilder.Length == 0 ? "" : $"{dependenciesBuilder}{NL}")
                     .Append(dependenciesBuilder.Length == 0 ? "" : $"</ul>{NL}")
-                    .Append(dependenciesMetadataBuilder.Length == 0 ? "" : $"Dependency Metadatas:</br>{NL}")
-                    .Append(dependenciesMetadataBuilder.Length == 0 ? "" : $"<ul>{NL}")
-                    .Append(dependenciesMetadataBuilder.Length == 0 ? "" : $"{dependenciesMetadataBuilder}{NL}")
-                    .Append(dependenciesMetadataBuilder.Length == 0 ? "" : $"</ul>{NL}")
                     .Append(string.IsNullOrWhiteSpace(module.Url) ? "" : $"Url: <a href='{module.Url}'>{module.Url}</a></br>{NL}")
                     .Append(subModulesBuilder.Length == 0 ? "" : $"SubModules:</br>{NL}")
                     .Append(subModulesBuilder.Length == 0 ? "" : $"<ul>{NL}")
