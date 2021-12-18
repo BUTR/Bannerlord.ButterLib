@@ -1,5 +1,4 @@
-﻿using Bannerlord.ButterLib.CampaignIdentifier;
-using Bannerlord.ButterLib.Extensions;
+﻿using Bannerlord.ButterLib.Extensions;
 
 using Microsoft.Extensions.DependencyInjection;
 

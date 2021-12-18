@@ -5,8 +5,8 @@ using TaleWorlds.CampaignSystem;
 namespace Bannerlord.ButterLib.DynamicAPI
 {
     // Instance Class
-    [DynamicAPIClass("Relationshit")]
-    internal class RelationshitAPI
+    [DynamicAPIClass("Relationship")]
+    internal class RelationshipAPI
     {
         // Instance Method
         [DynamicAPIMethod("IsLoverOf")]

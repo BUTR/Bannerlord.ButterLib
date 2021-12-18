@@ -47,9 +47,7 @@ namespace Bannerlord.ButterLib.Implementation.HotKeys
         public override IReadOnlyList<HotKeyBase> Build()
         {
             var hotKeyCategoryContainer = new HotKeyCategoryContainer(_subModName, _hotKeys);
-#if e143 || e150 || e151 || e152 || e153 || e154 || e155 || e156 || e157 || e158 || e159
-            TWHotKeyManager.Initialize("Bannerlord", Utilities.GetConfigsPath() + "BannerlordGameKeys.xml", new List<GameKeyContext> { hotKeyCategoryContainer }, true);
-#elif e1510 || e160 || e161 || e162 || e163 || e164 || e165 || e170
+#if e160 || e161 || e162 || e163 || e164 || e165 || e170
             TWHotKeyManager.Initialize(new PlatformFilePath(EngineFilePaths.ConfigsPath, "BannerlordGameKeys.xml"), new List<GameKeyContext> { hotKeyCategoryContainer }, true);
 #else
 #error ConstGameVersionWithPrefix is not handled!

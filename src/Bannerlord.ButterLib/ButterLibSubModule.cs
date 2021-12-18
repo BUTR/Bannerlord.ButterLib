@@ -1,5 +1,4 @@
 ﻿using Bannerlord.BUTR.Shared.Helpers;
-using Bannerlord.ButterLib.CampaignIdentifier;
 using Bannerlord.ButterLib.Common.Extensions;
 using Bannerlord.ButterLib.CrashUploader;
 using Bannerlord.ButterLib.DelayedSubModule;
@@ -157,9 +156,6 @@ namespace Bannerlord.ButterLib
             GameScope = ServiceProvider.CreateScope();
             Logger.LogInformation("Created GameScope.");
 
-            if (game.GameType is Campaign)
-                CampaignIdentifierEvents.Instance = new CampaignIdentifierEvents();
-
             Logger.LogTrace("OnGameStart: Done");
         }
 
@@ -173,7 +169,6 @@ namespace Bannerlord.ButterLib
             if (game.GameType is Campaign)
             {
                 MBObjectBaseExtensions.OnGameEnd();
-                CampaignIdentifierEvents.Instance = null;
             }
 
             Logger.LogTrace("OnGameEnd: Done");

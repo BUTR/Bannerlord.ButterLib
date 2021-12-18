@@ -1,11 +1,6 @@
-﻿using Bannerlord.ButterLib.CampaignIdentifier;
-using Bannerlord.ButterLib.Common.Extensions;
+﻿using Bannerlord.ButterLib.Common.Extensions;
 using Bannerlord.ButterLib.DistanceMatrix;
-using Bannerlord.ButterLib.Extensions;
 using Bannerlord.ButterLib.HotKeys;
-using Bannerlord.ButterLib.Implementation.CampaignIdentifier;
-using Bannerlord.ButterLib.Implementation.CampaignIdentifier.CampaignBehaviors;
-using Bannerlord.ButterLib.Implementation.Common.Extensions;
 using Bannerlord.ButterLib.Implementation.DistanceMatrix;
 using Bannerlord.ButterLib.Implementation.HotKeys;
 using Bannerlord.ButterLib.Implementation.Logging;
@@ -38,20 +33,8 @@ namespace Bannerlord.ButterLib.Implementation
 
             if (this.GetServices() is { } services)
             {
-                services.AddScoped<CampaignDescriptor, CampaignDescriptorImplementation>();
-                services.AddSingleton<ICampaignDescriptorStatic, CampaignDescriptorStaticImplementation>();
-
                 services.AddScoped(typeof(DistanceMatrix<>), typeof(DistanceMatrixImplementation<>));
                 services.AddSingleton<IDistanceMatrixStatic, DistanceMatrixStaticImplementation>();
-
-                services.AddSingleton<ICampaignExtensions, CampaignExtensionsImplementation>();
-#if e143 || e150 || e151 || e152 || e153
-                services.AddTransient<ICampaignDescriptorProvider, JsonCampaignDescriptorProvider>();
-#elif e154 || e155 || e156 || e157 || e158 || e159 || e1510 || e160 || e161 || e162 || e163 || e164 || e165 || e170
-                services.AddTransient<ICampaignDescriptorProvider, BlankCampaignDescriptorProvider>();
-#else
-#error ConstGameVersionWithPrefix is not handled!
-#endif
 
                 services.AddScoped<IMBObjectExtensionDataStore, MBObjectExtensionDataStore>();
                 services.AddScoped<IMBObjectFinder, MBObjectFinder>();
@@ -60,7 +43,6 @@ namespace Bannerlord.ButterLib.Implementation
                 services.AddScoped<HotKeyManager, HotKeyManagerImplementation>();
                 services.AddSingleton<IHotKeyManagerStatic, HotKeyManagerStaticImplementation>();
 
-                services.AddSubSystem<CampaignIdentifierSubSystem>();
                 services.AddSubSystem<DistanceMatrixSubSystem>();
                 services.AddSubSystem<HotKeySubSystem>();
                 services.AddSubSystem<MBSubModuleBaseExSubSystem>();
@@ -109,7 +91,6 @@ namespace Bannerlord.ButterLib.Implementation
                     Debug.DebugManager = new DebugManagerWrapper(Debug.DebugManager, this.GetServiceProvider()!);
                 }
 
-                CampaignIdentifierSubSystem.Instance?.Enable();
                 ObjectSystemSubSystem.Instance?.Enable();
             }
 
@@ -150,7 +131,6 @@ namespace Bannerlord.ButterLib.Implementation
 
             if (game.GameType is Campaign)
             {
-                CampaignIdentifierEvents.Instance = null;
                 if (DistanceMatrixSubSystem.Instance is { } subSystem)
                 {
                     subSystem.GameInitialized = false;

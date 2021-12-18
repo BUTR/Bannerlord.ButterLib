@@ -1,10 +1,8 @@
 ﻿using Bannerlord.BUTR.Shared.Helpers;
-using Bannerlord.ButterLib.CampaignIdentifier;
 using Bannerlord.ButterLib.Common.Extensions;
 using Bannerlord.ButterLib.DistanceMatrix;
 using Bannerlord.ButterLib.ExceptionHandler;
 using Bannerlord.ButterLib.Extensions;
-using Bannerlord.ButterLib.Implementation.CampaignIdentifier;
 using Bannerlord.ButterLib.Implementation.Common.Extensions;
 using Bannerlord.ButterLib.Implementation.DistanceMatrix;
 using Bannerlord.ButterLib.SubModuleWrappers;
@@ -100,8 +98,6 @@ namespace Bannerlord.ButterLib.Implementation.Tests
             ExceptionHandlerSubSystem.Instance?.Disable();
 
             var services = ButterLibSubModule.Instance!.GetServices()!;
-            services.AddScoped<CampaignDescriptor, CampaignDescriptorImplementation>();
-            services.AddSingleton<ICampaignDescriptorStatic, CampaignDescriptorStaticImplementation>();
             services.AddScoped(typeof(DistanceMatrix<>), typeof(DistanceMatrixImplementation<>));
             services.AddSingleton<IDistanceMatrixStatic, DistanceMatrixStaticImplementation>();
             services.AddSingleton<ICampaignExtensions, CampaignExtensionsImplementation>();
@@ -116,33 +112,6 @@ namespace Bannerlord.ButterLib.Implementation.Tests
             var campaignExtensions = serviceProvider.GetRequiredService<ICampaignExtensions>();
             Assert.NotNull(campaignExtensions);
             Assert.True(campaignExtensions is CampaignExtensionsImplementation);
-        }
-
-        [Test]
-        public void CampaignDescriptor_Test()
-        {
-            using var harmony = new HarmonyDisposable($"{nameof(DependencyInjectionTests)}.{nameof(CampaignDescriptor_Test)}");
-            harmony.Patch(AccessTools.DeclaredPropertyGetter(typeof(CampaignTime), "CurrentTicks"),
-                prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedCurrentTicks)));
-            harmony.Patch(SymbolExtensions.GetMethodInfo(() => CharacterCode.CreateFrom((BasicCharacterObject) null!)),
-                prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedCreateFrom)));
-
-
-            var hero = (Hero) FormatterServices.GetUninitializedObject(typeof(Hero));
-#if e143 || e150 || e151 || e152 || e153 || e154 || e155 || e156 || e157 || e158 || e159
-            AccessTools.Field(typeof(Hero), "Name").SetValue(hero, new TextObject("TestHero"));
-#elif e1510 || e160 || e161 || e162 || e163 || e164 || e165 
-            AccessTools.Property(typeof(Hero), "Name").SetValue(hero, new TextObject("TestHero"));
-#elif e170
-            AccessTools.Field(typeof(Hero), "_name").SetValue(hero, new TextObject("TestHero"));
-#else
-#error ConstGameVersionWithPrefix is not handled!
-#endif
-            AccessTools.Field(typeof(Hero), "_birthDay").SetValue(hero, CampaignTime.YearsFromNow(18));
-
-            var campaignDescriptor = CampaignDescriptor.Create(hero);
-            Assert.NotNull(campaignDescriptor);
-            Assert.True(campaignDescriptor is CampaignDescriptorImplementation);
         }
 
         [Test]
