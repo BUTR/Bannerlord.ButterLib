@@ -1,6 +1,7 @@
 ﻿using Bannerlord.ButterLib.Common.Helpers;
 using Bannerlord.ButterLib.DelayedSubModule;
 using Bannerlord.ButterLib.SubModuleWrappers;
+using Bannerlord.ModuleManager;
 
 using HarmonyLib;
 
@@ -44,9 +45,9 @@ namespace Bannerlord.ButterLib.Tests.DelayedSubModule
         public void SubscribeBeforeTargetLoad_Test()
         {
             [MethodImpl(MethodImplOptions.NoInlining)]
-            static bool MockedGetLoadedModules(ref IEnumerable<ExtendedModuleInfo> __result)
+            static bool MockedGetLoadedModules(ref IEnumerable<ModuleInfoExtended> __result)
             {
-                __result = new List<ExtendedModuleInfo> { TestHelper.ModuleInfoCaller, TestHelper.ModuleInfoTarget };
+                __result = new List<ModuleInfoExtended> { TestHelper.ModuleInfoCaller, TestHelper.ModuleInfoTarget };
                 return false;
             }
 
@@ -66,9 +67,9 @@ namespace Bannerlord.ButterLib.Tests.DelayedSubModule
         public void SubscribeBeforeTargetLoad_CallTargetManually_Test()
         {
             [MethodImpl(MethodImplOptions.NoInlining)]
-            static bool MockedGetLoadedModules(ref IEnumerable<ExtendedModuleInfo> __result)
+            static bool MockedGetLoadedModules(ref IEnumerable<ModuleInfoExtended> __result)
             {
-                __result = new List<ExtendedModuleInfo> { TestHelper.ModuleInfoCaller, TestHelper.ModuleInfoTarget };
+                __result = new List<ModuleInfoExtended> { TestHelper.ModuleInfoCaller, TestHelper.ModuleInfoTarget };
                 return false;
             }
 
@@ -93,9 +94,9 @@ namespace Bannerlord.ButterLib.Tests.DelayedSubModule
         public void SubscribeAfterTargetLoad_Test()
         {
             [MethodImpl(MethodImplOptions.NoInlining)]
-            static bool MockedGetLoadedModules(ref IEnumerable<ExtendedModuleInfo> __result)
+            static bool MockedGetLoadedModules(ref IEnumerable<ModuleInfoExtended> __result)
             {
-                __result = new List<ExtendedModuleInfo> { TestHelper.ModuleInfoTarget, TestHelper.ModuleInfoCaller };
+                __result = new List<ModuleInfoExtended> { TestHelper.ModuleInfoTarget, TestHelper.ModuleInfoCaller };
                 return false;
             }
 

@@ -1,4 +1,4 @@
-﻿using Bannerlord.ButterLib.Common.Helpers;
+﻿using Bannerlord.ModuleManager;
 
 using HarmonyLib;
 
@@ -12,32 +12,32 @@ namespace Bannerlord.ButterLib.Tests.DelayedSubModule
         public static readonly Type? NewModuleInfoType = Type.GetType("TaleWorlds.ModuleManager.ModuleInfo, TaleWorlds.ModuleManager", false);
 
 
-        private static ExtendedModuleInfo? _moduleInfoCaller;
-        public static ExtendedModuleInfo ModuleInfoCaller
+        private static ModuleInfoExtended? _moduleInfoCaller;
+        public static ModuleInfoExtended ModuleInfoCaller
         {
             get
             {
                 if (_moduleInfoCaller is null)
                 {
-                    _moduleInfoCaller = new ExtendedModuleInfo();
-                    AccessTools.Property(typeof(ExtendedModuleInfo), "Id")?.SetValue(_moduleInfoCaller, nameof(TestSubModuleCaller));
-                    AccessTools.Property(typeof(ExtendedModuleInfo), "Name")?.SetValue(_moduleInfoCaller, nameof(TestSubModuleCaller));
+                    _moduleInfoCaller = new ModuleInfoExtended();
+                    AccessTools.Property(typeof(ModuleInfoExtended), "Id")?.SetValue(_moduleInfoCaller, nameof(TestSubModuleCaller));
+                    AccessTools.Property(typeof(ModuleInfoExtended), "Name")?.SetValue(_moduleInfoCaller, nameof(TestSubModuleCaller));
                 }
 
                 return _moduleInfoCaller;
             }
         }
 
-        private static ExtendedModuleInfo? _moduleInfoTarget;
-        public static ExtendedModuleInfo ModuleInfoTarget
+        private static ModuleInfoExtended? _moduleInfoTarget;
+        public static ModuleInfoExtended ModuleInfoTarget
         {
             get
             {
                 if (_moduleInfoTarget is null)
                 {
-                    _moduleInfoTarget = new ExtendedModuleInfo();
-                    AccessTools.Property(typeof(ExtendedModuleInfo), "Id")?.SetValue(_moduleInfoTarget, nameof(TestSubModuleTarget));
-                    AccessTools.Property(typeof(ExtendedModuleInfo), "Name")?.SetValue(_moduleInfoTarget, nameof(TestSubModuleTarget));
+                    _moduleInfoTarget = new ModuleInfoExtended();
+                    AccessTools.Property(typeof(ModuleInfoExtended), "Id")?.SetValue(_moduleInfoTarget, nameof(TestSubModuleTarget));
+                    AccessTools.Property(typeof(ModuleInfoExtended), "Name")?.SetValue(_moduleInfoTarget, nameof(TestSubModuleTarget));
                 }
 
                 return _moduleInfoTarget;

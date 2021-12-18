@@ -1,4 +1,5 @@
 ﻿using Bannerlord.ButterLib.Common.Helpers;
+using Bannerlord.ModuleManager;
 
 using System.Collections.Generic;
 using System.Linq;
@@ -10,20 +11,20 @@ namespace Bannerlord.ButterLib.Helpers.ModuleInfo
 {
     public static class ModuleSorter
     {
-        public static IList<ExtendedModuleInfo> Sort(ICollection<ExtendedModuleInfo> unorderedModules) =>
+        public static IList<ModuleInfoExtended> Sort(ICollection<ModuleInfoExtended> unorderedModules) =>
             MBMath.TopologySort(unorderedModules, module => GetDependentModulesOf(unorderedModules, module));
 
-        private static IEnumerable<ExtendedModuleInfo> GetDependentModulesOf(ICollection<ExtendedModuleInfo> source, ExtendedModuleInfo module)
+        private static IEnumerable<ModuleInfoExtended> GetDependentModulesOf(ICollection<ModuleInfoExtended> source, ModuleInfoExtended module)
         {
-            foreach (var dependedModule in module.DependedModules)
+            foreach (var dependedModule in module.DependentModules)
             {
-                if (source.FirstOrDefault(i => i.Id == dependedModule.ModuleId) is { } moduleInfo)
+                if (source.FirstOrDefault(i => i.Id == dependedModule.Id) is { } moduleInfo)
                 {
                     yield return moduleInfo;
                 }
             }
 
-            foreach (var dependedModuleMetadata in module.DependedModuleMetadatas)
+            foreach (var dependedModuleMetadata in module.DependentModuleMetadatas)
             {
                 if (source.FirstOrDefault(i => i.Id == dependedModuleMetadata.Id) is { } moduleInfo && dependedModuleMetadata.LoadType == LoadType.LoadBeforeThis)
                 {
@@ -33,7 +34,7 @@ namespace Bannerlord.ButterLib.Helpers.ModuleInfo
 
             foreach (var moduleInfo in source)
             {
-                foreach (var dependedModuleMetadata in moduleInfo.DependedModuleMetadatas)
+                foreach (var dependedModuleMetadata in moduleInfo.DependentModuleMetadatas)
                 {
                     if (dependedModuleMetadata.Id == module.Id && dependedModuleMetadata.LoadType == LoadType.LoadAfterThis)
                     {

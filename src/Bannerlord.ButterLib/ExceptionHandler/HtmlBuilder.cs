@@ -1,7 +1,7 @@
-﻿using Bannerlord.BUTR.Shared.Helpers;
-using Bannerlord.ButterLib.Common.Extensions;
-using Bannerlord.ButterLib.Common.Helpers;
+﻿using Bannerlord.BUTR.Shared.Extensions;
+using Bannerlord.BUTR.Shared.Helpers;
 using Bannerlord.ButterLib.ExceptionHandler.WinForms;
+using Bannerlord.ModuleManager;
 
 using HarmonyLib;
 
@@ -249,31 +249,31 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             var dependenciesBuilder = new StringBuilder();
             var dependenciesMetadataBuilder = new StringBuilder();
 
-            void AppendDependencies(ExtendedModuleInfo module)
+            void AppendDependencies(ModuleInfoExtended module)
             {
                 dependenciesBuilder.Clear();
-                foreach (var dependedModule in module.DependedModules)
+                foreach (var dependedModule in module.DependentModules)
                 {
-                    var dependentModule = crashReport.LoadedModules.Find(m => m.Id == dependedModule.ModuleId);
+                    var dependentModule = crashReport.LoadedModules.Find(m => m.Id == dependedModule.Id);
                     if (dependentModule == null)
                     {
                         dependenciesBuilder.Append("<li>")
-                            .Append("MODULE WITH ID: ").Append(dependedModule.ModuleId).Append(" NOT FOUND!")
+                            .Append("MODULE WITH ID: ").Append(dependedModule.Id).Append(" NOT FOUND!")
                             .AppendLine("</li>");
                     }
                     else
                     {
                         dependenciesBuilder.Append("<li>")
-                            .Append($"<a href='javascript:;' onclick='document.getElementById(\"{dependedModule.ModuleId}\").scrollIntoView(false)'>").Append(dependedModule.ModuleId)
+                            .Append($"<a href='javascript:;' onclick='document.getElementById(\"{dependedModule.Id}\").scrollIntoView(false)'>").Append(dependedModule.Id)
                             .AppendLine("</a></li>");
                     }
                 }
             }
 
-            void AppendDependenciesMetadata(ExtendedModuleInfo module)
+            void AppendDependenciesMetadata(ModuleInfoExtended module)
             {
                 dependenciesMetadataBuilder.Clear();
-                foreach (var dependedModuleMetadata in module.DependedModuleMetadatas)
+                foreach (var dependedModuleMetadata in module.DependentModuleMetadatas)
                 {
                     var dependentModule = crashReport.LoadedModules.Find(m => m.Id == dependedModuleMetadata.Id);
                     if (dependentModule == null && !dependedModuleMetadata.IsOptional)
@@ -285,7 +285,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                     else
                     {
                         dependenciesMetadataBuilder.Append("<li>")
-                            .Append("Load ").Append(DependedModuleMetadata.GetLoadType(dependedModuleMetadata.LoadType))
+                            .Append("Load ").Append(DependentModuleMetadata.GetLoadType(dependedModuleMetadata.LoadType))
                             .Append($"<a href='javascript:;' onclick='document.getElementById(\"{dependedModuleMetadata.Id}\").scrollIntoView(false)'>")
                             .Append(dependedModuleMetadata.Id)
                             .AppendLine("</a></li>");
@@ -293,12 +293,12 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                 }
             }
 
-            void AppendSubModules(ExtendedModuleInfo module)
+            void AppendSubModules(ModuleInfoExtended module)
             {
                 subModulesBuilder.Clear();
-                foreach (var subModule in module.ExtendedSubModules)
+                foreach (var subModule in module.SubModules)
                 {
-                    if (!subModule.IsLoadable)
+                    if (!ModuleInfoHelper.CheckIfSubModuleCanBeLoadable(subModule))
                         continue;
 
                     assembliesBuilder.Clear();
@@ -333,7 +333,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                 }
             }
 
-            void AppendAdditionalAssemblies(ExtendedModuleInfo module)
+            void AppendAdditionalAssemblies(ModuleInfoExtended module)
             {
                 additionalAssembliesBuilder.Clear();
                 foreach (var externalLoadedAssembly in crashReport.ExternalLoadedAssemblies)
@@ -445,13 +445,16 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             return sb0.ToString();
         }
 
-        private static bool IsModuleAssembly(ExtendedModuleInfo loadedModule, Assembly assembly)
+        private static bool IsModuleAssembly(ModuleInfoExtended loadedModule, Assembly assembly)
         {
+             static string PathPrefix() => Path.Combine(TaleWorlds.Library.BasePath.Name, "Modules");
+            static string GetPath(string id) => Path.Combine(PathPrefix(), id);
+
             if (assembly.IsDynamic || string.IsNullOrWhiteSpace(assembly.CodeBase))
                 return false;
 
-            var modulePath = new Uri(Path.GetFullPath(loadedModule.Folder));
-            var moduleDirectory = Path.GetFileName(loadedModule.Folder);
+            var modulePath = new Uri(Path.GetFullPath(GetPath(loadedModule.Id)));
+            var moduleDirectory = Path.GetFileName(GetPath(loadedModule.Id));
 
             var assemblyPath = new Uri(assembly.CodeBase);
             var relativePath = modulePath.MakeRelativeUri(assemblyPath);

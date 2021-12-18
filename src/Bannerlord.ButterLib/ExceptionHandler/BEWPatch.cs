@@ -1,12 +1,19 @@
-﻿using Bannerlord.BUTRLoader;
+﻿using Bannerlord.BUTR.Shared.Extensions;
+using Bannerlord.BUTRLoader;
 using Bannerlord.ButterLib.Common.Extensions;
 
 using HarmonyLib;
 using HarmonyLib.BUTR.Extensions;
 
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
+
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
+using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
 
 using TaleWorlds.MountAndBlade;
@@ -34,8 +41,6 @@ namespace Bannerlord.ButterLib.ExceptionHandler
 
         internal static readonly HashSet<ExceptionIdentifier> SuppressedExceptions = new();
 
-        private static readonly string[] bew = { "org.calradia.admiralnelson.betterexceptionwindow" };
-
         private static readonly MethodInfo? ManagedApplicationTickMethod = AccessTools2.Method("TaleWorlds.DotNet.Managed:ApplicationTick");
         private static readonly MethodInfo? ModuleOnApplicationTickMethod = AccessTools2.Method("TaleWorlds.MountAndBlade.Module:OnApplicationTick");
         private static readonly MethodInfo? ScreenManagerTickMethod = AccessTools2.Method("TaleWorlds.Engine.Screens.ScreenManager:Tick");
@@ -45,6 +50,8 @@ namespace Bannerlord.ButterLib.ExceptionHandler
 
         private static readonly AccessTools.FieldRef<Module, Dictionary<string, Type>>? LoadedSubModuleTypes =
             AccessTools2.FieldRefAccess<Module, Dictionary<string, Type>>("_loadedSubmoduleTypes");
+
+        private static ILogger _log = default!;
 
         private static bool _wasButrLoaderInterceptorCalled = false;
 
@@ -59,6 +66,11 @@ namespace Bannerlord.ButterLib.ExceptionHandler
 
         internal static void Enable(Harmony harmony)
         {
+            _log = ButterLibSubModule.Instance?.GetServiceProvider()?.GetRequiredService<ILogger<BEWPatch>>()
+                   ?? NullLogger<BEWPatch>.Instance;
+
+            var bew = new[] { "org.calradia.admiralnelson.betterexceptionwindow" };
+
             harmony.Patch(ManagedApplicationTickMethod, finalizer: new HarmonyMethod(FinalizerMethod, before: bew));
             harmony.Patch(ModuleOnApplicationTickMethod, finalizer: new HarmonyMethod(FinalizerMethod, before: bew));
             harmony.Patch(ScreenManagerTickMethod, finalizer: new HarmonyMethod(FinalizerMethod, before: bew));
@@ -103,6 +115,41 @@ namespace Bannerlord.ButterLib.ExceptionHandler
         [MethodImpl(MethodImplOptions.NoInlining)]
         private static IEnumerable<CodeInstruction> BlankTranspiler(IEnumerable<CodeInstruction> instructions) => instructions;
 
+        /// <summary>
+        /// Will handle most generic cases. If throw was in the end, will fail.
+        /// </summary>
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private static IEnumerable<CodeInstruction> FinalizerTranspiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        {
+            var list = instructions.ToList();
+
+            var ret = list.Last();
+            if (ret.opcode != OpCodes.Ret)
+                return list;
+
+            var retLabel = generator.DefineLabel();
+            ret.labels.Add(retLabel);
+
+            for (var i = 0; i < list.Count - 2; i++)
+            {
+                if (ret.opcode == OpCodes.Ret)
+                {
+                    var oldInstruction = list[i];
+                    list[i] = new CodeInstruction(OpCodes.Leave_S, retLabel)
+                    {
+                        labels = oldInstruction.ExtractLabels()
+                    };
+                }
+            }
+
+            return list.Take(list.Count - 1).Concat(new[]
+            {
+                new CodeInstruction(OpCodes.Leave, retLabel),
+                new CodeInstruction(OpCodes.Call, SymbolExtensions2.GetMethodInfo(() => Finalizer(null))),
+                new CodeInstruction(OpCodes.Leave_S, retLabel),
+                ret,
+            });
+        }
 
         /// <summary>
         /// We need to patch MBSubModuleBase.OnSubModuleLoad because they generally can't be catched.
@@ -114,17 +161,25 @@ namespace Bannerlord.ButterLib.ExceptionHandler
         /// </summary>
         private static bool PatchSubModules(Harmony harmony)
         {
+            return true;
+
             if (LoadedSubModuleTypes is null)
                 return false;
 
-            var dict = LoadedSubModuleTypes(Module.CurrentModule);
-            foreach (var (_, type) in dict)
+            foreach (var (_, type) in LoadedSubModuleTypes(Module.CurrentModule))
             {
                 var method = AccessTools2.Method(type, "OnSubModuleLoad");
                 if (method is null || method.DeclaringType == typeof(MBSubModuleBase))
                     continue;
 
-                harmony.Patch(method, finalizer: new HarmonyMethod(FinalizerMethod, before: bew));
+                try
+                {
+                    harmony.Patch(method, transpiler: new HarmonyMethod(AccessTools2.Method(typeof(BEWPatch), nameof(FinalizerTranspiler))));
+                }
+                catch (Exception e)
+                {
+                    _log.LogError(e, "Failed to apply transpiler to 'OnSubModuleLoad' of '{SubModule}'", method.DeclaringType?.ToString() ?? string.Empty);
+                }
             }
             return true;
         }

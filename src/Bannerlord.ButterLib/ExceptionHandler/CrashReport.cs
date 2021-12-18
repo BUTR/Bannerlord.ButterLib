@@ -1,4 +1,5 @@
-﻿using Bannerlord.ButterLib.Common.Helpers;
+﻿using Bannerlord.BUTR.Shared.Helpers;
+using Bannerlord.ModuleManager;
 
 using HarmonyLib;
 
@@ -9,7 +10,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-using ModuleInfoHelper = Bannerlord.BUTR.Shared.Helpers.ModuleInfoHelper;
 
 namespace Bannerlord.ButterLib.ExceptionHandler
 {
@@ -17,8 +17,8 @@ namespace Bannerlord.ButterLib.ExceptionHandler
     {
         public Guid Id { get; } = Guid.NewGuid();
         public Exception Exception { get; }
-        public List<(MethodBase Method, ExtendedModuleInfo ModuleInfo, string StackFrameDescription)> InvolvedModules { get; }
-        public List<ExtendedModuleInfo> LoadedModules { get; } = ModuleInfoHelper.GetLoadedModules().ToList();
+        public List<(MethodBase Method, ModuleInfoExtended ModuleInfo, string StackFrameDescription)> InvolvedModules { get; }
+        public List<ModuleInfoExtended> LoadedModules { get; } = ModuleInfoHelper.GetLoadedModules().ToList();
         public List<Assembly> ModuleLoadedAssemblies { get; } = new();
         public List<Assembly> ExternalLoadedAssemblies { get; } = new();
         public Dictionary<MethodBase, Patches> LoadedHarmonyPatches { get; } = new();
@@ -30,7 +30,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             InvolvedModules = GetAllInvolvedModules(exception, 0).ToList();
 
             var moduleAssemblies = new List<string>();
-            foreach (var subModule in LoadedModules.SelectMany(module => module.ExtendedSubModules))
+            foreach (var subModule in LoadedModules.SelectMany(module => module.SubModules))
             {
                 moduleAssemblies.Add(Path.GetFileNameWithoutExtension(subModule.DLLName));
                 moduleAssemblies.AddRange(subModule.Assemblies.Select(Path.GetFileNameWithoutExtension));
@@ -47,29 +47,29 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             }
         }
 
-        private static IEnumerable<(MethodBase, ExtendedModuleInfo, string)> GetAllInvolvedModules(Exception ex, int level)
+        private static IEnumerable<(MethodBase, ModuleInfoExtended, string)> GetAllInvolvedModules(Exception ex, int level)
         {
             static Patches? FindPatches(MethodBase method) => method is MethodInfo replacement
                 ? Harmony.GetOriginalMethod(replacement) is { } original ? Harmony.GetPatchInfo(original) : null
                 : null;
 
-            static IEnumerable<(MethodBase, ExtendedModuleInfo)> GetPrefixes(Patches? info) => info is null
-                ? Enumerable.Empty<(MethodBase, ExtendedModuleInfo)>()
+            static IEnumerable<(MethodBase, ModuleInfoExtended)> GetPrefixes(Patches? info) => info is null
+                ? Enumerable.Empty<(MethodBase, ModuleInfoExtended)>()
                 : AddMetadata(info.Prefixes.OrderBy(t => t.priority).Select(t => t.PatchMethod));
 
-            static IEnumerable<(MethodBase, ExtendedModuleInfo)> GetPostfixes(Patches? info) => info is null
-                ? Enumerable.Empty<(MethodBase, ExtendedModuleInfo)>()
+            static IEnumerable<(MethodBase, ModuleInfoExtended)> GetPostfixes(Patches? info) => info is null
+                ? Enumerable.Empty<(MethodBase, ModuleInfoExtended)>()
                 : AddMetadata(info.Postfixes.OrderBy(t => t.priority).Select(t => t.PatchMethod));
 
-            static IEnumerable<(MethodBase, ExtendedModuleInfo)> GetTranspilers(Patches? info) => info is null
-                ? Enumerable.Empty<(MethodBase, ExtendedModuleInfo)>()
+            static IEnumerable<(MethodBase, ModuleInfoExtended)> GetTranspilers(Patches? info) => info is null
+                ? Enumerable.Empty<(MethodBase, ModuleInfoExtended)>()
                 : AddMetadata(info.Transpilers.OrderBy(t => t.priority).Select(t => t.PatchMethod));
 
-            static IEnumerable<(MethodBase, ExtendedModuleInfo)> GetFinalizers(Patches? info) => info is null
-                ? Enumerable.Empty<(MethodBase, ExtendedModuleInfo)>()
+            static IEnumerable<(MethodBase, ModuleInfoExtended)> GetFinalizers(Patches? info) => info is null
+                ? Enumerable.Empty<(MethodBase, ModuleInfoExtended)>()
                 : AddMetadata(info.Finalizers.OrderBy(t => t.priority).Select(t => t.PatchMethod));
 
-            static IEnumerable<(MethodBase, ExtendedModuleInfo)> AddMetadata(IEnumerable<MethodInfo> methods)
+            static IEnumerable<(MethodBase, ModuleInfoExtended)> AddMetadata(IEnumerable<MethodInfo> methods)
             {
                 foreach (var method in methods)
                 {
@@ -80,7 +80,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                 }
             }
 
-            static ExtendedModuleInfo? GetModuleInfoIfMod(MethodBase? method) => method?.DeclaringType is not null
+            static ModuleInfoExtended? GetModuleInfoIfMod(MethodBase? method) => method?.DeclaringType is not null
                 ? ModuleInfoHelper.GetModuleByType(method.DeclaringType)
                 : null;
 

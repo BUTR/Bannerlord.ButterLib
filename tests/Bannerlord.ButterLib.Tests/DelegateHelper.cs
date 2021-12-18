@@ -1,4 +1,4 @@
-﻿using Bannerlord.ButterLib.Common.Helpers;
+﻿using Bannerlord.ModuleManager;
 
 using System;
 using System.Collections.Generic;
@@ -14,7 +14,7 @@ namespace Bannerlord.ButterLib.Tests
         public delegate bool MockedGetBasePathDelegate(ref string __result);
         public static MethodInfo GetMethodInfo(this MockedGetBasePathDelegate @delegate) => @delegate.Method;
 
-        public delegate bool MockedGetLoadedModulesDelegate(ref IEnumerable<ExtendedModuleInfo> __result);
+        public delegate bool MockedGetLoadedModulesDelegate(ref IEnumerable<ModuleInfoExtended> __result);
         public static MethodInfo GetMethodInfo(MockedGetLoadedModulesDelegate @delegate) => @delegate.Method;
     }
 }
