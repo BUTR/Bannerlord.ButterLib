@@ -144,7 +144,7 @@ namespace Bannerlord.ButterLib.Common.Extensions
         {
             var instance = new TImplementation();
             services.AddSingleton<TImplementation>(sp => instance);
-            services.TryAddEnumerable(ServiceDescriptor.Singleton<ISubSystem, TImplementation>(sp => sp.GetRequiredService<TImplementation>()));
+            services.AddSingleton<ISubSystem>(sp => sp.GetRequiredService<TImplementation>());
             return services;
         }
 
