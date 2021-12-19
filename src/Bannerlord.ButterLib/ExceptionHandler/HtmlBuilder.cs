@@ -325,7 +325,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                     dependenciesBuilder.Append("<li>").Append(line).AppendLine("</li>");
                 }
             }
-            
+
             void AppendSubModules(ModuleInfoExtended module)
             {
                 subModulesBuilder.Clear();
@@ -474,7 +474,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
 
         private static bool IsModuleAssembly(ModuleInfoExtended loadedModule, Assembly assembly)
         {
-             static string PathPrefix() => Path.Combine(TaleWorlds.Library.BasePath.Name, "Modules");
+            static string PathPrefix() => Path.Combine(TaleWorlds.Library.BasePath.Name, "Modules");
             static string GetPath(string id) => Path.Combine(PathPrefix(), id);
 
             if (assembly.IsDynamic || string.IsNullOrWhiteSpace(assembly.CodeBase))
