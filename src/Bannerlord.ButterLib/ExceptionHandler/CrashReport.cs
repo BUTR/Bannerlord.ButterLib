@@ -28,6 +28,9 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             Exception = exception;
 
             InvolvedModules = GetAllInvolvedModules(exception, 0).ToList();
+            // Do not show Bannerlord.Harmony if it's the only one involved module.
+            if (InvolvedModules.Count == 1 && InvolvedModules[0].ModuleInfo.Id == "Bannerlord.Harmony")
+                InvolvedModules = new();
 
             var moduleAssemblies = new List<string>();
             foreach (var subModule in LoadedModules.SelectMany(module => module.SubModules))
