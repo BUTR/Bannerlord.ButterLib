@@ -117,7 +117,7 @@ namespace Bannerlord.ButterLib.Common.Extensions
             configure?.Invoke(builder);
 
             var logger = builder.CreateLogger();
-            
+
             services.AddSingleton<ILoggerProvider, SerilogLoggerProvider>(_ => new SerilogLoggerProvider(logger, true));
             return services;
         }
