@@ -11,7 +11,7 @@
     <ExtensionVersion>2.0.0</ExtensionVersion>
     <!--BuildResources Version-->
     <BuildResourcesVersion>1.0.0.39</BuildResourcesVersion>
-    <BUTRSharedVersion>2.0.0.73</BUTRSharedVersion>
+    <BUTRSharedVersion>2.0.0.75</BUTRSharedVersion>
     <BUTRModuleManagerVersion>2.0.81</BUTRModuleManagerVersion>
     <HarmonyExtensionsVersion>2.0.0.51</HarmonyExtensionsVersion>
   </PropertyGroup>
