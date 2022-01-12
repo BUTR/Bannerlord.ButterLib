@@ -86,7 +86,7 @@ namespace Bannerlord.ButterLib.Tests.DelayedSubModule
 
             // Manually trigger OnSubModuleLoad and confirm that the delegate is now called
             var module = new MBSubModuleBaseWrapper(new TestSubModuleTarget());
-            module.SubModuleLoad();
+            module.OnSubModuleLoad();
             Assert.True(delegateWasCalled);
         }
 
