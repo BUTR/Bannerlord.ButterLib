@@ -12,7 +12,7 @@
     <!--BuildResources Version-->
     <BuildResourcesVersion>1.0.0.39</BuildResourcesVersion>
     <BUTRSharedVersion>2.0.0.73</BUTRSharedVersion>
-    <BUTRModuleManagerVersion>2.0.81</BUTRModuleManagerVersion>
+    <BUTRModuleManagerVersion>3.0.84</BUTRModuleManagerVersion>
     <HarmonyExtensionsVersion>2.0.0.51</HarmonyExtensionsVersion>
   </PropertyGroup>
 
