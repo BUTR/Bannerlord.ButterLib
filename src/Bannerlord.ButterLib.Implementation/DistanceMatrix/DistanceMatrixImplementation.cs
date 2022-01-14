@@ -89,7 +89,7 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
             {
 #if e143 || e150 || e151 || e152 || e153 || e154 || e155 || e156 || e157 || e158 || e159 || e1510
                 var activeHeroes = Hero.All
-#elif e160 || e161 || e162 || e163 || e164 || e165 || e170
+#elif e160 || e161 || e162 || e163 || e164 || e165 || e170 || e171
                 var activeHeroes = Hero.AllAliveHeroes
 #else
 #error ConstGameVersionWithPrefix is not handled!
