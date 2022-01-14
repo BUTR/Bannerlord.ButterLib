@@ -34,9 +34,9 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
             return true;
         }
 
-        private static void CampaignBehaviorBaseCtorPostfix(CampaignBehaviorBase instance, ref string ___StringId)
+        private static void CampaignBehaviorBaseCtorPostfix(CampaignBehaviorBase __instance, ref string ___StringId)
         {
-            var module = ModuleInfoHelper.GetModuleByType(instance.GetType());
+            var module = ModuleInfoHelper.GetModuleByType(__instance.GetType());
             if (module is null) // A non-module dll
             {
                 return;
@@ -47,7 +47,7 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
                 return;
             }
 
-            ___StringId = instance.GetType().FullName;
+            ___StringId = __instance.GetType().FullName;
         }
     }
 }
