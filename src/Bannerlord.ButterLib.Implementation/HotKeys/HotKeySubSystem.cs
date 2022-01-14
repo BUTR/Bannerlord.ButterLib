@@ -48,7 +48,7 @@ namespace Bannerlord.ButterLib.Implementation.HotKeys
             {
                 if (!hotKey.ShouldExecute() || hotKey.GameKey is null) continue;
 
-#if e160 || e161 || e162 || e163 || e164 || e165 || e170
+#if e160 || e161 || e162 || e163 || e164 || e165 || e170 || e171
                 if (hotKey.GameKey.KeyboardKey?.InputKey.IsDown() == true || hotKey.GameKey.ControllerKey?.InputKey.IsDown() == true)
                     hotKey.IsDownInternal();
                 if (hotKey.GameKey.KeyboardKey?.InputKey.IsPressed() == true || hotKey.GameKey.ControllerKey?.InputKey.IsPressed() == true)

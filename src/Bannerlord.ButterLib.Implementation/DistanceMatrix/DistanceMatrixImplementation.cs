@@ -87,7 +87,7 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
 
             if (typeof(Hero).IsAssignableFrom(typeof(T)))
             {
-#if e160 || e161 || e162 || e163 || e164 || e165 || e170
+#if e160 || e161 || e162 || e163 || e164 || e165 || e170 || e171
                 var activeHeroes = Hero.AllAliveHeroes
 #else
 #error ConstGameVersionWithPrefix is not handled!
