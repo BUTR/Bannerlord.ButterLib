@@ -40,6 +40,11 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem
         {
             IsEnabled = false;
 
+            if (ApplicationVersionHelper.GameVersion() is { } gameVersion && gameVersion.Major >= 1 && gameVersion.Minor >= 7)
+            {
+                BehaviourNamePatch.Disable(_harmony);
+            }
+
             TypeExtensionsPatch.Disable(_harmony);
             //DefinitionContextPatch.Disable(_harmony);
         }
