@@ -28,8 +28,8 @@
   <SubModules>
     <SubModule>
       <Name value="ButterLib" />
-      <DLLName value="$modulename$.dll" />
-      <SubModuleClassType value="$modulename$.ButterLibSubModule" />
+      <DLLName value="$moduleid$.dll" />
+      <SubModuleClassType value="$moduleid$.ButterLibSubModule" />
       <Assemblies>
         <!--Microsoft Abstractions-->
         <Assembly value="Microsoft.Extensions.DependencyInjection.Abstractions.dll" />
@@ -53,8 +53,8 @@
     </SubModule>
     <SubModule>
       <Name value="ButterLib Implementation Loader" />
-      <DLLName value="$modulename$.dll" />
-      <SubModuleClassType value="$modulename$.ImplementationLoaderSubModule" />
+      <DLLName value="$moduleid$.dll" />
+      <SubModuleClassType value="$moduleid$.ImplementationLoaderSubModule" />
       <Tags />
     </SubModule>
   </SubModules>
