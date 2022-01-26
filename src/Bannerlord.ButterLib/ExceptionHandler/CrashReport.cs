@@ -20,7 +20,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
     {
         public Guid Id { get; } = Guid.NewGuid();
         public Exception Exception { get; }
-        public List<(MethodBase Method, ModuleInfoExtended ModuleInfo, string StackFrameDescription)> InvolvedModules { get; }
+        public List<InvolvedModule> InvolvedModules { get; }
         public List<ModuleInfoExtended> LoadedModules { get; } = ModuleInfoHelper.GetLoadedModules().ToList();
         public List<Assembly> ModuleLoadedAssemblies { get; } = new();
         public List<Assembly> ExternalLoadedAssemblies { get; } = new();
@@ -66,7 +66,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             return true;
         }
 
-        private static IEnumerable<(MethodBase, ModuleInfoExtended, string)> GetAllInvolvedModules(Exception ex, int level)
+        private static IEnumerable<InvolvedModule> GetAllInvolvedModules(Exception ex, int level)
         {
             static Patches? FindPatches(MethodBase method) => method is MethodInfo replacement
                 ? Harmony.GetOriginalMethod(replacement) is { } original ? Harmony.GetPatchInfo(original) : null
@@ -121,24 +121,24 @@ namespace Bannerlord.ButterLib.ExceptionHandler
 
                 foreach (var (methodBase, extendedModuleInfo) in GetFinalizers(patches))
                 {
-                    yield return (methodBase, extendedModuleInfo, frame.ToString() ?? string.Empty);
+                    yield return new(methodBase, extendedModuleInfo, frame.ToString() ?? string.Empty);
                 }
                 foreach (var (methodBase, extendedModuleInfo) in GetPostfixes(patches))
                 {
-                    yield return (methodBase, extendedModuleInfo, frame.ToString() ?? string.Empty);
+                    yield return new(methodBase, extendedModuleInfo, frame.ToString() ?? string.Empty);
                 }
                 foreach (var (methodBase, extendedModuleInfo) in GetPrefixes(patches))
                 {
-                    yield return (methodBase, extendedModuleInfo, frame.ToString() ?? string.Empty);
+                    yield return new(methodBase, extendedModuleInfo, frame.ToString() ?? string.Empty);
                 }
                 foreach (var (methodBase, extendedModuleInfo) in GetTranspilers(patches))
                 {
-                    yield return (methodBase, extendedModuleInfo, frame.ToString() ?? string.Empty);
+                    yield return new(methodBase, extendedModuleInfo, frame.ToString() ?? string.Empty);
                 }
 
                 var moduleInfo = GetModuleInfoIfMod(method);
                 if (moduleInfo is not null)
-                    yield return (method, moduleInfo, frame.ToString() ?? string.Empty);
+                    yield return new(method, moduleInfo, frame.ToString() ?? string.Empty);
             }
         }
     }
