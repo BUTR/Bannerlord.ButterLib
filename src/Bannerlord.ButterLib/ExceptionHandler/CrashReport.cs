@@ -13,6 +13,9 @@ using System.Reflection;
 
 namespace Bannerlord.ButterLib.ExceptionHandler
 {
+    
+    internal record InvolvedModule(MethodBase Method, ModuleInfoExtended ModuleInfo, string StackFrameDescription);
+
     internal class CrashReport
     {
         public Guid Id { get; } = Guid.NewGuid();
@@ -27,7 +30,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
         {
             Exception = exception;
 
-            InvolvedModules = GetAllInvolvedModules(exception, 0).ToList();
+            InvolvedModules = GetAllInvolvedModules(exception, 0).Where(FilterButterLib).ToList();
             // Do not show Bannerlord.Harmony if it's the only one involved module.
             if (InvolvedModules.Count == 1 && InvolvedModules[0].ModuleInfo.Id == "Bannerlord.Harmony")
                 InvolvedModules = new();
@@ -48,6 +51,19 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                 if (originalMethod is null || patches is null) continue;
                 LoadedHarmonyPatches.Add(originalMethod, patches);
             }
+        }
+
+        private static bool FilterButterLib(InvolvedModule involvedModule)
+        {
+            if (involvedModule.ModuleInfo.Id == "Bannerlord.ButterLib")
+            {
+                if (involvedModule.Method == BEWPatch.FinalizerMethod)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         private static IEnumerable<(MethodBase, ModuleInfoExtended, string)> GetAllInvolvedModules(Exception ex, int level)
