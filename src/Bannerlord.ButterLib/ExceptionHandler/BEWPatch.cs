@@ -21,7 +21,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
         private static readonly MethodInfo? ScreenManagerTickMethod = AccessTools2.Method(typeof(ScreenManager), "Tick");
         private static readonly MethodInfo? ManagedScriptHolderTickComponentsMethod = AccessTools2.Method(typeof(ManagedScriptHolder), "TickComponents");
         private static readonly MethodInfo? MissionTickMethod = AccessTools2.Method(typeof(Mission), "Tick");
-        private static readonly MethodInfo? FinalizerMethod = AccessTools2.Method(typeof(BEWPatch), nameof(Finalizer));
+        public static readonly MethodInfo? FinalizerMethod = AccessTools2.Method(typeof(BEWPatch), nameof(Finalizer));
 
         private static void Finalizer(Exception? __exception)
         {

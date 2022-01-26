@@ -13,11 +13,13 @@ using ModuleInfoHelper = Bannerlord.BUTR.Shared.Helpers.ModuleInfoHelper;
 
 namespace Bannerlord.ButterLib.ExceptionHandler
 {
+    internal record InvolvedModule(MethodBase Method, ExtendedModuleInfo ModuleInfo, string StackFrameDescription);
+
     internal class CrashReport
     {
         public Guid Id { get; } = Guid.NewGuid();
         public Exception Exception { get; }
-        public List<(MethodBase Method, ExtendedModuleInfo ModuleInfo, string StackFrameDescription)> InvolvedModules { get; }
+        public List<InvolvedModule> InvolvedModules { get; }
         public List<ExtendedModuleInfo> LoadedModules { get; } = ModuleInfoHelper.GetLoadedModules().ToList();
         public List<Assembly> ModuleLoadedAssemblies { get; } = new();
         public List<Assembly> ExternalLoadedAssemblies { get; } = new();
@@ -27,7 +29,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
         {
             Exception = exception;
 
-            InvolvedModules = GetAllInvolvedModules(exception, 0).ToList();
+            InvolvedModules = GetAllInvolvedModules(exception, 0).Where(FilterButterLib).ToList();
 
             var moduleAssemblies = new List<string>();
             foreach (var subModule in LoadedModules.SelectMany(module => module.ExtendedSubModules))
@@ -47,7 +49,20 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             }
         }
 
-        private static IEnumerable<(MethodBase, ExtendedModuleInfo, string)> GetAllInvolvedModules(Exception ex, int level)
+        private static bool FilterButterLib(InvolvedModule involvedModule)
+        {
+            if (involvedModule.ModuleInfo.Id == "Bannerlord.ButterLib")
+            {
+                if (involvedModule.Method == BEWPatch.FinalizerMethod)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private static IEnumerable<InvolvedModule> GetAllInvolvedModules(Exception ex, int level)
         {
             static Patches? FindPatches(MethodBase method) => method is MethodInfo replacement
                 ? Harmony.GetOriginalMethod(replacement) is { } original ? Harmony.GetPatchInfo(original) : null
@@ -102,24 +117,24 @@ namespace Bannerlord.ButterLib.ExceptionHandler
 
                 foreach (var (methodBase, extendedModuleInfo) in GetFinalizers(patches))
                 {
-                    yield return (methodBase, extendedModuleInfo, frame.ToString() ?? string.Empty);
+                    yield return new(methodBase, extendedModuleInfo, frame.ToString() ?? string.Empty);
                 }
                 foreach (var (methodBase, extendedModuleInfo) in GetPostfixes(patches))
                 {
-                    yield return (methodBase, extendedModuleInfo, frame.ToString() ?? string.Empty);
+                    yield return new(methodBase, extendedModuleInfo, frame.ToString() ?? string.Empty);
                 }
                 foreach (var (methodBase, extendedModuleInfo) in GetPrefixes(patches))
                 {
-                    yield return (methodBase, extendedModuleInfo, frame.ToString() ?? string.Empty);
+                    yield return new(methodBase, extendedModuleInfo, frame.ToString() ?? string.Empty);
                 }
                 foreach (var (methodBase, extendedModuleInfo) in GetTranspilers(patches))
                 {
-                    yield return (methodBase, extendedModuleInfo, frame.ToString() ?? string.Empty);
+                    yield return new(methodBase, extendedModuleInfo, frame.ToString() ?? string.Empty);
                 }
 
                 var moduleInfo = GetModuleInfoIfMod(method);
                 if (moduleInfo is not null)
-                    yield return (method, moduleInfo, frame.ToString() ?? string.Empty);
+                    yield return new(method, moduleInfo, frame.ToString() ?? string.Empty);
             }
         }
     }
