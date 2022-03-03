@@ -31,11 +31,6 @@ namespace Bannerlord.ButterLib.Implementation.Logging
             OriginalDebugManager.ShowWarning(message);
         }
 
-        public void ShowMessageBox(string lpText, string lpCaption, uint uType)
-        {
-            OriginalDebugManager.ShowMessageBox(lpText, lpCaption, uType);
-        }
-
         public void DisplayDebugMessage(string message)
         {
             _debugManagerLogger.LogDebug("{message}", message);
@@ -109,6 +104,12 @@ namespace Bannerlord.ButterLib.Implementation.Logging
 
         public Vec3 GetDebugVector() => OriginalDebugManager.GetDebugVector();
 
+#if e152 || e153 || e154 || e155 || e156 || e157 || e158 || e159 || e1510 || e160 || e161 || e162 || e163 || e164 || e165 || e170 || e171
+        public void ShowMessageBox(string lpText, string lpCaption, uint uType)
+        {
+            OriginalDebugManager.ShowMessageBox(lpText, lpCaption, uType);
+        }
+#endif
 #if e164 || e165 || e170 || e171
         public void ShowError(string message)
         {
