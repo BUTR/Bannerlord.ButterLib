@@ -133,7 +133,7 @@ namespace Bannerlord.ButterLib.Implementation.Tests
             AccessTools.Field(typeof(Hero), "Name").SetValue(hero, new TextObject("TestHero"));
 #elif e1510 || e160 || e161 || e162 || e163 || e164 || e165 
             AccessTools.Property(typeof(Hero), "Name").SetValue(hero, new TextObject("TestHero"));
-#elif e170
+#elif e170 || e171
             AccessTools.Field(typeof(Hero), "_name").SetValue(hero, new TextObject("TestHero"));
 #else
 #error ConstGameVersionWithPrefix is not handled!
