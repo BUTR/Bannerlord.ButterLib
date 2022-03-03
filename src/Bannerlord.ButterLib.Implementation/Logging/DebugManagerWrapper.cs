@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 
 using System;
 using System.Runtime.CompilerServices;
@@ -19,11 +18,11 @@ namespace Bannerlord.ButterLib.Implementation.Logging
         private readonly ILogger _logger;
         private readonly ILogger _debugManagerLogger;
 
-        public DebugManagerWrapper(IDebugManager debugManager, IServiceProvider serviceProvider)
+        public DebugManagerWrapper(IDebugManager debugManager, ILoggerFactory loggerFactory)
         {
-            _logger = serviceProvider.GetRequiredService<ILogger<DebugManagerWrapper>>();
+            _logger = loggerFactory.CreateLogger(typeof(DebugManagerWrapper));
             OriginalDebugManager = debugManager;
-            _debugManagerLogger = (ILogger) serviceProvider.GetRequiredService(typeof(ILogger<>).MakeGenericType(debugManager.GetType()));
+            _debugManagerLogger =  loggerFactory.CreateLogger(debugManager.GetType());
         }
 
         public void ShowWarning(string message)
@@ -32,7 +31,10 @@ namespace Bannerlord.ButterLib.Implementation.Logging
             OriginalDebugManager.ShowWarning(message);
         }
 
-        public void ShowMessageBox(string lpText, string lpCaption, uint uType) { }
+        public void ShowMessageBox(string lpText, string lpCaption, uint uType)
+        {
+            OriginalDebugManager.ShowMessageBox(lpText, lpCaption, uType);
+        }
 
         public void DisplayDebugMessage(string message)
         {
@@ -48,7 +50,7 @@ namespace Bannerlord.ButterLib.Implementation.Logging
         }
         public void PrintError(string error, string stackTrace, ulong debugFilter = 17592186044416)
         {
-            _debugManagerLogger.LogError("{error}{NewLine}{stackTrace}", error, stackTrace);
+            _debugManagerLogger.LogError("{error}{nl}{stackTrace}", error, Environment.NewLine, stackTrace);
             OriginalDebugManager.PrintError(error, stackTrace, debugFilter);
         }
         public void PrintWarning(string warning, ulong debugFilter = 17592186044416)
@@ -59,33 +61,37 @@ namespace Bannerlord.ButterLib.Implementation.Logging
 
         public void SetCrashReportCustomString(string customString)
         {
-            _debugManagerLogger.LogCritical("Crash Report: {customString}}", customString);
+            _debugManagerLogger.LogCritical("Crash Report: {customString}", customString);
             OriginalDebugManager.SetCrashReportCustomString(customString);
         }
         public void SetCrashReportCustomStack(string customStack)
         {
-            _debugManagerLogger.LogCritical("Crash Report StackTrace: {customStack}}", customStack);
+            _debugManagerLogger.LogCritical("Crash Report StackTrace: {customStack}", customStack);
             OriginalDebugManager.SetCrashReportCustomStack(customStack);
         }
 
         public void WriteDebugLineOnScreen(string message)
         {
-            _debugManagerLogger.LogDebug("{message}}", message);
+            _debugManagerLogger.LogDebug("{message}", message);
             OriginalDebugManager.WriteDebugLineOnScreen(message);
         }
 
         public void Assert(bool condition, string message, [CallerFilePath] string callerFile = "", [CallerMemberName] string callerMethod = "", [CallerLineNumber] int callerLine = 0)
         {
             if (!condition)
-                _debugManagerLogger.LogError("Assert Failed!: {message}; CallerFilePath: {callerFile}; CallerMemberName: {callerMethod}; CallerLineNumber: {callerLine}", message, callerFile, callerMethod, callerLine);
+                _debugManagerLogger.LogDebug("Assert Failed!: {message}; CallerFilePath: {callerFile}; CallerMemberName: {callerMethod}; CallerLineNumber: {callerLine}", message, callerFile, callerMethod, callerLine);
+            // ReSharper disable ExplicitCallerInfoArgument
             OriginalDebugManager.Assert(condition, message, callerFile, callerMethod, callerLine);
+            // ReSharper restore ExplicitCallerInfoArgument
         }
 
         public void SilentAssert(bool condition, string message = "", bool getDump = false, [CallerFilePath] string callerFile = "", [CallerMemberName] string callerMethod = "", [CallerLineNumber] int callerLine = 0)
         {
             if (!condition)
-                _debugManagerLogger.LogError("Silent Assert Failed!: {message}; CallerFilePath: {callerFile}; CallerMemberName: {callerMethod}; CallerLineNumber: {callerLine}", message, callerFile, callerMethod, callerLine);
+                _debugManagerLogger.LogDebug("Silent Assert Failed!: {message}; CallerFilePath: {callerFile}; CallerMemberName: {callerMethod}; CallerLineNumber: {callerLine}", message, callerFile, callerMethod, callerLine);
+            // ReSharper disable ExplicitCallerInfoArgument
             OriginalDebugManager.SilentAssert(condition, message, getDump, callerFile, callerMethod, callerLine);
+            // ReSharper restore ExplicitCallerInfoArgument
         }
 
         public void RenderDebugLine(Vec3 position, Vec3 direction, uint color = 4294967295, bool depthCheck = false, float time = 0) =>
@@ -111,14 +117,13 @@ namespace Bannerlord.ButterLib.Implementation.Logging
         }
 #endif
 #if e165 || e170 || e171
-        public void BeginTelemetryScopeBaseLevel(TelemetryLevelMask levelMask, string scopeName) => OriginalDebugManager.BeginTelemetryScopeBaseLevel(levelMask, scopeName);
+        public void BeginTelemetryScopeBaseLevel(TelemetryLevelMask levelMask, string scopeName) =>
+            OriginalDebugManager.BeginTelemetryScopeBaseLevel(levelMask, scopeName);
         public void EndTelemetryScopeBaseLevel() => OriginalDebugManager.EndTelemetryScopeBaseLevel();
 #endif
 #if e170 || e171
-        public void RenderDebugText3D(Vec3 position, string text, uint color = uint.MaxValue, int screenPosOffsetX = 0, int screenPosOffsetY = 0, float time = 0)
-        {
-            throw new NotImplementedException();
-        }
+        public void RenderDebugText3D(Vec3 position, string text, uint color = uint.MaxValue, int screenPosOffsetX = 0, int screenPosOffsetY = 0, float time = 0) =>
+            OriginalDebugManager.RenderDebugText3D(position, text, color, screenPosOffsetX, screenPosOffsetY, time);
 #endif
     }
 }
