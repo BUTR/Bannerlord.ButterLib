@@ -15,7 +15,8 @@
 
   <!--Module Creation-->
   <PropertyGroup>
-    <ModuleName>Bannerlord.ButterLib</ModuleName>
+    <ModuleId>Bannerlord.ButterLib</ModuleId>
+    <ModuleName>ButterLib</ModuleName>
   </PropertyGroup>
   <!--Module Creation-->
 

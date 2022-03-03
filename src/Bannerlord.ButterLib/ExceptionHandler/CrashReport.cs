@@ -10,10 +10,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-
 namespace Bannerlord.ButterLib.ExceptionHandler
 {
-
     internal record InvolvedModule(MethodBase Method, ModuleInfoExtended ModuleInfo, string StackFrameDescription);
 
     internal class CrashReport
