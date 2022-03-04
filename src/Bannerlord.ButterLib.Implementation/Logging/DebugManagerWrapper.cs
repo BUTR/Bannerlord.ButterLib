@@ -22,7 +22,7 @@ namespace Bannerlord.ButterLib.Implementation.Logging
         {
             _logger = loggerFactory.CreateLogger(typeof(DebugManagerWrapper));
             OriginalDebugManager = debugManager;
-            _debugManagerLogger =  loggerFactory.CreateLogger(debugManager.GetType());
+            _debugManagerLogger = loggerFactory.CreateLogger(debugManager.GetType());
         }
 
         public void ShowWarning(string message)
