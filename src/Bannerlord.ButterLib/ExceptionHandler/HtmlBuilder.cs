@@ -2,16 +2,21 @@
 using Bannerlord.ButterLib.Common.Extensions;
 using Bannerlord.ButterLib.Common.Helpers;
 using Bannerlord.ButterLib.ExceptionHandler.WinForms;
+using Bannerlord.ButterLib.Logger;
 
 using HarmonyLib;
 
+using Microsoft.Extensions.DependencyInjection;
+
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
 
 using TWCommon = TaleWorlds.Library.Common;
 
@@ -33,7 +38,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
     <title>Bannerlord Crash Report</title>
     <meta charset='utf-8'>
     <game version='{ApplicationVersionHelper.GameVersionStr()}'>
-    <report id='{crashReport.Id}' version='2'>
+    <report id='{crashReport.Id}' version='3'>
     <style>
         .headers {{
             font-family: ""Consolas"", monospace;
@@ -157,14 +162,12 @@ namespace Bannerlord.ButterLib.ExceptionHandler
       {GetHarmonyPatchesListHtml(crashReport)}
       </div>
     </div>
-    <!--
     <div class='root-container'>
       <h2><a href='javascript:;' class='headers' onclick='showHideById(this, ""log-files"")'>+ Log Files</a></h2>
       <div id='log-files' class='headers-container'>
       {GetLogFilesListHtml(crashReport)}
       </div>
     </div>
-    -->
     <script>
       function showHideById(element, id) {{
           if (document.getElementById(id).style.display === 'block') {{
@@ -521,7 +524,86 @@ namespace Bannerlord.ButterLib.ExceptionHandler
 
         private static string GetLogFilesListHtml(CrashReport crashReport)
         {
-            return "";
+            var tresholdMinutes = 5;
+            var now = DateTimeOffset.Now;
+
+            var sb = new StringBuilder();
+            var sbSource = new StringBuilder();
+            sb.AppendLine("<ul>");
+            foreach (var logSource in ButterLibSubModule.Instance?.GetServiceProvider().GetRequiredService<IEnumerable<ILogSource>>() ?? Enumerable.Empty<ILogSource>())
+            {
+                sb.Append("<li>").Append("<a>").Append(logSource.Name).Append("</a></br>").Append("<ul>");
+
+                switch (logSource)
+                {
+                    case IFileLogSource(_, var path, var sinks) when File.Exists(path):
+                    {
+                        const string MutexNameSuffix = ".serilog";
+                        var mutexName = Path.GetFullPath(path).Replace(Path.DirectorySeparatorChar, ':') + MutexNameSuffix;
+                        var mutex = new Mutex(false, mutexName);
+
+                        foreach (var flushableFileSink in sinks)
+                            flushableFileSink.FlushToDisk();
+
+                        try
+                        {
+                            var timeout = TimeSpan.FromSeconds(2);
+                            if (!mutex.WaitOne(timeout))
+                                break;
+
+                            using var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                            var reader = new ReverseTextReader(stream, Encoding.UTF8);
+                            var skippedCheck = 0;
+                            while (reader.ReadLine() is { } line)
+                            {
+                                var idxStart = line.IndexOf('[');
+                                var idxEnd = idxStart != -1 ? line.IndexOf(']', idxStart) : -1;
+                                var dateStr = idxStart != -1 && idxEnd != -1 ? line.Substring(idxStart  + 1, idxEnd - 1) : string.Empty;
+                                var hasDate = DateTimeOffset.TryParse(dateStr, DateTimeFormatInfo.InvariantInfo, DateTimeStyles.RoundtripKind, out var date);
+                                if (idxStart == -1 || idxEnd == -1 || !hasDate)
+                                {
+                                    skippedCheck++;
+                                    if (skippedCheck > 25)
+                                    {
+                                        break;
+                                    }
+                                    sbSource.Append(line).AppendLine("<br/>");
+
+                                    continue;
+                                }
+                                skippedCheck = 0;
+
+                                if (date - now > TimeSpan.FromMinutes(tresholdMinutes))
+                                    break;
+
+                                sbSource.Append("<li>").Append(line).AppendLine("</li>");
+                                if (sbSource.Length * 2 > 256 * 1024)
+                                {
+                                    sb.Clear();
+                                    sbSource.Clear();
+                                    return "Logs are too big!";
+                                }
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            sbSource.Clear();
+                        }
+                        finally
+                        {
+                            mutex.ReleaseMutex();
+                        }
+
+                        break;
+                    }
+                }
+
+                sb.Append("<ul>").Append(sbSource).AppendLine("</ul>");
+                sb.AppendLine("</ul></li>");
+                sbSource.Clear();
+            }
+            sb.AppendLine("</ul>");
+            return sb.ToString();
         }
     }
 }
