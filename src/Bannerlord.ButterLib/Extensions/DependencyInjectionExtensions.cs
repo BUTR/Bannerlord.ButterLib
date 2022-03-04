@@ -1,9 +1,12 @@
 ﻿using Bannerlord.BUTR.Shared.Helpers;
+using Bannerlord.ButterLib.Logger;
 using Bannerlord.ButterLib.Options;
 using Bannerlord.ButterLib.SubSystems;
 
+using HarmonyLib;
+using HarmonyLib.BUTR.Extensions;
+
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -12,6 +15,7 @@ using Serilog.Core;
 using Serilog.Events;
 using Serilog.Extensions.Logging;
 using Serilog.Filters;
+using Serilog.Sinks.File;
 
 using System;
 using System.Collections.Generic;
@@ -30,6 +34,9 @@ namespace Bannerlord.ButterLib.Common.Extensions
 {
     public static class DependencyInjectionExtensions
     {
+        private static readonly AccessTools.FieldRef<LoggerConfiguration, List<ILogEventSink>>? _getSinks =
+            AccessTools2.FieldRefAccess<LoggerConfiguration, List<ILogEventSink>>("_logEventSinks");
+
         /// <summary>
         /// For Stage 3.
         /// </summary>
@@ -52,7 +59,7 @@ namespace Bannerlord.ButterLib.Common.Extensions
         public static IServiceProvider? GetTempServiceProvider(this MBSubModuleBase _) => ButterLibSubModule.Services?.BuildServiceProvider();
 
         private static readonly string ModLogsPath = Path.Combine(FSIOHelper.GetConfigPath(), "ModLogs");
-        private static readonly string OutputTemplate = "[{Timestamp:HH:mm:ss.fff}] [{SourceContext}] [{Level:u3}]: {Message:lj}{NewLine}{Exception}";
+        private static readonly string OutputTemplate = "[{Timestamp:o}] [{SourceContext}] [{Level:u3}]: {Message:lj}{NewLine}{Exception}";
 
         internal static IServiceCollection? AddDefaultSerilogLogger(this MBSubModuleBase subModule)
         {
@@ -61,17 +68,22 @@ namespace Bannerlord.ButterLib.Common.Extensions
             var serviceProvider = services.BuildServiceProvider();
             var butterLibOptions = serviceProvider.GetService<IOptions<ButterLibOptions>>();
 
-            var logger = new LoggerConfiguration()
+            var filePath = Path.Combine(ModLogsPath, "default.log");
+            var builder = new LoggerConfiguration()
                 .MinimumLevel.Is((LogEventLevel) butterLibOptions.Value.MinLogLevel)
                 .Enrich.FromLogContext()
                 .WriteTo.File(
                     outputTemplate: OutputTemplate,
-                    path: Path.Combine(ModLogsPath, "default.log"),
+                    path: filePath,
                     rollingInterval: RollingInterval.Day,
-                    retainedFileCountLimit: 7)
-                .CreateLogger();
+                    retainedFileCountLimit: 7,
+                    shared: true);
 
+            var sinks = _getSinks(builder).OfType<IFlushableFileSink>().ToArray();
 
+            var logger = builder.CreateLogger();
+
+            services.AddSingleton<ILogSource>(new RollingFileLogSource(filePath, sinks));
             services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(logger, dispose: true));
             return services;
         }
@@ -92,15 +104,17 @@ namespace Bannerlord.ButterLib.Common.Extensions
             if (services is null)
                 throw new Exception("Past Configuration stage.");
 
+            var filePath = Path.Combine(ModLogsPath, filename);
             var builder = new LoggerConfiguration()
                 .Enrich.FromLogContext()
                 .Filter.ByIncludingOnly(FromSources(filterList))
                 .WriteTo.File(
                     outputTemplate: OutputTemplate,
-                    path: Path.Combine(ModLogsPath, filename),
+                    path: filePath,
                     rollingInterval: RollingInterval.Day,
                     retainedFileCountLimit: 7);
             configure?.Invoke(builder);
+
             var logger = builder.CreateLogger();
 
             services.AddSingleton<ILoggerProvider, SerilogLoggerProvider>(_ => new SerilogLoggerProvider(logger, true));
@@ -129,7 +143,7 @@ namespace Bannerlord.ButterLib.Common.Extensions
         {
             var instance = new TImplementation();
             services.AddSingleton<TImplementation>(sp => instance);
-            services.TryAddEnumerable(ServiceDescriptor.Singleton<ISubSystem, TImplementation>(sp => sp.GetRequiredService<TImplementation>()));
+            services.AddSingleton<ISubSystem>(sp => sp.GetRequiredService<TImplementation>());
             return services;
         }
 
