@@ -1,7 +1,7 @@
 ﻿using Bannerlord.ButterLib.DistanceMatrix;
 
 using TaleWorlds.CampaignSystem;
-
+using TaleWorlds.CampaignSystem.Settlements;
 
 namespace Bannerlord.ButterLib.Extensions
 {

@@ -2,6 +2,7 @@
 
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.Actions;
+using TaleWorlds.CampaignSystem.Settlements;
 
 namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
 {

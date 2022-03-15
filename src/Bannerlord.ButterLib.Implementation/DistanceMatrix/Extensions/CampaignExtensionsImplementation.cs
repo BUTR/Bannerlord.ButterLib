@@ -3,6 +3,7 @@ using Bannerlord.ButterLib.Extensions;
 using Bannerlord.ButterLib.Implementation.DistanceMatrix;
 
 using TaleWorlds.CampaignSystem;
+using TaleWorlds.CampaignSystem.Settlements;
 
 namespace Bannerlord.ButterLib.Implementation.Common.Extensions
 {

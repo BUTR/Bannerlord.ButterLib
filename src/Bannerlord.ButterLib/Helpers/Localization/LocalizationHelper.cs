@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 
 using TaleWorlds.CampaignSystem;
+using TaleWorlds.CampaignSystem.Settlements;
 using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
 
