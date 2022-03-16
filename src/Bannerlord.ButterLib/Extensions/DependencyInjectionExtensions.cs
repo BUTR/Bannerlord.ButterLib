@@ -58,8 +58,8 @@ namespace Bannerlord.ButterLib.Common.Extensions
         /// </summary>
         public static IServiceProvider? GetTempServiceProvider(this MBSubModuleBase _) => ButterLibSubModule.Services?.BuildServiceProvider();
 
-        private static readonly string ModLogsPath = Path.Combine(FSIOHelper.GetConfigPath(), "ModLogs");
-        private static readonly string OutputTemplate = "[{Timestamp:HH:mm:ss.fff}] [{SourceContext}] [{Level:u3}]: {Message:lj}{NewLine}{Exception}";
+        private static readonly string ModLogsPath = Path.Combine(FSIOHelper.GetConfigPath()!, "ModLogs");
+        private static readonly string OutputTemplate = "[{Timestamp:o}] [{SourceContext}] [{Level:u3}]: {Message:lj}{NewLine}{Exception}";
 
         internal static IServiceCollection? AddDefaultSerilogLogger(this MBSubModuleBase subModule)
         {
@@ -79,6 +79,7 @@ namespace Bannerlord.ButterLib.Common.Extensions
                     retainedFileCountLimit: 7,
                     shared: true);
 
+            var sinks = _getSinks!(builder).OfType<IFlushableFileSink>().ToArray();
 
             var logger = builder.CreateLogger();
 

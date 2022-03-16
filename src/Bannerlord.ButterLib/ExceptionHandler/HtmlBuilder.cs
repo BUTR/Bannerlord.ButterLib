@@ -2,6 +2,8 @@
 using Bannerlord.BUTR.Shared.Helpers;
 using Bannerlord.ButterLib.Common.Extensions;
 using Bannerlord.ButterLib.ExceptionHandler.WinForms;
+using Bannerlord.ButterLib.Logger;
+using Bannerlord.ModuleManager;
 
 using HarmonyLib;
 
@@ -549,7 +551,65 @@ namespace Bannerlord.ButterLib.ExceptionHandler
 
         private static string GetLogFilesListHtml(CrashReport crashReport)
         {
-            return "";
+            var now = DateTimeOffset.Now;
+
+            var sb = new StringBuilder();
+
+            sb.AppendLine("<ul>");
+            foreach (var logSource in ButterLibSubModule.Instance?.GetServiceProvider().GetRequiredService<IEnumerable<ILogSource>>() ?? Enumerable.Empty<ILogSource>())
+            {
+                sb.Append("<li>").Append("<a>").Append(logSource.Name).Append("</a></br>").Append("<ul>");
+
+                var sbSource = new StringBuilder();
+                switch (logSource)
+                {
+                    case IFileLogSource(_, var path, var sinks) when File.Exists(path):
+                    {
+                        const string MutexNameSuffix = ".serilog";
+                        var mutexName = Path.GetFullPath(path).Replace(Path.DirectorySeparatorChar, ':') + MutexNameSuffix;
+                        var mutex = new Mutex(false, mutexName);
+
+                        foreach (var flushableFileSink in sinks)
+                            flushableFileSink.FlushToDisk();
+
+                        try
+                        {
+                            var timeout = TimeSpan.FromSeconds(2);
+                            if (!mutex.WaitOne(timeout))
+                                break;
+
+                            using var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                            var reader = new ReverseTextReader(stream);
+                            while (reader.ReadLine() is { } line)
+                            {
+                                var idxStart = line.IndexOf('[') + 1;
+                                var idxEnd = line.IndexOf(']') - 1;
+                                if (!DateTimeOffset.TryParse(line.Substring(idxStart, idxEnd), DateTimeFormatInfo.InvariantInfo, DateTimeStyles.RoundtripKind, out var date))
+                                    break;
+                                if (date - now > TimeSpan.FromMinutes(60))
+                                    break;
+
+                                sbSource.Append("<li>").Append(line).AppendLine("</li>");
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            sbSource.Clear();
+                        }
+                        finally
+                        {
+                            mutex.ReleaseMutex();
+                        }
+
+                        break;
+                    }
+                }
+
+                sb.Append("<ul>").Append(sbSource).AppendLine("</ul>");
+                sb.AppendLine("</ul></li>");
+            }
+            sb.AppendLine("</ul>");
+            return sb.ToString();
         }
     }
 }
