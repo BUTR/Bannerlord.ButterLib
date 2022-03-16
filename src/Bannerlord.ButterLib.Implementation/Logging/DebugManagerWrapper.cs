@@ -113,11 +113,7 @@ namespace Bannerlord.ButterLib.Implementation.Logging
 
         public Vec3 GetDebugVector() => OriginalDebugManager.GetDebugVector();
 
-        public void ShowMessageBox(string lpText, string lpCaption, uint uType)
-        {
-            OriginalDebugManager.ShowMessageBox(lpText, lpCaption, uType);
-        }
-
+#if e164 || e165 || e170 || e171
         public void ShowError(string message)
         {
             _debugManagerLogger.LogError("{message}", message);
