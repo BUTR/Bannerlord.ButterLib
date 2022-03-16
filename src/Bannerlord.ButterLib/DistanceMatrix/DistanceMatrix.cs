@@ -70,7 +70,7 @@ namespace Bannerlord.ButterLib.DistanceMatrix
         /// or <see cref="float.NaN" /> if distance could not be calculated (usually when clan has no fiefs).
         /// </returns>
         /// <remarks>Calculation is based on the average distance between clans fiefs weighted by the fief type.</remarks>
-        public static float? CalculateDistanceBetweenClans(Clan clan1, Clan clan2, IEnumerable<(ulong Owners, float Distance, float Weight)> settlementOwnersPairedList)
+        public static float? CalculateDistanceBetweenClans(Clan clan1, Clan clan2, IEnumerable<DistanceMatrixResult> settlementOwnersPairedList)
             => StaticInstance?.CalculateDistanceBetweenClans(clan1, clan2, settlementOwnersPairedList);
 
         /// <summary>Calculates distance between two given <see cref="Kingdom"/> objects.</summary>
@@ -99,7 +99,7 @@ namespace Bannerlord.ButterLib.DistanceMatrix
         /// <see cref="CalculateDistanceBetweenClans"/>
         /// method with required list argument.
         /// </remarks>
-        public static List<(ulong Owners, float Distance, float Weight)>? GetSettlementOwnersPairedList(DistanceMatrix<Settlement> settlementDistanceMatrix)
+        public static List<DistanceMatrixResult>? GetSettlementOwnersPairedList(DistanceMatrix<Settlement> settlementDistanceMatrix)
             => StaticInstance?.GetSettlementOwnersPairedList(settlementDistanceMatrix);
     }
 }

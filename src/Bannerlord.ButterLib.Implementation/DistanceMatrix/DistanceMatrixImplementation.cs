@@ -125,7 +125,7 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
                     .Where(tuple => tuple.X.Id < tuple.Y.Id)
                     .ToDictionary(
                         key => ElegantPairHelper.Pair(key.X.Id, key.Y.Id),
-                        value => CalculateDistanceBetweenClans(value.X, value.Y, lst ?? Enumerable.Empty<(ulong, float, float)>()).GetValueOrDefault());
+                        value => CalculateDistanceBetweenClans(value.X, value.Y, lst ?? Enumerable.Empty<DistanceMatrixResult>()).GetValueOrDefault());
             }
 
             if (typeof(Kingdom).IsAssignableFrom(typeof(T)))

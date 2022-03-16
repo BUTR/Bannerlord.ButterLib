@@ -7,10 +7,10 @@ namespace System.Diagnostics.Logger
     {
         private record ParseResult
         {
-            public string Process { get; init; }
-            public TraceEventType Level { get; init; }
-            public int EventId { get; init; }
-            public string Message { get; init; }
+            public string Process { get; init; } = default!;
+            public TraceEventType Level { get; init; } = default!;
+            public int EventId { get; init; } = default!;
+            public string Message { get; init; } = default!;
         }
 
         private static ParseResult? Parse(ReadOnlySpan<char> str)

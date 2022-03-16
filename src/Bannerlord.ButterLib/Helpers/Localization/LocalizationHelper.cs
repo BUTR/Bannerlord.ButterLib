@@ -224,7 +224,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
             {
                 return GetEasternSlavicPluralFormInternal((int) Math.Floor(number));
             }
-            return number != 1 ? PluralForm.Plural : PluralForm.Singular;
+            return number > 1f ? PluralForm.Plural : PluralForm.Singular;
         }
 
         private static Dictionary<string, TextObject?> GetPluralFormAttributes(PluralForm pluralForm) =>
@@ -291,14 +291,14 @@ namespace Bannerlord.ButterLib.Common.Helpers
             }
         }
 
-        private static Dictionary<string, TextObject?> GetListAttributes(List<string> valuesList, string separator = ", ", bool useDistinctValues = true)
+        private static Dictionary<string, TextObject?> GetListAttributes(IEnumerable<string> valuesList, string separator = ", ", bool useDistinctValues = true)
         {
-            var localValues = useDistinctValues ? valuesList.Distinct() : valuesList;
+            var localValues = (useDistinctValues ? valuesList.Distinct() : valuesList).ToList();
             return localValues.Any()
                 ? (new()
                 {
-                    [LIST_HAS_MULTIPLE_ITEMS_TAG] = TextObjectHelper.Create((localValues.Count() != 1) ? 1 : 0),
-                    [LIST_START_TAG] = TextObjectHelper.Create(string.Join(separator, localValues.Take(localValues.Count() - 1))),
+                    [LIST_HAS_MULTIPLE_ITEMS_TAG] = TextObjectHelper.Create((localValues.Count != 1) ? 1 : 0),
+                    [LIST_START_TAG] = TextObjectHelper.Create(string.Join(separator, localValues.Take(localValues.Count - 1))),
                     [LIST_END_TAG] = TextObjectHelper.Create(localValues.Last())
                 })
                 : (new()

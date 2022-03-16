@@ -1,13 +1,12 @@
 ﻿using Bannerlord.ButterLib.Extensions;
 
-using TaleWorlds.CampaignSystem;
-
+// ReSharper disable once CheckNamespace
 namespace Bannerlord.ButterLib.Implementation.Common.Extensions
 {
     /// <inheritdoc/>
     internal sealed partial class CampaignExtensionsImplementation : ICampaignExtensions
     {
         /// <inheritdoc/>
-        public string? GetCampaignId(Campaign campaign) => Campaign.Current.UniqueGameId;
+        public string? GetCampaignId(TaleWorlds.CampaignSystem.Campaign campaign) => TaleWorlds.CampaignSystem.Campaign.Current.UniqueGameId;
     }
 }

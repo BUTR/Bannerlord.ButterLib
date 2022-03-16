@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using TaleWorlds.CampaignSystem; //used for the documentation refs
+using TaleWorlds.CampaignSystem;
 using TaleWorlds.ObjectSystem;
 
 namespace Bannerlord.ButterLib.DistanceMatrix
@@ -12,7 +12,7 @@ namespace Bannerlord.ButterLib.DistanceMatrix
     /// </summary>
     /// <typeparam name="T">The type of objects for which the distance matrix should be calculated.</typeparam>
     /// <remarks><see cref="T:Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix`1" /> implements built-in calculation for the <see cref="Hero"/>,
-    /// <see cref="Settlement"/>, <see cref="Clan"/> and <see cref="Kingdom"/> objects.
+    /// <see cref="TaleWorlds.CampaignSystem.Settlements.Settlement"/>, <see cref="Clan"/> and <see cref="Kingdom"/> objects.
     /// For any other <see cref="MBObjectBase"/> subtypes custom EntityListGetter and DistanceCalculator methods
     /// should be provided using special constructor <see cref="DistanceMatrix{T}.Create(Func{IEnumerable{T}}, Func{T, T, float})"/> .
     /// </remarks>

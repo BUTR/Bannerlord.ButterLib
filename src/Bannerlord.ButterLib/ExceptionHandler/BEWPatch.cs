@@ -1,5 +1,4 @@
-﻿using Bannerlord.BUTR.Shared.Extensions;
-using Bannerlord.BUTRLoader;
+﻿using Bannerlord.BUTRLoader;
 using Bannerlord.ButterLib.Common.Extensions;
 
 using HarmonyLib;
@@ -16,8 +15,6 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
 
-using TaleWorlds.MountAndBlade;
-
 using Module = TaleWorlds.MountAndBlade.Module;
 
 namespace Bannerlord.ButterLib.ExceptionHandler
@@ -27,7 +24,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
     // TaleWorlds.Engine.ScriptComponentBehaviour:OnTick                      -> Called by TaleWorlds.Engine.ManagedScriptHolder:TickComponents
     // TaleWorlds.MountAndBlade.Module:OnApplicationTick                      -> Replicated
     // TaleWorlds.MountAndBlade.View.Missions.MissionView:OnMissionScreenTick -> Called by TaleWorlds.MountAndBlade.View.Screen.MissionScreen:OnFrameTick
-    // TaleWorlds.Engine.Screens.ScreenManager:Tick                           -> Replicated
+    // TaleWorlds.ScreenSystem.ScreenManager:Tick                             -> Replicated
     // TaleWorlds.MountAndBlade.Mission:Tick                                  -> Replicated
     // TaleWorlds.MountAndBlade.MissionBehaviour:OnMissionTick                -> Called by TaleWorlds.MountAndBlade.Mission:Tick
 
@@ -43,7 +40,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
 
         private static readonly MethodInfo? ManagedApplicationTickMethod = AccessTools2.Method("TaleWorlds.DotNet.Managed:ApplicationTick");
         private static readonly MethodInfo? ModuleOnApplicationTickMethod = AccessTools2.Method("TaleWorlds.MountAndBlade.Module:OnApplicationTick");
-        private static readonly MethodInfo? ScreenManagerTickMethod = AccessTools2.Method("TaleWorlds.Engine.Screens.ScreenManager:Tick");
+        private static readonly MethodInfo? ScreenManagerTickMethod = AccessTools2.Method("TaleWorlds.ScreenSystem.ScreenManager:Tick");
         private static readonly MethodInfo? ManagedScriptHolderTickComponentsMethod = AccessTools2.Method("TaleWorlds.Engine.ManagedScriptHolder:TickComponents");
         private static readonly MethodInfo? MissionTickMethod = AccessTools2.Method("TaleWorlds.MountAndBlade.Mission:Tick");
         public static readonly MethodInfo? FinalizerMethod = AccessTools2.Method(typeof(BEWPatch), nameof(Finalizer));

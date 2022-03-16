@@ -14,6 +14,7 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
 
         public void Keep(MBObjectBase mbObject)
         {
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
             if (mbObject is null) return;
 
             _references[mbObject.Id] = mbObject;

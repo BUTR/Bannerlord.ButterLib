@@ -6,7 +6,7 @@ using System;
 
 namespace Bannerlord.ButterLib.Tests.DelayedSubModule
 {
-    public static class TestHelper
+    internal static class TestHelper
     {
         public static readonly Type? OldModuleInfoType = Type.GetType("TaleWorlds.Library.ModuleInfo, TaleWorlds.Library", false);
         public static readonly Type? NewModuleInfoType = Type.GetType("TaleWorlds.ModuleManager.ModuleInfo, TaleWorlds.ModuleManager", false);

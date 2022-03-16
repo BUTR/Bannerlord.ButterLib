@@ -41,7 +41,7 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
             var provider = ButterLibSubModule.Instance?.GetServiceProvider() ?? ButterLibSubModule.Instance?.GetTempServiceProvider();
             _log = provider?.GetRequiredService<ILogger<DefinitionContextPatch>>() ?? NullLogger<DefinitionContextPatch>.Instance;
 
-            return Patches.Select(p => p.IsReady).All(ready => ready) && Patches.All(p => p.Enable(harmony));
+            return Patches.Select(p => p.IsReady).All(ready => ready) && Patches.All(p => p.EnablePatch(harmony));
         }
 
         internal static bool Disable(Harmony harmony)
@@ -62,25 +62,17 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
 
         private static MethodInfo? TargetTypeMethod(string name) => AccessTools.Method(TargetType, name);
 
-        private sealed class ConstructContainerDefinitionPrefixPatch : PrefixPatch
-        {
-            internal ConstructContainerDefinitionPrefixPatch()
-                : base(nameof(ConstructContainerDefinitionPrefix), TargetTypeMethod("ConstructContainerDefinition")) { }
-
-            internal override bool IsReady => base.IsReady & ThisNotNull(IsContainer, $"{nameof(IsContainer)} delegate");
-        }
-
         private static readonly Patch[] Patches = new Patch[]
         {
             new PrefixPatch(nameof(AddBasicTypeDefinitionPrefix),     TargetTypeMethod("AddBasicTypeDefinition")),
             new PrefixPatch(nameof(AddClassDefinitionPrefix),         TargetTypeMethod("AddClassDefinition")),
-            new PrefixPatch(nameof(AddStructDefinitionPrefix),        TargetTypeMethod("AddStructDefinition")),
-            new PrefixPatch(nameof(AddInterfaceDefinitionPrefix),     TargetTypeMethod("AddInterfaceDefinition")),
+            new PrefixPatch(nameof(AddContainerDefinitionPrefix),     TargetTypeMethod("AddContainerDefinition")),
             new PrefixPatch(nameof(AddEnumDefinitionPrefix),          TargetTypeMethod("AddEnumDefinition")),
-            new PrefixPatch(nameof(AddRootClassDefinitionPrefix),     TargetTypeMethod("AddRootClassDefinition")),
             new PrefixPatch(nameof(AddGenericClassDefinitionPrefix),  TargetTypeMethod("AddGenericClassDefinition")),
             new PrefixPatch(nameof(AddGenericStructDefinitionPrefix), TargetTypeMethod("AddGenericStructDefinition")),
-            new PrefixPatch(nameof(AddContainerDefinitionPrefix),     TargetTypeMethod("AddContainerDefinition")),
+            new PrefixPatch(nameof(AddInterfaceDefinitionPrefix),     TargetTypeMethod("AddInterfaceDefinition")),
+            new PrefixPatch(nameof(AddRootClassDefinitionPrefix),     TargetTypeMethod("AddRootClassDefinition")),
+            new PrefixPatch(nameof(AddStructDefinitionPrefix),        TargetTypeMethod("AddStructDefinition")),
             new ConstructContainerDefinitionPrefixPatch(),
         };
 
@@ -150,35 +142,6 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
 
         // INSTRUMENTATION
 
-        private abstract class Patch
-        {
-            internal readonly string PatchMethodName;
-            internal readonly MethodInfo? PatchMethod;
-            internal readonly MethodInfo? TargetMethod;
-
-            internal Patch(string patchMethodName, MethodInfo? targetMethod)
-            {
-                PatchMethodName = patchMethodName;
-                PatchMethod = ResolvePatchMethod();
-                TargetMethod = targetMethod;
-            }
-
-            internal abstract bool Enable(Harmony harmony);
-
-            internal virtual bool IsReady => ThisNotNull(PatchMethod, nameof(PatchMethod)) & ThisNotNull(TargetMethod, nameof(TargetMethod));
-
-            protected virtual MethodInfo ResolvePatchMethod() => AccessTools.Method(GetType().DeclaringType, PatchMethodName);
-
-            protected bool ThisNotNull(object? obj, string objName) => NotNull(obj, objName, $"Patch {PatchMethodName}: ");
-        }
-
-        private class PrefixPatch : Patch
-        {
-            internal PrefixPatch(string patchMethodName, MethodInfo? targetMethod) : base(patchMethodName, targetMethod) { }
-
-            internal override bool Enable(Harmony harmony) => harmony.Patch(TargetMethod, prefix: new HarmonyMethod(PatchMethod)) is not null;
-        }
-
         private static bool NotNull<T>(T obj, string name, string? errPrefix = null) where T : class?
         {
             if (obj is null)
@@ -189,6 +152,43 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
             }
 
             return true;
+        }
+
+        private abstract class Patch
+        {
+            private readonly string PatchMethodName;
+            internal readonly MethodInfo? PatchMethod;
+            internal readonly MethodInfo? TargetMethod;
+
+            protected Patch(string patchMethodName, MethodInfo? targetMethod)
+            {
+                PatchMethodName = patchMethodName;
+                PatchMethod = ResolvePatchMethod();
+                TargetMethod = targetMethod;
+            }
+
+            internal abstract bool EnablePatch(Harmony harmony);
+
+            internal virtual bool IsReady => ThisNotNull(PatchMethod, nameof(PatchMethod)) & ThisNotNull(TargetMethod, nameof(TargetMethod));
+
+            private MethodInfo ResolvePatchMethod() => AccessTools.Method(GetType().DeclaringType, PatchMethodName);
+
+            protected bool ThisNotNull(object? obj, string objName) => NotNull(obj, objName, $"Patch {PatchMethodName}: ");
+        }
+
+        private sealed class ConstructContainerDefinitionPrefixPatch : PrefixPatch
+        {
+            internal ConstructContainerDefinitionPrefixPatch()
+                : base(nameof(ConstructContainerDefinitionPrefix), TargetTypeMethod("ConstructContainerDefinition")) { }
+
+            internal override bool IsReady => base.IsReady & ThisNotNull(IsContainer, $"{nameof(IsContainer)} delegate");
+        }
+
+        private class PrefixPatch : Patch
+        {
+            internal PrefixPatch(string patchMethodName, MethodInfo? targetMethod) : base(patchMethodName, targetMethod) { }
+
+            internal override bool EnablePatch(Harmony harmony) => harmony.Patch(TargetMethod, prefix: new HarmonyMethod(PatchMethod)) is not null;
         }
     }
 }

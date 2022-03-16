@@ -54,6 +54,7 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
         private static readonly MethodInfo? TargetMethod = AccessTools.Method(TargetType, "IsContainer", TargetMethodParams);
         private static readonly MethodInfo? PatchMethod = AccessTools.Method(typeof(TypeExtensionsPatch), nameof(IsContainerPrefix));
 
+        // ReSharper disable once RedundantAssignment
         private static bool IsContainerPrefix(Type type, out ContainerType containerType, ref bool __result)
         {
             containerType = ContainerType.None;

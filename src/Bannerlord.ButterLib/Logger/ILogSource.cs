@@ -9,7 +9,6 @@ namespace Bannerlord.ButterLib.Logger
 
     internal interface IFileLogSource : ILogSource
     {
-        string Name { get; }
         string Path { get; }
         IFlushableFileSink[] Sinks { get; }
 

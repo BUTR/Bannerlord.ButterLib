@@ -2,11 +2,11 @@
 
 namespace Bannerlord.ButterLib.ExceptionHandler
 {
-    public class ExceptionReporter
+    public static class ExceptionReporter
     {
-        public void Show(Exception exception)
+        public static void Show(Exception exception)
         {
-            if (BEWPatch.SuppressedExceptions.Contains((BEWPatch.ExceptionIdentifier.FromException(exception))))
+            if (BEWPatch.SuppressedExceptions.Contains(BEWPatch.ExceptionIdentifier.FromException(exception)))
             {
                 BEWPatch.SuppressedExceptions.Remove(BEWPatch.ExceptionIdentifier.FromException(exception));
                 return;

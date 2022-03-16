@@ -11,7 +11,7 @@ using System.Text;
 
 namespace Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended
 {
-    class MBSubModuleBaseExSubSystem : ISubSystem
+    internal class MBSubModuleBaseExSubSystem : ISubSystem
     {
         public static MBSubModuleBaseExSubSystem? Instance { get; private set; }
         public string Id => "MBSubModuleBase extended";
@@ -47,19 +47,19 @@ namespace Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended
 
         internal static void LogNoHooksIssue(ILogger logger, int originalCallIndex, int finallyIndex, List<CodeInstruction> codes, MethodBase currentMethod)
         {
-            StringBuilder issueInfo = new("Indexes: ");
+            var issueInfo = new StringBuilder("Indexes: ");
             issueInfo.Append($"\n\toriginalCallIndex = {originalCallIndex}.\n\tfinallyIndex={finallyIndex}.");
             issueInfo.Append($"\nIL:");
-            for (int i = 0; i < codes.Count; ++i)
+            for (var i = 0; i < codes.Count; ++i)
             {
                 issueInfo.Append($"\n\t{i:D4}:\t{codes[i]}");
             }
             // get info about other transpilers on OriginalMethod
-            HarmonyLib.Patches patches = Harmony.GetPatchInfo(currentMethod);
+            var patches = Harmony.GetPatchInfo(currentMethod);
             if (patches != null)
             {
                 issueInfo.Append($"\nOther transpilers:");
-                foreach (Patch patch in patches.Transpilers)
+                foreach (var patch in patches.Transpilers)
                 {
                     issueInfo.Append(patch.GetDebugString());
                 }

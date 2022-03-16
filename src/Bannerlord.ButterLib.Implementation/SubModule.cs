@@ -114,11 +114,6 @@ namespace Bannerlord.ButterLib.Implementation
                     }
                     subSystem.GameInitialized = true;
                 }
-
-#if e143 || e150 || e151 || e152 || e153
-                if (game.GameType is StoryMode.CampaignStoryMode)
-                    gameStarter.AddBehavior(new CampaignIdentifierBehavior()); // Requires StoryMode
-#endif
             }
 
             Logger.LogTrace("ButterLib.Implementation: OnGameStart: Done");

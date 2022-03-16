@@ -61,8 +61,8 @@ namespace Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended.Patches
             try
             {
                 int screenAsRootEventIndex = -1, finallyIndex = -1;
-                List<CodeInstruction> codes = new(instructions);
-                for (int i = 0; i < codes.Count; ++i)
+                var codes = new List<CodeInstruction>(instructions);
+                for (var i = 0; i < codes.Count; ++i)
                 {
                     if (screenAsRootEventIndex < 0 && codes[i].Calls(miMBSubModuleBaseScreenAsRootEvent))
                     {

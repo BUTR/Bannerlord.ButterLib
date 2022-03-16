@@ -11,7 +11,7 @@ namespace Bannerlord.ButterLib.Logger
     /// </summary>
     /// <remarks>This class uses file seeking to read a text file of any size in reverse order.  This
     /// is useful for needs such as reading a log file newest-entries first.</remarks>
-    public sealed class ReverseTextReader : IEnumerable<string>
+    internal sealed class ReverseTextReader : IEnumerable<string>
     {
         private const int BufferSize = 16384;   // The number of bytes read from the uderlying stream.
         private readonly Stream _stream;        // Stores the stream feeding data into this reader
@@ -119,9 +119,8 @@ namespace Bannerlord.ButterLib.Logger
 
         public IEnumerator<string> GetEnumerator()
         {
-            string line;
             // So long as the next line isn't null...
-            while ((line = ReadLine()) != null)
+            while (ReadLine() is { } line)
                 // Read and return it.
                 yield return line;
         }

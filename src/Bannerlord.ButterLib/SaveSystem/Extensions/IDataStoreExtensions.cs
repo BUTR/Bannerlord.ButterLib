@@ -17,10 +17,10 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
                 yield return str.Substring(i, Math.Min(maxChunkSize, str.Length - i));
         }
 
-        private static string ChunksToString(string[] chunks)
+        private static string ChunksToString(IReadOnlyList<string> chunks)
         {
-            if (chunks.Length == 0) return string.Empty;
-            if (chunks.Length == 1) return chunks[0];
+            if (chunks.Count == 0) return string.Empty;
+            if (chunks.Count == 1) return chunks[0];
 
             var strBuilder = new StringBuilder(short.MaxValue);
             foreach (var chunk in chunks)
