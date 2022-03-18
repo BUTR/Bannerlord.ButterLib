@@ -46,7 +46,7 @@ jobs:
         $testproj = "$PWD/tests/Bannerlord.ButterLib.Tests/Bannerlord.ButterLib.Tests.csproj";
         $testprojimpl = "$PWD/tests/Bannerlord.ButterLib.Implementation.Tests/Bannerlord.ButterLib.Implementation.Tests.csproj";
 
-        $gameversions = Get-Content -Path supported-game-versions.txt;
+        [string[]]$gameversions = Get-Content -Path supported-game-versions.txt;
 
         For ($i = 0; $i -le $gameversions.Length - 1; $i++)
         {
