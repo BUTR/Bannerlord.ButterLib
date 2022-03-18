@@ -38,7 +38,7 @@ jobs:
         New-Item -ItemType directory -Force -Path $impl;
         New-Item -ItemType directory -Force -Path $path;
 
-        $gameversions = Get-Content -Path supported-game-versions.txt;
+        [string[]]$gameversions = Get-Content -Path supported-game-versions.txt;
         # Last entry is the Minimal version. We will use Bannerlord.ButterLib.dll from there
         For ($i = 0; $i -le $gameversions.Length - 1; $i++)
         {
