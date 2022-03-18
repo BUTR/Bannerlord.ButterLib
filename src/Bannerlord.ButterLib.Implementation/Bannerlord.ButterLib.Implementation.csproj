@@ -8,7 +8,7 @@
     <PlatformTarget>x64</PlatformTarget>
 
     <Configurations>Stable_Debug;Stable_Release;Beta_Debug;Beta_Release</Configurations>
-    <DefineConstants>$(DefineConstants);$(ConstGameVersionWithPrefix)</DefineConstants>
+    <DefineConstants>$(DefineConstants);$(GameVersionConstant)</DefineConstants>
 
     <AssemblyName>Bannerlord.ButterLib.Implementation.$(GameVersion)</AssemblyName>
   </PropertyGroup>
