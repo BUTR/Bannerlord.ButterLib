@@ -1,8 +1,7 @@
-﻿using Bannerlord.ButterLib.CampaignIdentifier;
-using Bannerlord.ButterLib.DistanceMatrix;
+﻿using Bannerlord.ButterLib.DistanceMatrix;
 
 using TaleWorlds.CampaignSystem;
-
+using TaleWorlds.CampaignSystem.Settlements;
 
 namespace Bannerlord.ButterLib.Extensions
 {
@@ -12,14 +11,6 @@ namespace Bannerlord.ButterLib.Extensions
         /// <param name="campaign">The campaign</param>
         /// <returns>Alphanumeric string key for the campaign or null if campaign is not started or not yet identified.</returns>
         string? GetCampaignId(Campaign campaign);
-
-        /// <summary>Gets CampaignDescriptor for the <see cref="Campaign" />.</summary>
-        /// <param name="campaign">The campaign</param>
-        /// <returns>
-        /// <see cref="CampaignDescriptor" /> object corresponding with the campaign
-        /// or null if campaign is not started or not yet identified.
-        /// </returns>
-        CampaignDescriptor? GetCampaignDescriptor(Campaign campaign);
 
         /// <summary>
         /// Gets the <see cref="T:Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix`1" />

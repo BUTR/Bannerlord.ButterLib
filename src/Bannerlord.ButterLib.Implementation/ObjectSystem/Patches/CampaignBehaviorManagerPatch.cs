@@ -13,7 +13,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 
 using TaleWorlds.CampaignSystem;
-using TaleWorlds.CampaignSystem.SandBox.CampaignBehaviors;
+using TaleWorlds.CampaignSystem.CampaignBehaviors;
 
 namespace Bannerlord.ButterLib.Implementation.ObjectSystem.Patches
 {
@@ -57,6 +57,8 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem.Patches
             harmony.Patch(OnGameLoadedTargetMI, prefix: new HarmonyMethod(OnGameLoadedPatchMI));
             harmony.Patch(OnBeforeSaveTargetMI, postfix: new HarmonyMethod(OnBeforeSavePatchMI));
         }
+
+        internal static void Disable(Harmony harmony) { }
 
         // Target and patch methods:
 

@@ -61,8 +61,8 @@ namespace Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended.Patches
             try
             {
                 int screenAsRootEventIndex = -1, finallyIndex = -1;
-                List<CodeInstruction> codes = new(instructions);
-                for (int i = 0; i < codes.Count; ++i)
+                var codes = new List<CodeInstruction>(instructions);
+                for (var i = 0; i < codes.Count; ++i)
                 {
                     if (screenAsRootEventIndex < 0 && codes[i].Calls(miMBSubModuleBaseScreenAsRootEvent))
                     {
@@ -108,7 +108,7 @@ namespace Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended.Patches
         [MethodImpl(MethodImplOptions.NoInlining)]
         private static void FinalizeSubModulesPostfix(TWModule __instance)
         {
-            foreach (IMBSubModuleBaseEx submodule in __instance.SubModules.Where(s => s is IMBSubModuleBaseEx))
+            foreach (var submodule in __instance.SubModules.OfType<IMBSubModuleBaseEx>())
             {
                 submodule.OnAllSubModulesUnLoaded();
             }
@@ -117,7 +117,7 @@ namespace Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended.Patches
         [MethodImpl(MethodImplOptions.NoInlining)]
         private static void DelayedScreenAsRootEvent(TWModule instance)
         {
-            foreach (IMBSubModuleBaseEx submodule in instance.SubModules.Where(s => s is IMBSubModuleBaseEx))
+            foreach (var submodule in instance.SubModules.OfType<IMBSubModuleBaseEx>())
             {
                 submodule.OnBeforeInitialModuleScreenSetAsRootDelayed();
             }

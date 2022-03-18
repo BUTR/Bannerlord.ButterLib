@@ -4,7 +4,7 @@ using TaleWorlds.ObjectSystem;
 
 namespace Bannerlord.ButterLib.Implementation.ObjectSystem
 {
-    class OSSaveableTypeDefiner : ButterLibSaveableTypeDefiner
+    internal class OSSaveableTypeDefiner : ButterLibSaveableTypeDefiner
     {
         public OSSaveableTypeDefiner() : base(5) { }
 

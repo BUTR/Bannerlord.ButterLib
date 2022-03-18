@@ -39,6 +39,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Extensions
         /// <param name="name">The variable's name.</param>
         internal static bool HasVariable(this MBObjectBase @object, string name)
         {
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
             if (name is null)
                 throw new ArgumentNullException(nameof(name));
             else if (name.Length == 0)
@@ -67,6 +68,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Extensions
         /// <param name="value">The variable value or <see langword="default"/> if nonexistent.</param>
         internal static bool TryGetVariable<T>(this MBObjectBase @object, string name, out T value)
         {
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
             if (name is null)
                 throw new ArgumentNullException(nameof(name));
             else if (name.Length == 0)
@@ -144,6 +146,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Extensions
         ///  <param name="data">The variable's value.</param>
         internal static void SetVariable<T>(this MBObjectBase @object, string name, T data)
         {
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
             if (name is null)
                 throw new ArgumentNullException(nameof(name));
             else if (name.Length == 0)
@@ -168,6 +171,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Extensions
         /// <param name="name">The variable's name.</param>
         internal static void RemoveVariable(this MBObjectBase @object, string name)
         {
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
             if (name is null)
                 throw new ArgumentNullException(nameof(name));
             else if (name.Length == 0)
@@ -193,6 +197,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Extensions
         /// <param name="name">A string flag.</param>
         public static bool HasFlag(this MBObjectBase @object, string name)
         {
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
             if (name is null)
                 throw new ArgumentNullException(nameof(name));
             else if (name.Length == 0)
@@ -211,6 +216,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Extensions
         /// <param name="name">A string flag.</param>
         public static void SetFlag(this MBObjectBase @object, string name)
         {
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
             if (name is null)
                 throw new ArgumentNullException(nameof(name));
             else if (name.Length == 0)
@@ -230,6 +236,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Extensions
         /// <param name="name">A string flag.</param>
         public static void RemoveFlag(this MBObjectBase @object, string name)
         {
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
             if (name is null)
                 throw new ArgumentNullException(nameof(name));
             else if (name.Length == 0)

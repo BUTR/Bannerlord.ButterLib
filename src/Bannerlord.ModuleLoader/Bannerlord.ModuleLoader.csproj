@@ -19,7 +19,6 @@
   <ItemGroup>
     <Compile Include="..\Bannerlord.ButterLib\Extensions\ApplicationVersionExtensions.cs" Link="ButterLib\ApplicationVersionExtensions.cs" />
     <Compile Include="..\Bannerlord.ButterLib\Helpers\ApplicationVersionUtils.cs" Link="ButterLib\ApplicationVersionUtils.cs" />
-    <Compile Include="..\Bannerlord.ButterLib\Helpers\Harmony\AccessTools2.cs" Link="ButterLib\AccessTools2.cs" />
     <Compile Include="..\Bannerlord.ButterLib\Helpers\ModuleInfoHelper.cs" Link="ButterLib\ModuleInfoHelper.cs" />
     <Compile Include="..\Bannerlord.ButterLib\SubModuleWrappers\MBSubModuleBaseWrapper.cs" Link="ButterLib\MBSubModuleBaseWrapper.cs" />
   </ItemGroup>
@@ -39,12 +38,13 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Bannerlord.ModuleManager.Source" Version="$(BUTRModuleManagerVersion)" />
     <PackageReference Include="Bannerlord.ReferenceAssemblies.Core.EarlyAccess" Version="$(GameVersion).*" PrivateAssets="All" />
     <PackageReference Include="Harmony.Extensions" Version="$(HarmonyExtensionsVersion)">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="IsExternalInit" Version="1.0.1">
+    <PackageReference Include="IsExternalInit" Version="1.0.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

@@ -1,5 +1,4 @@
 ﻿using Bannerlord.ButterLib.Common.Extensions;
-using Bannerlord.ButterLib.Common.Helpers;
 using Bannerlord.ButterLib.CrashUploader;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -87,7 +86,7 @@ if (!document.getElementsByClassName) {
             HtmlRender.DocumentText = ReportInHtml;
             HtmlRender.DocumentCompleted += (sender, args) =>
             {
-                if (HtmlRender.Document is { } document && document.Body is { } body)
+                if (HtmlRender.Document is { Body: { } body } document)
                 {
                     if (document.CreateElement("script") is { } scriptElement)
                     {
@@ -162,7 +161,7 @@ if (!document.getElementsByClassName) {
         }
 
         private static bool UriIsValid(string url) =>
-            Uri.TryCreate(url, UriKind.Absolute, out Uri uriResult) && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+            Uri.TryCreate(url, UriKind.Absolute, out var uriResult) && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
 
         private static async Task SetClipboardTextAsync(string text)
         {

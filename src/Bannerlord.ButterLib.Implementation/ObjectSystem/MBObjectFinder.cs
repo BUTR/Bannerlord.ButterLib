@@ -16,20 +16,6 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
 {
     internal class MBObjectFinder : IMBObjectFinder
     {
-#if e143 || e150 || e151 || e152 || e153 || e154 || e155 || e156 || e157 || e158 || e159 || e1510
-        public MBObjectBase? Find(MBGUID id, Type? type = null)
-        {
-            try
-            {
-                return MBObjectManager.Instance.GetObject(id);
-            }
-            catch (Exception e) when (e is MBTypeNotRegisteredException)
-            {
-                return null;
-            }
-        }
-#elif e160 || e161 || e162 || e163 || e164 || e165 || e170 || e171
-
         private static readonly AccessTools.FieldRef<CampaignObjectManager, object[]>? CampaignObjectTypeObjects =
             AccessTools2.FieldRefAccess<CampaignObjectManager, object[]>("_objects");
         private static readonly Type? ICampaignObjectTypeType =
@@ -53,8 +39,5 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
         {
             return FindCampaignObjectManager(id, type ?? typeof(MBObjectBase));
         }
-#else
-#error ConstGameVersionWithPrefix is not handled!
-#endif
     }
 }

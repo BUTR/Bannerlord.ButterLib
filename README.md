@@ -64,7 +64,15 @@ Extension library for Mount & Blade II: Bannerlord.
 Check the [/Articles](https://butr.github.io/Bannerlord.ButterLib/articles/index.html) section in the documentation to see all available features!
 
 ## Installation
+### Players
 This module should be one of the highest in loading order. Ideally, it should be second in load order after ``Bannerlord.Harmony``.
+### Developers
+Add this to your `.csproj`. Please not that `IncludeAssets="compile"` is very important!
+```xml
+  <ItemGroup>
+    <PackageReference Include="Bannerlord.ButterLib" Version="1.0.31" IncludeAssets="compile" />
+  </ItemGroup>
+```
 
 ## For Players
 This mod is a dependency mod that does not provide anything by itself. You need to additionaly install mods that use it.

@@ -15,7 +15,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 
-using TaleWorlds.CampaignSystem;
+using TaleWorlds.CampaignSystem.Roster;
 using TaleWorlds.Core;
 using TaleWorlds.SaveSystem;
 

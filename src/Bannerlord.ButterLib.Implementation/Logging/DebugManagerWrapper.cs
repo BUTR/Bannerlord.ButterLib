@@ -22,7 +22,7 @@ namespace Bannerlord.ButterLib.Implementation.Logging
         {
             _logger = loggerFactory.CreateLogger(typeof(DebugManagerWrapper));
             OriginalDebugManager = debugManager;
-            _debugManagerLogger =  loggerFactory.CreateLogger(debugManager.GetType());
+            _debugManagerLogger = loggerFactory.CreateLogger(debugManager.GetType());
         }
 
         public void ShowWarning(string message)
@@ -65,6 +65,14 @@ namespace Bannerlord.ButterLib.Implementation.Logging
             OriginalDebugManager.SetCrashReportCustomStack(customStack);
         }
 
+        public void SetTestModeEnabled(bool testModeEnabled) => OriginalDebugManager.SetTestModeEnabled(testModeEnabled);
+
+        public void AbortGame() => OriginalDebugManager.AbortGame();
+
+        public void DoDelayedexit(int returnCode) => OriginalDebugManager.DoDelayedexit(returnCode);
+
+        public void EndTelemetryScopeBaseLevelInternal() => OriginalDebugManager.EndTelemetryScopeBaseLevelInternal();
+
         public void WriteDebugLineOnScreen(string message)
         {
             _debugManagerLogger.LogDebug("{message}", message);
@@ -99,32 +107,25 @@ namespace Bannerlord.ButterLib.Implementation.Logging
 
         public void WatchVariable(string name, object value) => OriginalDebugManager.WatchVariable(name, value);
 
-        public void BeginTelemetryScope(TelemetryLevelMask levelMask, string scopeName) => OriginalDebugManager.BeginTelemetryScope(levelMask, scopeName);
-        public void EndTelemetryScope() => OriginalDebugManager.EndTelemetryScope();
+        public void BeginTelemetryScopeInternal(TelemetryLevelMask levelMask, string scopeName) => OriginalDebugManager.BeginTelemetryScopeInternal(levelMask, scopeName);
+        public void BeginTelemetryScopeBaseLevelInternal(TelemetryLevelMask levelMask, string scopeName) => OriginalDebugManager.BeginTelemetryScopeBaseLevelInternal(levelMask, scopeName);
+        public void EndTelemetryScopeInternal() => OriginalDebugManager.EndTelemetryScopeInternal();
 
         public Vec3 GetDebugVector() => OriginalDebugManager.GetDebugVector();
 
-#if e152 || e153 || e154 || e155 || e156 || e157 || e158 || e159 || e1510 || e160 || e161 || e162 || e163 || e164 || e165 || e170 || e171
         public void ShowMessageBox(string lpText, string lpCaption, uint uType)
         {
             OriginalDebugManager.ShowMessageBox(lpText, lpCaption, uType);
         }
-#endif
-#if e164 || e165 || e170 || e171
+
         public void ShowError(string message)
         {
             _debugManagerLogger.LogError("{message}", message);
             OriginalDebugManager.ShowError(message);
         }
-#endif
-#if e165 || e170 || e171
-        public void BeginTelemetryScopeBaseLevel(TelemetryLevelMask levelMask, string scopeName) =>
-            OriginalDebugManager.BeginTelemetryScopeBaseLevel(levelMask, scopeName);
-        public void EndTelemetryScopeBaseLevel() => OriginalDebugManager.EndTelemetryScopeBaseLevel();
-#endif
-#if e170 || e171
+
         public void RenderDebugText3D(Vec3 position, string text, uint color = uint.MaxValue, int screenPosOffsetX = 0, int screenPosOffsetY = 0, float time = 0) =>
             OriginalDebugManager.RenderDebugText3D(position, text, color, screenPosOffsetX, screenPosOffsetY, time);
-#endif
+
     }
 }

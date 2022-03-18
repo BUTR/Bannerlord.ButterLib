@@ -19,6 +19,7 @@
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIcon>Butter.png</PackageIcon>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <None Include="../../resources/Butter.png" Pack="true" PackagePath="" />
@@ -41,6 +42,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Bannerlord.ModuleManager.Source" Version="$(BUTRModuleManagerVersion)" />
     <PackageReference Include="IsExternalInit" Version="1.0.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -53,7 +55,7 @@
     <PackageReference Include="Bannerlord.ReferenceAssemblies.Core.EarlyAccess" Version="$(GameVersion).*" PrivateAssets="All" />
     <PackageReference Include="Bannerlord.ReferenceAssemblies.Native.EarlyAccess" Version="$(GameVersion).*" PrivateAssets="All" />
     <PackageReference Include="Bannerlord.ReferenceAssemblies.StoryMode.EarlyAccess" Version="$(GameVersion).*" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.0" />
+    <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="$(ExtensionVersion)" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="$(ExtensionVersion)" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(ExtensionVersion)" />
@@ -65,9 +67,9 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Serilog.Extensions.Logging" Version="3.0.1" />
-    <PackageReference Include="Serilog.Sinks.File" Version="4.1.0" />
-    <PackageReference Include="System.Reflection.Metadata" Version="5.0.0" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="3.1.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+    <PackageReference Include="System.Reflection.Metadata" Version="6.0.1" />
   </ItemGroup>
   <!--NuGet References-->
 

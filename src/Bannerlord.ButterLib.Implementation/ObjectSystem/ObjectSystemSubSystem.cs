@@ -33,7 +33,7 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
         {
             IsEnabled = false;
 
-            //CampaignBehaviorManagerPatch.Disable(_harmony);
+            CampaignBehaviorManagerPatch.Disable(_harmony);
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using TaleWorlds.CampaignSystem;
+using TaleWorlds.CampaignSystem.Settlements;
 using TaleWorlds.ObjectSystem;
 
 namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
@@ -87,13 +88,7 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
 
             if (typeof(Hero).IsAssignableFrom(typeof(T)))
             {
-#if e143 || e150 || e151 || e152 || e153 || e154 || e155 || e156 || e157 || e158 || e159 || e1510
-                var activeHeroes = Hero.All
-#elif e160 || e161 || e162 || e163 || e164 || e165 || e170 || e171
                 var activeHeroes = Hero.AllAliveHeroes
-#else
-#error ConstGameVersionWithPrefix is not handled!
-#endif
                     .Where(h => h.IsInitialized && !h.IsNotSpawned && !h.IsDisabled && !h.IsDead && !h.IsNotable).ToList();
                 _cachedMapping = activeHeroes.ToDictionary(key => key.Id, value => value as MBObjectBase);
 
@@ -130,7 +125,7 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
                     .Where(tuple => tuple.X.Id < tuple.Y.Id)
                     .ToDictionary(
                         key => ElegantPairHelper.Pair(key.X.Id, key.Y.Id),
-                        value => CalculateDistanceBetweenClans(value.X, value.Y, lst ?? Enumerable.Empty<(ulong, float, float)>()).GetValueOrDefault());
+                        value => CalculateDistanceBetweenClans(value.X, value.Y, lst ?? Enumerable.Empty<DistanceMatrixResult>()).GetValueOrDefault());
             }
 
             if (typeof(Kingdom).IsAssignableFrom(typeof(T)))

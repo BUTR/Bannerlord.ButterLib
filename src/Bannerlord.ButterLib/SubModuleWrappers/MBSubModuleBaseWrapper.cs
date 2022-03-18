@@ -134,14 +134,7 @@ namespace Bannerlord.ButterLib.SubModuleWrappers
         }
 
         /// <exclude/>
-        public new void OnMissionBehaviourInitialize(Mission mission)
-        {
-            //base.OnMissionBehaviourInitialize(mission); - how to call this and should we?
-            OnMissionBehaviorInitializeInstance?.Invoke(mission);
-        }
-
-        /// <exclude/>
-        public new void OnMissionBehaviorInitialize(Mission mission)
+        public override void OnMissionBehaviorInitialize(Mission mission)
         {
             //base.OnMissionBehaviourInitialize(mission); - how to call this and should we?
             OnMissionBehaviorInitializeInstance?.Invoke(mission);

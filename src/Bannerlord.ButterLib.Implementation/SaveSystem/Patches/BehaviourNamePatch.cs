@@ -1,12 +1,7 @@
 ﻿using Bannerlord.BUTR.Shared.Helpers;
-using Bannerlord.ButterLib.Common.Extensions;
 
 using HarmonyLib;
 using HarmonyLib.BUTR.Extensions;
-
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions;
 
 using TaleWorlds.CampaignSystem;
 

@@ -48,12 +48,12 @@ namespace Bannerlord.ButterLib.DelayedSubModule
         /// <summary>
         /// Initializes a new instance of the <see cref="SubscriptionGlobalEventArgs"/> class with the supplied values.
         /// </summary>
-        /// <param name="isBase">The type of submodule for which the method was called.</param>
+        /// <param name="type">The type of submodule for which the method was called.</param>
         /// <param name="isBase">
         /// An indicator that the underlying virtual implementation of the <see cref="MBSubModuleBase"/>
         /// method was called, not a derived class override.
         /// </param>
-        /// <param name="methodName">A type of the Harmony patch that was used to raise the event.</param>
+        /// <param name="subscriptionType">A type of the Harmony patch that was used to raise the event.</param>
         /// <param name="methodName">A method of the <see cref="ArgumentException"/> derived class that was used to raise the event.</param>
         /// <exception cref="T:System.ArgumentException">Thrown when <paramref name="type"/>
         /// does not point to a subclass of the <see cref="ArgumentOutOfRangeException"/>.</exception>

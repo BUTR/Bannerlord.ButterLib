@@ -31,6 +31,12 @@
       <DLLName value="$moduleid$.dll" />
       <SubModuleClassType value="$moduleid$.ButterLibSubModule" />
       <Assemblies>
+        <!--Helper libraries-->
+        <Assembly value="Microsoft.Bcl.HashCode.dll" />
+        <Assembly value="System.Collections.Immutable.dll" />
+        <Assembly value="System.Memory.dll" />
+        <Assembly value="System.Reflection.Metadata.dll" />
+        <Assembly value="System.Runtime.CompilerServices.Unsafe.dll" />
         <!--Microsoft Abstractions-->
         <Assembly value="Microsoft.Extensions.DependencyInjection.Abstractions.dll" />
         <Assembly value="Microsoft.Extensions.Logging.Abstractions.dll" />
@@ -43,11 +49,6 @@
         <Assembly value="Serilog.dll" />
         <Assembly value="Serilog.Extensions.Logging.dll" />
         <Assembly value="Serilog.Sinks.File.dll" />
-        <!--Helper libraries-->
-        <Assembly value="System.Runtime.CompilerServices.Unsafe.dll" />
-        <Assembly value="Microsoft.Bcl.HashCode.dll" />
-        <Assembly value="System.Reflection.Metadata.dll" />
-        <Assembly value="System.Collections.Immutable.dll" />
       </Assemblies>
       <Tags />
     </SubModule>

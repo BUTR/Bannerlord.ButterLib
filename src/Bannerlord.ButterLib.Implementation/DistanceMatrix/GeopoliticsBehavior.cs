@@ -2,6 +2,7 @@
 
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.Actions;
+using TaleWorlds.CampaignSystem.Settlements;
 
 namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
 {
@@ -52,7 +53,7 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
 
                 if (oldOwner.Clan is not null)
                 {
-                    foreach (Clan clan in clans)
+                    foreach (var clan in clans)
                     {
                         if (clan != oldOwner.Clan)
                         {
@@ -63,7 +64,7 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
                 }
                 if (newOwner.Clan is not null)
                 {
-                    foreach (Clan clan in clans)
+                    foreach (var clan in clans)
                     {
                         if (clan != newOwner.Clan)
                         {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 using TaleWorlds.CampaignSystem;
+using TaleWorlds.CampaignSystem.Settlements;
 using TaleWorlds.ObjectSystem;
 
 namespace Bannerlord.ButterLib.DistanceMatrix
@@ -57,7 +58,7 @@ namespace Bannerlord.ButterLib.DistanceMatrix
         /// or <see cref="float.NaN" /> if distance could not be calculated.
         /// </returns>
         /// <remarks>Calculation is based on the average distance between clans fiefs weighted by the fief type.</remarks>
-        float CalculateDistanceBetweenClans(Clan clan1, Clan clan2, IEnumerable<(ulong Owners, float Distance, float Weight)> settlementOwnersPairedList);
+        float CalculateDistanceBetweenClans(Clan clan1, Clan clan2, IEnumerable<DistanceMatrixResult> settlementOwnersPairedList);
 
         /// <summary>Calculates distance between two given <see cref="Kingdom"/> objects.</summary>
         /// <param name="kingdom1">First of the kingdoms to calculate distance between.</param>
@@ -81,9 +82,9 @@ namespace Bannerlord.ButterLib.DistanceMatrix
         /// </returns>
         /// <remarks>
         /// This method could be used to supply
-        /// <see cref="DistanceMatrixImplementation{T}.CalculateDistanceBetweenClans(Clan, Clan, List{(ulong Owners, float Distance, float Weight)})"/>
+        /// <see cref="DistanceMatrixImplementation{T}.CalculateDistanceBetweenClans(Clan, Clan, List{DistanceMatrixResult})"/>
         /// method with required list argument.
         /// </remarks>
-        List<(ulong Owners, float Distance, float Weight)> GetSettlementOwnersPairedList(DistanceMatrix<Settlement> settlementDistanceMatrix);
+        List<DistanceMatrixResult> GetSettlementOwnersPairedList(DistanceMatrix<Settlement> settlementDistanceMatrix);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Bannerlord.ButterLib.DistanceMatrix;
 
 using TaleWorlds.CampaignSystem;
+using TaleWorlds.CampaignSystem.Settlements;
 
 // ReSharper disable once CheckNamespace
 namespace Bannerlord.ButterLib.Common.Extensions
