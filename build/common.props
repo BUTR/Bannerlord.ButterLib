@@ -11,9 +11,9 @@
     <!--Serilog depends on abstraction 2.0.0, and since we can't do app redirects, we're stuck with that-->
     <ExtensionVersion>2.0.0</ExtensionVersion>
     <!--BuildResources Version-->
-    <BuildResourcesVersion>1.0.0.39</BuildResourcesVersion>
+    <BuildResourcesVersion>1.0.1.68</BuildResourcesVersion>
     <BUTRSharedVersion>2.0.0.78</BUTRSharedVersion>
-    <BUTRModuleManagerVersion>3.0.87</BUTRModuleManagerVersion>
+    <BUTRModuleManagerVersion>3.0.94</BUTRModuleManagerVersion>
     <HarmonyExtensionsVersion>2.0.0.54</HarmonyExtensionsVersion>
   </PropertyGroup>
 
@@ -40,18 +40,26 @@
   </ItemGroup>
 
   <PropertyGroup Condition="$(OverrideGameVersion) == ''">
-    <!--Parsing  supported-game-versions.txt-->
+    <GameVersionFallback>e1.1.0</GameVersionFallback>
+    <!-- Parsing  supported-game-versions.txt -->
     <SGVLineCount>$([System.Text.RegularExpressions.Regex]::Split($(SGVFile), `\r\n|\r|\n`).Length)</SGVLineCount>
     <SGVLastEntryIndex>$([MSBuild]::Subtract($(SGVLineCount), 1))</SGVLastEntryIndex>
-    <!--First enrty is Beta, second Stable, last Minimal-->
-    <GameBetaVersion>$([System.Text.RegularExpressions.Regex]::Split($(SGVFile), `\r\n|\r|\n`)[0])</GameBetaVersion>
-    <GameStableVersion>$([System.Text.RegularExpressions.Regex]::Split($(SGVFile), `\r\n|\r|\n`)[1])</GameStableVersion>
-    <GameMinimalVersion>$([System.Text.RegularExpressions.Regex]::Split($(SGVFile), `\r\n|\r|\n`)[$(SGVLastEntryIndex)])</GameMinimalVersion>
+    <!-- First enrty is Beta, second Stable, last Minimal -->
+    <FirstLine  Condition="'$(SGVLineCount)' &gt; 0">$([System.Text.RegularExpressions.Regex]::Split($(SGVFile), `\r\n|\r|\n`)[0])</FirstLine>
+    <SecondLine Condition="'$(SGVLineCount)' &gt; 1">$([System.Text.RegularExpressions.Regex]::Split($(SGVFile), `\r\n|\r|\n`)[1])</SecondLine>
+    <LastLine   Condition="'$(SGVLineCount)' &gt; 0">$([System.Text.RegularExpressions.Regex]::Split($(SGVFile), `\r\n|\r|\n`)[$(SGVLastEntryIndex)])</LastLine>
+
+    <SecondLine Condition="'$(SecondLine)' == ''">$(FirstLine)</SecondLine>
+    <LastLine Condition="'$(LastLine)' == ''">$(SecondLine)</LastLine>
     <!-- -->
-    <GameVersionWithPrefix>e1.1.0</GameVersionWithPrefix>
+    <GameBetaVersion>$(FirstLine)</GameBetaVersion>
+    <GameStableVersion>$(SecondLine)</GameStableVersion>
+    <GameMinimalVersion>$(LastLine)</GameMinimalVersion>
+    <!-- -->
     <GameVersionWithPrefix Condition="$(IsMinimal)">$(GameMinimalVersion)</GameVersionWithPrefix>
     <GameVersionWithPrefix Condition="$(IsStable)">$(GameStableVersion)</GameVersionWithPrefix>
     <GameVersionWithPrefix Condition="$(IsBeta)">$(GameBetaVersion)</GameVersionWithPrefix>
+    <GameVersionWithPrefix Condition="$(GameVersionWithPrefix) == ''">$(GameVersionFallback)</GameVersionWithPrefix>
     <!-- -->
     <GameVersion>$(GameVersionWithPrefix.Substring(1))</GameVersion>
   </PropertyGroup>
@@ -60,7 +68,8 @@
     <GameVersion>$(GameVersionWithPrefix.Substring(1))</GameVersion>
   </PropertyGroup>
   <PropertyGroup>
-    <ConstGameVersionWithPrefix>$([System.String]::Copy('$(GameVersionWithPrefix)').Replace('.',''))</ConstGameVersionWithPrefix>
+    <GameVersionFlat>$([System.String]::Copy('$(GameVersion)').Replace('.',''))</GameVersionFlat>
+    <GameVersionConstant>e$(GameVersionFlat)</GameVersionConstant>
   </PropertyGroup>
 
   <PropertyGroup>
