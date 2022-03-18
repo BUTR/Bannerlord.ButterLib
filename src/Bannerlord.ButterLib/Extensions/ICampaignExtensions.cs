@@ -7,11 +7,6 @@ namespace Bannerlord.ButterLib.Extensions
 {
     internal interface ICampaignExtensions
     {
-        /// <summary>Gets ID of the <see cref="Campaign" />.</summary>
-        /// <param name="campaign">The campaign</param>
-        /// <returns>Alphanumeric string key for the campaign or null if campaign is not started or not yet identified.</returns>
-        string? GetCampaignId(Campaign campaign);
-
         /// <summary>
         /// Gets the <see cref="T:Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix`1" />
         /// calculated by default for the <see cref="Settlement" /> object type.

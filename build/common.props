@@ -4,7 +4,7 @@
   <!--Development Variables-->
   <PropertyGroup>
     <!--Module Version-->
-    <Version>2.0.0</Version>
+    <Version>2.1.0</Version>
     <!--Harmony Version-->
     <HarmonyVersion>2.2.1</HarmonyVersion>
     <!--Microsoft Extension Libraries Version-->
