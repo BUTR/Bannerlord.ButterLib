@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 2.1.1
+Game Versions: e1.7.2
+* Fixed unintended crashes when running on pre e1.7.2
+* Added message when running on pre e1.7.2
+---------------------------------------------------------------------------------------------------
 Version: 2.1.0
 Game Versions: e1.7.2
 * Dependency fixes

@@ -11,6 +11,7 @@ using System.Collections.Generic;
 
 using TaleWorlds.Core;
 using TaleWorlds.InputSystem;
+using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
 
 namespace Bannerlord.ButterLib.Implementation.HotKeys
@@ -26,8 +27,8 @@ namespace Bannerlord.ButterLib.Implementation.HotKeys
             var variationString = $"{categoryId}_";
             foreach (var key in keys)
             {
-                keyName.AddVariationWithId($"{variationString}{key.Id}", TextObjectHelper.Create(key.DisplayName), new List<GameTextManager.ChoiceTag>());
-                keyDesc.AddVariationWithId($"{variationString}{key.Id}", TextObjectHelper.Create(key.Description), new List<GameTextManager.ChoiceTag>());
+                keyName.AddVariationWithId($"{variationString}{key.Id}", new TextObject(key.DisplayName), new List<GameTextManager.ChoiceTag>());
+                keyDesc.AddVariationWithId($"{variationString}{key.Id}", new TextObject(key.Description), new List<GameTextManager.ChoiceTag>());
                 RegisterGameKey(new GameKey(key.Id, key.Uid, categoryId, key.DefaultKey, key.Category));
             }
         }
