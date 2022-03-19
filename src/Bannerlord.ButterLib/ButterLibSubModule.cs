@@ -19,6 +19,8 @@ using System.Windows.Forms;
 
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
+using TaleWorlds.Library;
+using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
 
 namespace Bannerlord.ButterLib
@@ -33,6 +35,8 @@ namespace Bannerlord.ButterLib
 @"{=BguqytVG3q}Warning from Bannerlord.ButterLib!";
         private const string SMessageContinue =
 @"{=eXs6FLm5DP}It's strongly recommended to terminate the game now. Do you wish to terminate it?";
+        private const string SMessageWrongGameVersion =
+@"{=aGg5Gh64gH}This version of ButterLib is intended for e1.7.2 and higher! You are running {GAMEVERSION}!";
 
         internal event Action<float>? OnApplicationTickEvent;
 
@@ -47,6 +51,7 @@ namespace Bannerlord.ButterLib
         {
             Instance = this;
 
+            CheckGameVersion();
             CheckLoadOrder();
         }
 
@@ -168,6 +173,23 @@ namespace Bannerlord.ButterLib
         }
 
 
+        private static void CheckGameVersion()
+        {
+            var e172 = new ApplicationVersion(ApplicationVersionType.EarlyAccess, 1, 7, 2, 0, ApplicationVersionGameType.Singleplayer);
+            if (ApplicationVersionHelper.GameVersion() is { } gameVersion && gameVersion < e172)
+            {
+                var sb = new StringBuilder();
+                sb.AppendLine(new TextObject(SMessageWrongGameVersion, new() { {"GAMEVERSION", ApplicationVersionHelper.ToString(gameVersion)} }).ToString());
+                sb.AppendLine();
+                sb.AppendLine(new TextObject(SMessageContinue).ToString());
+                switch (MessageBox.Show(sb.ToString(), new TextObject(SWarningTitle).ToString(), MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1, (MessageBoxOptions) 0x40000))
+                {
+                    case DialogResult.Yes:
+                        Environment.Exit(1);
+                        break;
+                }
+            }
+        }
         private static void CheckLoadOrder()
         {
             var loadedModules = ModuleInfoHelper.GetLoadedModules().ToList();
@@ -178,8 +200,8 @@ namespace Bannerlord.ButterLib
             {
                 sb.AppendLine(report);
                 sb.AppendLine();
-                sb.AppendLine(TextObjectHelper.Create(SMessageContinue)?.ToString() ?? "ERROR");
-                switch (MessageBox.Show(sb.ToString(), TextObjectHelper.Create(SWarningTitle)?.ToString() ?? "ERROR", MessageBoxButtons.YesNo))
+                sb.AppendLine(new TextObject(SMessageContinue).ToString());
+                switch (MessageBox.Show(sb.ToString(), new TextObject(SWarningTitle).ToString(), MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1, (MessageBoxOptions) 0x40000))
                 {
                     case DialogResult.Yes:
                         Environment.Exit(1);

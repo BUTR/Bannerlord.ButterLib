@@ -86,31 +86,31 @@ namespace Bannerlord.ButterLib.Common.Helpers
             switch (entity)
             {
                 case Hero hero:
-                    var characterProperties = TextObjectHelper.Create(string.Empty);
-                    characterProperties!.SetTextVariable("NAME", hero.Name);
+                    var characterProperties = new TextObject(string.Empty);
+                    characterProperties.SetTextVariable("NAME", hero.Name);
                     characterProperties.SetTextVariable("AGE", (int) hero.Age);
                     characterProperties.SetTextVariable("GENDER", hero.IsFemale ? 1 : 0);
                     characterProperties.SetTextVariable("LINK", hero.EncyclopediaLinkWithName);
                     characterProperties.SetTextVariable("FIRSTNAME", hero.FirstName ?? hero.Name);
                     return characterProperties;
                 case Settlement settlement:
-                    var settlementProperties = TextObjectHelper.Create(string.Empty);
-                    settlementProperties!.SetTextVariable("NAME", settlement.Name);
+                    var settlementProperties = new TextObject(string.Empty);
+                    settlementProperties.SetTextVariable("NAME", settlement.Name);
                     settlementProperties.SetTextVariable("IS_TOWN", settlement.IsTown ? 1 : 0);
                     settlementProperties.SetTextVariable("IS_CASTLE", settlement.IsCastle ? 1 : 0);
                     settlementProperties.SetTextVariable("IS_VILLAGE", settlement.IsVillage ? 1 : 0);
                     settlementProperties.SetTextVariable("LINK", settlement.EncyclopediaLinkWithName);
                     return settlementProperties;
                 case Clan clan:
-                    var clanProperties = TextObjectHelper.Create(string.Empty);
-                    clanProperties!.SetTextVariable("NAME", clan.Name);
+                    var clanProperties = new TextObject(string.Empty);
+                    clanProperties.SetTextVariable("NAME", clan.Name);
                     clanProperties.SetTextVariable("MINOR_FACTION", clan.IsMinorFaction ? 1 : 0);
                     clanProperties.SetTextVariable("UNDER_CONTRACT", clan.IsUnderMercenaryService ? 1 : 0);
                     clanProperties.SetTextVariable("LINK", clan.EncyclopediaLinkWithName);
                     return clanProperties;
                 case Kingdom kingdom:
-                    var kingdomProperties = TextObjectHelper.Create(string.Empty);
-                    kingdomProperties!.SetTextVariable("NAME", kingdom.Name);
+                    var kingdomProperties = new TextObject(string.Empty);
+                    kingdomProperties.SetTextVariable("NAME", kingdom.Name);
                     kingdomProperties.SetTextVariable("LINK", kingdom.EncyclopediaLinkWithName);
                     return kingdomProperties;
                 default:
@@ -227,12 +227,12 @@ namespace Bannerlord.ButterLib.Common.Helpers
             return number > 1f ? PluralForm.Plural : PluralForm.Singular;
         }
 
-        private static Dictionary<string, TextObject?> GetPluralFormAttributes(PluralForm pluralForm) =>
+        private static Dictionary<string, object> GetPluralFormAttributes(PluralForm pluralForm) =>
             new()
             {
-                [PLURAL_FORM_TAG] = TextObjectHelper.Create(pluralForm == PluralForm.Plural ? 1 : 0),
-                [SPECIFIC_PLURAL_FORM_TAG] = TextObjectHelper.Create(pluralForm == PluralForm.SpecificPlural ? 1 : 0),
-                [SPECIFIC_SINGULAR_FORM_TAG] = TextObjectHelper.Create(pluralForm == PluralForm.SpecificSingular ? 1 : 0)
+                [PLURAL_FORM_TAG] = new TextObject(pluralForm == PluralForm.Plural ? 1 : 0),
+                [SPECIFIC_PLURAL_FORM_TAG] = new TextObject(pluralForm == PluralForm.SpecificPlural ? 1 : 0),
+                [SPECIFIC_SINGULAR_FORM_TAG] = new TextObject(pluralForm == PluralForm.SpecificSingular ? 1 : 0)
             };
 
         /// <summary>Sets a numeric variable along with the appropriate <see cref="PluralForm" /> tag in accordance with the grammar rules of the game language.</summary>
@@ -251,8 +251,8 @@ namespace Bannerlord.ButterLib.Common.Helpers
             }
             var attributes = GetPluralFormAttributes(GetPluralForm(variableValue));
             var explainedTextObject = string.IsNullOrEmpty(format)
-                ? TextObjectHelper.Create(variableValue.ToString(), attributes)
-                : TextObjectHelper.Create(variableValue.ToString(format), attributes);
+                ? new TextObject(variableValue.ToString(), attributes)
+                : new TextObject(variableValue.ToString(format), attributes);
             if (textObject is null)
             {
                 MBTextManager.SetTextVariable(tag, explainedTextObject);
@@ -279,8 +279,8 @@ namespace Bannerlord.ButterLib.Common.Helpers
             }
             var attributes = GetPluralFormAttributes(GetPluralForm(variableValue));
             var explainedTextObject = string.IsNullOrEmpty(format)
-                ? TextObjectHelper.Create(variableValue.ToString("R"), attributes)
-                : TextObjectHelper.Create(variableValue.ToString(format), attributes);
+                ? new TextObject(variableValue.ToString("R"), attributes)
+                : new TextObject(variableValue.ToString(format), attributes);
             if (textObject is null)
             {
                 MBTextManager.SetTextVariable(tag, explainedTextObject);
@@ -291,21 +291,21 @@ namespace Bannerlord.ButterLib.Common.Helpers
             }
         }
 
-        private static Dictionary<string, TextObject?> GetListAttributes(IEnumerable<string> valuesList, string separator = ", ", bool useDistinctValues = true)
+        private static Dictionary<string, TextObject> GetListAttributes(IEnumerable<string> valuesList, string separator = ", ", bool useDistinctValues = true)
         {
             var localValues = (useDistinctValues ? valuesList.Distinct() : valuesList).ToList();
             return localValues.Any()
                 ? (new()
                 {
-                    [LIST_HAS_MULTIPLE_ITEMS_TAG] = TextObjectHelper.Create((localValues.Count != 1) ? 1 : 0),
-                    [LIST_START_TAG] = TextObjectHelper.Create(string.Join(separator, localValues.Take(localValues.Count - 1))),
-                    [LIST_END_TAG] = TextObjectHelper.Create(localValues.Last())
+                    [LIST_HAS_MULTIPLE_ITEMS_TAG] = new TextObject(localValues.Count != 1 ? 1 : 0),
+                    [LIST_START_TAG] = new TextObject(string.Join(separator, localValues.Take(localValues.Count - 1))),
+                    [LIST_END_TAG] = new TextObject(localValues.Last())
                 })
                 : (new()
                 {
-                    [LIST_HAS_MULTIPLE_ITEMS_TAG] = TextObjectHelper.Create(0),
-                    [LIST_START_TAG] = TextObjectHelper.Create(string.Empty),
-                    [LIST_END_TAG] = TextObjectHelper.Create(string.Empty)
+                    [LIST_HAS_MULTIPLE_ITEMS_TAG] = new TextObject(0),
+                    [LIST_START_TAG] = new TextObject(string.Empty),
+                    [LIST_END_TAG] = new TextObject(string.Empty)
                 });
         }
 
@@ -327,7 +327,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
         /// <example>
         /// <code>
         /// var lst = new [] { "First Entry", "Second Entry", "Third Entry", "Second Entry" }.ToList();
-        /// TextObject? txt = TextObjectHelper.Create("Here is the built-in text: '{TEST_TAG}'. Here is custom text: '{TEST_TAG.START}{?TEST_TAG.IS_PLURAL} and last but not least the {?}{\\?}{TEST_TAG.END}'");
+        /// var txt = new TextObject("Here is the built-in text: '{TEST_TAG}'. Here is custom text: '{TEST_TAG.START}{?TEST_TAG.IS_PLURAL} and last but not least the {?}{\\?}{TEST_TAG.END}'");
         /// LocalizationHelper.SetListVariable(txt, "TEST_TAG", lst);
         /// InformationManager.DisplayMessage(new InformationMessage(txt!.ToString(), Color.FromUint(0x00F16D26)));
         /// </code>

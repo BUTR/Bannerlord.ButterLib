@@ -22,5 +22,6 @@
     <string id="UZ8zfvudMs" text="{MODULE} загружен после {REQUIRED_MODULE}!{NL}{MODULE} должен загружаться до этого модуля!" />
     <string id="FcR4BXnhx8" text="В {MODULE} заданы взаимоисключающие указания отностительно {REQUIRED_MODULE}!" />
     <string id="eXs6FLm5DP" text="Рекомендуется прервать игру. Вы хотите выйти?" />
+    <string id="aGg5Gh64gH" text="Эта версия ButterLib предназначена для e1.7.2 и выше! У вас версия игры {GAMEVERSION}!" />
   </strings>
 </base>
