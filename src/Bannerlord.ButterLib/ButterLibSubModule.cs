@@ -179,7 +179,7 @@ namespace Bannerlord.ButterLib
             if (ApplicationVersionHelper.GameVersion() is { } gameVersion && gameVersion < e172)
             {
                 var sb = new StringBuilder();
-                sb.AppendLine(new TextObject(SMessageWrongGameVersion, new() { {"GAMEVERSION", ApplicationVersionHelper.ToString(gameVersion)} }).ToString());
+                sb.AppendLine(new TextObject(SMessageWrongGameVersion, new() { { "GAMEVERSION", ApplicationVersionHelper.ToString(gameVersion) } }).ToString());
                 sb.AppendLine();
                 sb.AppendLine(new TextObject(SMessageContinue).ToString());
                 switch (MessageBox.Show(sb.ToString(), new TextObject(SWarningTitle).ToString(), MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1, (MessageBoxOptions) 0x40000))
