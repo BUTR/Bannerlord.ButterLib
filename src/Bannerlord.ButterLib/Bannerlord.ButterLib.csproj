@@ -69,7 +69,7 @@
     </PackageReference>
     <PackageReference Include="Serilog.Extensions.Logging" Version="3.1.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
-    <PackageReference Include="System.Reflection.Metadata" Version="5.0.0" />
+    <PackageReference Include="System.Reflection.Metadata" Version="6.0.1" />
   </ItemGroup>
   <!--NuGet References-->
 
