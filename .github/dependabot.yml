@@ -9,6 +9,7 @@ updates:
       - dependency-name: "Bannerlord.ReferenceAssemblies.*"
       - dependency-name: "Lib.Harmony"
       - dependency-name: "Microsoft.Extensions.*"
+      - dependency-name: "System.Reflection.Metadata"
 
   - package-ecosystem: "github-actions"
     directory: "/"

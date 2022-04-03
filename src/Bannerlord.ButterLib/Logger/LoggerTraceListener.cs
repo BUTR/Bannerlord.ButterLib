@@ -15,12 +15,13 @@ namespace System.Diagnostics.Logger
 
         private static ParseResult? Parse(ReadOnlySpan<char> str)
         {
-            var logLevelIdx = str.IndexOf(':');
+            if (str.IndexOf(':') is var logLevelIdx && logLevelIdx == -1)
+                return null;
 
             var sourceLogLevel = str.Slice(0, logLevelIdx);
             var eventIdMessage = str.Slice(logLevelIdx + 1);
 
-            if (sourceLogLevel.LastIndexOf(' ') is { } sourceIdx && sourceIdx == -1)
+            if (sourceLogLevel.LastIndexOf(' ') is var sourceIdx && sourceIdx == -1)
                 return null;
             var process = sourceLogLevel.Slice(0, sourceIdx);
             var logLevelStr = sourceLogLevel.Slice(sourceIdx + 1);
@@ -35,10 +36,7 @@ namespace System.Diagnostics.Logger
 
             return new ParseResult
             {
-                Process = process.ToString(),
-                Level = logLevel,
-                EventId = eventId,
-                Message = message.ToString()
+                Process = process.ToString(), Level = logLevel, EventId = eventId, Message = message.ToString()
             };
         }
 
