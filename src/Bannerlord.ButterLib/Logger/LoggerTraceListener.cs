@@ -36,7 +36,10 @@ namespace System.Diagnostics.Logger
 
             return new ParseResult
             {
-                Process = process.ToString(), Level = logLevel, EventId = eventId, Message = message.ToString()
+                Process = process.ToString(),
+                Level = logLevel,
+                EventId = eventId,
+                Message = message.ToString()
             };
         }
 
