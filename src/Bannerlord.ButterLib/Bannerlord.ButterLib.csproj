@@ -20,6 +20,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIcon>Butter.png</PackageIcon>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Platforms>x64</Platforms>
   </PropertyGroup>
   <ItemGroup>
     <None Include="../../resources/Butter.png" Pack="true" PackagePath="" />
@@ -28,7 +29,7 @@
 
   <!--Windows Forms-->
   <ItemGroup>
-    <_SDKImplicitReference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <!--Windows Forms-->
 

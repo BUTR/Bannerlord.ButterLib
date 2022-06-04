@@ -5,9 +5,10 @@
     <TargetFramework>net472</TargetFramework>
     <LangVersion>9.0</LangVersion>
     <Nullable>enable</Nullable>
+    <Platforms>x64</Platforms>
 
     <Configurations>Stable_Debug;Stable_Release;Beta_Debug;Beta_Release</Configurations>
-    <DefineConstants>$(DefineConstants);BANNERLORDBUTRSHARED_BUTTERLIB;HARMONYEXTENSIONS_DISABLE_2_0_4</DefineConstants>
+    <DefineConstants>$(DefineConstants);HARMONYEXTENSIONS_DISABLE_2_0_4</DefineConstants>
   </PropertyGroup>
 
   <!--Module Creation-->
@@ -17,15 +18,12 @@
   <!--Module Creation-->
 
   <ItemGroup>
-    <Compile Include="..\Bannerlord.ButterLib\Extensions\ApplicationVersionExtensions.cs" Link="ButterLib\ApplicationVersionExtensions.cs" />
-    <Compile Include="..\Bannerlord.ButterLib\Helpers\ApplicationVersionUtils.cs" Link="ButterLib\ApplicationVersionUtils.cs" />
-    <Compile Include="..\Bannerlord.ButterLib\Helpers\ModuleInfoHelper.cs" Link="ButterLib\ModuleInfoHelper.cs" />
     <Compile Include="..\Bannerlord.ButterLib\SubModuleWrappers\MBSubModuleBaseWrapper.cs" Link="ButterLib\MBSubModuleBaseWrapper.cs" />
   </ItemGroup>
 
   <!--Windows Forms-->
   <ItemGroup>
-    <_SDKImplicitReference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <!--Windows Forms-->
 

@@ -75,7 +75,7 @@ namespace Bannerlord.ButterLib.Tests.SaveSystem
                                            att => att.GetType() == typeof(SaveableFieldAttribute) ||
                                                   att.GetType() == typeof(SaveablePropertyAttribute)));
                             }
-                            catch (FileNotFoundException e)
+                            catch (FileNotFoundException)
                             {
                                 return false;
                             }
@@ -142,7 +142,7 @@ namespace Bannerlord.ButterLib.Tests.SaveSystem
                                            att => att.GetType() == typeof(SaveableFieldAttribute) ||
                                                   att.GetType() == typeof(SaveablePropertyAttribute)));
                             }
-                            catch (FileNotFoundException e)
+                            catch (FileNotFoundException)
                             {
                                 return false;
                             }
