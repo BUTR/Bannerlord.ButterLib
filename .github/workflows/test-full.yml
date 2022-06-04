@@ -80,7 +80,7 @@ jobs:
         tag: '${{ github.run_number }}_${{ github.run_id }}' # Optional tag or build version.
 
     - name: Upload ReportGenerator to GitHub
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v3
       with:
         name: coverage-report
         path: coveragereport
