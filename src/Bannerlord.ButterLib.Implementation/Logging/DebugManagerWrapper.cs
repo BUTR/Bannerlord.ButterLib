@@ -105,6 +105,11 @@ namespace Bannerlord.ButterLib.Implementation.Logging
         public void RenderDebugText(float screenX, float screenY, string text, uint color = 4294967295, float time = 0) =>
             OriginalDebugManager.RenderDebugText(screenX, screenY, text, color, time);
 
+#if e180
+        public void RenderDebugRectWithColor(float left, float bottom, float right, float top, uint color = 4294967295)  =>
+            OriginalDebugManager.RenderDebugRectWithColor(left, bottom, right, top, color);
+#endif
+
         public void WatchVariable(string name, object value) => OriginalDebugManager.WatchVariable(name, value);
 
         public void BeginTelemetryScopeInternal(TelemetryLevelMask levelMask, string scopeName) => OriginalDebugManager.BeginTelemetryScopeInternal(levelMask, scopeName);

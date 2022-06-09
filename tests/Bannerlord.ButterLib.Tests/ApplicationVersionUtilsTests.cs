@@ -13,8 +13,11 @@ namespace Bannerlord.ButterLib.Tests
     public class ApplicationVersionUtilsTests
     {
         private static readonly string TestAppVersionStr = "e1.4.3.231432";
+#if e172
         private static readonly ApplicationVersion TestAppVersion = ApplicationVersion.FromString("e1.4.3.231432", ApplicationVersionGameType.Singleplayer);
-
+#elif e180
+        private static readonly ApplicationVersion TestAppVersion = ApplicationVersion.FromString("e1.4.3.231432");
+#endif
         [MethodImpl(MethodImplOptions.NoInlining)]
         private static bool MockedGetVersionStr(ref string __result)
         {

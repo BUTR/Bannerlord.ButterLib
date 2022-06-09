@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Version>0.0.1</Version>
-    <TargetFrameworks>net472</TargetFrameworks>
+    <TargetFramework>net472</TargetFramework>
     <LangVersion>9.0</LangVersion>
     <Nullable>enable</Nullable>
     <Platforms>x64</Platforms>
