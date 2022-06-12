@@ -47,6 +47,7 @@ jobs:
         beta-version: ${{secrets.SYNCED_GAME_BETA_VERSION}}
         stable-directory: 'bannerlord-stable'
         beta-directory: 'bannerlord-beta'
+        depotdownloader-version: '2.4.6'
 
     - name: Test
       run: >-
