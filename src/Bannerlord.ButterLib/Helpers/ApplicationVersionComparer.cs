@@ -13,7 +13,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
         private readonly ref struct VersionGameTypeWrapper
         {
             private delegate IComparable GetVersionGameTypeDelegate();
-            private delegate void SetVersionGameTypeDelegate(IComparable value);
+            private delegate void SetVersionGameTypeDelegate(IComparable? value);
 
             private readonly GetVersionGameTypeDelegate? _getVersionGameTypeDelegate;
             private readonly SetVersionGameTypeDelegate? _setVersionGameTypeDelegate;
@@ -24,7 +24,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
                 set => _setVersionGameTypeDelegate?.Invoke(value);
             }
 
-            public VersionGameTypeWrapper(object @object)
+            public VersionGameTypeWrapper(object? @object)
             {
                 var type = @object?.GetType();
 
