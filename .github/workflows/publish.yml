@@ -63,7 +63,7 @@ jobs:
         BANNERLORD_BUTR_UPLOAD_URL: ${{secrets.BANNERLORD_BUTR_UPLOAD_URL}}
 
     - name: Upload bannerlord folder
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: bannerlord
         path: ./bannerlord/
@@ -83,7 +83,7 @@ jobs:
         github-token: ${{secrets.GITHUB_TOKEN}}
 
     - name: Download stable bannerlord folder
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v3
       with:
         name: bannerlord
         path: ./bannerlord
@@ -128,7 +128,7 @@ jobs:
       shell: pwsh
 
     - name: Upload Screenshots Artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: Screenshots
         path: Screenshots.7z
@@ -192,7 +192,7 @@ jobs:
         github-token: ${{secrets.GITHUB_TOKEN}}
 
     - name: Download stable bannerlord folder
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v3
       with:
         name: bannerlord
         path: ./bannerlord

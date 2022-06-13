@@ -175,7 +175,7 @@ namespace Bannerlord.ButterLib
 
         private static void CheckGameVersion()
         {
-            var e172 = new ApplicationVersion(ApplicationVersionType.EarlyAccess, 1, 7, 2, 0, ApplicationVersionGameType.Singleplayer);
+            var e172 = ApplicationVersionHelper.TryParse("e1.7.2", out var e172Val) ? e172Val : ApplicationVersion.Empty;
             if (ApplicationVersionHelper.GameVersion() is { } gameVersion && gameVersion < e172)
             {
                 var sb = new StringBuilder();

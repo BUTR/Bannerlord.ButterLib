@@ -291,7 +291,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
             }
         }
 
-        private static Dictionary<string, TextObject> GetListAttributes(IEnumerable<string> valuesList, string separator = ", ", bool useDistinctValues = true)
+        private static Dictionary<string, TextObject?> GetListAttributes(IEnumerable<string> valuesList, string separator = ", ", bool useDistinctValues = true)
         {
             var localValues = (useDistinctValues ? valuesList.Distinct() : valuesList).ToList();
             return localValues.Any()

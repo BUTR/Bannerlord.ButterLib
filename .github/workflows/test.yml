@@ -38,7 +38,7 @@ jobs:
     runs-on: windows-latest
     steps:
     - name: Tests Setup
-      uses: butr/actions-tests-setup@v1.5.3
+      uses: butr/actions-tests-setup@v1.5.4
       with:
         github-token: ${{secrets.GITHUB_TOKEN}}
         steam-login: ${{secrets.STEAM_LOGIN}}
@@ -76,7 +76,7 @@ jobs:
       shell: pwsh
 
     - name: ReportGenerator
-      uses: danielpalme/ReportGenerator-GitHub-Action@5.1.3
+      uses: danielpalme/ReportGenerator-GitHub-Action@5.1.9
       with:
         reports: 'coverage_butterlib_stable_debug.xml;coverage_butterlib_stable_release.xml;coverage_butterlib_impl_stable_debug.xml;coverage_butterlib_impl_stable_release.xml;coverage_butterlib_impl_beta_debug.xml;coverage_butterlib_impl_beta_release.xml;'
         targetdir: 'coveragereport'
@@ -85,13 +85,13 @@ jobs:
         tag: '${{ github.run_number }}_${{ github.run_id }}' # Optional tag or build version.
 
     - name: Upload ReportGenerator to GitHub
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v3
       with:
         name: coverage-report
         path: coveragereport
 
     - name: Upload ReportGenerator to CodeCov
-      uses: codecov/codecov-action@v2.1.0
+      uses: codecov/codecov-action@v3.1.0
       with:
         token: ${{secrets.CODECOV_TOKEN}}
         file: coveragereport/Cobertura.xml
