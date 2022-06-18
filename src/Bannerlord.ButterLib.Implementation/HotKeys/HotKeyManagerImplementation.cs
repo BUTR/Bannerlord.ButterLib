@@ -48,7 +48,7 @@ namespace Bannerlord.ButterLib.Implementation.HotKeys
             var hotKeyCategoryContainer = new HotKeyCategoryContainer(_subModName, _hotKeys);
 
 #if e172
-            TWHotKeyManager.Initialize(new PlatformFilePath(EngineFilePaths.ConfigsPath, "BannerlordGameKeys.xml"), new List<GameKeyContext> { hotKeyCategoryContainer }, true);
+            TWHotKeyManager.Initialize(new PlatformFilePath(EngineFilePaths.ConfigsPath, "BannerlordGameKeys.xml"), new List<TaleWorlds.InputSystem.GameKeyContext> { hotKeyCategoryContainer }, true);
 #elif e180
             TWHotKeyManager.Initialize(new PlatformFilePath(EngineFilePaths.ConfigsPath, "BannerlordGameKeys.xml"), true);
 #endif
