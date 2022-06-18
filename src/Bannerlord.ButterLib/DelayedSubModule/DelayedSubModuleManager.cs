@@ -271,40 +271,6 @@ namespace Bannerlord.ButterLib.DelayedSubModule
             }
         }
 
-        private class Key : IEquatable<Key>
-        {
-            public Type Type { get; }
-            public int Priority { get; }
-            public string[]? Before { get; }
-            public string[]? After { get; }
-
-            public Key(Type type, int priority, string[]? before, string[]? after)
-            {
-                Type = type;
-                Priority = priority;
-                Before = before;
-                After = after;
-            }
-
-            public bool Equals(Key? other)
-            {
-                if (other is null) return false;
-                if (ReferenceEquals(this, other)) return true;
-                return Equals(Type, other.Type) && Equals(Priority, other.Priority) && Equals(Before, other.Before) && Equals(After, other.After);
-            }
-
-            public override bool Equals(object? obj)
-            {
-                if (obj is null) return false;
-                if (ReferenceEquals(this, obj)) return true;
-                if (obj.GetType() != GetType()) return false;
-                return Equals((Key) obj);
-            }
-
-            public override int GetHashCode() => HashCode.Combine(Type, Priority, Before, After);
-
-            public static bool operator ==(Key? left, Key? right) => Equals(left, right);
-            public static bool operator !=(Key? left, Key? right) => !Equals(left, right);
-        }
+        private record Key(Type Type, int Priority, string[]? Before, string[]? After);
     }
 }

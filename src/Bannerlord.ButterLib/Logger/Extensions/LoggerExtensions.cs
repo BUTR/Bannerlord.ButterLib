@@ -1,9 +1,10 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Bannerlord.ButterLib.Helpers;
+
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Internal;
 
 using System;
 
-using TaleWorlds.Core;
 using TaleWorlds.Library;
 
 namespace Bannerlord.ButterLib.Logger.Extensions
@@ -19,7 +20,7 @@ namespace Bannerlord.ButterLib.Logger.Extensions
         {
             var formattedValues = new FormattedLogValues(message, args);
             logger.Log(logLevel, 0, formattedValues, exception, MessageFormatter);
-            InformationManager.DisplayMessage(new InformationMessage($"{logLevel}: {formattedValues}", logLevel switch
+            InformationManagerUtils.DisplayMessage(InformationMessageUtils.Create($"{logLevel}: {formattedValues}", logLevel switch
             {
                 LogLevel.Trace => Color.FromUint(0x00FFFFFF), // white
                 LogLevel.Debug => Color.FromUint(0x00808080), // grey

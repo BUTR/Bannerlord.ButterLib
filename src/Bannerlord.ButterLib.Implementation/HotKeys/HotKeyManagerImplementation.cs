@@ -11,7 +11,6 @@ using System.Collections.Generic;
 using System.Linq;
 
 using TaleWorlds.Engine;
-using TaleWorlds.InputSystem;
 using TaleWorlds.Library;
 
 using HotKeyManager = Bannerlord.ButterLib.HotKeys.HotKeyManager;
