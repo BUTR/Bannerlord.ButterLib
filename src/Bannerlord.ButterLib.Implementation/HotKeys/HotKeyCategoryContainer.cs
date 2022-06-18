@@ -4,7 +4,6 @@
  * Authors: sirdoombox, BUTR.
  */
 
-using Bannerlord.BUTR.Shared.Helpers;
 using Bannerlord.ButterLib.HotKeys;
 
 using System.Collections.Generic;

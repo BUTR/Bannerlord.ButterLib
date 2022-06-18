@@ -82,7 +82,7 @@ namespace Bannerlord.ButterLib.DistanceMatrix
         /// </returns>
         /// <remarks>
         /// This method could be used to supply
-        /// <see cref="DistanceMatrixImplementation{T}.CalculateDistanceBetweenClans(Clan, Clan, List{DistanceMatrixResult})"/>
+        /// <see cref="DistanceMatrix{T}.CalculateDistanceBetweenClans(Clan, Clan, IEnumerable{DistanceMatrixResult})"/>
         /// method with required list argument.
         /// </remarks>
         List<DistanceMatrixResult> GetSettlementOwnersPairedList(DistanceMatrix<Settlement> settlementDistanceMatrix);

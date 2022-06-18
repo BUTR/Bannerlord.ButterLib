@@ -97,10 +97,10 @@ namespace Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended.Patches
 
         private static IEnumerable<CodeInstruction> AddDelayedEvent(IEnumerable<CodeInstruction> instructions, MethodInfo miToSearchFor, CodeInstruction[] ciToAdd, string originalMethodName)
         {
+            var codes = new List<CodeInstruction>(instructions);
             try
             {
                 int originalCallIndex = -1, finallyIndex = -1;
-                var codes = new List<CodeInstruction>(instructions);
                 for (var i = 0; i < codes.Count; ++i)
                 {
                     if (originalCallIndex < 0 && codes[i].Calls(miToSearchFor))
@@ -117,7 +117,7 @@ namespace Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended.Patches
                 if (originalCallIndex < 0 || finallyIndex < 0)
                 {
                     _log.LogDebug("Transpiler for " + originalMethodName + " could not find code hooks!");
-                    MBSubModuleBaseExSubSystem.LogNoHooksIssue(_log, originalCallIndex, finallyIndex, codes, MethodBase.GetCurrentMethod());
+                    MBSubModuleBaseExSubSystem.LogNoHooksIssue(_log, originalCallIndex, finallyIndex, codes, MethodBase.GetCurrentMethod()!);
                 }
                 else
                 {
@@ -125,12 +125,12 @@ namespace Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended.Patches
                     codes[finallyIndex + 1].MoveLabelsFrom(codes[finallyIndex + ciToAdd.Length + 1]);
                 }
 
-                return codes.AsEnumerable();
+                return codes;
             }
             catch (Exception ex)
             {
                 _log.LogError(ex, "Error while applying Harmony transpiler for " + originalMethodName);
-                return instructions;
+                return codes;
             }
         }
 

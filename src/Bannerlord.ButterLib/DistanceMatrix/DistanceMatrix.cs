@@ -12,8 +12,8 @@ using TaleWorlds.ObjectSystem;
 namespace Bannerlord.ButterLib.DistanceMatrix
 {
     /// <summary>
-    /// An abstract class used in a <see cref="T:Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix`1" /> derived class,
-    /// that pairs given objects of type <typeparamref name="T"/>
+    /// An abstract class used in a <see cref="Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix{T}" /> derived class,
+    /// that pairs given objects of type T
     /// and for each pair calculates the distance between the objects that formed it.
     /// </summary>
     public abstract class DistanceMatrix

@@ -7,7 +7,6 @@
 using System;
 
 using TaleWorlds.InputSystem;
-using TaleWorlds.MountAndBlade.ViewModelCollection;
 
 namespace Bannerlord.ButterLib.HotKeys
 {
@@ -41,7 +40,7 @@ namespace Bannerlord.ButterLib.HotKeys
 
         /// <summary>
         /// The Category in the options menu under which this hotkey will appear.
-        /// <see cref="ScoreboardVM.Categories"/>
+        /// <see cref="HotKeyManager.Categories"/>
         /// </summary>
         protected internal virtual string Category { get; } = HotKeyManager.Categories[HotKeyCategory.Action];
 

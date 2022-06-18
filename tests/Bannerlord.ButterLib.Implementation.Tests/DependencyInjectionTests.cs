@@ -8,6 +8,7 @@ using Bannerlord.ButterLib.Implementation.DistanceMatrix;
 using Bannerlord.ButterLib.SubModuleWrappers;
 
 using HarmonyLib;
+using HarmonyLib.BUTR.Extensions;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -24,7 +25,6 @@ using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.ObjectSystem;
 
-using SymbolExtensions2 = HarmonyLib.BUTR.Extensions.SymbolExtensions2;
 using TWCommon = TaleWorlds.Library.Common;
 
 namespace Bannerlord.ButterLib.Implementation.Tests
@@ -83,7 +83,7 @@ namespace Bannerlord.ButterLib.Implementation.Tests
         public void Setup()
         {
             var harmony = new Harmony($"{nameof(DependencyInjectionTests)}.{nameof(Setup)}");
-            harmony.Patch(SymbolExtensions.GetMethodInfo(() => FSIOHelper.GetConfigPath()),
+            harmony.Patch(SymbolExtensions2.GetMethodInfo(() => FSIOHelper.GetConfigPath()),
                 prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetConfigPath)));
             harmony.Patch(SymbolExtensions2.GetPropertyInfo(() => TWCommon.ConfigName!)!.GetMethod,
                 prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetConfigName)));

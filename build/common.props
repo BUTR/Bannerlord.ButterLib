@@ -4,9 +4,10 @@
   <!--Development Variables-->
   <PropertyGroup>
     <!--Module Version-->
-    <Version>2.1.3</Version>
+    <Version>2.1.4</Version>
     <!--Harmony Version-->
     <HarmonyVersion>2.2.1</HarmonyVersion>
+    <HarmonyExtensionsVersion>3.1.0.61</HarmonyExtensionsVersion>
     <!--Microsoft Extension Libraries Version-->
     <!--Serilog depends on abstraction 2.0.0, and since we can't do app redirects, we're stuck with that-->
     <ExtensionVersion>2.0.0</ExtensionVersion>
@@ -14,7 +15,6 @@
     <BuildResourcesVersion>1.0.1.68</BuildResourcesVersion>
     <BUTRSharedVersion>2.0.0.82</BUTRSharedVersion>
     <BUTRModuleManagerVersion>3.0.97</BUTRModuleManagerVersion>
-    <HarmonyExtensionsVersion>2.0.0.57</HarmonyExtensionsVersion>
   </PropertyGroup>
 
   <PropertyGroup>
