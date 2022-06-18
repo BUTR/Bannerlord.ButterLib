@@ -36,7 +36,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
                     : null;
             }
         }
-        
+
         public int Compare(ApplicationVersion x, ApplicationVersion y)
         {
             var applicationVersionTypeComparison = x.ApplicationVersionType.CompareTo(y.ApplicationVersionType);
