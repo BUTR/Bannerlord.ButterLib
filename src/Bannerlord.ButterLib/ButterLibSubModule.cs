@@ -5,6 +5,7 @@ using Bannerlord.ButterLib.DelayedSubModule;
 using Bannerlord.ButterLib.ExceptionHandler;
 using Bannerlord.ButterLib.ObjectSystem.Extensions;
 using Bannerlord.ButterLib.Options;
+using Bannerlord.ButterLib.SubModuleWrappers2;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -79,6 +80,7 @@ namespace Bannerlord.ButterLib
             Services.AddSubSystem<DelayedSubModuleSubSystem>();
             Services.AddSubSystem<ExceptionHandlerSubSystem>();
             Services.AddSubSystem<CrashUploaderSubSystem>();
+            Services.AddSubSystem<SubModuleWrappers2SubSystem>();
 
             Services.AddSingleton<ICrashUploader, BUTRCrashUploader>();
         }

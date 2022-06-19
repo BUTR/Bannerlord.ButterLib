@@ -499,7 +499,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                 patchBuilder.Clear();
                 foreach (var patch in patches)
                 {
-                    if (string.Equals(patch.owner, ExceptionHandlerSubSystem.Harmony.Id, StringComparison.InvariantCultureIgnoreCase))
+                    if (string.Equals(patch.owner, ExceptionHandlerSubSystem.Instance?.Harmony.Id, StringComparison.InvariantCultureIgnoreCase))
                         continue;
 
                     patchBuilder.Append("<li>")
