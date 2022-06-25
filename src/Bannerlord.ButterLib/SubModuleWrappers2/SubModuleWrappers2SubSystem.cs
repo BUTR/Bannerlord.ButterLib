@@ -10,7 +10,7 @@ namespace Bannerlord.ButterLib.SubModuleWrappers2
         public static SubModuleWrappers2SubSystem? Instance { get; private set; }
 
         private readonly Harmony Harmony = new("Bannerlord.ButterLib.SubModuleWrappers2");
-        
+
         public string Id => "SubModuleWrappers2";
         public string Description => "An wrapper for MBSubModuleBase based on Harmony patches.";
         public bool IsEnabled => true;
@@ -22,7 +22,7 @@ namespace Bannerlord.ButterLib.SubModuleWrappers2
             Instance = this;
             MBSubModuleBasePatch.Enable(Harmony);
         }
-        
+
         public void Enable() { }
         public void Disable() { }
     }
