@@ -1,7 +1,7 @@
 ﻿using Bannerlord.BUTR.Shared.Helpers;
 using Bannerlord.ButterLib.Common.Extensions;
 using Bannerlord.ButterLib.Common.Helpers;
-using Bannerlord.ButterLib.SubModuleWrappers;
+using Bannerlord.ButterLib.SubModuleWrappers2;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -231,17 +231,17 @@ namespace Bannerlord.ButterLib
             ServiceRegistrationWasCalled = true;
 
             var logger = this.GetTempServiceProvider()?.GetRequiredService<ILogger<ImplementationLoaderSubModule>>() ?? NullLogger<ImplementationLoaderSubModule>.Instance;
-            SubModules.AddRange(LoadAllImplementations(logger).Select(x => new MBSubModuleBaseWrapper(x)).ToList());
+            _subModules.AddRange(LoadAllImplementations(logger).Select(x => new MBSubModuleBaseWrapper(x)).ToList());
 
             base.OnServiceRegistration();
         }
 
-        protected override void OnSubModuleLoad()
+        public override void OnSubModuleLoad()
         {
             if (!ServiceRegistrationWasCalled)
             {
                 var logger = this.GetTempServiceProvider()?.GetRequiredService<ILogger<ImplementationLoaderSubModule>>() ?? NullLogger<ImplementationLoaderSubModule>.Instance;
-                SubModules.AddRange(LoadAllImplementations(logger).Select(x => new MBSubModuleBaseWrapper(x)).ToList());
+                _subModules.AddRange(LoadAllImplementations(logger).Select(x => new MBSubModuleBaseWrapper(x)).ToList());
             }
 
             base.OnSubModuleLoad();

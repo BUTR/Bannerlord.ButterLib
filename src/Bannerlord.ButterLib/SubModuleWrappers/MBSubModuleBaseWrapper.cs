@@ -1,5 +1,7 @@
 ﻿using HarmonyLib.BUTR.Extensions;
 
+using System;
+
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 
@@ -9,6 +11,7 @@ namespace Bannerlord.ButterLib.SubModuleWrappers
     /// Wraps a <see cref="MBSubModuleBase"/> so protected methods could be called
     /// without a performance hit
     /// </summary>
+    [Obsolete("Use Bannerlord.ButterLib.SubModuleWrappers2 instead!", true)]
     public class MBSubModuleBaseWrapper : MBSubModuleBase
     {
         private delegate void OnSubModuleLoadDelegate();

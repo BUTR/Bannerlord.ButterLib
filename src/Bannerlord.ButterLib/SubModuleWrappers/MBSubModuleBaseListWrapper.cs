@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using TaleWorlds.Core;
@@ -10,6 +11,7 @@ namespace Bannerlord.ButterLib.SubModuleWrappers
     /// Wraps several <see cref="MBSubModuleBase"/> so when the game calls any method, it
     /// will be passed to its children.
     /// </summary>
+    [Obsolete("Use Bannerlord.ButterLib.SubModuleWrappers2 instead!", true)]
     public class MBSubModuleBaseListWrapper : MBSubModuleBase
     {
         protected List<MBSubModuleBaseWrapper> SubModules { get; } = new();

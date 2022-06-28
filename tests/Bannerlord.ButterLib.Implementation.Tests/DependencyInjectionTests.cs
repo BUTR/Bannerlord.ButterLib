@@ -5,7 +5,7 @@ using Bannerlord.ButterLib.ExceptionHandler;
 using Bannerlord.ButterLib.Extensions;
 using Bannerlord.ButterLib.Implementation.Common.Extensions;
 using Bannerlord.ButterLib.Implementation.DistanceMatrix;
-using Bannerlord.ButterLib.SubModuleWrappers;
+using Bannerlord.ButterLib.SubModuleWrappers2;
 
 using HarmonyLib;
 using HarmonyLib.BUTR.Extensions;
@@ -93,14 +93,14 @@ namespace Bannerlord.ButterLib.Implementation.Tests
 
             var subModule = new ButterLibSubModule();
             var subModuleWrapper = new MBSubModuleBaseWrapper(subModule);
-            subModuleWrapper.SubModuleLoad();
+            subModuleWrapper.OnSubModuleLoad();
             ExceptionHandlerSubSystem.Instance?.Disable();
 
             var services = ButterLibSubModule.Instance!.GetServices()!;
             services.AddScoped(typeof(DistanceMatrix<>), typeof(DistanceMatrixImplementation<>));
             services.AddSingleton<IDistanceMatrixStatic, DistanceMatrixStaticImplementation>();
             services.AddSingleton<ICampaignExtensions, CampaignExtensionsImplementation>();
-            subModuleWrapper.BeforeInitialModuleScreenSetAsRoot();
+            subModuleWrapper.OnBeforeInitialModuleScreenSetAsRoot();
         }
 
         [Test]

@@ -3,8 +3,10 @@ using Bannerlord.ButterLib.Common.Extensions;
 using Bannerlord.ButterLib.CrashUploader;
 using Bannerlord.ButterLib.DelayedSubModule;
 using Bannerlord.ButterLib.ExceptionHandler;
+using Bannerlord.ButterLib.Helpers;
 using Bannerlord.ButterLib.ObjectSystem.Extensions;
 using Bannerlord.ButterLib.Options;
+using Bannerlord.ButterLib.SubModuleWrappers2;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -79,6 +81,7 @@ namespace Bannerlord.ButterLib
             Services.AddSubSystem<DelayedSubModuleSubSystem>();
             Services.AddSubSystem<ExceptionHandlerSubSystem>();
             Services.AddSubSystem<CrashUploaderSubSystem>();
+            Services.AddSubSystem<SubModuleWrappers2SubSystem>();
 
             Services.AddSingleton<ICrashUploader, BUTRCrashUploader>();
         }
@@ -112,6 +115,14 @@ namespace Bannerlord.ButterLib
             Trace.Listeners.Add(TextWriterTraceListener = new TextWriterTraceListener(new StreamWriter(new MemoryStream(), Encoding.UTF8, 1024, true)));
             Trace.AutoFlush = true;
             Logger.LogTrace("Added System.Diagnostics.Trace temporary listener.");
+            
+            if (ApplicationVersionHelper.GameVersion() is { } gameVersion)
+            {
+                if (gameVersion.Major is 1 && gameVersion.Minor is 8 && gameVersion.Revision is >= 0)
+                {
+                    LocalizedTextManagerUtils.LoadLanguageData();
+                }
+            }
 
             Logger.LogTrace("OnSubModuleLoad: Done");
         }

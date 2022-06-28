@@ -1,30 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Module>
-  <Name value="$modulename$" />
+<Module xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+        xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/BUTR/Bannerlord.XmlSchemas/master/SubModule.xsd" >
   <Id value="$moduleid$" />
+  <Name value="$modulename$" />
   <Version value="v$version$" />
   <Official value="false" />
   <DefaultModule value="false" />
   <SingleplayerModule value="true" />
   <MultiplayerModule value="false" />
+  <ModuleCategory value="Singleplayer" />
   <Url value="https://www.nexusmods.com/mountandblade2bannerlord/mods/2018" />
   <DependedModules>
     <DependedModule Id="Bannerlord.Harmony" DependentVersion="v$harmonyversion$" />
     <!--<DependedModule Id="Bannerlord.ModuleLoader" />-->
   </DependedModules>
-  <!-- Prototype -->
+  <ModulesToLoadAfterThis>
+    <Module Id="Native" />
+    <Module Id="SandBoxCore" />
+    <Module Id="Sandbox" />
+    <Module Id="StoryMode" />
+    <Module Id="CustomBattle" />
+  </ModulesToLoadAfterThis>
+  <!-- Community Dependency Metadata -->
+  <!-- https://github.com/BUTR/Bannerlord.BUTRLoader#for-modders -->
   <DependedModuleMetadatas>
     <DependedModuleMetadata id="Bannerlord.Harmony" order="LoadBeforeThis" version="v$harmonyversion$" />
     <DependedModuleMetadata id="BetterExceptionWindow" order="LoadBeforeThis" optional="true" />
     <DependedModuleMetadata id="Bannerlord.ModuleLoader" order="LoadBeforeThis" optional="true" />
 
-    <DependedModuleMetadata id="Native" order="LoadAfterThis" />
-    <DependedModuleMetadata id="SandBoxCore" order="LoadAfterThis" optional="true" />
-    <DependedModuleMetadata id="Sandbox" order="LoadAfterThis" optional="true" />
-    <DependedModuleMetadata id="StoryMode" order="LoadAfterThis" />
-    <DependedModuleMetadata id="CustomBattle" order="LoadAfterThis" optional="true" />
+    <DependedModuleMetadata id="Native" order="LoadAfterThis" version="e$gameversion$.*" />
+    <DependedModuleMetadata id="SandBoxCore" order="LoadAfterThis" version="e$gameversion$.*" optional="true" />
+    <DependedModuleMetadata id="Sandbox" order="LoadAfterThis" version="e$gameversion$.*" optional="true" />
+    <DependedModuleMetadata id="StoryMode" order="LoadAfterThis" version="e$gameversion$.*" />
+    <DependedModuleMetadata id="CustomBattle" order="LoadAfterThis" version="e$gameversion$.*" optional="true" />
   </DependedModuleMetadatas>
-  <!-- Prototype -->
+  <!-- Community Dependency Metadata -->
   <SubModules>
     <SubModule>
       <Name value="ButterLib" />
