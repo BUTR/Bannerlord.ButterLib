@@ -127,7 +127,7 @@ namespace Bannerlord.ButterLib.SubModuleWrappers2
             foreach (var subModule in SubModules)
                 subModule.OnInitialState();
         }
-        
+
         public new virtual void AfterAsyncTickTick(float dt)
         {
             foreach (var subModule in SubModules)
