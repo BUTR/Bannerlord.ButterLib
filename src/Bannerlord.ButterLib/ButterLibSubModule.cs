@@ -115,7 +115,7 @@ namespace Bannerlord.ButterLib
             Trace.Listeners.Add(TextWriterTraceListener = new TextWriterTraceListener(new StreamWriter(new MemoryStream(), Encoding.UTF8, 1024, true)));
             Trace.AutoFlush = true;
             Logger.LogTrace("Added System.Diagnostics.Trace temporary listener.");
-            
+
             if (ApplicationVersionHelper.GameVersion() is { } gameVersion)
             {
                 if (gameVersion.Major is 1 && gameVersion.Minor is 8 && gameVersion.Revision is >= 0)
