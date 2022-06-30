@@ -16,7 +16,7 @@ namespace Bannerlord.ButterLib.Helpers
         private delegate XmlDocument? LoadXmlFileDelegate(string path);
         private static readonly LoadXmlFileDelegate? LoadXmlFile =
             AccessTools2.GetDeclaredDelegate<LoadXmlFileDelegate>("TaleWorlds.Localization.LocalizedTextManager:LoadXmlFile");
-        
+
         private delegate void LoadFromXmlDelegate(XmlDocument doc, string modulePath);
         private static readonly LoadFromXmlDelegate? LoadFromXml =
             AccessTools2.GetDeclaredDelegate<LoadFromXmlDelegate>("TaleWorlds.Localization.LanguageData:LoadFromXml");
