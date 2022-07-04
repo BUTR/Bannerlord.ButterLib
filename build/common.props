@@ -4,7 +4,7 @@
   <!--Development Variables-->
   <PropertyGroup>
     <!--Module Version-->
-    <Version>2.1.9</Version>
+    <Version>2.1.10</Version>
     <!--Harmony Version-->
     <HarmonyVersion>2.2.1</HarmonyVersion>
     <HarmonyExtensionsVersion>3.1.0.61</HarmonyExtensionsVersion>
@@ -15,7 +15,7 @@
     <!--BuildResources Version-->
     <BuildResourcesVersion>1.0.1.68</BuildResourcesVersion>
     <BUTRSharedVersion>2.0.0.82</BUTRSharedVersion>
-    <BUTRModuleManagerVersion>3.0.97</BUTRModuleManagerVersion>
+    <BUTRModuleManagerVersion>4.0.113</BUTRModuleManagerVersion>
   </PropertyGroup>
 
   <PropertyGroup>
