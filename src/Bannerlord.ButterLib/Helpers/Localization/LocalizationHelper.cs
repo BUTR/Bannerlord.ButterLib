@@ -61,6 +61,8 @@ namespace Bannerlord.ButterLib.Common.Helpers
         private static readonly ReadOnlyCollection<int> WesternSlavicPluralExceptions = new(new List<int> { 12, 13, 14 });
         private static readonly ReadOnlyCollection<int> WesternSlavicSingularNumerics = new(new List<int> { 2, 3, 4 });
 
+        private static readonly ReadOnlyCollection<string> SingleZeroLanguageIDs = new(new List<string> { "French", "Français" });
+
         private static readonly ReadOnlyCollection<string> EasternSlavicGroupLanguageIDs = new(new List<string> { "Russian", "Русский", "Ukrainian", "Українська", "Belarusian", "Беларускі" });
         private static readonly ReadOnlyCollection<string> WesternSlavicGroupLanguageIDs = new(new List<string> { "Polish", "Polski" });
 
@@ -212,6 +214,10 @@ namespace Bannerlord.ButterLib.Common.Helpers
             {
                 return GetWesternSlavicPluralFormInternal(number);
             }
+            if (SingleZeroLanguageIDs.Contains(BannerlordConfig.Language) && number == 0)
+            {
+                return PluralForm.Singular;
+            }
             return number != 1 ? PluralForm.Plural : PluralForm.Singular;
         }
 
@@ -224,7 +230,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
             {
                 return GetEasternSlavicPluralFormInternal((int) Math.Floor(number));
             }
-            return number > 1f ? PluralForm.Plural : PluralForm.Singular;
+            return Math.Abs(number) > 1f ? PluralForm.Plural : PluralForm.Singular; //Language Plural Rules for floating numbers are actually much more complicated than that, but not worth the effort. For now.
         }
 
         private static Dictionary<string, object> GetPluralFormAttributes(PluralForm pluralForm) =>
