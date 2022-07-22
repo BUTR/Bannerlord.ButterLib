@@ -114,7 +114,16 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             var trace = new StackTrace(ex, 0, true);
             foreach (var frame in trace.GetFrames() ?? Array.Empty<StackFrame>())
             {
-                var method = Harmony.GetMethodFromStackframe(frame);
+                if (!frame.HasMethod()) continue;
+
+                var frameMethod = frame.GetMethod();
+                
+                // The given generic instantiation was invalid.
+                // From what I understand, this will occur with generic methods
+                var method = frameMethod.DeclaringType is not null && frameMethod.DeclaringType.IsGenericTypeDefinition
+                    ? frameMethod
+                    : Harmony.GetMethodFromStackframe(frame);
+                
                 var patches = FindPatches(method);
 
                 foreach (var (methodBase, extendedModuleInfo) in GetFinalizers(patches))
@@ -131,6 +140,8 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                 }
                 foreach (var (methodBase, extendedModuleInfo) in GetTranspilers(patches))
                 {
+                    // Ignore blank transpilers used to force the jitter to skip inlining
+                    if (methodBase.Name == "BlankTranspiler") continue;
                     yield return new(methodBase, extendedModuleInfo, frame.ToString() ?? string.Empty);
                 }
 
