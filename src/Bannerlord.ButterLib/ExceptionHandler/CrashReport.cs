@@ -117,13 +117,13 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                 if (!frame.HasMethod()) continue;
 
                 var frameMethod = frame.GetMethod();
-                
+
                 // The given generic instantiation was invalid.
                 // From what I understand, this will occur with generic methods
                 var method = frameMethod.DeclaringType is not null && frameMethod.DeclaringType.IsGenericTypeDefinition
                     ? frameMethod
                     : Harmony.GetMethodFromStackframe(frame);
-                
+
                 var patches = FindPatches(method);
 
                 foreach (var (methodBase, extendedModuleInfo) in GetFinalizers(patches))
