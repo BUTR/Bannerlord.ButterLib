@@ -27,41 +27,41 @@ namespace Bannerlord.ButterLib.Implementation.Logging
 
         public void ShowWarning(string message)
         {
-            _debugManagerLogger.LogWarning(message);
+            _debugManagerLogger.LogWarning("{Message}", message);
             OriginalDebugManager.ShowWarning(message);
         }
 
         public void DisplayDebugMessage(string message)
         {
-            _debugManagerLogger.LogDebug("{message}", message);
+            _debugManagerLogger.LogDebug("{Message}", message);
             OriginalDebugManager.DisplayDebugMessage(message);
         }
 
         public void Print(string message, int logLevel = 0, Debug.DebugColor color = Debug.DebugColor.White, ulong debugFilter = 17592186044416)
         {
             // logLevel is not used by the game right now.
-            _debugManagerLogger.LogInformation("{message}", message);
+            _debugManagerLogger.LogInformation("{Message}", message);
             OriginalDebugManager.Print(message, logLevel, color, debugFilter);
         }
         public void PrintError(string error, string stackTrace, ulong debugFilter = 17592186044416)
         {
-            _debugManagerLogger.LogError("{error}{nl}{stackTrace}", error, Environment.NewLine, stackTrace);
+            _debugManagerLogger.LogError("{Error}{NL}{StackTrace}", error, Environment.NewLine, stackTrace);
             OriginalDebugManager.PrintError(error, stackTrace, debugFilter);
         }
         public void PrintWarning(string warning, ulong debugFilter = 17592186044416)
         {
-            _debugManagerLogger.LogWarning("{warning}", warning);
+            _debugManagerLogger.LogWarning("{Warning}", warning);
             OriginalDebugManager.PrintWarning(warning, debugFilter);
         }
 
         public void SetCrashReportCustomString(string customString)
         {
-            _debugManagerLogger.LogCritical("Crash Report: {customString}", customString);
+            _debugManagerLogger.LogCritical("Crash Report: {CustomString}", customString);
             OriginalDebugManager.SetCrashReportCustomString(customString);
         }
         public void SetCrashReportCustomStack(string customStack)
         {
-            _debugManagerLogger.LogCritical("Crash Report StackTrace: {customStack}", customStack);
+            _debugManagerLogger.LogCritical("Crash Report StackTrace: {CustomStack}", customStack);
             OriginalDebugManager.SetCrashReportCustomStack(customStack);
         }
 
@@ -75,14 +75,14 @@ namespace Bannerlord.ButterLib.Implementation.Logging
 
         public void WriteDebugLineOnScreen(string message)
         {
-            _debugManagerLogger.LogDebug("{message}", message);
+            _debugManagerLogger.LogDebug("{Message}", message);
             OriginalDebugManager.WriteDebugLineOnScreen(message);
         }
 
         public void Assert(bool condition, string message, [CallerFilePath] string callerFile = "", [CallerMemberName] string callerMethod = "", [CallerLineNumber] int callerLine = 0)
         {
             if (!condition)
-                _debugManagerLogger.LogDebug("Assert Failed!: {message}; CallerFilePath: {callerFile}; CallerMemberName: {callerMethod}; CallerLineNumber: {callerLine}", message, callerFile, callerMethod, callerLine);
+                _debugManagerLogger.LogDebug("Assert Failed!: {Message}; CallerFilePath: {CallerFile}; CallerMemberName: {CallerMethod}; CallerLineNumber: {CallerLine}", message, callerFile, callerMethod, callerLine);
             // ReSharper disable ExplicitCallerInfoArgument
             OriginalDebugManager.Assert(condition, message, callerFile, callerMethod, callerLine);
             // ReSharper restore ExplicitCallerInfoArgument
@@ -91,7 +91,7 @@ namespace Bannerlord.ButterLib.Implementation.Logging
         public void SilentAssert(bool condition, string message = "", bool getDump = false, [CallerFilePath] string callerFile = "", [CallerMemberName] string callerMethod = "", [CallerLineNumber] int callerLine = 0)
         {
             if (!condition)
-                _debugManagerLogger.LogDebug("Silent Assert Failed!: {message}; CallerFilePath: {callerFile}; CallerMemberName: {callerMethod}; CallerLineNumber: {callerLine}", message, callerFile, callerMethod, callerLine);
+                _debugManagerLogger.LogDebug("Silent Assert Failed!: {Message}; CallerFilePath: {CallerFile}; CallerMemberName: {CallerMethod}; CallerLineNumber: {CallerLine}", message, callerFile, callerMethod, callerLine);
             // ReSharper disable ExplicitCallerInfoArgument
             OriginalDebugManager.SilentAssert(condition, message, getDump, callerFile, callerMethod, callerLine);
             // ReSharper restore ExplicitCallerInfoArgument
@@ -125,7 +125,7 @@ namespace Bannerlord.ButterLib.Implementation.Logging
 
         public void ShowError(string message)
         {
-            _debugManagerLogger.LogError("{message}", message);
+            _debugManagerLogger.LogError("{Message}", message);
             OriginalDebugManager.ShowError(message);
         }
 

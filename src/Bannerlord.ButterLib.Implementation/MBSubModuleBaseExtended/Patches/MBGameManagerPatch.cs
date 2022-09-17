@@ -2,6 +2,7 @@
 using Bannerlord.ButterLib.MBSubModuleBaseExtended;
 
 using HarmonyLib;
+using HarmonyLib.BUTR.Extensions;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -15,7 +16,6 @@ using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
 
 using TaleWorlds.Core;
-using TaleWorlds.MountAndBlade;
 
 using Module = TaleWorlds.MountAndBlade.Module;
 
@@ -25,18 +25,16 @@ namespace Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended.Patches
     {
         private static ILogger _log = default!;
 
-        private static readonly Type? TargetType = typeof(MBGameManager);
+        private static readonly MethodInfo? miTargetMethodGameStart = AccessTools2.Method("TaleWorlds.MountAndBlade.MBGameManager:OnGameStart");
+        private static readonly MethodInfo? miTargetMethodGameEnd = AccessTools2.Method("TaleWorlds.MountAndBlade.MBGameManager:OnGameEnd");
 
-        private static readonly MethodInfo? miTargetMethodGameStart = AccessTools.Method(TargetType, "OnGameStart");
-        private static readonly MethodInfo? miTargetMethodGameEnd = AccessTools.Method(TargetType, "OnGameEnd");
+        private static readonly MethodInfo? miPatchMethod = AccessTools2.Method("Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended.Patches.MBGameManagerPatch:Transpiler");
 
-        private static readonly MethodInfo? miPatchMethod = AccessTools.Method(typeof(MBGameManagerPatch), nameof(Transpiler));
+        private static readonly MethodInfo? miMBSubModuleBaseOnGameStartEvent = AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnGameStart");
+        private static readonly MethodInfo? miMBSubModuleBaseOnGameEndEvent = AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnGameEnd");
 
-        private static readonly MethodInfo? miMBSubModuleBaseOnGameStartEvent = AccessTools.Method(typeof(MBSubModuleBase), "OnGameStart");
-        private static readonly MethodInfo? miMBSubModuleBaseOnGameEndEvent = AccessTools.Method(typeof(MBSubModuleBase), "OnGameEnd");
-
-        private static readonly MethodInfo? miDelayedOnGameStartEventCaller = AccessTools.Method(typeof(MBGameManagerPatch), nameof(DelayedOnGameStartEvent));
-        private static readonly MethodInfo? miDelayedOnGameEndEventCaller = AccessTools.Method(typeof(MBGameManagerPatch), nameof(DelayedOnGameEndEvent));
+        private static readonly MethodInfo? miDelayedOnGameStartEventCaller = AccessTools2.Method("Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended.Patches.MBGameManagerPatch:DelayedOnGameStartEvent");
+        private static readonly MethodInfo? miDelayedOnGameEndEventCaller = AccessTools2.Method("Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended.Patches.MBGameManagerPatch:DelayedOnGameEndEvent");
 
         internal static bool Enable(Harmony harmony)
         {
@@ -80,7 +78,7 @@ namespace Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended.Patches
                                                       new(opcode: OpCodes.Call, operand: miDelayedOnGameEndEventCaller) };
                     break;
                 default:
-                    _log.LogError("Error while applying Harmony transpiler for " + originalMethodName + " - unexpected target method!");
+                    _log.LogError("Error while applying Harmony transpiler for {Method} - unexpected target method!", originalMethodName);
                     return instructions;
             }
 
@@ -88,8 +86,7 @@ namespace Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended.Patches
         }
 
         private static bool CheckRequiredMethodInfos() =>
-            MBSubModuleBaseExSubSystem.NotNull(_log, TargetType, nameof(TargetType))
-            & MBSubModuleBaseExSubSystem.NotNull(_log, miTargetMethodGameStart, nameof(miTargetMethodGameStart))
+            MBSubModuleBaseExSubSystem.NotNull(_log, miTargetMethodGameStart, nameof(miTargetMethodGameStart))
             & MBSubModuleBaseExSubSystem.NotNull(_log, miTargetMethodGameEnd, nameof(miTargetMethodGameEnd))
             & MBSubModuleBaseExSubSystem.NotNull(_log, miPatchMethod, nameof(miPatchMethod))
             & MBSubModuleBaseExSubSystem.NotNull(_log, miMBSubModuleBaseOnGameStartEvent, nameof(miMBSubModuleBaseOnGameStartEvent))
@@ -116,7 +113,7 @@ namespace Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended.Patches
                 }
                 if (originalCallIndex < 0 || finallyIndex < 0)
                 {
-                    _log.LogDebug("Transpiler for " + originalMethodName + " could not find code hooks!");
+                    _log.LogDebug("Transpiler for {Method} could not find code hooks!", originalMethodName);
                     MBSubModuleBaseExSubSystem.LogNoHooksIssue(_log, originalCallIndex, finallyIndex, codes, MethodBase.GetCurrentMethod()!);
                 }
                 else
@@ -129,7 +126,7 @@ namespace Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended.Patches
             }
             catch (Exception ex)
             {
-                _log.LogError(ex, "Error while applying Harmony transpiler for " + originalMethodName);
+                _log.LogError(ex, "Error while applying Harmony transpiler for {Method}", originalMethodName);
                 return codes;
             }
         }

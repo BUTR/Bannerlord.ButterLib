@@ -19,8 +19,6 @@ using TaleWorlds.CampaignSystem.Roster;
 using TaleWorlds.Core;
 using TaleWorlds.SaveSystem;
 
-using static HarmonyLib.AccessTools;
-
 namespace Bannerlord.ButterLib.Tests.SaveSystem
 {
     public class JsonSerializationTests
@@ -32,8 +30,8 @@ namespace Bannerlord.ButterLib.Tests.SaveSystem
             return false;
         }
 
-        private static readonly FieldRef<FlattenedTroopRoster, Dictionary<UniqueTroopDescriptor, FlattenedTroopRosterElement>>? ElementDictionary =
-            FieldRefAccess<FlattenedTroopRoster, Dictionary<UniqueTroopDescriptor, FlattenedTroopRosterElement>>("_elementDictionary");
+        private static readonly AccessTools.FieldRef<FlattenedTroopRoster, Dictionary<UniqueTroopDescriptor, FlattenedTroopRosterElement>>? ElementDictionary =
+            AccessTools.FieldRefAccess<FlattenedTroopRoster, Dictionary<UniqueTroopDescriptor, FlattenedTroopRosterElement>>("_elementDictionary");
 
         [SetUp]
         public void Setup()

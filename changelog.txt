@@ -1,4 +1,10 @@
 ---------------------------------------------------------------------------------------------------
+Version: 2.2.0
+Game Versions: e1.7.2,e1.8.0
+* Added settings for subsystems
+* Minor code adjustments
+* Better module resolution
+---------------------------------------------------------------------------------------------------
 Version: 2.1.13
 Game Versions: e1.7.2,e1.8.0
 * Crash report was not showing in some cases, better filtering

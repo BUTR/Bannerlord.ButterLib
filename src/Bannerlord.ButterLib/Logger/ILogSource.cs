@@ -31,7 +31,7 @@ namespace Bannerlord.ButterLib.Logger
                 : $"{System.IO.Path.GetFileNameWithoutExtension(filename)}{date}{System.IO.Path.GetExtension(filename)}";
 
             Name = System.IO.Path.GetFileNameWithoutExtension(filenameFixed);
-            Path = System.IO.Path.Combine(directory, filenameFixed);
+            Path = System.IO.Path.Combine(directory!, filenameFixed);
             Sinks = sinks;
         }
 

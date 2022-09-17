@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging.Abstractions;
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -54,6 +55,9 @@ namespace Bannerlord.ButterLib.ExceptionHandler
 
         private static void Finalizer(Exception? __exception)
         {
+            if (ExceptionHandlerSubSystem.Instance?.DisableWhenDebuggerIsAttached == true && Debugger.IsAttached)
+                return;
+            
             if (__exception is not null && !SuppressedExceptions.Contains(ExceptionIdentifier.FromException(__exception)))
             {
                 SuppressedExceptions.Add(ExceptionIdentifier.FromException(__exception));

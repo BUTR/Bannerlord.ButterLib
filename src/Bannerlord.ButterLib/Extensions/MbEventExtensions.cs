@@ -15,7 +15,7 @@ namespace Bannerlord.ButterLib.Common.Extensions
         internal static class MbEvent1InvokeHandler<T1>
         {
             private delegate void InvokeDelegate(MbEvent<T1> instance, T1 t1);
-            private static InvokeDelegate? Delegate { get; } = AccessTools2.GetDeclaredDelegate<InvokeDelegate>(typeof(MbEvent<T1>), "Invoke");
+            private static InvokeDelegate? Delegate { get; } = AccessTools2.GetDeclaredDelegate<InvokeDelegate>("TaleWorlds.CampaignSystem.MbEvent`1:Invoke");
 
             public static void Invoke(MbEvent<T1> instance, T1 t1)
             {
@@ -25,7 +25,7 @@ namespace Bannerlord.ButterLib.Common.Extensions
         internal static class MbEvent2InvokeHandler<T1, T2>
         {
             private delegate void InvokeDelegate(MbEvent<T1, T2> instance, T1 t1, T2 t2);
-            private static InvokeDelegate? Delegate { get; } = AccessTools2.GetDeclaredDelegate<InvokeDelegate>(typeof(MbEvent<T1, T2>), "Invoke");
+            private static InvokeDelegate? Delegate { get; } = AccessTools2.GetDeclaredDelegate<InvokeDelegate>("TaleWorlds.CampaignSystem.MbEvent`2:Invoke");
 
             public static void Invoke(MbEvent<T1, T2> instance, T1 t1, T2 t2)
             {
@@ -35,7 +35,7 @@ namespace Bannerlord.ButterLib.Common.Extensions
         internal static class MbEvent3InvokeHandler<T1, T2, T3>
         {
             private delegate void InvokeDelegate(MbEvent<T1, T2, T3> instance, T1 t1, T2 t2, T3 t3);
-            private static readonly InvokeDelegate? Delegate = AccessTools2.GetDeclaredDelegate<InvokeDelegate>(typeof(MbEvent<T1, T2, T3>), "Invoke");
+            private static readonly InvokeDelegate? Delegate = AccessTools2.GetDeclaredDelegate<InvokeDelegate>("TaleWorlds.CampaignSystem.MbEvent`3:Invoke");
 
             public static void Invoke(MbEvent<T1, T2, T3> instance, T1 t1, T2 t2, T3 t3)
             {
@@ -45,7 +45,7 @@ namespace Bannerlord.ButterLib.Common.Extensions
         internal static class MbEvent4InvokeHandler<T1, T2, T3, T4>
         {
             private delegate void InvokeDelegate(MbEvent<T1, T2, T3, T4> instance, T1 t1, T2 t2, T3 t3, T4 t4);
-            private static readonly InvokeDelegate? Delegate = AccessTools2.GetDeclaredDelegate<InvokeDelegate>(typeof(MbEvent<T1, T2, T3, T4>), "Invoke");
+            private static readonly InvokeDelegate? Delegate = AccessTools2.GetDeclaredDelegate<InvokeDelegate>("TaleWorlds.CampaignSystem.MbEvent`4:Invoke");
 
             public static void Invoke(MbEvent<T1, T2, T3, T4> instance, T1 t1, T2 t2, T3 t3, T4 t4)
             {
@@ -55,7 +55,7 @@ namespace Bannerlord.ButterLib.Common.Extensions
         internal static class MbEvent5InvokeHandler<T1, T2, T3, T4, T5>
         {
             private delegate void InvokeDelegate(MbEvent<T1, T2, T3, T4, T5> instance, T1 t1, T2 t2, T3 t3, T4 t4, T5 t5);
-            private static readonly InvokeDelegate? Delegate = AccessTools2.GetDeclaredDelegate<InvokeDelegate>(typeof(MbEvent<T1, T2, T3, T4, T5>), "Invoke");
+            private static readonly InvokeDelegate? Delegate = AccessTools2.GetDeclaredDelegate<InvokeDelegate>("TaleWorlds.CampaignSystem.MbEvent`5:Invoke");
 
             public static void Invoke(MbEvent<T1, T2, T3, T4, T5> instance, T1 t1, T2 t2, T3 t3, T4 t4, T5 t5)
             {
@@ -65,7 +65,7 @@ namespace Bannerlord.ButterLib.Common.Extensions
         internal static class MbEvent6InvokeHandler<T1, T2, T3, T4, T5, T6>
         {
             private delegate void InvokeDelegate(MbEvent<T1, T2, T3, T4, T5, T6> instance, T1 t1, T2 t2, T3 t3, T4 t4, T5 t5, T6 t6);
-            private static readonly InvokeDelegate? Delegate = AccessTools2.GetDeclaredDelegate<InvokeDelegate>(typeof(MbEvent<T1, T2, T3, T4, T5, T6>), "Invoke");
+            private static readonly InvokeDelegate? Delegate = AccessTools2.GetDeclaredDelegate<InvokeDelegate>("TaleWorlds.CampaignSystem.MbEvent`6:Invoke");
 
             public static void Invoke(MbEvent<T1, T2, T3, T4, T5, T6> instance, T1 t1, T2 t2, T3 t3, T4 t4, T5 t5, T6 t6)
             {

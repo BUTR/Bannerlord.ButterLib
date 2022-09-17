@@ -1,6 +1,5 @@
-﻿using Bannerlord.ButterLib.Common.Helpers;
-using Bannerlord.ButterLib.DelayedSubModule;
-using Bannerlord.ButterLib.SubModuleWrappers;
+﻿using Bannerlord.ButterLib.DelayedSubModule;
+using Bannerlord.ButterLib.SubModuleWrappers2;
 using Bannerlord.ModuleManager;
 
 using HarmonyLib;
@@ -86,7 +85,7 @@ namespace Bannerlord.ButterLib.Tests.DelayedSubModule
 
             // Manually trigger OnSubModuleLoad and confirm that the delegate is now called
             var module = new MBSubModuleBaseWrapper(new TestSubModuleTarget());
-            module.SubModuleLoad();
+            module.OnSubModuleLoad();
             Assert.True(delegateWasCalled);
         }
 

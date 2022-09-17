@@ -114,7 +114,7 @@ namespace Bannerlord.ButterLib
 
             Trace.Listeners.Add(TextWriterTraceListener = new TextWriterTraceListener(new StreamWriter(new MemoryStream(), Encoding.UTF8, 1024, true)));
             Trace.AutoFlush = true;
-            Logger.LogTrace("Added System.Diagnostics.Trace temporary listener.");
+            Logger.LogTrace("Added System.Diagnostics.Trace temporary listener");
 
             if (ApplicationVersionHelper.GameVersion() is { } gameVersion)
             {
@@ -163,7 +163,7 @@ namespace Bannerlord.ButterLib
             Logger.LogTrace("OnGameStart: Started");
 
             GameScope = ServiceProvider.CreateScope();
-            Logger.LogInformation("Created GameScope.");
+            Logger.LogInformation("Created GameScope");
 
             Logger.LogTrace("OnGameStart: Done");
         }
@@ -226,16 +226,16 @@ namespace Bannerlord.ButterLib
             if (Services is not null)
             {
                 GlobalServiceProvider = Services.BuildServiceProvider();
-                Logger.LogTrace("Created GlobalServiceProvider.");
+                Logger.LogTrace("Created GlobalServiceProvider");
                 Services = null!;
-                Logger.LogTrace("Set Services to null.");
+                Logger.LogTrace("Set Services to null");
 
                 Logger = this.GetServiceProvider().GetRequiredService<ILogger<ButterLibSubModule>>();
-                Logger.LogTrace("Assigned new _logger from GlobalServiceProvider.");
+                Logger.LogTrace("Assigned new _logger from GlobalServiceProvider");
 
                 var logger = this.GetServiceProvider().GetRequiredService<ILogger<LoggerTraceListener>>();
                 Trace.Listeners.Add(new LoggerTraceListener(logger));
-                Logger.LogTrace("Added System.Diagnostics.Trace main listener.");
+                Logger.LogTrace("Added System.Diagnostics.Trace main listener");
 
                 if (TextWriterTraceListener is not null)
                 {
@@ -251,7 +251,7 @@ namespace Bannerlord.ButterLib
                             {
                                 Trace.WriteLine(reader.ReadLine());
                             }
-                            Logger.LogTrace("Flushed logs from the System.Diagnostics.Trace temp listener.");
+                            Logger.LogTrace("Flushed logs from the System.Diagnostics.Trace temp listener");
                         }
                     }
                     finally
