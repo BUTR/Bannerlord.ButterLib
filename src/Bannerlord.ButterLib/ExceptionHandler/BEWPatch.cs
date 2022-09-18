@@ -57,7 +57,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
         {
             if (ExceptionHandlerSubSystem.Instance?.DisableWhenDebuggerIsAttached == true && Debugger.IsAttached)
                 return;
-            
+
             if (__exception is not null && !SuppressedExceptions.Contains(ExceptionIdentifier.FromException(__exception)))
             {
                 SuppressedExceptions.Add(ExceptionIdentifier.FromException(__exception));

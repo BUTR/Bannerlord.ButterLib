@@ -20,7 +20,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
         public bool IsEnabled { get; private set; }
         public bool CanBeDisabled => true;
         public bool CanBeSwitchedAtRuntime => true;
-        
+
         public bool DisableWhenDebuggerIsAttached { get; private set; } = true;
 
         /// <inheritdoc />
