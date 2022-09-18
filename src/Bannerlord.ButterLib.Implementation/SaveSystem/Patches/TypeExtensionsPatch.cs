@@ -1,6 +1,7 @@
 ﻿using Bannerlord.ButterLib.Common.Extensions;
 
 using HarmonyLib;
+using HarmonyLib.BUTR.Extensions;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -50,9 +51,9 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
         }
 
         private static readonly Type? TargetType = typeof(MetaData).Assembly.GetType("TaleWorlds.SaveSystem.TypeExtensions");
-        private static readonly Type[] TargetMethodParams = new[] { typeof(Type), typeof(ContainerType).MakeByRefType() };
-        private static readonly MethodInfo? TargetMethod = AccessTools.Method(TargetType, "IsContainer", TargetMethodParams);
-        private static readonly MethodInfo? PatchMethod = AccessTools.Method(typeof(TypeExtensionsPatch), nameof(IsContainerPrefix));
+        private static readonly Type[] TargetMethodParams = { typeof(Type), typeof(ContainerType).MakeByRefType() };
+        private static readonly MethodInfo? TargetMethod = AccessTools2.Method(TargetType, "IsContainer", TargetMethodParams);
+        private static readonly MethodInfo? PatchMethod = AccessTools2.Method("Bannerlord.ButterLib.Implementation.SaveSystem.Patches.TypeExtensionsPatch:IsContainerPrefix");
 
         // ReSharper disable once RedundantAssignment
         private static bool IsContainerPrefix(Type type, out ContainerType containerType, ref bool __result)
@@ -79,7 +80,7 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
         {
             if (obj is null)
             {
-                _log.LogError($"{name} is null!");
+                _log.LogError("{Name} is null!", name);
                 return false;
             }
 

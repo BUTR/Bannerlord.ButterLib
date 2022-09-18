@@ -13,7 +13,6 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 
 using TaleWorlds.CampaignSystem;
-using TaleWorlds.CampaignSystem.CampaignBehaviors;
 
 namespace Bannerlord.ButterLib.Implementation.ObjectSystem.Patches
 {
@@ -32,19 +31,19 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem.Patches
             _log = provider?.GetRequiredService<ILogger<CampaignBehaviorManagerPatch>>() ?? NullLogger<CampaignBehaviorManagerPatch>.Instance;
 
             if (OnGameLoadedTargetMI is null)
-                _log.LogError($"{nameof(OnGameLoadedTargetMI)} is null");
+                _log.LogError("{Method} is null", nameof(OnGameLoadedTargetMI));
             if (OnBeforeSaveTargetMI is null)
-                _log.LogError($"{nameof(OnBeforeSaveTargetMI)} is null");
+                _log.LogError("{Method} is null", nameof(OnBeforeSaveTargetMI));
             if (OnGameLoadedPatchMI is null)
-                _log.LogError($"{nameof(OnGameLoadedPatchMI)} is null");
+                _log.LogError("{Method} is null", nameof(OnGameLoadedPatchMI));
             if (OnBeforeSavePatchMI is null)
-                _log.LogError($"{nameof(OnBeforeSavePatchMI)} is null");
+                _log.LogError("{Method} is null", nameof(OnBeforeSavePatchMI));
             if (LoadBehaviorDataMI is null)
-                _log.LogError($"{nameof(LoadBehaviorDataMI)} is null");
+                _log.LogError("{Method} is null", nameof(LoadBehaviorDataMI));
             if (SaveBehaviorDataMI is null)
-                _log.LogError($"{nameof(SaveBehaviorDataMI)} is null");
+                _log.LogError("{Method} is null", nameof(SaveBehaviorDataMI));
             if (CampaignBehaviorDataStoreT is null)
-                _log.LogError($"{nameof(CampaignBehaviorDataStoreT)} is null");
+                _log.LogError("{Method} is null", nameof(CampaignBehaviorDataStoreT));
 
             if (OnGameLoadedTargetMI is null || OnBeforeSaveTargetMI is null ||
                 OnGameLoadedPatchMI is null || OnBeforeSavePatchMI is null ||
@@ -62,24 +61,26 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem.Patches
 
         // Target and patch methods:
 
-        private static readonly MethodInfo? OnGameLoadedTargetMI = AccessTools.Method(typeof(CampaignBehaviorManager), "OnGameLoaded");
+        private static readonly MethodInfo? OnGameLoadedTargetMI =
+            AccessTools2.Method("TaleWorlds.CampaignSystem.CampaignBehaviors.CampaignBehaviorManager:OnGameLoaded");
 
-        private static readonly MethodInfo? OnBeforeSaveTargetMI = AccessTools.Method(typeof(CampaignBehaviorManager), "OnBeforeSave");
+        private static readonly MethodInfo? OnBeforeSaveTargetMI =
+            AccessTools2.Method("TaleWorlds.CampaignSystem.CampaignBehaviors.CampaignBehaviorManager:OnBeforeSave");
 
         private static readonly MethodInfo? OnGameLoadedPatchMI =
-            AccessTools.Method(typeof(CampaignBehaviorManagerPatch), nameof(OnGameLoadedPrefix));
+            AccessTools2.Method("Bannerlord.ButterLib.Implementation.ObjectSystem.Patches.CampaignBehaviorManagerPatch:OnGameLoadedPrefix");
 
         private static readonly MethodInfo? OnBeforeSavePatchMI =
-            AccessTools.Method(typeof(CampaignBehaviorManagerPatch), nameof(OnBeforeSavePostfix));
+            AccessTools2.Method("Bannerlord.ButterLib.Implementation.ObjectSystem.Patches.CampaignBehaviorManagerPatch:OnBeforeSavePostfix");
 
         // Necessary reflection:
 
         private static readonly Type? CampaignBehaviorDataStoreT =
             typeof(Campaign).Assembly.GetType("TaleWorlds.CampaignSystem.CampaignBehaviorDataStore");
 
-        private static readonly MethodInfo? LoadBehaviorDataMI = AccessTools.Method(CampaignBehaviorDataStoreT, "LoadBehaviorData");
+        private static readonly MethodInfo? LoadBehaviorDataMI = AccessTools2.Method(CampaignBehaviorDataStoreT, "LoadBehaviorData");
 
-        private static readonly MethodInfo? SaveBehaviorDataMI = AccessTools.Method(CampaignBehaviorDataStoreT, "SaveBehaviorData");
+        private static readonly MethodInfo? SaveBehaviorDataMI = AccessTools2.Method(CampaignBehaviorDataStoreT, "SaveBehaviorData");
 
         // Patch implementation:
 
@@ -90,19 +91,19 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem.Patches
 
             if (mbObjectVariableStorage is null)
             {
-                _log.LogError($"{nameof(OnGameLoadedPrefix)}: {nameof(mbObjectVariableStorage)} is null");
+                _log.LogError("{Method}: {Variable} is null", nameof(OnGameLoadedPrefix), nameof(mbObjectVariableStorage));
                 return;
             }
 
             if (mbObjectVariableStorage is not CampaignBehaviorBase storageBehavior)
             {
-                _log.LogError($"{nameof(OnGameLoadedPrefix)}: {nameof(mbObjectVariableStorage)} is not a CampaignBehaviorBase");
+                _log.LogError("{Method}: {Variable} is not a CampaignBehaviorBase", nameof(OnGameLoadedPrefix), nameof(mbObjectVariableStorage));
                 return;
             }
 
             if (____campaignBehaviorDataStore is null)
             {
-                _log.LogError($"{nameof(OnGameLoadedPrefix)}: {nameof(____campaignBehaviorDataStore)} is null");
+                _log.LogError("{Method}: {Variable} is null", nameof(OnGameLoadedPrefix), nameof(____campaignBehaviorDataStore));
                 return;
             }
 
@@ -117,19 +118,19 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem.Patches
 
             if (mbObjectVariableStorage is null)
             {
-                _log.LogError($"{nameof(OnBeforeSavePostfix)}: {nameof(mbObjectVariableStorage)} is null");
+                _log.LogError("{Method}: {Variable} is null", nameof(OnBeforeSavePostfix), nameof(mbObjectVariableStorage));
                 return;
             }
 
             if (mbObjectVariableStorage is not CampaignBehaviorBase storageBehavior)
             {
-                _log.LogError($"{nameof(OnBeforeSavePostfix)}: {nameof(mbObjectVariableStorage)} is not a CampaignBehaviorBase");
+                _log.LogError("{Method}: {Variable} is not a CampaignBehaviorBase", nameof(OnBeforeSavePostfix), nameof(mbObjectVariableStorage));
                 return;
             }
 
             if (____campaignBehaviorDataStore is null)
             {
-                _log.LogError($"{nameof(OnBeforeSavePostfix)}: {nameof(____campaignBehaviorDataStore)} is null");
+                _log.LogError("{Method}: {Variable} is null", nameof(OnBeforeSavePostfix), nameof(____campaignBehaviorDataStore));
                 return;
             }
 

@@ -3,6 +3,7 @@ using Bannerlord.ButterLib.Logger.Extensions;
 using Bannerlord.ButterLib.ObjectSystem.Extensions;
 
 using HarmonyLib;
+using HarmonyLib.BUTR.Extensions;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -32,7 +33,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
             _log = this.GetServiceProvider()?.GetRequiredService<ILogger<TestCampaignBehavior>>()
                    ?? NullLogger<TestCampaignBehavior>.Instance;
 
-            _log.LogTrace($"{nameof(TestCampaignBehavior)} initialized.");
+            _log.LogTrace("{Behavior} initialized", nameof(TestCampaignBehavior));
         }
 
         public override void RegisterEvents()
@@ -61,8 +62,8 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
 
                 if (_hitError)
                 {
-                    _log.LogTrace($"Errant Hero: {GetHeroTrace(h)} / Object: {GetObjectTrace(h)}");
-                    _log.LogError("Halting execution due to error(s).");
+                    _log.LogTrace("Errant Hero: {Hero} / Object: {Object}", GetHeroTrace(h), GetObjectTrace(h));
+                    _log.LogError("Halting execution due to error(s)");
                     break;
                 }
             }
@@ -86,8 +87,8 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
 
                 if (_hitError)
                 {
-                    _log.LogTrace($"Errant Hero: {GetHeroTrace(h)} / Object: {GetObjectTrace(h)}");
-                    _log.LogError("Halting execution due to error(s).");
+                    _log.LogTrace("Errant Hero: {Hero} / Object: {Object}", GetHeroTrace(h), GetObjectTrace(h));
+                    _log.LogError("Halting execution due to error(s)");
                     break;
                 }
             }
@@ -147,7 +148,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
             if (ok)
                 _log.LogInformationAndDisplay(output);
             else
-                _log.LogErrorAndDisplay(output);
+                _log.LogErrorAndDisplay("{Output}", output);
         }
 
         private void SetOrValidateHeroVars(Hero h, bool store)
@@ -226,7 +227,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
                 Age = (int) h.Age;
                 Spouse = h.Spouse;
                 Kingdom = h.Clan?.Kingdom;
-                StaticBodyProp = (StaticBodyProperties) AccessTools.Property(typeof(Hero), "StaticBodyProperties").GetValue(h);
+                StaticBodyProp = (StaticBodyProperties) AccessTools2.Property("TaleWorlds.CampaignSystem.Hero:StaticBodyProperties").GetValue(h);
                 NameLink = h.EncyclopediaLinkWithName;
                 StateEnum = h.HeroState;
                 CustomEnum = (ElectionCandidate) (h.Id.InternalValue % 3 + 1);
@@ -407,10 +408,10 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
 
         private bool Error(string msg, string? id = null, string? trace = null)
         {
-            _log.LogError($"ERROR: {(id is null ? msg : $"{id}: {msg}")}");
+            _log.LogError("ERROR: {Message}", (id is null ? msg : $"{id}: {msg}"));
 
             if (trace != null)
-                _log.LogTrace(trace);
+                _log.LogTrace("{Message}", trace);
 
             _hitError = true;
             return false;

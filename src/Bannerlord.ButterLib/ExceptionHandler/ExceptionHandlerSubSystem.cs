@@ -1,13 +1,15 @@
 ﻿using Bannerlord.ButterLib.SubSystems;
+using Bannerlord.ButterLib.SubSystems.Settings;
 
 using HarmonyLib;
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Bannerlord.ButterLib.ExceptionHandler
 {
-    internal sealed class ExceptionHandlerSubSystem : ISubSystem
+    internal sealed class ExceptionHandlerSubSystem : ISubSystem, ISubSystemSettings<ExceptionHandlerSubSystem>
     {
         public static ExceptionHandlerSubSystem? Instance { get; private set; }
 
@@ -18,6 +20,14 @@ namespace Bannerlord.ButterLib.ExceptionHandler
         public bool IsEnabled { get; private set; }
         public bool CanBeDisabled => true;
         public bool CanBeSwitchedAtRuntime => true;
+
+        public bool DisableWhenDebuggerIsAttached { get; private set; } = true;
+
+        /// <inheritdoc />
+        public IReadOnlyCollection<SubSystemSettingsDeclaration<ExceptionHandlerSubSystem>> Declarations { get; } = new SubSystemSettingsDeclaration<ExceptionHandlerSubSystem>[]
+        {
+            new SubSystemSettingsPropertyBool<ExceptionHandlerSubSystem>("{=B7bfrDNzIk}", "{=r3ktQzFMRz}", x => x.DisableWhenDebuggerIsAttached)
+        };
 
 
         public ExceptionHandlerSubSystem()

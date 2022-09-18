@@ -17,14 +17,14 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
         {
             return harmony.TryPatch(
                 AccessTools2.Constructor(typeof(CampaignBehaviorBase)),
-                postfix: AccessTools2.Method(typeof(BehaviourNamePatch), nameof(CampaignBehaviorBaseCtorPostfix)));
+                postfix: AccessTools2.Method("Bannerlord.ButterLib.Implementation.SaveSystem.Patches.BehaviourNamePatch:CampaignBehaviorBaseCtorPostfix"));
         }
 
         internal static bool Disable(Harmony harmony)
         {
             harmony.Unpatch(
                 AccessTools2.Constructor(typeof(CampaignBehaviorBase)),
-                AccessTools2.Method(typeof(BehaviourNamePatch), nameof(CampaignBehaviorBaseCtorPostfix)));
+                AccessTools2.Method("Bannerlord.ButterLib.Implementation.SaveSystem.Patches.BehaviourNamePatch:CampaignBehaviorBaseCtorPostfix"));
 
             return true;
         }

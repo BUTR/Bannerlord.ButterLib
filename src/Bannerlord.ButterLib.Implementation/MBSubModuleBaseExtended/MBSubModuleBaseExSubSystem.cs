@@ -33,16 +33,16 @@ namespace Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended
             ModulePatch.Enable(_harmony);
             MBGameManagerPatch.Enable(_harmony);
 
-            //There is no way to patch Module.InitializeSubModules to add OnAllSubModulesLoaded.
-            //We tried to patch the last loaded submodule instead, but that caused problems if it had PatchAll() called in it.
-            //So for now we removed OnAllSubModulesLoaded event entirely.
+            // There is no way to patch Module.InitializeSubModules to add OnAllSubModulesLoaded.
+            // We tried to patch the last loaded submodule instead, but that caused problems if it had PatchAll() called in it.
+            // So for now we removed OnAllSubModulesLoaded event entirely.
         }
         public void Disable()
         {
             IsEnabled = false;
             ModulePatch.Disable(_harmony);
             MBGameManagerPatch.Disable(_harmony);
-            //Think about DelayedSubModuleManager.Unregister
+            // Think about DelayedSubModuleManager.Unregister
         }
 
         internal static void LogNoHooksIssue(ILogger logger, int originalCallIndex, int finallyIndex, List<CodeInstruction> codes, MethodBase currentMethod)
@@ -71,7 +71,7 @@ namespace Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended
         {
             if (obj is null)
             {
-                logger.LogError($"{name} is null!");
+                logger.LogError("{Name} is null!", name);
                 return false;
             }
             return true;

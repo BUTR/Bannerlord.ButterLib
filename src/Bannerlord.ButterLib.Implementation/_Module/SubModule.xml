@@ -26,7 +26,6 @@
   <DependedModuleMetadatas>
     <DependedModuleMetadata id="Bannerlord.Harmony" order="LoadBeforeThis" version="v$harmonyversion$" />
     <DependedModuleMetadata id="BetterExceptionWindow" order="LoadBeforeThis" optional="true" />
-    <DependedModuleMetadata id="Bannerlord.ModuleLoader" order="LoadBeforeThis" optional="true" />
 
     <DependedModuleMetadata id="Native" order="LoadAfterThis" version="e$gameversion$.*" />
     <DependedModuleMetadata id="SandBoxCore" order="LoadAfterThis" version="e$gameversion$.*" optional="true" />

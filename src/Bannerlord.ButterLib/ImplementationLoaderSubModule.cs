@@ -57,7 +57,7 @@ namespace Bannerlord.ButterLib
             var implementations = assemblyDirectory.GetFiles("Bannerlord.ButterLib.Implementation.*.dll");
             if (implementations.Length == 0)
             {
-                logger?.LogError("No implementations found.");
+                logger?.LogError("No implementations found");
                 yield break;
             }
 
@@ -84,33 +84,33 @@ namespace Bannerlord.ButterLib
                 {
                     logger?.LogInformation("Found multiple matching implementations:");
                     foreach (var (implementation1, version1) in implementationsForGameVersion)
-                        logger?.LogInformation("Implementation {name} for game {gameVersion}.", implementation1.Name, version1);
+                        logger?.LogInformation("Implementation {Name} for game {GameVersion}", implementation1.Name, version1);
 
 
-                    logger?.LogInformation("Loading the latest available.");
+                    logger?.LogInformation("Loading the latest available");
 
                     var (implementation, version) = ImplementationLatest(implementationsForGameVersion);
-                    logger?.LogInformation("Implementation {name} for game {gameVersion} is loaded.", implementation.Name, version);
+                    logger?.LogInformation("Implementation {Name} for game {GameVersion} is loaded", implementation.Name, version);
                     implementationAssemblies.Add(Assembly.LoadFrom(implementation.FullName));
                     break;
                 }
 
                 case 1:
                 {
-                    logger?.LogInformation("Found matching implementation. Loading it.");
+                    logger?.LogInformation("Found matching implementation. Loading it");
 
                     var (implementation, version) = implementationsForGameVersion[0];
-                    logger?.LogInformation("Implementation {name} for game {gameVersion} is loaded.", implementation.Name, version);
+                    logger?.LogInformation("Implementation {Name} for game {GameVersion} is loaded", implementation.Name, version);
                     implementationAssemblies.Add(Assembly.LoadFrom(implementation.FullName));
                     break;
                 }
 
                 case 0:
                 {
-                    logger?.LogInformation("Found no matching implementations. Loading the latest available.");
+                    logger?.LogInformation("Found no matching implementations. Loading the latest available");
 
                     var (implementation, version) = ImplementationLatest(implementationsWithVersions);
-                    logger?.LogInformation("Implementation {name} for game {gameVersion} is loaded.", implementation.Name, version);
+                    logger?.LogInformation("Implementation {Name} for game {GameVersion} is loaded", implementation.Name, version);
                     implementationAssemblies.Add(Assembly.LoadFrom(implementation.FullName));
                     break;
                 }
@@ -124,7 +124,7 @@ namespace Bannerlord.ButterLib
                 }
                 catch (Exception e) when (e is ReflectionTypeLoadException)
                 {
-                    logger?.LogError(e, "Implementation {name} is not compatible with the current game!", Path.GetFileName(a.Location));
+                    logger?.LogError(e, "Implementation {Name} is not compatible with the current game!", Path.GetFileName(a.Location));
                     return Enumerable.Empty<Type>();
                 }
 
@@ -138,29 +138,29 @@ namespace Bannerlord.ButterLib
                 var constructor = subModuleType.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.CreateInstance, null, Type.EmptyTypes, null);
                 if (constructor is null)
                 {
-                    logger?.LogError("SubModule {subModuleType} is missing a default constructor!", subModuleType);
+                    logger?.LogError("SubModule {SubModuleType} is missing a default constructor!", subModuleType);
                     continue;
                 }
 
                 var constructorFunc = AccessTools2.GetDelegate<ConstructorDelegate>(constructor);
                 if (constructorFunc is null)
                 {
-                    logger?.LogError("SubModule {subModuleType}'s default constructor could not be converted to a delegate!", subModuleType);
+                    logger?.LogError("SubModule {SubModuleType}'s default constructor could not be converted to a delegate!", subModuleType);
                     continue;
                 }
 
                 yield return constructorFunc();
             }
 
-            logger?.LogInformation("Finished loading implementations.");
+            logger?.LogInformation("Finished loading implementations");
         }
 
         private static IEnumerable<(FileInfo Implementation, ApplicationVersion Version)> GetImplementations(IEnumerable<FileInfo> implementations, ILogger? logger = null)
         {
             foreach (var implementation in implementations)
             {
-                bool found = false;
-                logger?.LogInformation("Found implementation {name}.", implementation.Name);
+                var found = false;
+                logger?.LogInformation("Found implementation {Name}", implementation.Name);
 
                 using var fs = File.OpenRead(implementation.FullName);
                 using var peReader = new PEReader(fs);
@@ -183,7 +183,7 @@ namespace Bannerlord.ButterLib
                     {
                         if (!ApplicationVersionHelper.TryParse(value, out var implementationGameVersion))
                         {
-                            logger?.LogError("Implementation {name} has invalid GameVersion AssemblyMetadataAttribute!", implementation.Name);
+                            logger?.LogError("Implementation {Name} has invalid GameVersion AssemblyMetadataAttribute!", implementation.Name);
                             continue;
                         }
 
@@ -194,7 +194,7 @@ namespace Bannerlord.ButterLib
                 }
 
                 if (!found)
-                    logger?.LogError("Implementation {name} is missing GameVersion AssemblyMetadataAttribute!", implementation.Name);
+                    logger?.LogError("Implementation {Name} is missing GameVersion AssemblyMetadataAttribute!", implementation.Name);
             }
         }
 

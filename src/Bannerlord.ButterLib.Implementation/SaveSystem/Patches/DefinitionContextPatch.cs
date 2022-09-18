@@ -54,13 +54,10 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
 
         private delegate bool IsContainerDelegate(Type type);
 
-        private static readonly Assembly TargetAssembly = typeof(ContainerType).Assembly;
-        private static readonly Type? TargetType = TargetAssembly.GetType("TaleWorlds.SaveSystem.Definition.DefinitionContext");
-        private static readonly Type? TypeExtensionsType = TargetAssembly.GetType("TaleWorlds.SaveSystem.TypeExtensions");
-        private static readonly MethodInfo? IsContainerMethod = AccessTools.Method(TypeExtensionsType, "IsContainer", new[] { typeof(Type) });
-        private static readonly IsContainerDelegate? IsContainer = AccessTools2.GetDelegate<IsContainerDelegate>(IsContainerMethod);
+        private static readonly IsContainerDelegate? IsContainer =
+            AccessTools2.GetDelegate<IsContainerDelegate>("TaleWorlds.SaveSystem.TypeExtensions:IsContainer", new[] { typeof(Type) });
 
-        private static MethodInfo? TargetTypeMethod(string name) => AccessTools.Method(TargetType, name);
+        private static MethodInfo? TargetTypeMethod(string name) => AccessTools2.Method($"TaleWorlds.SaveSystem.Definition.DefinitionContext:{name}");
 
         private static readonly Patch[] Patches = new Patch[]
         {
@@ -85,7 +82,7 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
 
             if (typeDict.ContainsKey(typeDef.Type))
             {
-                _log.LogTrace("Suppressed duplicate definition of serializable type: {type}", typeDef.Type.FullName);
+                _log.LogTrace("Suppressed duplicate definition of serializable type: {Type}", typeDef.Type.FullName);
                 return false;
             }
 
@@ -171,7 +168,7 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
 
             internal virtual bool IsReady => ThisNotNull(PatchMethod, nameof(PatchMethod)) & ThisNotNull(TargetMethod, nameof(TargetMethod));
 
-            private MethodInfo ResolvePatchMethod() => AccessTools.Method(GetType().DeclaringType, PatchMethodName);
+            private MethodInfo? ResolvePatchMethod() => AccessTools2.Method(GetType().DeclaringType, PatchMethodName);
 
             protected bool ThisNotNull(object? obj, string objName) => NotNull(obj, objName, $"Patch {PatchMethodName}: ");
         }

@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using HarmonyLib.BUTR.Extensions;
 
 using System;
 using System.Collections.Concurrent;
@@ -45,19 +46,19 @@ namespace Bannerlord.ButterLib.DelayedSubModule
         {
             var harmony = new Harmony("butterlib.delayedsubmoduleloader.static");
             harmony.Patch(
-                AccessTools.DeclaredMethod(typeof(MBSubModuleBase), "OnSubModuleLoad"),
+                AccessTools2.DeclaredMethod("TaleWorlds.MountAndBlade.MBSubModuleBase:OnSubModuleLoad"),
                 postfix: new HarmonyMethod(typeof(DelayedSubModuleManager), nameof(BaseSubModuleLoadPostfix)));
             harmony.Patch(
-                AccessTools.DeclaredMethod(typeof(MBSubModuleBase), "OnSubModuleUnloaded"),
+                AccessTools2.DeclaredMethod("TaleWorlds.MountAndBlade.MBSubModuleBase:OnSubModuleUnloaded"),
                 postfix: new HarmonyMethod(typeof(DelayedSubModuleManager), nameof(BaseOnSubModuleUnloadedPostfix)));
             harmony.Patch(
-                AccessTools.DeclaredMethod(typeof(MBSubModuleBase), "OnBeforeInitialModuleScreenSetAsRoot"),
+                AccessTools2.DeclaredMethod("TaleWorlds.MountAndBlade.MBSubModuleBase:OnBeforeInitialModuleScreenSetAsRoot"),
                 postfix: new HarmonyMethod(typeof(DelayedSubModuleManager), nameof(BaseOnBeforeInitialModuleScreenSetAsRootPostfix)));
             harmony.Patch(
-                AccessTools.DeclaredMethod(typeof(MBSubModuleBase), "OnGameStart"),
+                AccessTools2.DeclaredMethod("TaleWorlds.MountAndBlade.MBSubModuleBase:OnGameStart"),
                 postfix: new HarmonyMethod(typeof(DelayedSubModuleManager), nameof(BaseOnGameStartPostfix)));
             harmony.Patch(
-                AccessTools.DeclaredMethod(typeof(MBSubModuleBase), "OnGameEnd"),
+                AccessTools2.DeclaredMethod("TaleWorlds.MountAndBlade.MBSubModuleBase:OnGameEnd"),
                 postfix: new HarmonyMethod(typeof(DelayedSubModuleManager), nameof(BaseOnGameEndPostfix)));
         }
         [MethodImpl(MethodImplOptions.NoInlining)]
@@ -113,52 +114,52 @@ namespace Bannerlord.ButterLib.DelayedSubModule
                 return;
 
             var harmony = new Harmony($"butterlib.delayedsubmoduleloader.{subModule.Name.ToLowerInvariant()}");
-            var onSubModuleLoad = AccessTools.DeclaredMethod(subModule, "OnSubModuleLoad");
+            var onSubModuleLoad = AccessTools2.DeclaredMethod(subModule, "OnSubModuleLoad");
             if (onSubModuleLoad is not null)
             {
                 harmony.Patch(
                     onSubModuleLoad,
-                    prefix: new HarmonyMethod(AccessTools.DeclaredMethod(typeof(DelayedSubModuleManager), nameof(SubModuleLoadPrefix)), priority, before, after),
-                    postfix: new HarmonyMethod(AccessTools.DeclaredMethod(typeof(DelayedSubModuleManager), nameof(SubModuleLoadPostfix)), priority, before, after));
+                    prefix: new HarmonyMethod(AccessTools2.DeclaredMethod("Bannerlord.ButterLib.DelayedSubModule.DelayedSubModuleManager:SubModuleLoadPrefix"), priority, before, after),
+                    postfix: new HarmonyMethod(AccessTools2.DeclaredMethod("Bannerlord.ButterLib.DelayedSubModule.DelayedSubModuleManager:SubModuleLoadPostfix"), priority, before, after));
             }
 
 
-            var onSubModuleUnloaded = AccessTools.DeclaredMethod(subModule, "OnSubModuleUnloaded");
+            var onSubModuleUnloaded = AccessTools2.DeclaredMethod(subModule, "OnSubModuleUnloaded");
             if (onSubModuleUnloaded is not null)
             {
                 harmony.Patch(
-                    AccessTools.DeclaredMethod(subModule, "OnSubModuleUnloaded"),
-                    prefix: new HarmonyMethod(AccessTools.DeclaredMethod(typeof(DelayedSubModuleManager), nameof(OnSubModuleUnloadedPrefix)), priority, before, after),
-                    postfix: new HarmonyMethod(AccessTools.DeclaredMethod(typeof(DelayedSubModuleManager), nameof(OnSubModuleUnloadedPostfix)), priority, before, after));
+                    AccessTools2.DeclaredMethod(subModule, "OnSubModuleUnloaded"),
+                    prefix: new HarmonyMethod(AccessTools2.DeclaredMethod("Bannerlord.ButterLib.DelayedSubModule.DelayedSubModuleManager:OnSubModuleUnloadedPrefix"), priority, before, after),
+                    postfix: new HarmonyMethod(AccessTools2.DeclaredMethod("Bannerlord.ButterLib.DelayedSubModule.DelayedSubModuleManager:OnSubModuleUnloadedPostfix"), priority, before, after));
             }
 
 
-            var onBeforeInitialModuleScreenSetAsRoot = AccessTools.DeclaredMethod(subModule, "OnBeforeInitialModuleScreenSetAsRoot");
+            var onBeforeInitialModuleScreenSetAsRoot = AccessTools2.DeclaredMethod(subModule, "OnBeforeInitialModuleScreenSetAsRoot");
             if (onBeforeInitialModuleScreenSetAsRoot is not null)
             {
                 harmony.Patch(
-                    AccessTools.DeclaredMethod(subModule, "OnBeforeInitialModuleScreenSetAsRoot"),
-                    prefix: new HarmonyMethod(AccessTools.DeclaredMethod(typeof(DelayedSubModuleManager), nameof(OnBeforeInitialModuleScreenSetAsRootPrefix)), priority, before, after),
-                    postfix: new HarmonyMethod(AccessTools.DeclaredMethod(typeof(DelayedSubModuleManager), nameof(OnBeforeInitialModuleScreenSetAsRootPostfix)), priority, before, after));
+                    AccessTools2.DeclaredMethod(subModule, "OnBeforeInitialModuleScreenSetAsRoot"),
+                    prefix: new HarmonyMethod(AccessTools2.DeclaredMethod("Bannerlord.ButterLib.DelayedSubModule.DelayedSubModuleManager:OnBeforeInitialModuleScreenSetAsRootPrefix"), priority, before, after),
+                    postfix: new HarmonyMethod(AccessTools2.DeclaredMethod("Bannerlord.ButterLib.DelayedSubModule.DelayedSubModuleManager:OnBeforeInitialModuleScreenSetAsRootPostfix"), priority, before, after));
             }
 
-            var onGameStart = AccessTools.DeclaredMethod(subModule, "OnGameStart");
+            var onGameStart = AccessTools2.DeclaredMethod(subModule, "OnGameStart");
             if (onGameStart is not null)
             {
                 harmony.Patch(
-                    AccessTools.DeclaredMethod(subModule, "OnGameStart"),
-                    prefix: new HarmonyMethod(AccessTools.DeclaredMethod(typeof(DelayedSubModuleManager), nameof(OnGameStartPrefix)), priority, before, after),
-                    postfix: new HarmonyMethod(AccessTools.DeclaredMethod(typeof(DelayedSubModuleManager), nameof(OnGameStartPostfix)), priority, before, after));
+                    AccessTools2.DeclaredMethod(subModule, "OnGameStart"),
+                    prefix: new HarmonyMethod(AccessTools2.DeclaredMethod("Bannerlord.ButterLib.DelayedSubModule.DelayedSubModuleManager:OnGameStartPrefix"), priority, before, after),
+                    postfix: new HarmonyMethod(AccessTools2.DeclaredMethod("Bannerlord.ButterLib.DelayedSubModule.DelayedSubModuleManager:OnGameStartPostfix"), priority, before, after));
             }
 
 
-            var onGameEnd = AccessTools.DeclaredMethod(subModule, "OnGameEnd");
+            var onGameEnd = AccessTools2.DeclaredMethod(subModule, "OnGameEnd");
             if (onGameEnd is not null)
             {
                 harmony.Patch(
-                    AccessTools.DeclaredMethod(subModule, "OnGameEnd"),
-                    prefix: new HarmonyMethod(AccessTools.DeclaredMethod(typeof(DelayedSubModuleManager), nameof(OnGameEndPrefix)), priority, before, after),
-                    postfix: new HarmonyMethod(AccessTools.DeclaredMethod(typeof(DelayedSubModuleManager), nameof(OnGameEndPostfix)), priority, before, after));
+                    AccessTools2.DeclaredMethod(subModule, "OnGameEnd"),
+                    prefix: new HarmonyMethod(AccessTools2.DeclaredMethod("Bannerlord.ButterLib.DelayedSubModule.DelayedSubModuleManager:OnGameEndPrefix"), priority, before, after),
+                    postfix: new HarmonyMethod(AccessTools2.DeclaredMethod("Bannerlord.ButterLib.DelayedSubModule.DelayedSubModuleManager:OnGameEndPostfix"), priority, before, after));
             }
         }
 

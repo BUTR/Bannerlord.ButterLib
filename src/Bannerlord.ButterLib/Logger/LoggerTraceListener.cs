@@ -59,19 +59,19 @@ namespace System.Diagnostics.Logger
             switch (result.Level)
             {
                 case TraceEventType.Critical:
-                    _logger.LogCritical(result.Message);
+                    _logger.LogCritical("{Message}", result.Message);
                     break;
                 case TraceEventType.Error:
-                    _logger.LogError(result.Message);
+                    _logger.LogError("{Message}", result.Message);
                     break;
                 case TraceEventType.Warning:
-                    _logger.LogWarning(result.Message);
+                    _logger.LogWarning("{Message}", result.Message);
                     break;
                 case TraceEventType.Information:
-                    _logger.LogInformation(result.Message);
+                    _logger.LogInformation("{Message}", result.Message);
                     break;
                 case TraceEventType.Verbose:
-                    _logger.LogTrace(result.Message);
+                    _logger.LogTrace("{Message}", result.Message);
                     break;
 
                 case TraceEventType.Start:
@@ -89,7 +89,7 @@ namespace System.Diagnostics.Logger
             if (Parse(message.AsSpan()) is { } result)
                 Log(result);
             else
-                _logger.LogInformation(message);
+                _logger.LogInformation("{Message}", message);
         }
 
         public override void WriteLine(string message)
@@ -97,7 +97,7 @@ namespace System.Diagnostics.Logger
             if (Parse(message.AsSpan()) is { } result)
                 Log(result);
             else
-                _logger.LogInformation(message);
+                _logger.LogInformation("{Message}", message);
         }
     }
 }

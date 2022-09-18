@@ -32,7 +32,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
             {
                 _logger = this.GetServiceProvider().GetRequiredService<ILogger<ButterLibSubModule>>();
 
-                _logger.LogInformationAndDisplay($"Loaded {typeof(SubModule).Namespace}: {Version}");
+                _logger.LogInformationAndDisplay("Loaded {Module}: {Version}", typeof(SubModule).Namespace, Version);
                 _hasLoaded = true;
             }
         }
@@ -45,7 +45,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
             {
                 var initializer = (CampaignGameStarter) starterObject;
                 initializer.AddBehavior(new TestCampaignBehavior());
-                _logger.LogTrace($"Added campaign behavior: {nameof(TestCampaignBehavior)}");
+                _logger.LogTrace("Added campaign behavior: {Behavior}", nameof(TestCampaignBehavior));
             }
         }
     }

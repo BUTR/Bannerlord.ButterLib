@@ -64,7 +64,7 @@ namespace Bannerlord.ButterLib.Implementation
             Logger = serviceProvider.GetRequiredService<ILogger<SubModule>>();
             Logger.LogTrace("ButterLib.Implementation: OnSubModuleLoad");
 
-            Logger.LogInformation("Wrapping DebugManager of type {type} with DebugManagerWrapper.", Debug.DebugManager.GetType());
+            Logger.LogInformation("Wrapping DebugManager of type {Type} with DebugManagerWrapper", Debug.DebugManager.GetType());
             Debug.DebugManager = new DebugManagerWrapper(Debug.DebugManager, serviceProvider.GetRequiredService<ILoggerFactory>());
 
             HotKeySubSystem.Instance?.Enable();
@@ -87,7 +87,7 @@ namespace Bannerlord.ButterLib.Implementation
 
                 if (Debug.DebugManager is not DebugManagerWrapper)
                 {
-                    Logger.LogWarning("DebugManagerWrapper was replaced with {type}! Wrapping it with DebugManagerWrapper.", Debug.DebugManager.GetType());
+                    Logger.LogWarning("DebugManagerWrapper was replaced with {Type}! Wrapping it with DebugManagerWrapper", Debug.DebugManager.GetType());
                     Debug.DebugManager = new DebugManagerWrapper(Debug.DebugManager, this.GetServiceProvider().GetRequiredService<ILoggerFactory>());
                 }
 

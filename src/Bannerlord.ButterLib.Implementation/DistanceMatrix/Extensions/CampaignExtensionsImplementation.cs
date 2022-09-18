@@ -9,7 +9,7 @@ using TaleWorlds.CampaignSystem.Settlements;
 namespace Bannerlord.ButterLib.Implementation.Common.Extensions
 {
     /// <inheritdoc/>
-    internal sealed partial class CampaignExtensionsImplementation : ICampaignExtensions
+    internal sealed class CampaignExtensionsImplementation : ICampaignExtensions
     {
         /// <inheritdoc/>
         public DistanceMatrix<Settlement>? GetDefaultSettlementDistanceMatrix(Campaign campaign)
