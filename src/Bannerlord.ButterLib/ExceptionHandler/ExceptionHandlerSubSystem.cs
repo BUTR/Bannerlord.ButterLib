@@ -26,7 +26,10 @@ namespace Bannerlord.ButterLib.ExceptionHandler
         /// <inheritdoc />
         public IReadOnlyCollection<SubSystemSettingsDeclaration<ExceptionHandlerSubSystem>> Declarations { get; } = new SubSystemSettingsDeclaration<ExceptionHandlerSubSystem>[]
         {
-            new SubSystemSettingsPropertyBool<ExceptionHandlerSubSystem>("{=B7bfrDNzIk}", "{=r3ktQzFMRz}", x => x.DisableWhenDebuggerIsAttached)
+            new SubSystemSettingsPropertyBool<ExceptionHandlerSubSystem>(
+                "{=B7bfrDNzIk} Disable when Debugger is Attached",
+                "{=r3ktQzFMRz} Stops the Exception Handler when a debugger is attached.",
+                x => x.DisableWhenDebuggerIsAttached)
         };
 
 
