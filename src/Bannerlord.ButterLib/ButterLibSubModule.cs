@@ -53,8 +53,8 @@ namespace Bannerlord.ButterLib
         {
             Instance = this;
 
-            CheckGameVersion();
-            CheckLoadOrder();
+            ValidateGameVersion();
+            ValidateLoadOrder();
 
             if (ApplicationVersionHelper.GameVersion() is { } gameVersion)
             {
@@ -184,7 +184,7 @@ namespace Bannerlord.ButterLib
         }
 
 
-        private static void CheckGameVersion()
+        private static void ValidateGameVersion()
         {
             var e172 = ApplicationVersionHelper.TryParse("e1.7.2", out var e172Val) ? e172Val : ApplicationVersion.Empty;
             if (ApplicationVersionHelper.GameVersion() is { } gameVersion && gameVersion < e172)
@@ -201,7 +201,7 @@ namespace Bannerlord.ButterLib
                 }
             }
         }
-        private static void CheckLoadOrder()
+        private static void ValidateLoadOrder()
         {
             var loadedModules = ModuleInfoHelper.GetLoadedModules().ToList();
             if (loadedModules.Count == 0) return;
