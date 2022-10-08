@@ -15,7 +15,7 @@
     <!--BuildResources Version-->
     <BuildResourcesVersion>1.0.1.68</BuildResourcesVersion>
     <BUTRSharedVersion>2.0.0.101</BUTRSharedVersion>
-    <BUTRModuleManagerVersion>4.0.123</BUTRModuleManagerVersion>
+    <BUTRModuleManagerVersion>4.0.146</BUTRModuleManagerVersion>
   </PropertyGroup>
 
   <PropertyGroup>
