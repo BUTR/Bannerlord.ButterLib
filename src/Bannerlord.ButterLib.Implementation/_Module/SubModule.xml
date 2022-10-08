@@ -4,6 +4,7 @@
   <Id value="$moduleid$" />
   <Name value="$modulename$" />
   <Version value="v$version$" />
+  <ModuleType value="Community"/>
   <Official value="false" />
   <DefaultModule value="false" />
   <SingleplayerModule value="true" />
