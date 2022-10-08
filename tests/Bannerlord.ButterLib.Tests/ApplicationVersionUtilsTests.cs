@@ -15,7 +15,7 @@ namespace Bannerlord.ButterLib.Tests
         private static readonly string TestAppVersionStr = "e1.4.3.231432";
 #if e172
         private static readonly ApplicationVersion TestAppVersion = ApplicationVersion.FromString("e1.4.3.231432", TaleWorlds.Library.ApplicationVersionGameType.Singleplayer);
-#elif e180
+#elif e180 || e181 || e190
         private static readonly ApplicationVersion TestAppVersion = ApplicationVersion.FromString("e1.4.3.231432");
 #endif
 
