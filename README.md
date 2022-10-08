@@ -67,7 +67,7 @@ Check the [/Articles](https://butr.github.io/Bannerlord.ButterLib/articles/index
 ### Players
 This module should be one of the highest in loading order. Ideally, it should be second in load order after ``Bannerlord.Harmony``.
 ### Developers
-Add this to your `.csproj`. Please not that `IncludeAssets="compile"` is very important!
+Add this to your `.csproj`. Please note that `IncludeAssets="compile"` is very important!
 ```xml
   <ItemGroup>
     <PackageReference Include="Bannerlord.ButterLib" Version="1.0.31" IncludeAssets="compile" />
