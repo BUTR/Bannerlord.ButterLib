@@ -1,5 +1,6 @@
 ﻿using Bannerlord.BUTRLoader;
 using Bannerlord.ButterLib.Common.Extensions;
+using Bannerlord.ButterLib.ExceptionHandler.DebuggerDetection;
 
 using HarmonyLib;
 using HarmonyLib.BUTR.Extensions;
@@ -15,6 +16,7 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 using Module = TaleWorlds.MountAndBlade.Module;
 
@@ -32,6 +34,19 @@ namespace Bannerlord.ButterLib.ExceptionHandler
     [BUTRLoaderInterceptor]
     internal sealed class BEWPatch
     {
+        private static bool IsDebuggerAttached()
+        {
+            if (Debugger.IsAttached)
+                return true;
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                return ProcessDebug.CheckProcessDebugObjectHandle();
+            }
+
+            return false;
+        }
+
         internal record ExceptionIdentifier(Type Type, string StackTrace, string Message)
         {
             public static ExceptionIdentifier FromException(Exception e) => new(e.GetType(), e.StackTrace, e.Message);
@@ -55,7 +70,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
 
         private static void Finalizer(Exception? __exception)
         {
-            if (ExceptionHandlerSubSystem.Instance?.DisableWhenDebuggerIsAttached == true && Debugger.IsAttached)
+            if (ExceptionHandlerSubSystem.Instance?.DisableWhenDebuggerIsAttached == true && IsDebuggerAttached())
                 return;
 
             if (__exception is not null && !SuppressedExceptions.Contains(ExceptionIdentifier.FromException(__exception)))

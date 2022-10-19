@@ -128,26 +128,26 @@ namespace Bannerlord.ButterLib.ExceptionHandler
 
                 foreach (var (methodBase, extendedModuleInfo) in GetFinalizers(patches))
                 {
-                    yield return new(methodBase, extendedModuleInfo, frame.ToString() ?? string.Empty);
+                    yield return new(methodBase, extendedModuleInfo, $"{frame} ({frame.GetILOffset()})");
                 }
                 foreach (var (methodBase, extendedModuleInfo) in GetPostfixes(patches))
                 {
-                    yield return new(methodBase, extendedModuleInfo, frame.ToString() ?? string.Empty);
+                    yield return new(methodBase, extendedModuleInfo, $"{frame} ({frame.GetILOffset()})");
                 }
                 foreach (var (methodBase, extendedModuleInfo) in GetPrefixes(patches))
                 {
-                    yield return new(methodBase, extendedModuleInfo, frame.ToString() ?? string.Empty);
+                    yield return new(methodBase, extendedModuleInfo, $"{frame} ({frame.GetILOffset()})");
                 }
                 foreach (var (methodBase, extendedModuleInfo) in GetTranspilers(patches))
                 {
                     // Ignore blank transpilers used to force the jitter to skip inlining
                     if (methodBase.Name == "BlankTranspiler") continue;
-                    yield return new(methodBase, extendedModuleInfo, frame.ToString() ?? string.Empty);
+                    yield return new(methodBase, extendedModuleInfo, $"{frame} ({frame.GetILOffset()})");
                 }
 
                 var moduleInfo = GetModuleInfoIfMod(method);
                 if (moduleInfo is not null)
-                    yield return new(method, moduleInfo, frame.ToString() ?? string.Empty);
+                    yield return new(method, moduleInfo, $"{frame} ({frame.GetILOffset()})");
             }
         }
     }
