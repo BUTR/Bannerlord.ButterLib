@@ -1,0 +1,2 @@
+Source code taken from https://github.com/MrakDev/Anti-Debug-Collection
+Additional reference: https://www.apriorit.com/dev-blog/367-anti-reverse-engineering-protection-techniques-to-use-before-releasing-software

@@ -12,13 +12,13 @@ using System.Reflection;
 
 namespace Bannerlord.ButterLib.ExceptionHandler
 {
-    internal record InvolvedModule(MethodBase Method, ModuleInfoExtended ModuleInfo, string StackFrameDescription);
+    internal record StacktraceEntry(MethodBase Method, ModuleInfoExtended? ModuleInfo, string StackFrameDescription);
 
     internal class CrashReport
     {
         public Guid Id { get; } = Guid.NewGuid();
         public Exception Exception { get; }
-        public List<InvolvedModule> InvolvedModules { get; }
+        public List<StacktraceEntry> Stacktrace { get; }
         public List<ModuleInfoExtended> LoadedModules { get; } = ModuleInfoHelper.GetLoadedModules().ToList();
         public List<Assembly> ModuleLoadedAssemblies { get; } = new();
         public List<Assembly> ExternalLoadedAssemblies { get; } = new();
@@ -28,10 +28,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
         {
             Exception = exception;
 
-            InvolvedModules = GetAllInvolvedModules(exception, 0).Where(FilterButterLib).ToList();
-            // Do not show Bannerlord.Harmony if it's the only one involved module.
-            if (InvolvedModules.Count == 1 && InvolvedModules[0].ModuleInfo.Id == "Bannerlord.Harmony")
-                InvolvedModules = new();
+            Stacktrace = GetAllInvolvedModules(exception, 0).ToList();
 
             var moduleAssemblies = new List<string>();
             foreach (var subModule in LoadedModules.SelectMany(module => module.SubModules))
@@ -51,20 +48,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             }
         }
 
-        private static bool FilterButterLib(InvolvedModule involvedModule)
-        {
-            if (involvedModule.ModuleInfo.Id == "Bannerlord.ButterLib")
-            {
-                if (involvedModule.Method == BEWPatch.FinalizerMethod)
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        private static IEnumerable<InvolvedModule> GetAllInvolvedModules(Exception ex, int level)
+        private static IEnumerable<StacktraceEntry> GetAllInvolvedModules(Exception ex, int level)
         {
             static Patches? FindPatches(MethodBase method) => method is MethodInfo replacement
                 ? Harmony.GetOriginalMethod(replacement) is { } original ? Harmony.GetPatchInfo(original) : null
@@ -124,30 +108,32 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                     ? frameMethod
                     : Harmony.GetMethodFromStackframe(frame);
 
-                var patches = FindPatches(method);
+                var frameDesc = $"{frame} (IL Offset: {frame.GetILOffset()})";
 
+                var patches = FindPatches(method);
                 foreach (var (methodBase, extendedModuleInfo) in GetFinalizers(patches))
                 {
-                    yield return new(methodBase, extendedModuleInfo, frame.ToString() ?? string.Empty);
+                    yield return new(methodBase, extendedModuleInfo, frameDesc);
                 }
                 foreach (var (methodBase, extendedModuleInfo) in GetPostfixes(patches))
                 {
-                    yield return new(methodBase, extendedModuleInfo, frame.ToString() ?? string.Empty);
+                    yield return new(methodBase, extendedModuleInfo, frameDesc);
                 }
                 foreach (var (methodBase, extendedModuleInfo) in GetPrefixes(patches))
                 {
-                    yield return new(methodBase, extendedModuleInfo, frame.ToString() ?? string.Empty);
+                    yield return new(methodBase, extendedModuleInfo, frameDesc);
                 }
                 foreach (var (methodBase, extendedModuleInfo) in GetTranspilers(patches))
                 {
-                    // Ignore blank transpilers used to force the jitter to skip inlining
-                    if (methodBase.Name == "BlankTranspiler") continue;
-                    yield return new(methodBase, extendedModuleInfo, frame.ToString() ?? string.Empty);
+                    yield return new(methodBase, extendedModuleInfo, frameDesc);
                 }
 
                 var moduleInfo = GetModuleInfoIfMod(method);
-                if (moduleInfo is not null)
-                    yield return new(method, moduleInfo, frame.ToString() ?? string.Empty);
+
+                yield return new(method, moduleInfo, frameDesc);
+
+                if (method is MethodInfo methodInfo && Harmony.GetOriginalMethod(methodInfo) is { } original)
+                    yield return new(original, moduleInfo, frameDesc);
             }
         }
     }

@@ -3,7 +3,6 @@ using Bannerlord.ButterLib.Common.Extensions;
 using Bannerlord.ButterLib.CrashUploader;
 using Bannerlord.ButterLib.DelayedSubModule;
 using Bannerlord.ButterLib.ExceptionHandler;
-using Bannerlord.ButterLib.Helpers;
 using Bannerlord.ButterLib.ObjectSystem.Extensions;
 using Bannerlord.ButterLib.Options;
 using Bannerlord.ButterLib.SubModuleWrappers2;
@@ -60,7 +59,7 @@ namespace Bannerlord.ButterLib
             {
                 if (gameVersion.Major is 1 && gameVersion.Minor is 8 && gameVersion.Revision >= 0)
                 {
-                    LocalizedTextManagerUtils.LoadLanguageData();
+                    LocalizedTextManagerHelper.LoadLanguageData(ModuleInfoHelper.GetModuleByType(typeof(ButterLibSubModule)));
                 }
             }
         }
