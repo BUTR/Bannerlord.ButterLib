@@ -1,4 +1,10 @@
 ---------------------------------------------------------------------------------------------------
+Version: 2.2.6
+Game Versions: e1.7.2,e1.8.0,e1.8.1,e1.9.0
+* Added better debugger detection
+* Added IL offset reporting
+* Added enhanced stracktrace
+---------------------------------------------------------------------------------------------------
 Version: 2.2.5
 Game Versions: e1.7.2,e1.8.0,e1.8.1,e1.9.0
 * Added better debugger detection
