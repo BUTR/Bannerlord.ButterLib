@@ -39,7 +39,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
     <title>Bannerlord Crash Report</title>
     <meta charset='utf-8'>
     <game version='{ApplicationVersionHelper.GameVersionStr()}'>
-    <report id='{crashReport.Id}' version='3'>
+    <report id='{crashReport.Id}' version='4'>
     <style>
         .headers {{
             font-family: ""Consolas"", monospace;
@@ -135,6 +135,12 @@ namespace Bannerlord.ButterLib.ExceptionHandler
       </div>
     </div>
     <div class='root-container'>
+      <h2><a href='javascript:;' class='headers' onclick='showHideById(this, ""enhanced-stacktrace"")'>+ Enhanced Stacktrace</a></h2>
+      <div id='enhanced-stacktrace' class='headers-container'>
+      {GetEnhancedStacktraceHtml(crashReport)}
+      </div>
+    </div>
+    <div class='root-container'>
       <h2><a href='javascript:;' class='headers' onclick='showHideById(this, ""involved-modules"")'>+ Involved Modules</a></h2>
       <div id='involved-modules' class='headers-container'>
       {GetInvolvedModuleListHtml(crashReport)}
@@ -221,17 +227,61 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             .AppendLine(ex.InnerException != null ? $"<br/>{NL}<br/>{NL}Inner {GetRecursiveExceptionHtml(ex.InnerException)}" : string.Empty)
             .ToString();
 
-        private static string GetInvolvedModuleListHtml(CrashReport crashReport)
+        private static string GetEnhancedStacktraceHtml(CrashReport crashReport)
         {
             var sb = new StringBuilder();
             sb.AppendLine("<ul>");
-            foreach (var modules in crashReport.InvolvedModules.GroupBy(m => m.ModuleInfo))
+            foreach (var stacktrace in crashReport.Stacktrace.GroupBy(x => x.StackFrameDescription))
             {
                 sb.Append("<li>")
-                    .Append($"<a href='javascript:;' onclick='document.getElementById(\"{modules.Key.Id}\").scrollIntoView(false)'>").Append(modules.Key.Id).Append("</a></br>")
+                    .Append($"Frame: {stacktrace.Key}</br>")
                     .Append("<ul>");
-                foreach (var (method, _, stackFrameDescription) in modules)
+                foreach (var (method, module, _) in stacktrace)
                 {
+                    sb.Append("<li>")
+                        .Append($"Module: {(module is null ? "UNKNOWN" : module.Id)}</br>")
+                        .Append($"Method: {method.FullDescription()}</br>")
+                        .Append("</li>");
+                }
+                sb.AppendLine("</ul></li>");
+            }
+            sb.AppendLine("</ul>");
+            return sb.ToString();
+        }
+
+        private static string GetInvolvedModuleListHtml(CrashReport crashReport)
+        {
+            static bool FilterButterLib(StacktraceEntry stacktraceEntry)
+            {
+                if (stacktraceEntry.ModuleInfo?.Id == "Bannerlord.ButterLib")
+                {
+                    if (stacktraceEntry.Method == BEWPatch.FinalizerMethod)
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+
+            // Do not show Bannerlord.Harmony if it's the only one involved module.
+            if (crashReport.Stacktrace.Count == 1 && crashReport.Stacktrace[0].ModuleInfo?.Id == "Bannerlord.Harmony")
+                return "<ul></ul>";
+
+            var sb = new StringBuilder();
+            sb.AppendLine("<ul>");
+            foreach (var stacktrace in crashReport.Stacktrace.Where(FilterButterLib).GroupBy(m => m.ModuleInfo))
+            {
+                var module = stacktrace.Key;
+                if (module is null) continue;
+
+                sb.Append("<li>")
+                    .Append($"<a href='javascript:;' onclick='document.getElementById(\"{module.Id}\").scrollIntoView(false)'>").Append(module.Id).Append("</a></br>")
+                    .Append("<ul>");
+                foreach (var (method, _, stackFrameDescription) in stacktrace)
+                {
+                    // Ignore blank transpilers used to force the jitter to skip inlining
+                    if (method.Name == "BlankTranspiler") continue;
                     sb.Append("<li>")
                         .Append($"Method: {method.FullDescription()}</br>")
                         .Append($"Frame: {stackFrameDescription}</br>")
