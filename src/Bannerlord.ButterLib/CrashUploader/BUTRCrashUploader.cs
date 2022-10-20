@@ -18,7 +18,8 @@ namespace Bannerlord.ButterLib.CrashUploader
             if (uploadUrlAttr is null)
                 return null;
 
-            var htmlReport = HtmlBuilder.Build(crashReport);
+            // Do not send a minidump
+            var htmlReport = HtmlBuilder.Build(crashReport, string.Empty);
             var data = Encoding.UTF8.GetBytes(htmlReport);
 
             var httpWebRequest = WebRequest.CreateHttp($"{uploadUrlAttr.Value}");

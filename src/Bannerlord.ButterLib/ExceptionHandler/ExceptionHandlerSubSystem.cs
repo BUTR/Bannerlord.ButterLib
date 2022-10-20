@@ -21,15 +21,20 @@ namespace Bannerlord.ButterLib.ExceptionHandler
         public bool CanBeDisabled => true;
         public bool CanBeSwitchedAtRuntime => true;
 
+        public bool IncludeMiniDump { get; private set; } = true;
         public bool DisableWhenDebuggerIsAttached { get; private set; } = true;
 
         /// <inheritdoc />
         public IReadOnlyCollection<SubSystemSettingsDeclaration<ExceptionHandlerSubSystem>> Declarations { get; } = new SubSystemSettingsDeclaration<ExceptionHandlerSubSystem>[]
         {
             new SubSystemSettingsPropertyBool<ExceptionHandlerSubSystem>(
+                "{=G6bfrDgbFk} Include MiniDump",
+                "{=76ktQgfbRz} Includes a MiniDump in the crash report when saving locally as file.",
+                x => x.IncludeMiniDump),
+            new SubSystemSettingsPropertyBool<ExceptionHandlerSubSystem>(
                 "{=B7bfrDNzIk} Disable when Debugger is Attached",
                 "{=r3ktQzFMRz} Stops the Exception Handler when a debugger is attached.",
-                x => x.DisableWhenDebuggerIsAttached)
+                x => x.DisableWhenDebuggerIsAttached),
         };
 
 

@@ -33,13 +33,13 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             form.ShowDialog();
         }
 
-        public static string Build(CrashReport crashReport) => @$"
+        public static string Build(CrashReport crashReport, string miniDump) => @$"
 <html>
   <head>
     <title>Bannerlord Crash Report</title>
     <meta charset='utf-8'>
     <game version='{ApplicationVersionHelper.GameVersionStr()}'>
-    <report id='{crashReport.Id}' version='4'>
+    <report id='{crashReport.Id}' version='5'>
     <style>
         .headers {{
             font-family: ""Consolas"", monospace;
@@ -49,7 +49,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             font-size: small;
 
             margin: 5px;
-			background-color: white;
+            background-color: white;
             border: 1px solid grey;
             padding: 5px;
         }}
@@ -112,18 +112,25 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             </div>
           </td>
            <td>
-		    <div style='float:right; margin-left:10px;'>
-		      <label>Without Color:</label>
-			  <input type='checkbox' onclick='changeBackgroundColor(this)'>
-			  <br/>
-			  <br/>
-			  <label>Font Size:</label>
+              <div style='float:right; margin-left:10px;'>
+              <label>Without Color:</label>
+              <input type='checkbox' onclick='changeBackgroundColor(this)'>
+              <br/>
+              <br/>
+              <label>Font Size:</label>
               <select class='input' onchange='changeFontSize(this);'>
                 <option value='1.0em' selected='selected'>Standard</option>
-			    <option value='0.9em'>Medium</option>
+                <option value='0.9em'>Medium</option>
                 <option value='0.8em'>Small</option>
               </select>
-			</div>
+{(string.IsNullOrEmpty(miniDump) ? "" : @"
+<![if !IE]>
+              <br/>
+              <br/>
+              <button onclick='minidump(this)'>Get MiniDump</button>
+<![endif]>
+")}
+            </div>
           </td>
         </tr>
       </tbody>
@@ -175,6 +182,17 @@ namespace Bannerlord.ButterLib.ExceptionHandler
       {GetLogFilesListHtml(crashReport)}
       </div>
     </div>
+    <div class='root-container' style='display:none;'>
+      <h2><a href='javascript:;' class='headers' onclick='showHideById(this, ""mini-dump"")'>+ Mini Dump</a></h2>
+      <div id='mini-dump' class='headers-container'>
+      {miniDump}
+      </div>
+    </div>
+{(string.IsNullOrEmpty(miniDump) ? "" : @"
+<![if !IE]>
+    <script src=""https://cdn.jsdelivr.net/pako/1.0.3/pako_inflate.min.js""></script>
+<![endif]>
+")}
     <script>
       function showHideById(element, id) {{
           if (document.getElementById(id).style.display === 'block') {{
@@ -214,6 +232,18 @@ namespace Bannerlord.ButterLib.ExceptionHandler
           setBackgroundColorByClassName('modules-invalid-container', (!element.checked) ? '#ffefd5' : 'white');
           setBackgroundColorByClassName('submodules-invalid-container', (!element.checked) ? '#f5ecdf' : 'white');
       }}
+      function minidump(element) {{
+          var base64 = document.getElementById('mini-dump').innerText.trim();
+          //var binData = Uint8Array.from(atob(base64), c => c.charCodeAt(0));
+          var binData = new Uint8Array(atob(base64).split('').map(function(x){{return x.charCodeAt(0);}}));
+          var result = window.pako.inflate(binData);
+
+          var a = document.createElement('a');
+          var blob = new Blob([result]);
+          a.href = window.URL.createObjectURL(blob);
+          a.download = ""crashdump.dmp"";
+          a.click();
+        }}
     </script>
   </body>
 </html>";
