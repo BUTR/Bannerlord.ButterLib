@@ -62,6 +62,12 @@ namespace Bannerlord.ButterLib.ExceptionHandler
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
+                // A small dump containing module lists, thread lists, exception information and all stacks.
+                const MINIDUMP_TYPE mini = MINIDUMP_TYPE.MiniDumpNormal |
+                                           MINIDUMP_TYPE.MiniDumpWithDataSegs |
+                                           MINIDUMP_TYPE.MiniDumpWithHandleData |
+                                           MINIDUMP_TYPE.MiniDumpWithThreadInfo;
+
                 var temp = Path.GetTempFileName();
                 using (var fs = new FileStream(temp, FileMode.Create, FileAccess.ReadWrite, FileShare.None))
                 {
@@ -71,7 +77,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                         return false;
                     }
 
-                    if (!Write(fs.SafeFileHandle, MINIDUMP_TYPE.MiniDumpWithIndirectlyReferencedMemory))
+                    if (!Write(fs.SafeFileHandle, mini))
                     {
                         compressedDataStream = null;
                         return false;
