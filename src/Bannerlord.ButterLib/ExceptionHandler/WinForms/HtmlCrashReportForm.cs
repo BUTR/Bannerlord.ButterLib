@@ -18,6 +18,14 @@ namespace Bannerlord.ButterLib.ExceptionHandler.WinForms
         private static bool HasBetterExceptionWindow =>
             BUTR.Shared.Helpers.ModuleInfoHelper.GetLoadedModules().Any(m => string.Equals(m.Id, "BetterExceptionWindow", StringComparison.InvariantCultureIgnoreCase));
 
+        private static string GetCompressedMiniDump()
+        {
+            if (ExceptionHandlerSubSystem.Instance?.IncludeMiniDump != true || !MiniDump.TryDump(out var stream)) return string.Empty;
+
+            using var _ = stream;
+            return Convert.ToBase64String(stream.ToArray());
+        }
+
 
         // https://gist.github.com/eikes/2299607
         // Copyright: Eike Send http://eike.se/nd
@@ -79,7 +87,7 @@ if (!document.getElementsByClassName) {
         internal HtmlCrashReportForm(CrashReport crashReport)
         {
             CrashReport = crashReport;
-            ReportInHtml = HtmlBuilder.Build(crashReport);
+            ReportInHtml = HtmlBuilder.Build(crashReport, GetCompressedMiniDump());
 
             InitializeComponent();
             HtmlRender.ObjectForScripting = this;
