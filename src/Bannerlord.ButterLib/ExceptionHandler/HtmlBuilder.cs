@@ -25,6 +25,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
 {
     internal static class HtmlBuilder
     {
+        private const int Version = 6;
         private static readonly string NL = Environment.NewLine;
 
         public static void BuildAndShow(CrashReport crashReport)
@@ -39,7 +40,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
     <title>Bannerlord Crash Report</title>
     <meta charset='utf-8'>
     <game version='{ApplicationVersionHelper.GameVersionStr()}'>
-    <report id='{crashReport.Id}' version='5'>
+    <report id='{crashReport.Id}' version='{Version}'>
     <style>
         .headers {{
             font-family: ""Consolas"", monospace;
@@ -71,6 +72,12 @@ namespace Bannerlord.ButterLib.ExceptionHandler
         .modules-official-container {{
             margin: 5px;
             background-color: #f4fcdc;
+            border: 1px solid grey;
+            padding: 5px;
+        }}
+        .modules-external-container {{
+            margin: 5px;
+            background-color: #ede9e0;
             border: 1px solid grey;
             padding: 5px;
         }}
@@ -228,6 +235,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
           setBackgroundColorByClassName('modules-container', (!element.checked) ? '#ffffe0' : 'white');
           setBackgroundColorByClassName('submodules-container', (!element.checked) ? '#f8f8e7' : 'white');
           setBackgroundColorByClassName('modules-official-container', (!element.checked) ? '#f4fcdc' : 'white');
+          setBackgroundColorByClassName('modules-external-container', (!element.checked) ? '#ede9e0' : 'white');
           setBackgroundColorByClassName('submodules-official-container', (!element.checked) ? '#f0f4e4' : 'white');
           setBackgroundColorByClassName('modules-invalid-container', (!element.checked) ? '#ffefd5' : 'white');
           setBackgroundColorByClassName('submodules-invalid-container', (!element.checked) ? '#f5ecdf' : 'white');
@@ -475,13 +483,20 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                 AppendSubModules(module);
                 AppendAdditionalAssemblies(module);
 
+                var moduleMetadata = module as ModuleInfoExtendedWithMetadata;
+                var isExternal = moduleMetadata?.IsExternal == true;
                 moduleBuilder.AppendLine("<li>")
-                    .AppendLine(module.IsOfficial ? "<div class=\"modules-official-container\">" : "<div class=\"modules-container\">")
+                    .AppendLine(module.IsOfficial
+                        ? "<div class=\"modules-official-container\">"
+                        : isExternal
+                            ? "<div class=\"modules-external-container\">"
+                            : "<div class=\"modules-container\">")
                     .Append($"<b><a href='javascript:;' onclick='showHideById(this, \"{module.Id}\")'>").Append("+ ").Append(module.Name).Append(" (").Append(module.Id).Append(", ").Append(module.Version).Append(")").AppendLine("</a></b>")
                     .AppendLine($"<div id='{module.Id}' style='display: none'>")
                     .Append("Id: ").Append(module.Id).AppendLine("</br>")
                     .Append("Name: ").Append(module.Name).AppendLine("</br>")
                     .Append("Version: ").Append(module.Version).AppendLine("</br>")
+                    .Append("External: ").Append(isExternal).AppendLine("</br>")
                     .Append("Official: ").Append(module.IsOfficial).AppendLine("</br>")
                     .Append("Singleplayer: ").Append(module.IsSingleplayerModule).AppendLine("</br>")
                     .Append("Multiplayer: ").Append(module.IsMultiplayerModule).AppendLine("</br>")
