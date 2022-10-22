@@ -25,6 +25,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
 {
     internal static class HtmlBuilder
     {
+        private const int Version = 6;
         private static readonly string NL = Environment.NewLine;
 
         public static void BuildAndShow(CrashReport crashReport)
@@ -39,7 +40,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
     <title>Bannerlord Crash Report</title>
     <meta charset='utf-8'>
     <game version='{ApplicationVersionHelper.GameVersionStr()}'>
-    <report id='{crashReport.Id}' version='5'>
+    <report id='{crashReport.Id}' version='{Version}'>
     <style>
         .headers {{
             font-family: ""Consolas"", monospace;
@@ -475,6 +476,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                 AppendSubModules(module);
                 AppendAdditionalAssemblies(module);
 
+                var moduleMetadata = module as ModuleInfoExtendedWithMetadata;
                 moduleBuilder.AppendLine("<li>")
                     .AppendLine(module.IsOfficial ? "<div class=\"modules-official-container\">" : "<div class=\"modules-container\">")
                     .Append($"<b><a href='javascript:;' onclick='showHideById(this, \"{module.Id}\")'>").Append("+ ").Append(module.Name).Append(" (").Append(module.Id).Append(", ").Append(module.Version).Append(")").AppendLine("</a></b>")
@@ -482,6 +484,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                     .Append("Id: ").Append(module.Id).AppendLine("</br>")
                     .Append("Name: ").Append(module.Name).AppendLine("</br>")
                     .Append("Version: ").Append(module.Version).AppendLine("</br>")
+                    .Append("External: ").Append(moduleMetadata?.IsExternal == true).AppendLine("</br>")
                     .Append("Official: ").Append(module.IsOfficial).AppendLine("</br>")
                     .Append("Singleplayer: ").Append(module.IsSingleplayerModule).AppendLine("</br>")
                     .Append("Multiplayer: ").Append(module.IsMultiplayerModule).AppendLine("</br>")
@@ -682,6 +685,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                         }
                         catch (Exception)
                         {
+                            throw;
                             sbSource.Clear();
                         }
                         finally

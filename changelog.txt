@@ -1,4 +1,8 @@
 ---------------------------------------------------------------------------------------------------
+Version: 2.2.8
+Game Versions: e1.7.2,e1.8.0,e1.8.1,e1.9.0
+* Added External metadata to Crash Report, states that module is from Workshop
+---------------------------------------------------------------------------------------------------
 Version: 2.2.7
 Game Versions: e1.7.2,e1.8.0,e1.8.1,e1.9.0
 * Added better Involvement filtering
