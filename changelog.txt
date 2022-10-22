@@ -1,5 +1,5 @@
 ---------------------------------------------------------------------------------------------------
-Version: 2.2.6
+Version: 2.2.7
 Game Versions: e1.7.2,e1.8.0,e1.8.1,e1.9.0
 * Added better Involvement filtering
 * Added MiniDump feature when saving locally
