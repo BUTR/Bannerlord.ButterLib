@@ -697,7 +697,6 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                         }
                         catch (Exception)
                         {
-                            throw;
                             sbSource.Clear();
                         }
                         finally
