@@ -281,11 +281,19 @@ namespace Bannerlord.ButterLib.ExceptionHandler
 
         private static string GetInvolvedModuleListHtml(CrashReport crashReport)
         {
-            static bool FilterButterLib(StacktraceEntry stacktraceEntry)
+            static bool Filter(StacktraceEntry stacktraceEntry)
             {
                 if (stacktraceEntry.ModuleInfo?.Id == "Bannerlord.ButterLib")
                 {
                     if (stacktraceEntry.Method == BEWPatch.FinalizerMethod)
+                    {
+                        return false;
+                    }
+                }
+
+                if (stacktraceEntry.ModuleInfo?.Id == "Bannerlord.MBOptionScreen")
+                {
+                    if (stacktraceEntry.Method.Name == "ExecuteCommandPatch")
                     {
                         return false;
                     }
@@ -300,7 +308,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
 
             var sb = new StringBuilder();
             sb.AppendLine("<ul>");
-            foreach (var stacktrace in crashReport.Stacktrace.Where(FilterButterLib).GroupBy(m => m.ModuleInfo))
+            foreach (var stacktrace in crashReport.Stacktrace.Where(Filter).GroupBy(m => m.ModuleInfo))
             {
                 var module = stacktrace.Key;
                 if (module is null) continue;
@@ -584,7 +592,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
 
                     patchBuilder.Append("<li>")
                         .Append("Owner: ").Append(patch.owner).Append("; ")
-                        .Append("Namespace: ").Append(patch.PatchMethod.DeclaringType!.FullName).Append(patch.PatchMethod.Name).Append("; ")
+                        .Append("Namespace: ").Append(patch.PatchMethod.DeclaringType!.FullName).Append(".").Append(patch.PatchMethod.Name).Append("; ")
                         .Append(patch.index != 0 ? $"Index: {patch.index}; " : "")
                         .Append(patch.priority != 400 ? $"Priority: {patch.priority}; " : "")
                         .Append(patch.before.Length > 0 ? $"Before: {string.Join(", ", patch.before)}; " : "")
