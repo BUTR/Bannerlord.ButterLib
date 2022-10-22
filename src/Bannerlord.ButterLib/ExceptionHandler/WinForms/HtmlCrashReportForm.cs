@@ -20,7 +20,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler.WinForms
 
         private static string GetCompressedMiniDump()
         {
-            if (ExceptionHandlerSubSystem.Instance?.IncludeMiniDump != true ||!MiniDump.TryDump(out var stream)) return string.Empty;
+            if (ExceptionHandlerSubSystem.Instance?.IncludeMiniDump != true || !MiniDump.TryDump(out var stream)) return string.Empty;
 
             using var _ = stream;
             return Convert.ToBase64String(stream.ToArray());
