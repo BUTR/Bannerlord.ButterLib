@@ -7,7 +7,7 @@
     <Nullable>enable</Nullable>
     <Platforms>x64</Platforms>
     <BUTRUploadUrl>$(BANNERLORD_BUTR_UPLOAD_URL)</BUTRUploadUrl>
-    <DefineConstants>$(DefineConstants);BANNERLORDBUTRSHARED_BUTTERLIB;HARMONYEXTENSIONS_DISABLE_2_0_4</DefineConstants>
+    <DefineConstants>$(DefineConstants);BANNERLORDBUTRSHARED_BUTTERLIB;HARMONYEXTENSIONS_DISABLE_2_0_4;X64</DefineConstants>
     <GameVersion>1.7.2</GameVersion>
   </PropertyGroup>
 
