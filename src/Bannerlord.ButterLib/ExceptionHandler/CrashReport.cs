@@ -19,7 +19,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
         public Guid Id { get; } = Guid.NewGuid();
         public Exception Exception { get; }
         public List<StacktraceEntry> Stacktrace { get; }
-        public List<ModuleInfoExtended> LoadedModules { get; } = ModuleInfoHelper.GetLoadedModules().ToList();
+        public List<ModuleInfoExtendedWithMetadata> LoadedModules { get; } = ModuleInfoHelper.GetLoadedModules().OfType<ModuleInfoExtendedWithMetadata>().ToList();
         public List<Assembly> ModuleLoadedAssemblies { get; } = new();
         public List<Assembly> ExternalLoadedAssemblies { get; } = new();
         public Dictionary<MethodBase, Patches> LoadedHarmonyPatches { get; } = new();

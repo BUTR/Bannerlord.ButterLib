@@ -6,11 +6,13 @@ using Bannerlord.ButterLib.Logger;
 using Bannerlord.ModuleManager;
 
 using HarmonyLib;
+using HarmonyLib.BUTR.Extensions;
 
 using Microsoft.Extensions.DependencyInjection;
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -25,7 +27,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
 {
     internal static class HtmlBuilder
     {
-        private const int Version = 6;
+        private const int Version = 7;
         private static readonly string NL = Environment.NewLine;
 
         public static void BuildAndShow(CrashReport crashReport)
@@ -34,12 +36,19 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             form.ShowDialog();
         }
 
-        public static string Build(CrashReport crashReport, string miniDump) => @$"
+        public static string Build(CrashReport crashReport, string miniDump)
+        {
+            var launcherType = GetLauncherType();
+            var launcherVersion = GetLauncherVersion();
+            var butrLoaderVersion = GetBUTRLoaderVersion();
+            return @$"
 <html>
   <head>
     <title>Bannerlord Crash Report</title>
     <meta charset='utf-8'>
     <game version='{ApplicationVersionHelper.GameVersionStr()}'>
+    <launcher type='{launcherType}' version='{launcherVersion}'>
+    {(string.IsNullOrEmpty(butrLoaderVersion) ? "" : $"<butrloader version='{butrLoaderVersion}'>")}
     <report id='{crashReport.Id}' version='{Version}'>
     <style>
         .headers {{
@@ -116,6 +125,10 @@ namespace Bannerlord.ButterLib.ExceptionHandler
               <br/>
               If you were in the middle of something, the progress might be lost.
               <br/>
+              <br/>
+              Launcher: {launcherType} ({launcherVersion})
+              <br/>
+              {(string.IsNullOrEmpty(butrLoaderVersion) ? "" : $"<butrloader version='{butrLoaderVersion}'>")}
             </div>
           </td>
            <td>
@@ -255,6 +268,53 @@ namespace Bannerlord.ButterLib.ExceptionHandler
     </script>
   </body>
 </html>";
+        }
+
+        private static string GetBUTRLoaderVersion()
+        {
+            if (AccessTools2.AllAssemblies().FirstOrDefault(x => x.GetName().Name == "Bannerlord.BUTRLoader") is { } bAssembly)
+                return bAssembly.GetName().Version.ToString();
+
+            return string.Empty;
+        }
+
+        private static string GetLauncherType()
+        {
+            if (Process.GetCurrentProcess().ParentProcess() is { } pProcess)
+            {
+                if (Process.GetCurrentProcess().ParentProcess()?.ProcessName == "Vortex")
+                    return "vortex";
+                if (Process.GetCurrentProcess().ParentProcess()?.ProcessName == "BannerLordLauncher")
+                    return "bannerlordlauncher";
+                if (Process.GetCurrentProcess().ParentProcess()?.ProcessName == "steam")
+                    return "steam";
+                if (Process.GetCurrentProcess().ParentProcess()?.ProcessName == "GalaxyClient")
+                    return "gog";
+                if (Process.GetCurrentProcess().ParentProcess()?.ProcessName == "EpicGamesLauncher")
+                    return "epicgames";
+                if (Process.GetCurrentProcess().ParentProcess()?.ProcessName == "devenv")
+                    return "debuggervisualstudio";
+                if (Process.GetCurrentProcess().ParentProcess()?.ProcessName == "JetBrains.Debugger.Worker64c")
+                    return "debuggerjetbrains";
+                return $"unknown launcher - {pProcess.ProcessName}";
+            }
+
+            if (!string.IsNullOrEmpty(GetBUTRLoaderVersion()))
+                return "butrloader";
+
+            return "vanilla";
+        }
+
+        private static string GetLauncherVersion()
+        {
+            if (Process.GetCurrentProcess().ParentProcess() is { } pProcess)
+                return pProcess.MainModule?.FileVersionInfo.FileVersion ?? "0";
+
+            if (GetBUTRLoaderVersion() is { } bVersion && !string.IsNullOrEmpty(bVersion))
+                return bVersion;
+
+            return "0";
+        }
 
         private static string GetRecursiveExceptionHtml(Exception ex) => new StringBuilder()
             .AppendLine("Exception information")
@@ -483,12 +543,10 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                 AppendSubModules(module);
                 AppendAdditionalAssemblies(module);
 
-                var moduleMetadata = module as ModuleInfoExtendedWithMetadata;
-                var isExternal = moduleMetadata?.IsExternal == true;
                 moduleBuilder.AppendLine("<li>")
                     .AppendLine(module.IsOfficial
                         ? "<div class=\"modules-official-container\">"
-                        : isExternal
+                        : module.IsExternal
                             ? "<div class=\"modules-external-container\">"
                             : "<div class=\"modules-container\">")
                     .Append($"<b><a href='javascript:;' onclick='showHideById(this, \"{module.Id}\")'>").Append("+ ").Append(module.Name).Append(" (").Append(module.Id).Append(", ").Append(module.Version).Append(")").AppendLine("</a></b>")
@@ -496,7 +554,8 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                     .Append("Id: ").Append(module.Id).AppendLine("</br>")
                     .Append("Name: ").Append(module.Name).AppendLine("</br>")
                     .Append("Version: ").Append(module.Version).AppendLine("</br>")
-                    .Append("External: ").Append(isExternal).AppendLine("</br>")
+                    .Append("External: ").Append(module.IsExternal).AppendLine("</br>")
+                    .Append("Vortex: ").Append(File.Exists(Path.Combine(module.Path, "__folder_managed_by_vortex"))).AppendLine("</br>")
                     .Append("Official: ").Append(module.IsOfficial).AppendLine("</br>")
                     .Append("Singleplayer: ").Append(module.IsSingleplayerModule).AppendLine("</br>")
                     .Append("Multiplayer: ").Append(module.IsMultiplayerModule).AppendLine("</br>")
