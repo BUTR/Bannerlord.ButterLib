@@ -28,7 +28,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                 [In] ref MINIDUMP_CALLBACK_INFORMATION CallbackParam);
 
             [Flags]
-            public enum MINIDUMP_TYPE: int
+            public enum MINIDUMP_TYPE : int
             {
                 MiniDumpNormal = 0x00000000,
                 MiniDumpWithDataSegs = 0x00000001,
@@ -132,9 +132,9 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             {
                 public MINIDUMP_USER_STREAM_INFORMATION(params MINIDUMP_USER_STREAM[] streams)
                 {
-                    UserStreamCount = (uint)streams.Length;
+                    UserStreamCount = (uint) streams.Length;
                     int sizeOfStream = Marshal.SizeOf(typeof(MINIDUMP_USER_STREAM));
-                    UserStreamArray = Marshal.AllocHGlobal((int)(UserStreamCount * sizeOfStream));
+                    UserStreamArray = Marshal.AllocHGlobal((int) (UserStreamCount * sizeOfStream));
                     for (int i = 0; i < streams.Length; ++i)
                     {
                         Marshal.StructureToPtr(streams[i], UserStreamArray + (i * sizeOfStream), false);
@@ -406,7 +406,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
         {
             public uint ThreadId;
         }
-        
+
         private static bool Write(SafeHandle file, MINIDUMP_TYPE dumpType, MINIDUMP_CALLBACK_ROUTINE callbackRoutine)
         {
             using var process = Process.GetCurrentProcess();
