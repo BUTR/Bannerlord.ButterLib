@@ -14,7 +14,7 @@
     <ExtensionVersion>2.0.0</ExtensionVersion>
     <!--BuildResources Version-->
     <BuildResourcesVersion>1.0.1.68</BuildResourcesVersion>
-    <BUTRSharedVersion>2.0.0.115</BUTRSharedVersion>
+    <BUTRSharedVersion>3.0.0.116</BUTRSharedVersion>
     <BUTRModuleManagerVersion>4.0.148</BUTRModuleManagerVersion>
   </PropertyGroup>
 
