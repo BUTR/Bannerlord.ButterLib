@@ -52,16 +52,7 @@ namespace Bannerlord.ButterLib
         {
             Instance = this;
 
-            ValidateGameVersion();
             ValidateLoadOrder();
-
-            if (ApplicationVersionHelper.GameVersion() is { } gameVersion)
-            {
-                if (gameVersion.Major is 1 && gameVersion.Minor is 8 && gameVersion.Revision >= 0)
-                {
-                    LocalizedTextManagerHelper.LoadLanguageData(ModuleInfoHelper.GetModuleByType(typeof(ButterLibSubModule)));
-                }
-            }
         }
 
         public void OnServiceRegistration()
@@ -182,24 +173,6 @@ namespace Bannerlord.ButterLib
             Logger.LogTrace("OnGameEnd: Done");
         }
 
-
-        private static void ValidateGameVersion()
-        {
-            var e172 = ApplicationVersionHelper.TryParse("e1.7.2", out var e172Val) ? e172Val : ApplicationVersion.Empty;
-            if (ApplicationVersionHelper.GameVersion() is { } gameVersion && gameVersion < e172)
-            {
-                var sb = new StringBuilder();
-                sb.AppendLine(new TextObject(SMessageWrongGameVersion, new() { { "GAMEVERSION", ApplicationVersionHelper.ToString(gameVersion) } }).ToString());
-                sb.AppendLine();
-                sb.AppendLine(new TextObject(SMessageContinue).ToString());
-                switch (MessageBox.Show(sb.ToString(), new TextObject(SWarningTitle).ToString(), MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1, (MessageBoxOptions) 0x40000))
-                {
-                    case DialogResult.Yes:
-                        Environment.Exit(1);
-                        break;
-                }
-            }
-        }
         private static void ValidateLoadOrder()
         {
             var loadedModules = ModuleInfoHelper.GetLoadedModules().ToList();

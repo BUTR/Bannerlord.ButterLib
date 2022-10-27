@@ -20,7 +20,7 @@ namespace Bannerlord.ButterLib.Logger.Extensions
         {
             var formattedValues = new FormattedLogValues(message, args);
             logger.Log(logLevel, 0, formattedValues, exception, MessageFormatter);
-            InformationManagerHelper.DisplayMessage($"{logLevel}: {formattedValues}", logLevel switch
+            InformationManager.DisplayMessage(new InformationMessage($"{logLevel}: {formattedValues}", logLevel switch
             {
                 LogLevel.Trace => Color.FromUint(0x00FFFFFF), // white
                 LogLevel.Debug => Color.FromUint(0x00808080), // grey
@@ -30,7 +30,7 @@ namespace Bannerlord.ButterLib.Logger.Extensions
                 LogLevel.Critical => Color.FromUint(0x008B0000), // dark red
                 LogLevel.None => Color.White,
                 _ => throw new ArgumentOutOfRangeException(nameof(logLevel), logLevel, null)
-            });
+            }));
         }
 
         public static void LogTraceAndDisplay(this ILogger logger, string message, params object[] args) =>

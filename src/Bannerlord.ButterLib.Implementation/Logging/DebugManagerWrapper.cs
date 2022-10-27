@@ -105,13 +105,10 @@ namespace Bannerlord.ButterLib.Implementation.Logging
         public void RenderDebugText(float screenX, float screenY, string text, uint color = 4294967295, float time = 0) =>
             OriginalDebugManager.RenderDebugText(screenX, screenY, text, color, time);
 
-#if !e172
-        public void RenderDebugRectWithColor(float left, float bottom, float right, float top, uint color = 4294967295)  =>
+        public void RenderDebugRectWithColor(float left, float bottom, float right, float top, uint color = 4294967295) =>
             OriginalDebugManager.RenderDebugRectWithColor(left, bottom, right, top, color);
-#endif
-#if e190
+
         public void ReportMemoryBookmark(string message) => OriginalDebugManager.ReportMemoryBookmark(message);
-#endif
 
         public void WatchVariable(string name, object value) => OriginalDebugManager.WatchVariable(name, value);
 
@@ -134,6 +131,5 @@ namespace Bannerlord.ButterLib.Implementation.Logging
 
         public void RenderDebugText3D(Vec3 position, string text, uint color = uint.MaxValue, int screenPosOffsetX = 0, int screenPosOffsetY = 0, float time = 0) =>
             OriginalDebugManager.RenderDebugText3D(position, text, color, screenPosOffsetX, screenPosOffsetY, time);
-
     }
 }

@@ -296,6 +296,8 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                     return "debuggervisualstudio";
                 if (Process.GetCurrentProcess().ParentProcess()?.ProcessName == "JetBrains.Debugger.Worker64c")
                     return "debuggerjetbrains";
+                if (Process.GetCurrentProcess().ParentProcess()?.ProcessName == "explorer")
+                    return "explorer";
                 return $"unknown launcher - {pProcess.ProcessName}";
             }
 

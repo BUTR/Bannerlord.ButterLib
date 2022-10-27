@@ -27,11 +27,7 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem
         {
             IsEnabled = true;
 
-            if (ApplicationVersionHelper.GameVersion() is { Major: >= 1, Minor: >= 7 })
-            {
-                BehaviourNamePatch.Enable(_harmony);
-            }
-
+            BehaviourNamePatch.Enable(_harmony);
             TypeExtensionsPatch.Enable(_harmony); // Adds support for saving many more container types
             DefinitionContextPatch.Enable(_harmony); // Fixes save corruption & crashes when duplicate types are defined
         }
@@ -40,11 +36,7 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem
         {
             IsEnabled = false;
 
-            if (ApplicationVersionHelper.GameVersion() is { Major: >= 1, Minor: >= 7 })
-            {
-                BehaviourNamePatch.Disable(_harmony);
-            }
-
+            BehaviourNamePatch.Disable(_harmony);
             TypeExtensionsPatch.Disable(_harmony);
             DefinitionContextPatch.Disable(_harmony);
         }
