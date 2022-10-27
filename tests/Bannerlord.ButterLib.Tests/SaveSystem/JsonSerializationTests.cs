@@ -37,15 +37,15 @@ namespace Bannerlord.ButterLib.Tests.SaveSystem
         public void Setup()
         {
             var harmony = new Harmony($"{nameof(JsonSerializationTests)}.{nameof(Setup)}");
-            harmony.Patch(SymbolExtensions.GetMethodInfo(() => FSIOHelper.GetConfigPath()),
-                prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetConfigPath)));
+            //harmony.Patch(SymbolExtensions.GetMethodInfo(() => FSIOHelper.GetConfigPath()),
+            //    prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetConfigPath)));
 
             var binFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
             var d1 = Directory.GetFiles(binFolder, "TaleWorlds*.dll");
             var d2 = Directory.GetFiles(binFolder, "StoryMode*.dll");
             var d3 = Directory.GetFiles(binFolder, "SandBox*.dll");
 
-            foreach (string dll in d1.Concat(d2).Concat(d3))
+            foreach (var dll in d1.Concat(d2).Concat(d3))
                 Assembly.LoadFile(dll);
         }
 

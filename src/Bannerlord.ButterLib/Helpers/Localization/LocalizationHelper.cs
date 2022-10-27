@@ -297,7 +297,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
             }
         }
 
-        private static Dictionary<string, TextObject?> GetListAttributes(IEnumerable<string> valuesList, string separator = ", ", bool useDistinctValues = true)
+        private static Dictionary<string, object?> GetListAttributes(IEnumerable<string> valuesList, string separator = ", ", bool useDistinctValues = true)
         {
             var localValues = (useDistinctValues ? valuesList.Distinct() : valuesList).ToList();
             return localValues.Any()
@@ -345,7 +345,7 @@ namespace Bannerlord.ButterLib.Common.Helpers
                 return;
             }
             var attributes = GetListAttributes(valuesList, separator, useDistinctValues);
-            var explainedTextObject = TextObjectHelper.Create(BUILT_IN_AGGREGATION_STRING, attributes);
+            var explainedTextObject = new TextObject(BUILT_IN_AGGREGATION_STRING, attributes);
             if (textObject is null)
             {
                 MBTextManager.SetTextVariable(tag, explainedTextObject);

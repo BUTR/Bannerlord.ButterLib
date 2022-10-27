@@ -83,8 +83,8 @@ namespace Bannerlord.ButterLib.Implementation.Tests
         public void Setup()
         {
             var harmony = new Harmony($"{nameof(DependencyInjectionTests)}.{nameof(Setup)}");
-            harmony.Patch(SymbolExtensions2.GetMethodInfo(() => FSIOHelper.GetConfigPath()),
-                prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetConfigPath)));
+            //harmony.Patch(SymbolExtensions2.GetMethodInfo(() => FSIOHelper.GetConfigPath()),
+            //    prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetConfigPath)));
             harmony.Patch(SymbolExtensions2.GetPropertyInfo(() => TWCommon.ConfigName!)!.GetMethod,
                 prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetConfigName)));
             var engineUtilitiesType = Type.GetType("TaleWorlds.Engine.Utilities, TaleWorlds.Engine", false);
