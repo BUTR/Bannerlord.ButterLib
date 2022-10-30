@@ -5,15 +5,11 @@
   <Name value="$modulename$" />
   <Version value="v$version$" />
   <ModuleType value="Community"/>
-  <Official value="false" />
   <DefaultModule value="false" />
-  <SingleplayerModule value="true" />
-  <MultiplayerModule value="false" />
   <ModuleCategory value="Singleplayer" />
   <Url value="https://www.nexusmods.com/mountandblade2bannerlord/mods/2018" />
   <DependedModules>
     <DependedModule Id="Bannerlord.Harmony" DependentVersion="v$harmonyversion$" />
-    <!--<DependedModule Id="Bannerlord.ModuleLoader" />-->
   </DependedModules>
   <ModulesToLoadAfterThis>
     <Module Id="Native" />
