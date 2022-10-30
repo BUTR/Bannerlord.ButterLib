@@ -8,8 +8,7 @@ namespace Bannerlord.ButterLib.Tests.DelayedSubModule
 {
     internal static class TestHelper
     {
-        public static readonly Type? ModuleInfoType = AccessTools2.TypeByName("TaleWorlds.Library.ModuleInfo") ??
-                                                      AccessTools2.TypeByName("TaleWorlds.ModuleManager.ModuleInfo");
+        public static readonly Type? ModuleInfoType = AccessTools2.TypeByName("TaleWorlds.ModuleManager.ModuleInfo");
 
         private static ModuleInfoExtended? _moduleInfoCaller;
         public static ModuleInfoExtended ModuleInfoCaller

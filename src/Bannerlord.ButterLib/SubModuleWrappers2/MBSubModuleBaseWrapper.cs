@@ -93,10 +93,8 @@ namespace Bannerlord.ButterLib.SubModuleWrappers2
             OnAfterGameInitializationFinishedInstance = AccessTools2.GetDelegate<OnAfterGameInitializationFinishedDelegate, MBSubModuleBase>(subModule, "OnAfterGameInitializationFinished");
             DoLoadingInstance = AccessTools2.GetDelegate<DoLoadingDelegate, MBSubModuleBase>(subModule, "DoLoading");
             OnGameEndInstance = AccessTools2.GetDelegate<OnGameEndDelegate, MBSubModuleBase>(subModule, "OnGameEnd");
-            OnBeforeMissionBehaviourInitializeInstance = AccessTools2.GetDelegate<OnBeforeMissionBehaviourInitializeDelegate, MBSubModuleBase>(subModule, "OnBeforeMissionBehaviorInitialize")
-                                                         ?? AccessTools2.GetDelegate<OnBeforeMissionBehaviourInitializeDelegate, MBSubModuleBase>(subModule, "OnBeforeMissionBehaviourInitialize");
-            OnMissionBehaviourInitializeInstance = AccessTools2.GetDelegate<OnMissionBehaviourInitializeDelegate, MBSubModuleBase>(subModule, "OnMissionBehaviorInitialize")
-                                                  ?? AccessTools2.GetDelegate<OnMissionBehaviourInitializeDelegate, MBSubModuleBase>(subModule, "OnMissionBehaviourInitialize");
+            OnBeforeMissionBehaviourInitializeInstance = AccessTools2.GetDelegate<OnBeforeMissionBehaviourInitializeDelegate, MBSubModuleBase>(subModule, "OnBeforeMissionBehaviourInitialize");
+            OnMissionBehaviourInitializeInstance = AccessTools2.GetDelegate<OnMissionBehaviourInitializeDelegate, MBSubModuleBase>(subModule, "OnMissionBehaviourInitialize");
             OnInitialStateInstance = AccessTools2.GetDelegate<OnInitialStateDelegate, MBSubModuleBase>(subModule, "OnInitialState");
             AfterAsyncTickTickInstance = AccessTools2.GetDelegate<AfterAsyncTickTickDelegate, MBSubModuleBase>(subModule, "AfterAsyncTickTick");
         }

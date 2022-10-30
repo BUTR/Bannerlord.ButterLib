@@ -332,11 +332,9 @@ namespace Bannerlord.ButterLib.SubModuleWrappers2.Patches
                     AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnGameInitializationFinished"),
                     postfix: AccessTools2.Method("Bannerlord.ButterLib.SubModuleWrappers2.Patches.MBSubModuleBasePatch:OnGameInitializationFinishedPostfix"))
                 & harmony.TryPatch(
-                    AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnBeforeMissionBehaviourInitialize") ??
                     AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnBeforeMissionBehaviorInitialize"),
                     postfix: AccessTools2.Method("Bannerlord.ButterLib.SubModuleWrappers2.Patches.MBSubModuleBasePatch:OnBeforeMissionBehaviourInitializePostfix"))
                 & harmony.TryPatch(
-                    AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnMissionBehaviuorInitialize") ??
                     AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnMissionBehaviorInitialize"),
                     postfix: AccessTools2.Method("Bannerlord.ButterLib.SubModuleWrappers2.Patches.MBSubModuleBasePatch:OnMissionBehaviourInitializePostfix"))
                 & harmony.TryPatch(
