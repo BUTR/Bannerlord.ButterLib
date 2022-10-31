@@ -1,4 +1,5 @@
-﻿using Bannerlord.ButterLib.Logger;
+﻿using Bannerlord.BUTR.Shared.Helpers;
+using Bannerlord.ButterLib.Logger;
 using Bannerlord.ButterLib.Options;
 using Bannerlord.ButterLib.SubSystems;
 
@@ -59,7 +60,7 @@ namespace Bannerlord.ButterLib.Common.Extensions
         /// </summary>
         public static IServiceProvider? GetTempServiceProvider(this MBSubModuleBase _) => ButterLibSubModule.Services?.BuildServiceProvider();
 
-        private static readonly string ModLogsPath = Path.Combine(EngineFilePaths.ConfigsPath.Path, "ModLogs");
+        private static readonly string ModLogsPath = Path.Combine(PlatformFileHelperPCExtended.GetDirectoryFullPath(EngineFilePaths.ConfigsPath), "ModLogs");
         private static readonly string OutputTemplate = "[{Timestamp:o}] [{SourceContext}] [{Level:u3}]: {Message:lj}{NewLine}{Exception}";
 
         internal static IServiceCollection? AddDefaultSerilogLogger(this MBSubModuleBase subModule)

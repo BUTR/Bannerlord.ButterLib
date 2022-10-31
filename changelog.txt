@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 2.3.3
+Game Versions: v1.0.0
+* Added "Catch Native->Managed Code Exceptions"
+* Fixed path being incorrect
+---------------------------------------------------------------------------------------------------
 Version: 2.3.2
 Game Versions: v1.0.0
 * Language data fix

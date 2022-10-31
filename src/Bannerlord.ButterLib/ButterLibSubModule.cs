@@ -20,9 +20,11 @@ using System.Windows.Forms;
 
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
-using TaleWorlds.Library;
+using TaleWorlds.Engine;
 using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
+
+using Path = System.IO.Path;
 
 namespace Bannerlord.ButterLib
 {
@@ -87,6 +89,8 @@ namespace Bannerlord.ButterLib
         protected override void OnSubModuleLoad()
         {
             base.OnSubModuleLoad();
+
+            PerformMigration001();
 
             IServiceProvider serviceProvider;
 
@@ -231,6 +235,32 @@ namespace Bannerlord.ButterLib
                         TextWriterTraceListener.Dispose();
                     }
                 }
+            }
+        }
+
+        private static void PerformMigration001()
+        {
+            var oldConfigPath = Path.GetFullPath("Configs");
+            var oldPath = Path.Combine(oldConfigPath, "ModLogs");
+            var newPath = Path.Combine(PlatformFileHelperPCExtended.GetDirectoryFullPath(EngineFilePaths.ConfigsPath), "ModLogs");
+            if (Directory.Exists(oldPath) && Directory.Exists(newPath))
+            {
+                foreach (var filePath in Directory.GetFiles(oldPath))
+                {
+                    var fileName = Path.GetFileName(filePath);
+                    var newFilePath = Path.Combine(newPath, fileName);
+                    try
+                    {
+                        File.Copy(filePath, newFilePath, true);
+                        File.Delete(filePath);
+                    }
+                    catch { }
+                }
+
+                if (Directory.GetFiles(oldPath) is { Length: 0 } && Directory.GetDirectories(oldPath) is { Length: 0})
+                    Directory.Delete(oldPath, true);
+                if (Directory.GetFiles(oldConfigPath) is { Length: 0 } && Directory.GetDirectories(oldConfigPath) is { Length: 0})
+                    Directory.Delete(oldConfigPath, true);
             }
         }
     }
