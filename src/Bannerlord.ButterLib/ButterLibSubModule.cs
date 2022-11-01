@@ -240,28 +240,32 @@ namespace Bannerlord.ButterLib
 
         private static void PerformMigration001()
         {
-            var oldConfigPath = Path.GetFullPath("Configs");
-            var oldPath = Path.Combine(oldConfigPath, "ModLogs");
-            var newPath = Path.Combine(PlatformFileHelperPCExtended.GetDirectoryFullPath(EngineFilePaths.ConfigsPath), "ModLogs");
-            if (Directory.Exists(oldPath) && Directory.Exists(newPath))
+            try
             {
-                foreach (var filePath in Directory.GetFiles(oldPath))
+                var oldConfigPath = Path.GetFullPath("Configs");
+                var oldPath = Path.Combine(oldConfigPath, "ModLogs");
+                var newPath = Path.Combine(PlatformFileHelperPCExtended.GetDirectoryFullPath(EngineFilePaths.ConfigsPath), "ModLogs");
+                if (Directory.Exists(oldPath) && Directory.Exists(newPath))
                 {
-                    var fileName = Path.GetFileName(filePath);
-                    var newFilePath = Path.Combine(newPath, fileName);
-                    try
+                    foreach (var filePath in Directory.GetFiles(oldPath))
                     {
-                        File.Copy(filePath, newFilePath, true);
-                        File.Delete(filePath);
+                        var fileName = Path.GetFileName(filePath);
+                        var newFilePath = Path.Combine(newPath, fileName);
+                        try
+                        {
+                            File.Copy(filePath, newFilePath, true);
+                            File.Delete(filePath);
+                        }
+                        catch (Exception) { }
                     }
-                    catch { }
-                }
 
-                if (Directory.GetFiles(oldPath) is { Length: 0 } && Directory.GetDirectories(oldPath) is { Length: 0})
-                    Directory.Delete(oldPath, true);
-                if (Directory.GetFiles(oldConfigPath) is { Length: 0 } && Directory.GetDirectories(oldConfigPath) is { Length: 0})
-                    Directory.Delete(oldConfigPath, true);
+                    if (Directory.GetFiles(oldPath) is { Length: 0 } && Directory.GetDirectories(oldPath) is { Length: 0})
+                        Directory.Delete(oldPath, true);
+                    if (Directory.GetFiles(oldConfigPath) is { Length: 0 } && Directory.GetDirectories(oldConfigPath) is { Length: 0})
+                        Directory.Delete(oldConfigPath, true);
+                }
             }
+            catch (Exception) { }
         }
     }
 }
