@@ -1,6 +1,4 @@
-﻿using Bannerlord.BUTR.Shared.Helpers;
-
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Internal;
 
 using System;

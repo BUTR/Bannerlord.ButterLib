@@ -33,6 +33,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                 {
                     _catchAutoGenExceptions = value;
 
+                    /*
                     if (_catchAutoGenExceptions)
                     {
                         if (IsEnabled)
@@ -49,6 +50,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                             BEWPatch.Enable(Harmony);
                         }
                     }
+                    */
                 }
             }
         }

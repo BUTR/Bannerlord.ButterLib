@@ -1,5 +1,4 @@
-﻿using Bannerlord.BUTR.Shared.Helpers;
-using Bannerlord.ButterLib.Logger;
+﻿using Bannerlord.ButterLib.Logger;
 using Bannerlord.ButterLib.Options;
 using Bannerlord.ButterLib.SubSystems;
 
@@ -28,8 +27,6 @@ using TaleWorlds.Core;
 using TaleWorlds.Engine;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
-
-using Path = System.IO.Path;
 
 // ReSharper disable once CheckNamespace
 namespace Bannerlord.ButterLib.Common.Extensions
@@ -60,7 +57,7 @@ namespace Bannerlord.ButterLib.Common.Extensions
         /// </summary>
         public static IServiceProvider? GetTempServiceProvider(this MBSubModuleBase _) => ButterLibSubModule.Services?.BuildServiceProvider();
 
-        private static readonly string ModLogsPath = Path.Combine(PlatformFileHelperPCExtended.GetDirectoryFullPath(EngineFilePaths.ConfigsPath), "ModLogs");
+        private static readonly PlatformDirectoryPath ModLogsPath = EngineFilePaths.ConfigsPath + "/ModLogs";
         private static readonly string OutputTemplate = "[{Timestamp:o}] [{SourceContext}] [{Level:u3}]: {Message:lj}{NewLine}{Exception}";
 
         internal static IServiceCollection? AddDefaultSerilogLogger(this MBSubModuleBase subModule)
@@ -70,13 +67,13 @@ namespace Bannerlord.ButterLib.Common.Extensions
             var serviceProvider = services.BuildServiceProvider();
             var butterLibOptions = serviceProvider.GetService<IOptions<ButterLibOptions>>();
 
-            var filePath = Path.Combine(ModLogsPath, "default.log");
+            var filePath = new PlatformFilePath(ModLogsPath, "default.log");
             var builder = new LoggerConfiguration()
                 .MinimumLevel.Is((LogEventLevel) butterLibOptions.Value.MinLogLevel)
                 .Enrich.FromLogContext()
                 .WriteTo.File(
                     outputTemplate: OutputTemplate,
-                    path: filePath,
+                    path: filePath.FileFullPath,
                     rollingInterval: RollingInterval.Day,
                     retainedFileCountLimit: 7,
                     shared: true);
@@ -85,7 +82,7 @@ namespace Bannerlord.ButterLib.Common.Extensions
 
             var logger = builder.CreateLogger();
 
-            services.AddSingleton<ILogSource>(new RollingFileLogSource(filePath, sinks));
+            services.AddSingleton<ILogSource>(new RollingFileLogSource(filePath.FileFullPath, sinks));
             services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(logger, dispose: true));
             return services;
         }
@@ -106,13 +103,13 @@ namespace Bannerlord.ButterLib.Common.Extensions
             if (services is null)
                 throw new Exception("Past Configuration stage.");
 
-            var filePath = Path.Combine(ModLogsPath, filename);
+            var filePath = new PlatformFilePath(ModLogsPath, filename);
             var builder = new LoggerConfiguration()
                 .Enrich.FromLogContext()
                 .Filter.ByIncludingOnly(FromSources(filterList))
                 .WriteTo.File(
                     outputTemplate: OutputTemplate,
-                    path: filePath,
+                    path: filePath.FileFullPath,
                     rollingInterval: RollingInterval.Day,
                     retainedFileCountLimit: 7);
             configure?.Invoke(builder);

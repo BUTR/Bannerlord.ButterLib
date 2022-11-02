@@ -1,6 +1,10 @@
 ---------------------------------------------------------------------------------------------------
 Version: 2.3.5
 Game Versions: v1.0.0
+* Disabled "Catch Native->Managed Code Exceptions", seems to be causing issues for some players
+---------------------------------------------------------------------------------------------------
+Version: 2.3.5
+Game Versions: v1.0.0
 * Fixed CTD when failing to serialize ButterLib's settings
 ---------------------------------------------------------------------------------------------------
 Version: 2.3.4
