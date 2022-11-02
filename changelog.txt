@@ -1,4 +1,8 @@
 ---------------------------------------------------------------------------------------------------
+Version: 2.3.5
+Game Versions: v1.0.0
+* Fixed CTD when failing to serialize ButterLib's settings
+---------------------------------------------------------------------------------------------------
 Version: 2.3.4
 Game Versions: v1.0.0
 * Another potential CTD fix
