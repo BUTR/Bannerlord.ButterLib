@@ -28,8 +28,15 @@ namespace Bannerlord.ButterLib.Options
             if (file.Directory is null)
                 throw new NullReferenceException($"Directory for path {Path} is null!");
 
-            if (!file.Directory.Exists)
-                file.Directory.Create();
+            try
+            {
+                if (!file.Directory.Exists)
+                    file.Directory.Create();
+            }
+            catch
+            {
+                return;
+            }
 
             if (file.Exists)
             {
@@ -41,17 +48,38 @@ namespace Bannerlord.ButterLib.Options
                 }
                 catch (Exception e) when (e is JsonSerializationException)
                 {
-                    using var fs = file.OpenWrite();
-                    using var sw = new StreamWriter(fs);
-                    sw.WriteLine(JsonConvert.SerializeObject(this));
+                    TryOverwrite(file, this);
+                }
+                catch
+                {
+                    return;
                 }
             }
             else
             {
-                using var fs = file.Create();
-                using var sw = new StreamWriter(fs);
-                sw.WriteLine(JsonConvert.SerializeObject(this));
+                TryCreate(file, this);
             }
+        }
+
+        private static void TryCreate(FileInfo file, JsonButterLibOptionsModel model)
+        {
+            try
+            {
+                using var sw = file.CreateText();
+                sw.WriteLine(JsonConvert.SerializeObject(model));
+            }
+            catch { }
+        }
+
+        private static void TryOverwrite(FileInfo file, JsonButterLibOptionsModel model)
+        {
+            try
+            {
+                using var fs = file.OpenWrite();
+                using var sw = new StreamWriter(fs);
+                sw.WriteLine(JsonConvert.SerializeObject(model));
+            }
+            catch { }
         }
     }
 }
