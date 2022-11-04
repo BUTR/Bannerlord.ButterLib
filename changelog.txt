@@ -3,7 +3,7 @@ Version: 2.4.0
 Game Versions: v1.0.0
 * HotKey system overhaul
 ---------------------------------------------------------------------------------------------------
-Version: 2.3.5
+Version: 2.3.6
 Game Versions: v1.0.0
 * Disabled "Catch Native->Managed Code Exceptions", seems to be causing issues for some players
 ---------------------------------------------------------------------------------------------------
