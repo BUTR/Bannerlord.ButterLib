@@ -4,7 +4,10 @@
  * Authors: sirdoombox, BUTR.
  */
 
+using Bannerlord.ButterLib.Implementation.HotKeys.Patches;
 using Bannerlord.ButterLib.SubSystems;
+
+using HarmonyLib;
 
 using TaleWorlds.InputSystem;
 
@@ -20,6 +23,8 @@ namespace Bannerlord.ButterLib.Implementation.HotKeys
         public bool CanBeDisabled => true;
         public bool CanBeSwitchedAtRuntime => false;
 
+        private readonly Harmony _harmony = new("Bannerlord.ButterLib.HotKeySystem");
+
         public HotKeySubSystem()
         {
             Instance = this;
@@ -31,6 +36,8 @@ namespace Bannerlord.ButterLib.Implementation.HotKeys
 
             if (ButterLibSubModule.Instance is { } instance)
                 instance.OnApplicationTickEvent += OnApplicationTick;
+
+            OptionsProviderPatches.Enable(_harmony);
         }
 
         public void Disable()
@@ -39,13 +46,15 @@ namespace Bannerlord.ButterLib.Implementation.HotKeys
 
             if (ButterLibSubModule.Instance is { } instance)
                 instance.OnApplicationTickEvent -= OnApplicationTick;
-        }
 
+            OptionsProviderPatches.Disable(_harmony);
+        }
 
         private static void OnApplicationTick(float dt)
         {
-            foreach (var hotKey in HotKeyManagerImplementation.HotKeys)
+            for (var i = 0; i < HotKeyManagerImplementation.GlobalHotKeyStorage.Count; i++)
             {
+                var hotKey = HotKeyManagerImplementation.GlobalHotKeyStorage[i];
                 if (!hotKey.ShouldExecute() || hotKey.GameKey is null) continue;
 
                 if (hotKey.GameKey.KeyboardKey?.InputKey.IsDown() == true || hotKey.GameKey.ControllerKey?.InputKey.IsDown() == true)

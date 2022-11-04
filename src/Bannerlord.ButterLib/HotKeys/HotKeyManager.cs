@@ -44,6 +44,15 @@ namespace Bannerlord.ButterLib.HotKeys
         /// <exception cref="ArgumentException">Thrown if a mod with the same name has already begun registering hotkeys.</exception>
         public static HotKeyManager? Create(string modName) => StaticInstance?.Create(modName);
 
+        /// <summary>
+        /// Create a new HotKey group for your mod with a separate entry on the Options Menu.
+        /// </summary>
+        /// <param name="modName">The name of your mod.</param>
+        /// <param name="categoryName">Category entry name in the Options Menu, supports translation</param>
+        /// <returns>A HotKeyManager object for you to start adding new HotKeyManager to.</returns>
+        /// <exception cref="ArgumentException">Thrown if a mod with the same name has already begun registering hotkeys.</exception>
+        public static HotKeyManager? CreateWithOwnCategory(string modName, string categoryName) => StaticInstance?.CreateWithOwnCategory(modName, categoryName);
+
 
         /// <summary>
         /// Adds a hotkey to the manager ready for building.

@@ -6,7 +6,9 @@
 
 using Bannerlord.ButterLib.HotKeys;
 
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using TaleWorlds.Core;
 using TaleWorlds.InputSystem;
@@ -17,17 +19,20 @@ namespace Bannerlord.ButterLib.Implementation.HotKeys
 {
     internal sealed class HotKeyCategoryContainer : GameKeyContext
     {
-        private static int ListCapacity = 300;
+        private static readonly int ListCapacity = Enum.GetValues(typeof(GameKeyDefinition)).Cast<int>().Max() + 200;
 
-        public HotKeyCategoryContainer(string categoryId, IEnumerable<HotKeyBase> keys) : base(categoryId, ListCapacity)
+        public HotKeyCategoryContainer(string categoryId, string categoryName, IEnumerable<HotKeyBase> keys) : base(categoryId, ListCapacity)
         {
+            var keyCategoryName = Module.CurrentModule.GlobalTextManager.AddGameText("str_key_category_name");
+            keyCategoryName.AddVariationWithId(categoryId, new TextObject(categoryName), new List<GameTextManager.ChoiceTag>());
+
             var keyName = Module.CurrentModule.GlobalTextManager.AddGameText("str_key_name");
             var keyDesc = Module.CurrentModule.GlobalTextManager.AddGameText("str_key_description");
-            var variationString = $"{categoryId}_";
             foreach (var key in keys)
             {
-                keyName.AddVariationWithId($"{variationString}{key.Id}", new TextObject(key.DisplayName), new List<GameTextManager.ChoiceTag>());
-                keyDesc.AddVariationWithId($"{variationString}{key.Id}", new TextObject(key.Description), new List<GameTextManager.ChoiceTag>());
+                var variationId = $"{categoryId}_{(GameKeyDefinition) key.Id}";
+                keyName.AddVariationWithId(variationId, new TextObject(key.DisplayName), new List<GameTextManager.ChoiceTag>());
+                keyDesc.AddVariationWithId(variationId, new TextObject(key.Description), new List<GameTextManager.ChoiceTag>());
                 RegisterGameKey(new GameKey(key.Id, key.Uid, categoryId, key.DefaultKey, key.Category));
             }
         }

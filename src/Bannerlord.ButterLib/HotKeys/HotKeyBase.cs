@@ -42,7 +42,7 @@ namespace Bannerlord.ButterLib.HotKeys
         /// The Category in the options menu under which this hotkey will appear.
         /// <see cref="HotKeyManager.Categories"/>
         /// </summary>
-        protected internal virtual string Category { get; } = HotKeyManager.Categories[HotKeyCategory.Action];
+        protected internal virtual string Category { get; } = string.Empty;
 
         /// <summary>
         /// Provide none, one or many functions which all must evaluate to true in order for the key to process input.
@@ -68,6 +68,12 @@ namespace Bannerlord.ButterLib.HotKeys
         /// Called once every frame a key remains down.
         /// </summary>
         public event Action? IsDownEvent;
+        /// <summary>
+        /// Called once they key was pressed and released.
+        /// </summary>
+        public event Action? IsDownAndReleasedEvent;
+
+        private bool _isKeyDown;
 
         /// <summary>
         /// The required constructor which has the bare minimum needed to register a key.
@@ -100,8 +106,10 @@ namespace Bannerlord.ButterLib.HotKeys
         protected virtual void OnReleased() { }
         /// <inheritdoc cref="IsDownEvent"/>
         protected virtual void IsDown() { }
+        /// <inheritdoc cref="IsDownAndReleased"/>
+        protected virtual void IsDownAndReleased() { }
 
-        internal bool ShouldExecute() => IsEnabled && ((Predicate is null) || (Predicate is not null && Predicate()));
+        internal bool ShouldExecute() => IsEnabled && (Predicate is null || Predicate is not null && Predicate());
 
         internal void OnPressedInternal()
         {
@@ -111,14 +119,28 @@ namespace Bannerlord.ButterLib.HotKeys
 
         internal void OnReleasedInternal()
         {
+            if (_isKeyDown)
+            {
+                _isKeyDown = false;
+                IsDownAndReleasedInternal();
+            }
+
             OnReleasedEvent?.Invoke();
             OnReleased();
         }
 
         internal void IsDownInternal()
         {
+            _isKeyDown = true;
+
             IsDownEvent?.Invoke();
             IsDown();
+        }
+
+        internal void IsDownAndReleasedInternal()
+        {
+            IsDownAndReleasedEvent?.Invoke();
+            IsDownAndReleased();
         }
     }
 }

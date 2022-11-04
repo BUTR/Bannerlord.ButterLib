@@ -10,8 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using TaleWorlds.Engine;
-using TaleWorlds.Library;
+using TaleWorlds.InputSystem;
 
 using HotKeyManager = Bannerlord.ButterLib.HotKeys.HotKeyManager;
 using TWHotKeyManager = TaleWorlds.InputSystem.HotKeyManager;
@@ -20,22 +19,26 @@ namespace Bannerlord.ButterLib.Implementation.HotKeys
 {
     internal sealed class HotKeyManagerImplementation : HotKeyManager
     {
-        internal static readonly List<HotKeyBase> HotKeys = new();
+        internal static readonly List<HotKeyCategoryContainer> GlobalContainerStorage = new();
+        internal static readonly List<HotKeyBase> GlobalHotKeyStorage = new();
 
-        private int _currentId = 150; // should be enough no prevent collision with the game
-        private readonly string _subModName;
-        private readonly List<HotKeyBase> _hotKeys = new();
+        private int _currentId = 0; // To prevent collision with the game
+        private readonly string _modName;
+        private readonly string _categoryName;
+        private readonly List<HotKeyBase> _instanceHotKeys = new();
 
-        internal HotKeyManagerImplementation(string subModName)
+        internal HotKeyManagerImplementation(string modName, string categoryName = "")
         {
-            _subModName = subModName;
+            _modName = modName;
+            _categoryName = categoryName;
         }
 
         public override T Add<T>(T hotkey)
         {
-            if (_hotKeys.Any(x => string.Equals(x.Uid, hotkey.Uid, StringComparison.OrdinalIgnoreCase)))
+            if (GlobalHotKeyStorage.Any(x => string.Equals(x.Uid, hotkey.Uid, StringComparison.OrdinalIgnoreCase)))
                 throw new ArgumentException($"A hotkey called {hotkey.Uid} already exists", nameof(hotkey));
-            _hotKeys.Add(hotkey);
+
+            _instanceHotKeys.Add(hotkey);
             hotkey.Id = _currentId;
             _currentId++;
             return hotkey;
@@ -45,20 +48,24 @@ namespace Bannerlord.ButterLib.Implementation.HotKeys
 
         public override IReadOnlyList<HotKeyBase> Build()
         {
-            var hotKeyCategoryContainer = new HotKeyCategoryContainer(_subModName, _hotKeys);
+            if (GlobalContainerStorage.Any(x => string.Equals(x.GameKeyCategoryId, _modName, StringComparison.OrdinalIgnoreCase)))
+                throw new ArgumentException($"A hotkey category called {_modName} already exists", nameof(_modName));
 
-            TWHotKeyManager.Initialize(new PlatformFilePath(EngineFilePaths.ConfigsPath, "BannerlordGameKeys.xml"), true);
+            var hotKeyCategoryContainer = new HotKeyCategoryContainer(_modName, _categoryName, _instanceHotKeys);
+
+            TWHotKeyManager.RegisterInitialContexts(new List<GameKeyContext> { hotKeyCategoryContainer }, true);
+            GlobalContainerStorage.Add(hotKeyCategoryContainer);
 
             var keys = hotKeyCategoryContainer.RegisteredGameKeys;
-            foreach (var hotKey in _hotKeys)
+            foreach (var hotKey in _instanceHotKeys)
             {
                 foreach (var gameKey in keys.Where(gameKey => gameKey is not null && string.Equals(gameKey.StringId, hotKey.Uid, StringComparison.OrdinalIgnoreCase)))
                 {
                     hotKey.GameKey = gameKey;
                 }
             }
-            HotKeys.AddRange(_hotKeys);
-            return _hotKeys;
+            GlobalHotKeyStorage.AddRange(_instanceHotKeys);
+            return _instanceHotKeys;
         }
     }
 }

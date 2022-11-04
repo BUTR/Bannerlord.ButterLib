@@ -82,15 +82,15 @@ namespace Bannerlord.ButterLib.SubModuleWrappers2
             foreach (var subModule in SubModules)
                 subModule.OnGameInitializationFinished(game);
         }
-        public new virtual void OnBeforeMissionBehaviourInitialize(Mission mission)
+        public new virtual void OnBeforeMissionBehaviorInitialize(Mission mission)
         {
             foreach (var subModule in SubModules)
-                subModule.OnBeforeMissionBehaviourInitialize(mission);
+                subModule.OnBeforeMissionBehaviorInitialize(mission);
         }
-        public new virtual void OnMissionBehaviourInitialize(Mission mission)
+        public new virtual void OnMissionBehaviorInitialize(Mission mission)
         {
             foreach (var subModule in SubModules)
-                subModule.OnMissionBehaviourInitialize(mission);
+                subModule.OnMissionBehaviorInitialize(mission);
         }
         public new virtual void OnMultiplayerGameStart(Game game, object starterObject)
         {
