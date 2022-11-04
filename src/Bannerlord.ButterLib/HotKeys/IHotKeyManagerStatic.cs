@@ -4,10 +4,16 @@
  * Authors: sirdoombox, BUTR.
  */
 
+using System.Collections.Generic;
+
 namespace Bannerlord.ButterLib.HotKeys
 {
     internal interface IHotKeyManagerStatic
     {
-        public HotKeyManager Create(string modName);
+        IList<HotKeyBase> HotKeys { get; }
+
+        HotKeyManager Create(string modName);
+
+        HotKeyManager CreateWithOwnCategory(string modName, string categoryName);
     }
 }

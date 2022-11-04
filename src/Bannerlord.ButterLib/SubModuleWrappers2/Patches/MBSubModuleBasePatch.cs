@@ -169,10 +169,10 @@ namespace Bannerlord.ButterLib.SubModuleWrappers2.Patches
             switch (__instance)
             {
                 case MBSubModuleBaseWrapper wrapper:
-                    wrapper.OnBeforeMissionBehaviourInitialize(mission);
+                    wrapper.OnBeforeMissionBehaviorInitialize(mission);
                     break;
                 case MBSubModuleBaseListWrapper listWrapper:
-                    listWrapper.OnBeforeMissionBehaviourInitialize(mission);
+                    listWrapper.OnBeforeMissionBehaviorInitialize(mission);
                     break;
             }
         }
@@ -181,10 +181,10 @@ namespace Bannerlord.ButterLib.SubModuleWrappers2.Patches
             switch (__instance)
             {
                 case MBSubModuleBaseWrapper wrapper:
-                    wrapper.OnMissionBehaviourInitialize(mission);
+                    wrapper.OnMissionBehaviorInitialize(mission);
                     break;
                 case MBSubModuleBaseListWrapper listWrapper:
-                    listWrapper.OnMissionBehaviourInitialize(mission);
+                    listWrapper.OnMissionBehaviorInitialize(mission);
                     break;
             }
         }
