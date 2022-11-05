@@ -125,15 +125,27 @@ if (!document.getElementsByClassName) {
                 return;
             }
 
-            var url = await crashUploader.UploadAsync(CrashReport).ConfigureAwait(false);
-            if (url is null)
+            var result = await crashUploader.UploadAsync(CrashReport).ConfigureAwait(false);
+            switch (result.Status)
             {
-                MessageBox.Show("The crash uploader could not upload the report!", "Error!");
-                return;
+                case CrashUploaderStatus.Success:
+                {
+                    await SetClipboardTextAsync(result.Url ?? string.Empty);
+                    MessageBox.Show($"Report available at\n{result.Url}\nThe url was copied to the clipboard!", "Success!");
+                    break;
+                }
+                case CrashUploaderStatus.MetadataNotFound:
+                case CrashUploaderStatus.ResponseIsNotHttpWebResponse:
+                case CrashUploaderStatus.ResponseStreamIsNull:
+                    MessageBox.Show($"The crash uploader could not upload the report!\nPlease report this to the mod developers!\nStatus: {result.Status}", "Error!");
+                    break;
+                case CrashUploaderStatus.WrongStatusCode:
+                    MessageBox.Show($"The crash uploader could not upload the report!\nPlease report this to the mod developers!\nStatus: {result.Status}\nStatusCode: {result.StatusCode}", "Error!");
+                    break;
+                case CrashUploaderStatus.FailedWithException:
+                    MessageBox.Show($"The crash uploader could not upload the report!\nPlease report this to the mod developers!\nStatus: {result.Status}\nException: {result.Exception}", "Error!");
+                    break;
             }
-
-            await SetClipboardTextAsync(url);
-            MessageBox.Show($"Report available at\n{url}\nThe url was copied to the clipboard!", "Success!");
         }
 
         public void SaveReport()

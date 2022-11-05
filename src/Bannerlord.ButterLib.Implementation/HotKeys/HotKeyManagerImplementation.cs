@@ -35,8 +35,8 @@ namespace Bannerlord.ButterLib.Implementation.HotKeys
 
         public override T Add<T>(T hotkey)
         {
-            if (GlobalHotKeyStorage.Any(x => string.Equals(x.Uid, hotkey.Uid, StringComparison.OrdinalIgnoreCase)))
-                throw new ArgumentException($"A hotkey called {hotkey.Uid} already exists", nameof(hotkey));
+            if (_instanceHotKeys.Any(x => string.Equals(x.Uid, hotkey.Uid, StringComparison.OrdinalIgnoreCase)))
+                throw new ArgumentException($"A hotkey called '{hotkey.Uid}' was already registered by this HotKeyManager!", nameof(hotkey));
 
             _instanceHotKeys.Add(hotkey);
             hotkey.Id = _currentId;
@@ -49,7 +49,7 @@ namespace Bannerlord.ButterLib.Implementation.HotKeys
         public override IReadOnlyList<HotKeyBase> Build()
         {
             if (GlobalContainerStorage.Any(x => string.Equals(x.GameKeyCategoryId, _modName, StringComparison.OrdinalIgnoreCase)))
-                throw new ArgumentException($"A hotkey category called {_modName} already exists", nameof(_modName));
+                throw new ArgumentException($"A HotKeyManager with a modname '{_modName}' was already built!", nameof(_modName));
 
             var hotKeyCategoryContainer = new HotKeyCategoryContainer(_modName, _categoryName, _instanceHotKeys);
 

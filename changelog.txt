@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 2.4.1
+Game Versions: v1.0.0
+* Removed unnecessary collision for HotKeys
+* Better explanation of why a crash report failed to upload
+---------------------------------------------------------------------------------------------------
 Version: 2.4.0
 Game Versions: v1.0.0
 * HotKey system overhaul

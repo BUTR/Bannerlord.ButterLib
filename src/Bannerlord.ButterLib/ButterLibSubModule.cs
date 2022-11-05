@@ -259,9 +259,9 @@ namespace Bannerlord.ButterLib
                         catch (Exception) { }
                     }
 
-                    if (Directory.GetFiles(oldPath) is { Length: 0 } && Directory.GetDirectories(oldPath) is { Length: 0})
+                    if (Directory.GetFiles(oldPath) is { Length: 0 } && Directory.GetDirectories(oldPath) is { Length: 0 })
                         Directory.Delete(oldPath, true);
-                    if (Directory.GetFiles(oldConfigPath) is { Length: 0 } && Directory.GetDirectories(oldConfigPath) is { Length: 0})
+                    if (Directory.GetFiles(oldConfigPath) is { Length: 0 } && Directory.GetDirectories(oldConfigPath) is { Length: 0 })
                         Directory.Delete(oldConfigPath, true);
                 }
             }
