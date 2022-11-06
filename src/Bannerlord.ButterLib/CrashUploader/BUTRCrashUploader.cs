@@ -38,7 +38,7 @@ namespace Bannerlord.ButterLib.CrashUploader
                 if (response is not HttpWebResponse httpWebResponse)
                     return CrashUploaderResult.ResponseIsNotHttpWebResponse();
 
-                if (httpWebResponse.StatusCode != HttpStatusCode.OK)
+                if (httpWebResponse.StatusCode is not HttpStatusCode.OK or HttpStatusCode.Created)
                     return CrashUploaderResult.WrongStatusCode(httpWebResponse.StatusCode.ToString());
 
                 using var stream = response.GetResponseStream();
