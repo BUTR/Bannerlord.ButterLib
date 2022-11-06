@@ -65,7 +65,7 @@ jobs:
       env:
         BANNERLORD_BUTR_UPLOAD_URL: ${{secrets.BANNERLORD_BUTR_UPLOAD_URL}}
 
-    - name: Run ChangelogParser
+    - name: Install and Run ChangelogParser
       id: changelog
       run: |
         dotnet tool install -g Bannerlord.ChangelogParser
