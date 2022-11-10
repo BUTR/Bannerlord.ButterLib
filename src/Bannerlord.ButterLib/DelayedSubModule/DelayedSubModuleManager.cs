@@ -218,23 +218,29 @@ namespace Bannerlord.ButterLib.DelayedSubModule
             OnMethod?.Invoke(null, new SubscriptionGlobalEventArgs(__instance.GetType(), false, SubscriptionType.AfterMethod, "OnGameEnd"));
         }
 
+        public static void Subscribe(Type mbSubModuleType, MBSubModuleBase caller, string method, SubscriptionType subscriptionType, EventHandler<SubscriptionEventArgs> @delegate)
+        {
+            if (mbSubModuleType.IsSubclassOf(typeof(MBSubModuleBase)))
+                return;
+
+            Subscribe(mbSubModuleType, caller.GetType(), method, subscriptionType, @delegate);
+        }
         public static void Subscribe<T1, T2>(string method, SubscriptionType subscriptionType, EventHandler<SubscriptionEventArgs> @delegate)
             where T1 : MBSubModuleBase
             where T2 : MBSubModuleBase
         {
-            Subscribe<T1>(typeof(T2), method, subscriptionType, @delegate);
+            Subscribe(typeof(T1), typeof(T2), method, subscriptionType, @delegate);
         }
         public static void Subscribe<T>(MBSubModuleBase caller, string method, SubscriptionType subscriptionType, EventHandler<SubscriptionEventArgs> @delegate)
             where T : MBSubModuleBase
         {
-            Subscribe<T>(caller.GetType(), method, subscriptionType, @delegate);
+            Subscribe(typeof(T), caller.GetType(), method, subscriptionType, @delegate);
         }
-        private static void Subscribe<T>(Type caller, string method, SubscriptionType subscriptionType, EventHandler<SubscriptionEventArgs> @delegate)
-            where T : MBSubModuleBase
+        private static void Subscribe(Type mbSubModuleType, Type caller, string method, SubscriptionType subscriptionType, EventHandler<SubscriptionEventArgs> @delegate)
         {
             var loadedModules = BUTR.Shared.Helpers.ModuleInfoHelper.GetLoadedModules().ToList();
             var callerModule = BUTR.Shared.Helpers.ModuleInfoHelper.GetModuleByType(caller);
-            var destModule = BUTR.Shared.Helpers.ModuleInfoHelper.GetModuleByType(typeof(T));
+            var destModule = BUTR.Shared.Helpers.ModuleInfoHelper.GetModuleByType(mbSubModuleType);
 
             var callerModulePosition = loadedModules.IndexOf(callerModule!);
             var destModulePosition = loadedModules.IndexOf(destModule!);
@@ -243,7 +249,7 @@ namespace Bannerlord.ButterLib.DelayedSubModule
             {
                 OnMethod += (s, e) =>
                 {
-                    if (!e.IsValid<T>(method, subscriptionType))
+                    if (!e.IsValid(mbSubModuleType, method, subscriptionType))
                         return;
 
                     @delegate.Invoke(s, new SubscriptionEventArgs(e.IsBase));
@@ -259,7 +265,7 @@ namespace Bannerlord.ButterLib.DelayedSubModule
                 {
                     OnMethod += (s, e) =>
                     {
-                        if (!e.IsValid<T>(method, subscriptionType))
+                        if (!e.IsValid(mbSubModuleType, method, subscriptionType))
                             return;
 
                         @delegate.Invoke(s, new SubscriptionEventArgs(e.IsBase));
