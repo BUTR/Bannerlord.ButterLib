@@ -220,7 +220,7 @@ namespace Bannerlord.ButterLib.DelayedSubModule
 
         public static void Subscribe(Type mbSubModuleType, MBSubModuleBase caller, string method, SubscriptionType subscriptionType, EventHandler<SubscriptionEventArgs> @delegate)
         {
-            if (mbSubModuleType.IsSubclassOf(typeof(MBSubModuleBase)))
+            if (!mbSubModuleType.IsSubclassOf(typeof(MBSubModuleBase)))
                 return;
 
             Subscribe(mbSubModuleType, caller.GetType(), method, subscriptionType, @delegate);
