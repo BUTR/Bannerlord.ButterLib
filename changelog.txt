@@ -1,4 +1,8 @@
 ---------------------------------------------------------------------------------------------------
+Version: 2.5.1
+Game Versions: v1.0.0,v1.0.1
+* Fixed DelayedSubModuleManager check
+---------------------------------------------------------------------------------------------------
 Version: 2.5.0
 Game Versions: v1.0.0,v1.0.1
 * Extended DelayedSubModuleManager with a non generic variant
