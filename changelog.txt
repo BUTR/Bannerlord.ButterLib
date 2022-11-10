@@ -1,4 +1,8 @@
 ---------------------------------------------------------------------------------------------------
+Version: 2.5.0
+Game Versions: v1.0.0,v1.0.1
+* Extended DelayedSubModuleManager with a non generic variant
+---------------------------------------------------------------------------------------------------
 Version: 2.4.1
 Game Versions: v1.0.0
 * Removed unnecessary collision for HotKeys
