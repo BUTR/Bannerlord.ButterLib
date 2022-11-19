@@ -14,7 +14,7 @@ on:
   pull_request:
     branches:
       - master
-    # will be triggereg when undrafting or requesting review
+    # will be triggered when undrafting or requesting review
     types: [review_requested, ready_for_review]
     paths:
       - '.github/workflows/test-full.yml'
