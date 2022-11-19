@@ -1,11 +1,5 @@
-bin/Win64_Shipping_Client/Steamworks.NET.dll
-bin/Win64_Shipping_Client/Epic.OnlineServices.dll
-bin/Win64_Shipping_Client/GalaxyCSharp.dll
-bin/Win64_Shipping_Client/StbSharp.dll
+bin/Win64_Shipping_Client/Newtonsoft.Json.dll
 regex:bin\/Win64_Shipping_Client\/[^\/]*TaleWorlds[^\/]+dll
 regex:bin\/Win64_Shipping_Client\/[^\/]*System[^\/]+dll
 regex:bin\/Win64_Shipping_Client\/[^\/]*Microsoft[^\/]+dll
-regex:Modules\/CustomBattle\/bin\/Win64_Shipping_Client\/[^\/]+dll
-regex:Modules\/SandBox\/bin\/Win64_Shipping_Client\/[^\/]+dll
-regex:Modules\/SandBoxCore\/bin\/Win64_Shipping_Client\/[^\/]+dll
-regex:Modules\/StoryMode\/bin\/Win64_Shipping_Client\/[^\/]+dll
+regex:Modules\/[^\/]+\/bin\/Win64_Shipping_Client\/[^\/]+dll
