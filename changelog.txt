@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 2.5.2
+Game Versions: v1.0.0,v1.0.1,v1.0.2
+* StoryMode is now an optional dependency
+* Support for including save file and screenshot with local a crash report
+---------------------------------------------------------------------------------------------------
 Version: 2.5.1
 Game Versions: v1.0.0,v1.0.1
 * Fixed DelayedSubModuleManager check

@@ -1,29 +1,96 @@
-﻿using Bannerlord.ButterLib.Common.Extensions;
+﻿using Bannerlord.BUTR.Shared.Helpers;
+using Bannerlord.ButterLib.Common.Extensions;
 using Bannerlord.ButterLib.CrashUploader;
 
 using Microsoft.Extensions.DependencyInjection;
 
 using System;
 using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
+using TaleWorlds.Engine;
+using TaleWorlds.Library;
+
+using Path = System.IO.Path;
 
 namespace Bannerlord.ButterLib.ExceptionHandler.WinForms
 {
     public partial class HtmlCrashReportForm : Form
     {
         private static bool HasBetterExceptionWindow =>
-            BUTR.Shared.Helpers.ModuleInfoHelper.GetLoadedModules().Any(m => string.Equals(m.Id, "BetterExceptionWindow", StringComparison.InvariantCultureIgnoreCase));
+            ModuleInfoHelper.GetLoadedModules().Any(m => string.Equals(m.Id, "BetterExceptionWindow", StringComparison.InvariantCultureIgnoreCase));
+
 
         private static string GetCompressedMiniDump()
         {
-            if (ExceptionHandlerSubSystem.Instance?.IncludeMiniDump != true || !MiniDump.TryDump(out var stream)) return string.Empty;
+            try
+            {
+                if (ExceptionHandlerSubSystem.Instance?.IncludeMiniDump != true || !MiniDump.TryDump(out var stream)) return string.Empty;
 
-            using var _ = stream;
-            return Convert.ToBase64String(stream.ToArray());
+                using var _ = stream;
+                return Convert.ToBase64String(stream.ToArray());
+            }
+            catch (Exception)
+            {
+                return string.Empty;
+            }
+        }
+
+        private static string GetCompressedSaveFile()
+        {
+            try
+            {
+                var gameSavesDirectory = new PlatformDirectoryPath(PlatformFileType.User, "Game Saves\\");
+                var gameSavesPath = PlatformFileHelperPCExtended.GetDirectoryFullPath(gameSavesDirectory);
+                if (string.IsNullOrEmpty(gameSavesPath)) return string.Empty;
+
+                var latestSaveFile = new DirectoryInfo(gameSavesPath).EnumerateFiles("*.sav", SearchOption.TopDirectoryOnly)
+                    .OrderByDescending(x => x.LastWriteTimeUtc)
+                    .FirstOrDefault();
+                if (latestSaveFile is null) return string.Empty;
+
+                using var compressedDataStream = new MemoryStream();
+                using var fs = latestSaveFile.OpenRead();
+                using var zipStream = new GZipStream(compressedDataStream, CompressionMode.Compress, true);
+                fs.Position = 0;
+                fs.CopyTo(zipStream);
+                return Convert.ToBase64String(compressedDataStream.ToArray());
+            }
+            catch (Exception)
+            {
+                return string.Empty;
+            }
+        }
+
+        private static string GetScreenshot()
+        {
+            try
+            {
+                var tempBmp = Path.Combine(Path.GetTempPath(), $"{Path.GetRandomFileName()}.bmp");
+
+                Utilities.TakeScreenshot(tempBmp);
+
+                using var image = Image.FromFile(tempBmp);
+                using var encoderParameters = new EncoderParameters(1)
+                {
+                    Param = {[0] = new EncoderParameter(Encoder.Quality, 80L)}
+                };
+
+                using var stream = new MemoryStream();
+                image.Save(stream, ImageCodecInfo.GetImageDecoders().Single(codec => codec.FormatID == ImageFormat.Jpeg.Guid), encoderParameters);
+                return Convert.ToBase64String(stream.ToArray());
+            }
+            catch (Exception)
+            {
+                return string.Empty;
+            }
         }
 
 
@@ -54,7 +121,14 @@ if (!document.getElementsByClassName) {
     }
     return results;
   }
-}";
+}
+function handleIncludeSaveFile(cb) {
+  window.external.SetIncludeSaveFile(cb.checked);
+}
+function handleIncludeScreenshot(cb) {
+  window.external.SetIncludeScreenshot(cb.checked);
+}
+";
 
         private static string TableText = @$"
 <table style='width: 100%;'>
@@ -64,9 +138,7 @@ if (!document.getElementsByClassName) {
       <h1>Intercepted an exception!</h1>
     </td>
     <td>
-      {(HasBetterExceptionWindow
-            ? "<button style='float:right; margin-left:10px;' onclick='window.external.Close()'>BEW Report</button>"
-            : "<button style='float:right; margin-left:10px;' onclick='window.external.Close()'>Close Report</button>")}
+      <button style='float:right; margin-left:10px;' onclick='window.external.Close()'>Close Report</button>
       {(CrashUploaderSubSystem.Instance?.IsEnabled == true
             ? "<button style='float:right; margin-left:10px;' onclick='window.external.UploadReport()'>Upload Report as a Permalink</button>"
             : "")}
@@ -74,15 +146,26 @@ if (!document.getElementsByClassName) {
       <button style='float:right; margin-left:10px;' onclick='window.external.CopyAsHTML()'>Copy as HTML</button>
     </td>
   </tr>
+  <tr>
+    <td style='width: 50%;'>
+    </td>
+    <td>
+      <input style='float:right;' type='checkbox' onclick='handleIncludeSaveFile(this);'>
+      <label style='float:right; margin-left:10px;'>Include Latest Save File:</label>
+      <input style='float:right;' type='checkbox' onclick='handleIncludeScreenshot(this);'>
+      <label style='float:right; margin-left:10px;'>Include Screenshot:</label>
+    </td>
+  </tr>
   </tbody>
 </table>
-{(HasBetterExceptionWindow
-            ? "Click 'BEW Report' to close this report and open the report from Better Exception Window."
-            : "Clicking 'Close Report' will continue with the Game's error report mechanism.")}
+Clicking 'Close Report' will continue with the Game's error report mechanism.
 <hr/>";
 
         private CrashReport CrashReport { get; }
         private string ReportInHtml { get; }
+
+        public bool IncludeSaveFile { get; set; }
+        public bool IncludeScreenshot { get; set; }
 
         internal HtmlCrashReportForm(CrashReport crashReport)
         {
@@ -110,6 +193,9 @@ if (!document.getElementsByClassName) {
                 }
             };
         }
+
+        public void SetIncludeSaveFile(bool value) => IncludeSaveFile = value;
+        public void SetIncludeScreenshot(bool value) => IncludeScreenshot = value;
 
         public async void CopyAsHTML()
         {
@@ -163,11 +249,31 @@ if (!document.getElementsByClassName) {
             };
             if (saveFileDialog.ShowDialog() == DialogResult.OK && saveFileDialog.OpenFile() is { } fileStream)
             {
-                using (fileStream)
-                using (var streamWriter = new StreamWriter(fileStream))
-                {
-                    streamWriter.Write(ReportInHtml);
-                }
+                var report = ReportInHtml;
+
+                if (IncludeSaveFile)
+                    report = report
+                        .Replace(HtmlBuilder.SaveFileTag, GetCompressedSaveFile())
+                        .Replace(HtmlBuilder.SaveFileButtonTag, @"
+<![if !IE]>
+              <br/>
+              <br/>
+              <button onclick='savefile(this)'>Get Latest Save File</button>
+<![endif]>");
+
+                if (IncludeScreenshot)
+                    report = report
+                        .Replace(HtmlBuilder.ScreenshotTag, GetScreenshot())
+                        .Replace(HtmlBuilder.ScreenshotButtonTag, @"
+<![if !IE]>
+              <br/>
+              <br/>
+              <button onclick='screenshot(this)'>Show Screenshot</button>
+<![endif]>");
+
+                using var stream = fileStream;
+                using var streamWriter = new StreamWriter(fileStream);
+                streamWriter.Write(report);
             }
         }
 

@@ -27,7 +27,7 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem
         {
             IsEnabled = true;
 
-            BehaviourNamePatch.Enable(_harmony);
+            BehaviourNamePatch.Enable(_harmony); // Fixes possible collision with save names
             TypeExtensionsPatch.Enable(_harmony); // Adds support for saving many more container types
             DefinitionContextPatch.Enable(_harmony); // Fixes save corruption & crashes when duplicate types are defined
         }

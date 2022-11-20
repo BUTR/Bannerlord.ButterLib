@@ -27,8 +27,13 @@ namespace Bannerlord.ButterLib.ExceptionHandler
 {
     internal static class HtmlBuilder
     {
-        private const int Version = 7;
+        private const int Version = 8;
         private static readonly string NL = Environment.NewLine;
+
+        public static readonly string SaveFileTag = "<!-- SAVE FILE -->";
+        public static readonly string SaveFileButtonTag = "<!-- SAVE FILE BUTTON -->";
+        public static readonly string ScreenshotTag = "<!-- SCREENSHOT -->";
+        public static readonly string ScreenshotButtonTag = "<!-- SCREENSHOT BUTTON -->";
 
         public static void BuildAndShow(CrashReport crashReport)
         {
@@ -150,6 +155,8 @@ namespace Bannerlord.ButterLib.ExceptionHandler
               <button onclick='minidump(this)'>Get MiniDump</button>
 <![endif]>
 ")}
+{SaveFileButtonTag}
+{ScreenshotButtonTag}
             </div>
           </td>
         </tr>
@@ -208,6 +215,22 @@ namespace Bannerlord.ButterLib.ExceptionHandler
       {miniDump}
       </div>
     </div>
+    <div class='root-container' style='display:none;'>
+      <h2><a href='javascript:;' class='headers' onclick='showHideById(this, ""save-file"")'>+ Save File</a></h2>
+      <div id='save-file' class='headers-container'>
+      {SaveFileTag}
+      </div>
+    </div>
+    <div class='root-container' style='display:none;'>
+      <h2><a href='javascript:;' class='headers' onclick='showHideById(this, ""screenshot"")'>+ Screenshot</a></h2>
+      <img id='screenshot' alt='Screenshot' />
+    </div>
+    <div class='root-container' style='display:none;'>
+      <h2><a href='javascript:;' class='headers' onclick='showHideById(this, ""screenshot-data"")'>+ Screenshot Data</a></h2>
+      <div id='screenshot-data' class='headers-container'>
+      {ScreenshotTag}
+      </div>
+    </div>
 {(string.IsNullOrEmpty(miniDump) ? "" : @"
 <![if !IE]>
     <script src=""https://cdn.jsdelivr.net/pako/1.0.3/pako_inflate.min.js""></script>
@@ -264,6 +287,23 @@ namespace Bannerlord.ButterLib.ExceptionHandler
           a.href = window.URL.createObjectURL(blob);
           a.download = ""crashdump.dmp"";
           a.click();
+        }}
+      function savefile(element) {{
+          var base64 = document.getElementById('save-file').innerText.trim();
+          //var binData = Uint8Array.from(atob(base64), c => c.charCodeAt(0));
+          var binData = new Uint8Array(atob(base64).split('').map(function(x){{return x.charCodeAt(0);}}));
+          var result = window.pako.inflate(binData);
+
+          var a = document.createElement('a');
+          var blob = new Blob([result]);
+          a.href = window.URL.createObjectURL(blob);
+          a.download = ""savefile.sav"";
+          a.click();
+        }}
+      function screenshot(element) {{
+          var base64 = document.getElementById('screenshot-data').innerText.trim();
+          document.getElementById('screenshot').src = 'data:image/jpeg;charset=utf-8;base64,' + base64;
+          document.getElementById('screenshot').parentElement.style.display = 'block';
         }}
     </script>
   </body>
