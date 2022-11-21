@@ -80,7 +80,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler.WinForms
                 using var image = Image.FromFile(tempBmp);
                 using var encoderParameters = new EncoderParameters(1)
                 {
-                    Param = {[0] = new EncoderParameter(Encoder.Quality, 80L)}
+                    Param = { [0] = new EncoderParameter(Encoder.Quality, 80L) }
                 };
 
                 using var stream = new MemoryStream();
