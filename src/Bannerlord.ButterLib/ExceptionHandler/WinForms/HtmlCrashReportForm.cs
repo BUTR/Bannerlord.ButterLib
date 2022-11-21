@@ -81,7 +81,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler.WinForms
                 using var encoderParameters = new EncoderParameters(1) { Param = { [0] = new EncoderParameter(Encoder.Quality, 80L) } };
 
                 using var stream = new MemoryStream();
-                image.Save(stream, ImageCodecInfo.GetImageDecoders().Single(codec => codec.FormatID == ImageFormat.Jpeg.Guid), encoderParameters);
+                image.Save(stream, ImageCodecInfo.GetImageDecoders().First(codec => codec.FormatID == ImageFormat.Jpeg.Guid), encoderParameters);
                 return Convert.ToBase64String(stream.ToArray());
             }
             catch (Exception)
@@ -274,7 +274,7 @@ Clicking 'Close Report' will continue with the Game's error report mechanism.
 <![if !IE]>
               <br/>
               <br/>
-              <button onclick='savefile(this)'>Get Latest Save File</button>
+              <button onclick='savefile(this)'>Get Save File</button>
 <![endif]>");
 
                 if (IncludeScreenshot)
