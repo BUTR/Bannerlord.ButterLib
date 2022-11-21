@@ -30,10 +30,13 @@ namespace Bannerlord.ButterLib.ExceptionHandler
         private const int Version = 8;
         private static readonly string NL = Environment.NewLine;
 
+        public static readonly string MiniDumpTag = "<!-- MINI DUMP -->";
+        public static readonly string MiniDumpButtonTag = "<!-- MINI DUMP BUTTON -->";
         public static readonly string SaveFileTag = "<!-- SAVE FILE -->";
         public static readonly string SaveFileButtonTag = "<!-- SAVE FILE BUTTON -->";
         public static readonly string ScreenshotTag = "<!-- SCREENSHOT -->";
         public static readonly string ScreenshotButtonTag = "<!-- SCREENSHOT BUTTON -->";
+        public static readonly string DecompressScriptTag = "<!-- DECOMPRESS SCRIPT -->";
 
         public static void BuildAndShow(CrashReport crashReport)
         {
@@ -41,7 +44,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             form.ShowDialog();
         }
 
-        public static string Build(CrashReport crashReport, string miniDump)
+        public static string Build(CrashReport crashReport)
         {
             var launcherType = GetLauncherType();
             var launcherVersion = GetLauncherVersion();
@@ -148,13 +151,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                 <option value='0.9em'>Medium</option>
                 <option value='0.8em'>Small</option>
               </select>
-{(string.IsNullOrEmpty(miniDump) ? "" : @"
-<![if !IE]>
-              <br/>
-              <br/>
-              <button onclick='minidump(this)'>Get MiniDump</button>
-<![endif]>
-")}
+{MiniDumpButtonTag}
 {SaveFileButtonTag}
 {ScreenshotButtonTag}
             </div>
@@ -212,7 +209,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
     <div class='root-container' style='display:none;'>
       <h2><a href='javascript:;' class='headers' onclick='showHideById(this, ""mini-dump"")'>+ Mini Dump</a></h2>
       <div id='mini-dump' class='headers-container'>
-      {miniDump}
+      {MiniDumpTag}
       </div>
     </div>
     <div class='root-container' style='display:none;'>
@@ -231,11 +228,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
       {ScreenshotTag}
       </div>
     </div>
-{(string.IsNullOrEmpty(miniDump) ? "" : @"
-<![if !IE]>
-    <script src=""https://cdn.jsdelivr.net/pako/1.0.3/pako_inflate.min.js""></script>
-<![endif]>
-")}
+{DecompressScriptTag}
     <script>
       function showHideById(element, id) {{
           if (document.getElementById(id).style.display === 'block') {{

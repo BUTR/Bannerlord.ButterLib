@@ -32,7 +32,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler.WinForms
         {
             try
             {
-                if (ExceptionHandlerSubSystem.Instance?.IncludeMiniDump != true || !MiniDump.TryDump(out var stream)) return string.Empty;
+                if (!MiniDump.TryDump(out var stream)) return string.Empty;
 
                 using var _ = stream;
                 return Convert.ToBase64String(stream.ToArray());
@@ -78,10 +78,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler.WinForms
                 Utilities.TakeScreenshot(tempBmp);
 
                 using var image = Image.FromFile(tempBmp);
-                using var encoderParameters = new EncoderParameters(1)
-                {
-                    Param = {[0] = new EncoderParameter(Encoder.Quality, 80L)}
-                };
+                using var encoderParameters = new EncoderParameters(1) { Param = { [0] = new EncoderParameter(Encoder.Quality, 80L) } };
 
                 using var stream = new MemoryStream();
                 image.Save(stream, ImageCodecInfo.GetImageDecoders().Single(codec => codec.FormatID == ImageFormat.Jpeg.Guid), encoderParameters);
@@ -122,6 +119,9 @@ if (!document.getElementsByClassName) {
     return results;
   }
 }
+function handleIncludeMiniDump(cb) {
+  window.external.SetIncludeMiniDump(cb.checked);
+}
 function handleIncludeSaveFile(cb) {
   window.external.SetIncludeSaveFile(cb.checked);
 }
@@ -150,6 +150,8 @@ function handleIncludeScreenshot(cb) {
     <td style='width: 50%;'>
     </td>
     <td>
+      <input style='float:right;' type='checkbox' onclick='handleIncludeMiniDump(this);'>
+      <label style='float:right; margin-left:10px;'>Include Mini Dump:</label>
       <input style='float:right;' type='checkbox' onclick='handleIncludeSaveFile(this);'>
       <label style='float:right; margin-left:10px;'>Include Latest Save File:</label>
       <input style='float:right;' type='checkbox' onclick='handleIncludeScreenshot(this);'>
@@ -164,13 +166,14 @@ Clicking 'Close Report' will continue with the Game's error report mechanism.
         private CrashReport CrashReport { get; }
         private string ReportInHtml { get; }
 
+        public bool IncludeMiniDump { get; set; }
         public bool IncludeSaveFile { get; set; }
         public bool IncludeScreenshot { get; set; }
 
         internal HtmlCrashReportForm(CrashReport crashReport)
         {
             CrashReport = crashReport;
-            ReportInHtml = HtmlBuilder.Build(crashReport, GetCompressedMiniDump());
+            ReportInHtml = HtmlBuilder.Build(crashReport);
 
             InitializeComponent();
             HtmlRender.ObjectForScripting = this;
@@ -194,7 +197,10 @@ Clicking 'Close Report' will continue with the Game's error report mechanism.
             };
         }
 
+        public void SetIncludeMiniDump(bool value) => IncludeMiniDump = value;
+
         public void SetIncludeSaveFile(bool value) => IncludeSaveFile = value;
+
         public void SetIncludeScreenshot(bool value) => IncludeScreenshot = value;
 
         public async void CopyAsHTML()
@@ -251,6 +257,16 @@ Clicking 'Close Report' will continue with the Game's error report mechanism.
             {
                 var report = ReportInHtml;
 
+                if (IncludeMiniDump)
+                    report = report
+                        .Replace(HtmlBuilder.MiniDumpTag, GetCompressedMiniDump())
+                        .Replace(HtmlBuilder.MiniDumpButtonTag, @"
+<![if !IE]>
+              <br/>
+              <br/>
+              <button onclick='minidump(this)'>Get MiniDump</button>
+<![endif]>");
+
                 if (IncludeSaveFile)
                     report = report
                         .Replace(HtmlBuilder.SaveFileTag, GetCompressedSaveFile())
@@ -269,6 +285,13 @@ Clicking 'Close Report' will continue with the Game's error report mechanism.
               <br/>
               <br/>
               <button onclick='screenshot(this)'>Show Screenshot</button>
+<![endif]>");
+
+                if (IncludeMiniDump || IncludeSaveFile)
+                    report = report
+                        .Replace(HtmlBuilder.DecompressScriptTag, @"
+<![if !IE]>
+    <script src=""https://cdn.jsdelivr.net/pako/1.0.3/pako_inflate.min.js""></script>
 <![endif]>");
 
                 using var stream = fileStream;
