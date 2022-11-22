@@ -28,7 +28,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
         {
             Exception = exception;
 
-            Stacktrace = GetAllInvolvedModules(exception, 0).ToList();
+            Stacktrace = GetAllInvolvedModules(exception).ToList();
 
             var moduleAssemblies = new List<string>();
             foreach (var subModule in LoadedModules.SelectMany(module => module.SubModules))
@@ -48,7 +48,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             }
         }
 
-        private static IEnumerable<StacktraceEntry> GetAllInvolvedModules(Exception ex, int level)
+        private static IEnumerable<StacktraceEntry> GetAllInvolvedModules(Exception ex)
         {
             static Patches? FindPatches(MethodBase? method) => method is MethodInfo replacement
                 ? Harmony.GetOriginalMethod(replacement) is { } original ? Harmony.GetPatchInfo(original) : null
@@ -89,7 +89,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             var inner = ex.InnerException;
             if (inner is not null)
             {
-                foreach (var modInfo in GetAllInvolvedModules(inner, level + 1))
+                foreach (var modInfo in GetAllInvolvedModules(inner))
                 {
                     yield return modInfo;
                 }

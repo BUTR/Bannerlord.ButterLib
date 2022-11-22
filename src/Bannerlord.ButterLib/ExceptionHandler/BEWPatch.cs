@@ -1,5 +1,4 @@
-﻿using Bannerlord.BUTR.Shared.Extensions;
-using Bannerlord.BUTRLoader;
+﻿using Bannerlord.BUTRLoader;
 using Bannerlord.ButterLib.Common.Extensions;
 using Bannerlord.ButterLib.ExceptionHandler.DebuggerDetection;
 
@@ -13,14 +12,9 @@ using Microsoft.Extensions.Logging.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-
-using TaleWorlds.MountAndBlade;
-
-using Module = TaleWorlds.MountAndBlade.Module;
 
 namespace Bannerlord.ButterLib.ExceptionHandler
 {

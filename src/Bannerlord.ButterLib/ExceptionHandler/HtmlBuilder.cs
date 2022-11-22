@@ -315,23 +315,18 @@ namespace Bannerlord.ButterLib.ExceptionHandler
         {
             if (Process.GetCurrentProcess().ParentProcess() is { } pProcess)
             {
-                if (Process.GetCurrentProcess().ParentProcess()?.ProcessName == "Vortex")
-                    return "vortex";
-                if (Process.GetCurrentProcess().ParentProcess()?.ProcessName == "BannerLordLauncher")
-                    return "bannerlordlauncher";
-                if (Process.GetCurrentProcess().ParentProcess()?.ProcessName == "steam")
-                    return "steam";
-                if (Process.GetCurrentProcess().ParentProcess()?.ProcessName == "GalaxyClient")
-                    return "gog";
-                if (Process.GetCurrentProcess().ParentProcess()?.ProcessName == "EpicGamesLauncher")
-                    return "epicgames";
-                if (Process.GetCurrentProcess().ParentProcess()?.ProcessName == "devenv")
-                    return "debuggervisualstudio";
-                if (Process.GetCurrentProcess().ParentProcess()?.ProcessName == "JetBrains.Debugger.Worker64c")
-                    return "debuggerjetbrains";
-                if (Process.GetCurrentProcess().ParentProcess()?.ProcessName == "explorer")
-                    return "explorer";
-                return $"unknown launcher - {pProcess.ProcessName}";
+                return pProcess.ProcessName switch
+                {
+                    "Vortex" => "vortex",
+                    "BannerLordLauncher" => "bannerlordlauncher",
+                    "steam" => "steam",
+                    "GalaxyClient" => "gog",
+                    "EpicGamesLauncher" => "epicgames",
+                    "devenv" => "debuggervisualstudio",
+                    "JetBrains.Debugger.Worker64c" => "debuggerjetbrains",
+                    "explorer" => "explorer",
+                    _ => $"unknown launcher - {pProcess.ProcessName}"
+                };
             }
 
             if (!string.IsNullOrEmpty(GetBUTRLoaderVersion()))
