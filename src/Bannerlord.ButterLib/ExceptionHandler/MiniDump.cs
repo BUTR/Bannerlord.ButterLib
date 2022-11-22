@@ -15,9 +15,9 @@ namespace Bannerlord.ButterLib.ExceptionHandler
         internal static class DbgHelpNativeMethods
         {
 #if X64
-            public const int CONTEXT_SIZE = 1232;
+            private const int CONTEXT_SIZE = 1232;
 #else
-            public const int CONTEXT_SIZE = 716;
+            private const int CONTEXT_SIZE = 716;
 #endif
 
             [DllImport("dbghelp.dll", CallingConvention = CallingConvention.Winapi, SetLastError = true)]

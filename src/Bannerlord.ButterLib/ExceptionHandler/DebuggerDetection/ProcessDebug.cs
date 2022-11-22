@@ -6,8 +6,8 @@ namespace Bannerlord.ButterLib.ExceptionHandler.DebuggerDetection
 {
     internal static class ProcessDebug
     {
-        public const int PROCESS_DEBUG_OBJECT_HANDLE = 0x1E;
-        public const int PROCESS_DEBUG_PORT = 7;
+        private const int PROCESS_DEBUG_OBJECT_HANDLE = 0x1E;
+        private const int PROCESS_DEBUG_PORT = 7;
 
         [DllImport("ntdll.dll", SetLastError = true)]
         private static extern int NtQueryInformationProcess(IntPtr processHandle, int processInformationClass,
