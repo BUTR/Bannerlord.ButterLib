@@ -369,11 +369,12 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                 sb.Append("<li>")
                     .Append($"Frame: {stacktrace.Key}</br>")
                     .Append("<ul>");
-                foreach (var (method, module, _) in stacktrace)
+                foreach (var (method, harmonyIssue, module, _) in stacktrace)
                 {
                     sb.Append("<li>")
                         .Append($"Module: {(module is null ? "UNKNOWN" : module.Id)}</br>")
                         .Append($"Method: {method.FullDescription()}</br>")
+                        .Append($"HarmonyIssue: {harmonyIssue}</br>")
                         .Append("</li>");
                 }
                 sb.AppendLine("</ul></li>");
@@ -419,13 +420,14 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                 sb.Append("<li>")
                     .Append($"<a href='javascript:;' onclick='document.getElementById(\"{module.Id}\").scrollIntoView(false)'>").Append(module.Id).Append("</a></br>")
                     .Append("<ul>");
-                foreach (var (method, _, stackFrameDescription) in stacktrace)
+                foreach (var (method, harmonyIssue, _, stackFrameDescription) in stacktrace)
                 {
                     // Ignore blank transpilers used to force the jitter to skip inlining
                     if (method.Name == "BlankTranspiler") continue;
                     sb.Append("<li>")
                         .Append($"Method: {method.FullDescription()}</br>")
                         .Append($"Frame: {stackFrameDescription}</br>")
+                        .Append($"HarmonyIssue: {harmonyIssue}</br>")
                         .Append("</li>");
                 }
                 sb.AppendLine("</ul></li>");
