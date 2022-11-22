@@ -13,7 +13,7 @@
     <!--Serilog depends on abstraction 2.0.0, and since we can't do app redirects, we're stuck with that-->
     <ExtensionVersion>2.0.0</ExtensionVersion>
     <!--BuildResources Version-->
-    <BuildResourcesVersion>1.0.1.83</BuildResourcesVersion>
+    <BuildResourcesVersion>1.0.1.85</BuildResourcesVersion>
     <BUTRSharedVersion>3.0.0.121</BUTRSharedVersion>
     <BUTRModuleManagerVersion>4.0.150</BUTRModuleManagerVersion>
   </PropertyGroup>
