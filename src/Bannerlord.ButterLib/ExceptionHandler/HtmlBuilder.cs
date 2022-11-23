@@ -531,7 +531,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                     tagsBuilder.Clear();
                     foreach (var (tag, value) in subModule.Tags)
                     {
-                        tagsBuilder.Append("<li>").Append(tag).Append(": ").Append(value).AppendLine("</li>");
+                        tagsBuilder.Append("<li>").Append(tag).Append(": ").Append(string.Join(", ", value)).AppendLine("</li>");
                     }
 
                     subModulesBuilder.AppendLine("<li>")
