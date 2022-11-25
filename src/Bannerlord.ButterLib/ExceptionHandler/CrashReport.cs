@@ -95,7 +95,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                 }
             }
 
-            var trace = new StackTrace(ex, 0, true);
+            var trace = new EnhancedStackTrace(ex);
             foreach (var frame in trace.GetFrames() ?? Array.Empty<StackFrame>())
             {
                 if (!frame.HasMethod()) continue;

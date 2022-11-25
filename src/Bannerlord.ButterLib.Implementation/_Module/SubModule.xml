@@ -43,6 +43,7 @@
         <Assembly value="System.Memory.dll" />
         <Assembly value="System.Reflection.Metadata.dll" />
         <Assembly value="System.Runtime.CompilerServices.Unsafe.dll" />
+        <Assembly value="System.Threading.Tasks.Extensions.dll" />
         <!--Microsoft Abstractions-->
         <Assembly value="Microsoft.Extensions.DependencyInjection.Abstractions.dll" />
         <Assembly value="Microsoft.Extensions.Logging.Abstractions.dll" />

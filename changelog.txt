@@ -5,6 +5,7 @@ Game Versions: v1.0.0,v1.0.1,v1.0.2
 * Support for including save file and screenshot with a local crash report
 * MiniDump inclusion decision moved from settings to the crash report
 * Better SubSystem descriptions
+* Added Ben.Demystifier for better exceptions
 ---------------------------------------------------------------------------------------------------
 Version: 2.5.1
 Game Versions: v1.0.0,v1.0.1

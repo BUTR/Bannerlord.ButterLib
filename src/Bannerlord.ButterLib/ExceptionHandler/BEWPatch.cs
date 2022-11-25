@@ -75,11 +75,8 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             if (ExceptionHandlerSubSystem.Instance?.DisableWhenDebuggerIsAttached == true && IsDebuggerAttached())
                 return;
 
-            if (__exception is not null && !SuppressedExceptions.Contains(ExceptionIdentifier.FromException(__exception)))
-            {
-                SuppressedExceptions.Add(ExceptionIdentifier.FromException(__exception));
-                HtmlBuilder.BuildAndShow(new CrashReport(__exception));
-            }
+            if (__exception is not null)
+                ExceptionReporter.Show(__exception);
         }
 
         internal static void Enable(Harmony harmony)
