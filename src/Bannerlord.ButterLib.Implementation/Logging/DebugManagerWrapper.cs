@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 
 using System;
-using System.Runtime.CompilerServices;
 
 using TaleWorlds.Library;
 
@@ -25,30 +24,24 @@ namespace Bannerlord.ButterLib.Implementation.Logging
             _debugManagerLogger = loggerFactory.CreateLogger(debugManager.GetType());
         }
 
-        public void ShowWarning(string message)
-        {
-            _debugManagerLogger.LogWarning("{Message}", message);
-            OriginalDebugManager.ShowWarning(message);
-        }
-
         public void DisplayDebugMessage(string message)
         {
             _debugManagerLogger.LogDebug("{Message}", message);
             OriginalDebugManager.DisplayDebugMessage(message);
         }
 
-        public void Print(string message, int logLevel = 0, Debug.DebugColor color = Debug.DebugColor.White, ulong debugFilter = 17592186044416)
+        public void Print(string message, int logLevel, Debug.DebugColor color, ulong debugFilter)
         {
             // logLevel is not used by the game right now.
-            _debugManagerLogger.LogInformation("{Message}", message);
+            _debugManagerLogger.LogDebug("{Message}", message);
             OriginalDebugManager.Print(message, logLevel, color, debugFilter);
         }
-        public void PrintError(string error, string stackTrace, ulong debugFilter = 17592186044416)
+        public void PrintError(string error, string stackTrace, ulong debugFilter)
         {
             _debugManagerLogger.LogError("{Error}{NL}{StackTrace}", error, Environment.NewLine, stackTrace);
             OriginalDebugManager.PrintError(error, stackTrace, debugFilter);
         }
-        public void PrintWarning(string warning, ulong debugFilter = 17592186044416)
+        public void PrintWarning(string warning, ulong debugFilter)
         {
             _debugManagerLogger.LogWarning("{Warning}", warning);
             OriginalDebugManager.PrintWarning(warning, debugFilter);
@@ -71,15 +64,13 @@ namespace Bannerlord.ButterLib.Implementation.Logging
 
         public void DoDelayedexit(int returnCode) => OriginalDebugManager.DoDelayedexit(returnCode);
 
-        public void EndTelemetryScopeBaseLevelInternal() => OriginalDebugManager.EndTelemetryScopeBaseLevelInternal();
-
         public void WriteDebugLineOnScreen(string message)
         {
             _debugManagerLogger.LogDebug("{Message}", message);
             OriginalDebugManager.WriteDebugLineOnScreen(message);
         }
 
-        public void Assert(bool condition, string message, [CallerFilePath] string callerFile = "", [CallerMemberName] string callerMethod = "", [CallerLineNumber] int callerLine = 0)
+        public void Assert(bool condition, string message, string callerFile, string callerMethod, int callerLine)
         {
             if (!condition)
                 _debugManagerLogger.LogDebug("Assert Failed!: {Message}; CallerFilePath: {CallerFile}; CallerMemberName: {CallerMethod}; CallerLineNumber: {CallerLine}", message, callerFile, callerMethod, callerLine);
@@ -88,7 +79,7 @@ namespace Bannerlord.ButterLib.Implementation.Logging
             // ReSharper restore ExplicitCallerInfoArgument
         }
 
-        public void SilentAssert(bool condition, string message = "", bool getDump = false, [CallerFilePath] string callerFile = "", [CallerMemberName] string callerMethod = "", [CallerLineNumber] int callerLine = 0)
+        public void SilentAssert(bool condition, string message, bool getDump, string callerFile, string callerMethod, int callerLine)
         {
             if (!condition)
                 _debugManagerLogger.LogDebug("Silent Assert Failed!: {Message}; CallerFilePath: {CallerFile}; CallerMemberName: {CallerMethod}; CallerLineNumber: {CallerLine}", message, callerFile, callerMethod, callerLine);
@@ -97,15 +88,17 @@ namespace Bannerlord.ButterLib.Implementation.Logging
             // ReSharper restore ExplicitCallerInfoArgument
         }
 
-        public void RenderDebugLine(Vec3 position, Vec3 direction, uint color = 4294967295, bool depthCheck = false, float time = 0) =>
+        public void RenderDebugLine(Vec3 position, Vec3 direction, uint color, bool depthCheck, float time) =>
             OriginalDebugManager.RenderDebugLine(position, direction, color, depthCheck, time);
-        public void RenderDebugSphere(Vec3 position, float radius, uint color = 4294967295, bool depthCheck = false, float time = 0) =>
+        public void RenderDebugSphere(Vec3 position, float radius, uint color, bool depthCheck, float time) =>
             OriginalDebugManager.RenderDebugSphere(position, radius, color, depthCheck, time);
-        public void RenderDebugFrame(MatrixFrame frame, float lineLength, float time = 0) => OriginalDebugManager.RenderDebugFrame(frame, lineLength, time);
-        public void RenderDebugText(float screenX, float screenY, string text, uint color = 4294967295, float time = 0) =>
+        public void RenderDebugFrame(MatrixFrame frame, float lineLength, float time) =>
+            OriginalDebugManager.RenderDebugFrame(frame, lineLength, time);
+        public void RenderDebugText(float screenX, float screenY, string text, uint color, float time) =>
             OriginalDebugManager.RenderDebugText(screenX, screenY, text, color, time);
-
-        public void RenderDebugRectWithColor(float left, float bottom, float right, float top, uint color = 4294967295) =>
+        public void RenderDebugText3D(Vec3 position, string text, uint color, int screenPosOffsetX, int screenPosOffsetY, float time) =>
+            OriginalDebugManager.RenderDebugText3D(position, text, color, screenPosOffsetX, screenPosOffsetY, time);
+        public void RenderDebugRectWithColor(float left, float bottom, float right, float top, uint color) =>
             OriginalDebugManager.RenderDebugRectWithColor(left, bottom, right, top, color);
 
         public void ReportMemoryBookmark(string message) => OriginalDebugManager.ReportMemoryBookmark(message);
@@ -113,14 +106,19 @@ namespace Bannerlord.ButterLib.Implementation.Logging
         public void WatchVariable(string name, object value) => OriginalDebugManager.WatchVariable(name, value);
 
         public void BeginTelemetryScopeInternal(TelemetryLevelMask levelMask, string scopeName) => OriginalDebugManager.BeginTelemetryScopeInternal(levelMask, scopeName);
-        public void BeginTelemetryScopeBaseLevelInternal(TelemetryLevelMask levelMask, string scopeName) => OriginalDebugManager.BeginTelemetryScopeBaseLevelInternal(levelMask, scopeName);
         public void EndTelemetryScopeInternal() => OriginalDebugManager.EndTelemetryScopeInternal();
+
+        public void BeginTelemetryScopeBaseLevelInternal(TelemetryLevelMask levelMask, string scopeName) => OriginalDebugManager.BeginTelemetryScopeBaseLevelInternal(levelMask, scopeName);
+        public void EndTelemetryScopeBaseLevelInternal() => OriginalDebugManager.EndTelemetryScopeBaseLevelInternal();
 
         public Vec3 GetDebugVector() => OriginalDebugManager.GetDebugVector();
 
-        public void ShowMessageBox(string lpText, string lpCaption, uint uType)
+        public void ShowMessageBox(string lpText, string lpCaption, uint uType) => OriginalDebugManager.ShowMessageBox(lpText, lpCaption, uType);
+
+        public void ShowWarning(string message)
         {
-            OriginalDebugManager.ShowMessageBox(lpText, lpCaption, uType);
+            _debugManagerLogger.LogWarning("{Message}", message);
+            OriginalDebugManager.ShowWarning(message);
         }
 
         public void ShowError(string message)
@@ -128,8 +126,5 @@ namespace Bannerlord.ButterLib.Implementation.Logging
             _debugManagerLogger.LogError("{Message}", message);
             OriginalDebugManager.ShowError(message);
         }
-
-        public void RenderDebugText3D(Vec3 position, string text, uint color = uint.MaxValue, int screenPosOffsetX = 0, int screenPosOffsetY = 0, float time = 0) =>
-            OriginalDebugManager.RenderDebugText3D(position, text, color, screenPosOffsetX, screenPosOffsetY, time);
     }
 }

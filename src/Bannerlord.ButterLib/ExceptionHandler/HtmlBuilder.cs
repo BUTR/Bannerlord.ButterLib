@@ -744,7 +744,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                     case IFileLogSource(_, var path, var sinks) when File.Exists(path):
                     {
                         const string MutexNameSuffix = ".serilog";
-                        var mutexName = Path.GetFullPath(path).Replace(Path.DirectorySeparatorChar, ':') + MutexNameSuffix;
+                        var mutexName = $"{Path.GetFullPath(path).Replace(Path.DirectorySeparatorChar, ':')}{MutexNameSuffix}";
                         var mutex = new Mutex(false, mutexName);
 
                         foreach (var flushableFileSink in sinks)
@@ -752,13 +752,13 @@ namespace Bannerlord.ButterLib.ExceptionHandler
 
                         try
                         {
-                            var timeout = TimeSpan.FromSeconds(2);
-                            if (!mutex.WaitOne(timeout))
+                            if (!mutex.WaitOne(TimeSpan.FromSeconds(5)))
                                 break;
 
                             using var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                             var reader = new ReverseTextReader(stream);
-                            while (reader.ReadLine() is { } line)
+                            var counter = 0;
+                            while (counter < 2000 && reader.ReadLine() is { } line)
                             {
                                 var idxStart = line.IndexOf('[') + 1;
                                 var idxEnd = line.IndexOf(']') - 1;
@@ -768,6 +768,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                                     break;
 
                                 sbSource.Append("<li>").Append(line).AppendLine("</li>");
+                                counter++;
                             }
                         }
                         catch (Exception)

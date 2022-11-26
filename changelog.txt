@@ -6,6 +6,10 @@ Game Versions: v1.0.0,v1.0.1,v1.0.2
 * MiniDump inclusion decision moved from settings to the crash report
 * Better SubSystem descriptions
 * Added Ben.Demystifier for better exceptions
+* Added DynamicAPI implementation
+* Debug.Print is handled as Debug level now instead of Information
+* Limited default log file size per day to 5MB, max 7 files; others to 3MB, max 5 files
+* Limited logs in Crash Report to 2000 lines
 ---------------------------------------------------------------------------------------------------
 Version: 2.5.1
 Game Versions: v1.0.0,v1.0.1

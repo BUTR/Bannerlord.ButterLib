@@ -76,6 +76,9 @@ namespace Bannerlord.ButterLib.Common.Extensions
                     path: filePath.FileFullPath,
                     rollingInterval: RollingInterval.Day,
                     retainedFileCountLimit: 7,
+                    fileSizeLimitBytes: 1024 * 1024 * 5,
+                    retainedFileTimeLimit: TimeSpan.FromDays(7),
+                    rollOnFileSizeLimit: true,
                     shared: true);
 
             var sinks = _getSinks!(builder).OfType<IFlushableFileSink>().ToArray();
@@ -111,7 +114,10 @@ namespace Bannerlord.ButterLib.Common.Extensions
                     outputTemplate: OutputTemplate,
                     path: filePath.FileFullPath,
                     rollingInterval: RollingInterval.Day,
-                    retainedFileCountLimit: 7);
+                    retainedFileCountLimit: 5,
+                    fileSizeLimitBytes: 1024 * 1024 * 3,
+                    retainedFileTimeLimit: TimeSpan.FromDays(3),
+                    rollOnFileSizeLimit: true);
             configure?.Invoke(builder);
 
             var logger = builder.CreateLogger();
