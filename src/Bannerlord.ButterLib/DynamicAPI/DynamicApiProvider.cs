@@ -9,8 +9,14 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
+using TaleWorlds.MountAndBlade;
+
 namespace Bannerlord.ButterLib.DynamicAPI
 {
+    /// <summary>
+    /// Requests will be available on <see cref="MBSubModuleBase.OnBeforeInitialModuleScreenSetAsRoot"/> stage.<br/>
+    /// The reason is, we need to wait for all SubModules to have <see cref="MBSubModuleBase.OnSubModuleLoad"/> executed.
+    /// </summary>
     public static class DynamicAPIProvider
     {
         private record TypeWithAttribute(Type Type, CustomAttributeData CustomAttributeData);
@@ -30,34 +36,8 @@ namespace Bannerlord.ButterLib.DynamicAPI
         };
 
         private static readonly ConcurrentDictionary<string, DynamicAPIObjectActivator?> CachedActivators = new();
-        internal static readonly Dictionary<string, Type> APIClasses;
-        internal static readonly Dictionary<Type, Dictionary<string, MethodInfo>> APIClassMethods;
-
-        static DynamicAPIProvider()
-        {
-            APIClasses = GetAssembliesToScan()
-                .SelectMany(x =>
-                {
-                    try
-                    {
-                        return x.GetTypes().Select(GetDynamicAPIClass);
-                    }
-                    catch (ReflectionTypeLoadException e)
-                    {
-                        return e.Types.Select(GetDynamicAPIClass);
-                    }
-                })
-                .OfType<TypeWithAttribute>()
-                .ToDictionary(DynamicAPIClassAttributeName, x => x.Type);
-
-            APIClassMethods = APIClasses.Values
-                .ToDictionary(
-                    x => x,
-                    x => x.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)
-                        .Select(GetDynamicAPIMethod)
-                        .OfType<MethodInfoWithAttribute>()
-                        .ToDictionary(DynamicAPIMethodAttributeName, y => y.MethodInfo));
-        }
+        internal static Dictionary<string, Type>? APIClasses;
+        internal static Dictionary<Type, Dictionary<string, MethodInfo>>? APIClassMethods;
 
         private static TypeWithAttribute? GetDynamicAPIClass(Type? type)
         {
@@ -109,6 +89,31 @@ namespace Bannerlord.ButterLib.DynamicAPI
             }
         }
 
+        internal static void Initialize()
+        {
+            APIClasses = GetAssembliesToScan()
+                .SelectMany(x =>
+                {
+                    try
+                    {
+                        return x.GetTypes().Select(GetDynamicAPIClass);
+                    }
+                    catch (ReflectionTypeLoadException e)
+                    {
+                        return e.Types.Select(GetDynamicAPIClass);
+                    }
+                })
+                .OfType<TypeWithAttribute>()
+                .ToDictionary(DynamicAPIClassAttributeName, x => x.Type);
+
+            APIClassMethods = APIClasses.Values
+                .ToDictionary(
+                    x => x,
+                    x => x.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)
+                        .Select(GetDynamicAPIMethod)
+                        .OfType<MethodInfoWithAttribute>()
+                        .ToDictionary(DynamicAPIMethodAttributeName, y => y.MethodInfo));
+        }
 
         /// <summary>
         /// Return an API instance, see <see cref="DynamicAPIClassAttribute"/>.
@@ -116,6 +121,9 @@ namespace Bannerlord.ButterLib.DynamicAPI
         /// <param name="class"></param>
         public static DynamicAPIInstance? RequestAPIClass(string? @class)
         {
+            if (APIClasses is null)
+                return null;
+
             if (@class is null)
                 return null;
 
@@ -142,6 +150,9 @@ namespace Bannerlord.ButterLib.DynamicAPI
         /// </summary>
         public static TDelegate? RequestAPIMethod<TDelegate>(string? @class, string? method) where TDelegate : Delegate
         {
+            if (APIClasses is null || APIClassMethods is null)
+                return null;
+
             if (@class is null || method is null)
                 return null;
 

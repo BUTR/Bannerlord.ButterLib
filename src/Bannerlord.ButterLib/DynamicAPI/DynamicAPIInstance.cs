@@ -22,6 +22,9 @@ namespace Bannerlord.ButterLib.DynamicAPI
         /// </summary>
         public TDelegate? RequestMethod<TDelegate>(string? method) where TDelegate : Delegate
         {
+            if (DynamicAPIProvider.APIClassMethods is null)
+                return null;
+
             if (method is null)
                 return null;
 

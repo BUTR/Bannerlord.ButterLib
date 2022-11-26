@@ -2,6 +2,7 @@
 using Bannerlord.ButterLib.Common.Extensions;
 using Bannerlord.ButterLib.CrashUploader;
 using Bannerlord.ButterLib.DelayedSubModule;
+using Bannerlord.ButterLib.DynamicAPI;
 using Bannerlord.ButterLib.ExceptionHandler;
 using Bannerlord.ButterLib.ObjectSystem.Extensions;
 using Bannerlord.ButterLib.Options;
@@ -145,6 +146,8 @@ namespace Bannerlord.ButterLib
                     InitializeServices();
                 }
             }
+
+            DynamicAPIProvider.Initialize();
 
             Logger.LogTrace("OnBeforeInitialModuleScreenSetAsRoot: Done");
         }
