@@ -553,12 +553,12 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                 }
             }
 
-            void AppendAdditionalAssemblies(ModuleInfoExtended module)
+            void AppendAdditionalAssemblies(ModuleInfoExtendedWithMetadata module)
             {
                 additionalAssembliesBuilder.Clear();
                 foreach (var externalLoadedAssembly in crashReport.ExternalLoadedAssemblies)
                 {
-                    if (IsModuleAssembly(module, externalLoadedAssembly))
+                    if (ModuleInfoHelper.IsModuleAssembly(module, externalLoadedAssembly))
                     {
                         additionalAssembliesBuilder.Append("<li>")
                             .Append(Path.GetFileName(externalLoadedAssembly.CodeBase))
@@ -631,7 +631,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                 {
                     foreach (var loadedModule in crashReport.LoadedModules)
                     {
-                        if (IsModuleAssembly(loadedModule, assembly))
+                        if (ModuleInfoHelper.IsModuleAssembly(loadedModule, assembly))
                         {
                             isModule = true;
                             break;
@@ -666,29 +666,13 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             return sb0.ToString();
         }
 
-        private static bool IsModuleAssembly(ModuleInfoExtended loadedModule, Assembly assembly)
-        {
-            static string PathPrefix() => Path.Combine(TaleWorlds.Library.BasePath.Name, "Modules");
-            static string GetPath(string id) => Path.Combine(PathPrefix(), id);
-
-            if (assembly.IsDynamic || string.IsNullOrWhiteSpace(assembly.CodeBase))
-                return false;
-
-            var modulePath = new Uri(Path.GetFullPath(GetPath(loadedModule.Id)));
-            var moduleDirectory = Path.GetFileName(GetPath(loadedModule.Id));
-
-            var assemblyPath = new Uri(assembly.CodeBase);
-            var relativePath = modulePath.MakeRelativeUri(assemblyPath);
-            return relativePath.OriginalString.StartsWith(moduleDirectory);
-        }
-
         private static string GetHarmonyPatchesListHtml(CrashReport crashReport)
         {
             var harmonyPatchesListBuilder = new StringBuilder();
             var patchesBuilder = new StringBuilder();
             var patchBuilder = new StringBuilder();
 
-            void AppendPatches(string name, IReadOnlyCollection<Patch> patches)
+            void AppendPatches(string name, IEnumerable<Patch> patches)
             {
                 patchBuilder.Clear();
                 foreach (var patch in patches)

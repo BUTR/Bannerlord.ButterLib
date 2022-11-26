@@ -2,6 +2,7 @@
 using Bannerlord.ModuleManager;
 
 using HarmonyLib;
+using HarmonyLib.BUTR.Extensions;
 
 using System;
 using System.Collections.Generic;
@@ -37,8 +38,8 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                 moduleAssemblies.AddRange(subModule.Assemblies.Select(Path.GetFileNameWithoutExtension));
             }
 
-            ModuleLoadedAssemblies.AddRange(AppDomain.CurrentDomain.GetAssemblies().Where(a => moduleAssemblies.Contains(a.GetName().Name)));
-            ExternalLoadedAssemblies.AddRange(AppDomain.CurrentDomain.GetAssemblies().Where(a => !moduleAssemblies.Contains(a.GetName().Name)));
+            ModuleLoadedAssemblies.AddRange(AccessTools2.AllAssemblies().Where(a => moduleAssemblies.Contains(a.GetName().Name)));
+            ExternalLoadedAssemblies.AddRange(AccessTools2.AllAssemblies().Where(a => !moduleAssemblies.Contains(a.GetName().Name)));
 
             foreach (var originalMethod in Harmony.GetAllPatchedMethods())
             {
