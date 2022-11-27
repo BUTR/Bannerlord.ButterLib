@@ -170,6 +170,7 @@ namespace Bannerlord.ButterLib
             base.OnGameEnd(game);
             Logger.LogTrace("OnGameEnd: Started");
 
+            GameScope?.Dispose();
             GameScope = null;
 
             if (game.GameType is Campaign)
