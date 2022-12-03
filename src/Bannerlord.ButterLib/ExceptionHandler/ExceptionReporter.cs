@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace Bannerlord.ButterLib.ExceptionHandler
 {
@@ -12,7 +13,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                 return;
             }
 
-            HtmlBuilder.BuildAndShow(new CrashReport(exception));
+            HtmlBuilder.BuildAndShow(new CrashReport(exception.Demystify()));
         }
     }
 }

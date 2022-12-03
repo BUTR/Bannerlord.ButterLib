@@ -27,8 +27,16 @@ namespace Bannerlord.ButterLib.ExceptionHandler
 {
     internal static class HtmlBuilder
     {
-        private const int Version = 7;
+        private const int Version = 8;
         private static readonly string NL = Environment.NewLine;
+
+        public static readonly string MiniDumpTag = "<!-- MINI DUMP -->";
+        public static readonly string MiniDumpButtonTag = "<!-- MINI DUMP BUTTON -->";
+        public static readonly string SaveFileTag = "<!-- SAVE FILE -->";
+        public static readonly string SaveFileButtonTag = "<!-- SAVE FILE BUTTON -->";
+        public static readonly string ScreenshotTag = "<!-- SCREENSHOT -->";
+        public static readonly string ScreenshotButtonTag = "<!-- SCREENSHOT BUTTON -->";
+        public static readonly string DecompressScriptTag = "<!-- DECOMPRESS SCRIPT -->";
 
         public static void BuildAndShow(CrashReport crashReport)
         {
@@ -36,7 +44,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             form.ShowDialog();
         }
 
-        public static string Build(CrashReport crashReport, string miniDump)
+        public static string Build(CrashReport crashReport)
         {
             var launcherType = GetLauncherType();
             var launcherVersion = GetLauncherVersion();
@@ -143,13 +151,9 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                 <option value='0.9em'>Medium</option>
                 <option value='0.8em'>Small</option>
               </select>
-{(string.IsNullOrEmpty(miniDump) ? "" : @"
-<![if !IE]>
-              <br/>
-              <br/>
-              <button onclick='minidump(this)'>Get MiniDump</button>
-<![endif]>
-")}
+{MiniDumpButtonTag}
+{SaveFileButtonTag}
+{ScreenshotButtonTag}
             </div>
           </td>
         </tr>
@@ -205,14 +209,26 @@ namespace Bannerlord.ButterLib.ExceptionHandler
     <div class='root-container' style='display:none;'>
       <h2><a href='javascript:;' class='headers' onclick='showHideById(this, ""mini-dump"")'>+ Mini Dump</a></h2>
       <div id='mini-dump' class='headers-container'>
-      {miniDump}
+      {MiniDumpTag}
       </div>
     </div>
-{(string.IsNullOrEmpty(miniDump) ? "" : @"
-<![if !IE]>
-    <script src=""https://cdn.jsdelivr.net/pako/1.0.3/pako_inflate.min.js""></script>
-<![endif]>
-")}
+    <div class='root-container' style='display:none;'>
+      <h2><a href='javascript:;' class='headers' onclick='showHideById(this, ""save-file"")'>+ Save File</a></h2>
+      <div id='save-file' class='headers-container'>
+      {SaveFileTag}
+      </div>
+    </div>
+    <div class='root-container' style='display:none;'>
+      <h2><a href='javascript:;' class='headers' onclick='showHideById(this, ""screenshot"")'>+ Screenshot</a></h2>
+      <img id='screenshot' alt='Screenshot' />
+    </div>
+    <div class='root-container' style='display:none;'>
+      <h2><a href='javascript:;' class='headers' onclick='showHideById(this, ""screenshot-data"")'>+ Screenshot Data</a></h2>
+      <div id='screenshot-data' class='headers-container'>
+      {ScreenshotTag}
+      </div>
+    </div>
+{DecompressScriptTag}
     <script>
       function showHideById(element, id) {{
           if (document.getElementById(id).style.display === 'block') {{
@@ -265,6 +281,23 @@ namespace Bannerlord.ButterLib.ExceptionHandler
           a.download = ""crashdump.dmp"";
           a.click();
         }}
+      function savefile(element) {{
+          var base64 = document.getElementById('save-file').innerText.trim();
+          //var binData = Uint8Array.from(atob(base64), c => c.charCodeAt(0));
+          var binData = new Uint8Array(atob(base64).split('').map(function(x){{return x.charCodeAt(0);}}));
+          var result = window.pako.inflate(binData);
+
+          var a = document.createElement('a');
+          var blob = new Blob([result]);
+          a.href = window.URL.createObjectURL(blob);
+          a.download = ""savefile.sav"";
+          a.click();
+        }}
+      function screenshot(element) {{
+          var base64 = document.getElementById('screenshot-data').innerText.trim();
+          document.getElementById('screenshot').src = 'data:image/jpeg;charset=utf-8;base64,' + base64;
+          document.getElementById('screenshot').parentElement.style.display = 'block';
+        }}
     </script>
   </body>
 </html>";
@@ -282,23 +315,18 @@ namespace Bannerlord.ButterLib.ExceptionHandler
         {
             if (Process.GetCurrentProcess().ParentProcess() is { } pProcess)
             {
-                if (Process.GetCurrentProcess().ParentProcess()?.ProcessName == "Vortex")
-                    return "vortex";
-                if (Process.GetCurrentProcess().ParentProcess()?.ProcessName == "BannerLordLauncher")
-                    return "bannerlordlauncher";
-                if (Process.GetCurrentProcess().ParentProcess()?.ProcessName == "steam")
-                    return "steam";
-                if (Process.GetCurrentProcess().ParentProcess()?.ProcessName == "GalaxyClient")
-                    return "gog";
-                if (Process.GetCurrentProcess().ParentProcess()?.ProcessName == "EpicGamesLauncher")
-                    return "epicgames";
-                if (Process.GetCurrentProcess().ParentProcess()?.ProcessName == "devenv")
-                    return "debuggervisualstudio";
-                if (Process.GetCurrentProcess().ParentProcess()?.ProcessName == "JetBrains.Debugger.Worker64c")
-                    return "debuggerjetbrains";
-                if (Process.GetCurrentProcess().ParentProcess()?.ProcessName == "explorer")
-                    return "explorer";
-                return $"unknown launcher - {pProcess.ProcessName}";
+                return pProcess.ProcessName switch
+                {
+                    "Vortex" => "vortex",
+                    "BannerLordLauncher" => "bannerlordlauncher",
+                    "steam" => "steam",
+                    "GalaxyClient" => "gog",
+                    "EpicGamesLauncher" => "epicgames",
+                    "devenv" => "debuggervisualstudio",
+                    "JetBrains.Debugger.Worker64c" => "debuggerjetbrains",
+                    "explorer" => "explorer",
+                    _ => $"unknown launcher - {pProcess.ProcessName}"
+                };
             }
 
             if (!string.IsNullOrEmpty(GetBUTRLoaderVersion()))
@@ -336,11 +364,12 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                 sb.Append("<li>")
                     .Append($"Frame: {stacktrace.Key}</br>")
                     .Append("<ul>");
-                foreach (var (method, module, _) in stacktrace)
+                foreach (var (method, harmonyIssue, module, _) in stacktrace)
                 {
                     sb.Append("<li>")
                         .Append($"Module: {(module is null ? "UNKNOWN" : module.Id)}</br>")
                         .Append($"Method: {method.FullDescription()}</br>")
+                        .Append($"HarmonyIssue: {harmonyIssue}</br>")
                         .Append("</li>");
                 }
                 sb.AppendLine("</ul></li>");
@@ -386,13 +415,14 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                 sb.Append("<li>")
                     .Append($"<a href='javascript:;' onclick='document.getElementById(\"{module.Id}\").scrollIntoView(false)'>").Append(module.Id).Append("</a></br>")
                     .Append("<ul>");
-                foreach (var (method, _, stackFrameDescription) in stacktrace)
+                foreach (var (method, harmonyIssue, _, stackFrameDescription) in stacktrace)
                 {
                     // Ignore blank transpilers used to force the jitter to skip inlining
                     if (method.Name == "BlankTranspiler") continue;
                     sb.Append("<li>")
                         .Append($"Method: {method.FullDescription()}</br>")
                         .Append($"Frame: {stackFrameDescription}</br>")
+                        .Append($"HarmonyIssue: {harmonyIssue}</br>")
                         .Append("</li>");
                 }
                 sb.AppendLine("</ul></li>");
@@ -501,7 +531,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                     tagsBuilder.Clear();
                     foreach (var (tag, value) in subModule.Tags)
                     {
-                        tagsBuilder.Append("<li>").Append(tag).Append(": ").Append(value).AppendLine("</li>");
+                        tagsBuilder.Append("<li>").Append(tag).Append(": ").Append(string.Join(", ", value)).AppendLine("</li>");
                     }
 
                     subModulesBuilder.AppendLine("<li>")
@@ -523,12 +553,12 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                 }
             }
 
-            void AppendAdditionalAssemblies(ModuleInfoExtended module)
+            void AppendAdditionalAssemblies(ModuleInfoExtendedWithMetadata module)
             {
                 additionalAssembliesBuilder.Clear();
                 foreach (var externalLoadedAssembly in crashReport.ExternalLoadedAssemblies)
                 {
-                    if (IsModuleAssembly(module, externalLoadedAssembly))
+                    if (ModuleInfoHelper.IsModuleAssembly(module, externalLoadedAssembly))
                     {
                         additionalAssembliesBuilder.Append("<li>")
                             .Append(Path.GetFileName(externalLoadedAssembly.CodeBase))
@@ -601,7 +631,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                 {
                     foreach (var loadedModule in crashReport.LoadedModules)
                     {
-                        if (IsModuleAssembly(loadedModule, assembly))
+                        if (ModuleInfoHelper.IsModuleAssembly(loadedModule, assembly))
                         {
                             isModule = true;
                             break;
@@ -636,29 +666,13 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             return sb0.ToString();
         }
 
-        private static bool IsModuleAssembly(ModuleInfoExtended loadedModule, Assembly assembly)
-        {
-            static string PathPrefix() => Path.Combine(TaleWorlds.Library.BasePath.Name, "Modules");
-            static string GetPath(string id) => Path.Combine(PathPrefix(), id);
-
-            if (assembly.IsDynamic || string.IsNullOrWhiteSpace(assembly.CodeBase))
-                return false;
-
-            var modulePath = new Uri(Path.GetFullPath(GetPath(loadedModule.Id)));
-            var moduleDirectory = Path.GetFileName(GetPath(loadedModule.Id));
-
-            var assemblyPath = new Uri(assembly.CodeBase);
-            var relativePath = modulePath.MakeRelativeUri(assemblyPath);
-            return relativePath.OriginalString.StartsWith(moduleDirectory);
-        }
-
         private static string GetHarmonyPatchesListHtml(CrashReport crashReport)
         {
             var harmonyPatchesListBuilder = new StringBuilder();
             var patchesBuilder = new StringBuilder();
             var patchBuilder = new StringBuilder();
 
-            void AppendPatches(string name, IReadOnlyCollection<Patch> patches)
+            void AppendPatches(string name, IEnumerable<Patch> patches)
             {
                 patchBuilder.Clear();
                 foreach (var patch in patches)
@@ -730,7 +744,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                     case IFileLogSource(_, var path, var sinks) when File.Exists(path):
                     {
                         const string MutexNameSuffix = ".serilog";
-                        var mutexName = Path.GetFullPath(path).Replace(Path.DirectorySeparatorChar, ':') + MutexNameSuffix;
+                        var mutexName = $"{Path.GetFullPath(path).Replace(Path.DirectorySeparatorChar, ':')}{MutexNameSuffix}";
                         var mutex = new Mutex(false, mutexName);
 
                         foreach (var flushableFileSink in sinks)
@@ -738,13 +752,13 @@ namespace Bannerlord.ButterLib.ExceptionHandler
 
                         try
                         {
-                            var timeout = TimeSpan.FromSeconds(2);
-                            if (!mutex.WaitOne(timeout))
+                            if (!mutex.WaitOne(TimeSpan.FromSeconds(5)))
                                 break;
 
                             using var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                             var reader = new ReverseTextReader(stream);
-                            while (reader.ReadLine() is { } line)
+                            var counter = 0;
+                            while (counter < 2000 && reader.ReadLine() is { } line)
                             {
                                 var idxStart = line.IndexOf('[') + 1;
                                 var idxEnd = line.IndexOf(']') - 1;
@@ -754,6 +768,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                                     break;
 
                                 sbSource.Append("<li>").Append(line).AppendLine("</li>");
+                                counter++;
                             }
                         }
                         catch (Exception)

@@ -2,6 +2,7 @@
 using Bannerlord.ButterLib.Common.Extensions;
 using Bannerlord.ButterLib.CrashUploader;
 using Bannerlord.ButterLib.DelayedSubModule;
+using Bannerlord.ButterLib.DynamicAPI;
 using Bannerlord.ButterLib.ExceptionHandler;
 using Bannerlord.ButterLib.ObjectSystem.Extensions;
 using Bannerlord.ButterLib.Options;
@@ -146,6 +147,8 @@ namespace Bannerlord.ButterLib
                 }
             }
 
+            DynamicAPIProvider.Initialize();
+
             Logger.LogTrace("OnBeforeInitialModuleScreenSetAsRoot: Done");
         }
 
@@ -167,6 +170,7 @@ namespace Bannerlord.ButterLib
             base.OnGameEnd(game);
             Logger.LogTrace("OnGameEnd: Started");
 
+            GameScope?.Dispose();
             GameScope = null;
 
             if (game.GameType is Campaign)

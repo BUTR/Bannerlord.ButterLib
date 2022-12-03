@@ -2,6 +2,7 @@
 using Bannerlord.ModuleManager;
 
 using HarmonyLib;
+using HarmonyLib.BUTR.Extensions;
 
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ using System.Reflection;
 
 namespace Bannerlord.ButterLib.ExceptionHandler
 {
-    internal record StacktraceEntry(MethodBase Method, ModuleInfoExtended? ModuleInfo, string StackFrameDescription);
+    internal record StacktraceEntry(MethodBase Method, bool HarmonyIssue, ModuleInfoExtended? ModuleInfo, string StackFrameDescription);
 
     internal class CrashReport
     {
@@ -28,7 +29,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
         {
             Exception = exception;
 
-            Stacktrace = GetAllInvolvedModules(exception, 0).ToList();
+            Stacktrace = GetAllInvolvedModules(exception).ToList();
 
             var moduleAssemblies = new List<string>();
             foreach (var subModule in LoadedModules.SelectMany(module => module.SubModules))
@@ -37,8 +38,8 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                 moduleAssemblies.AddRange(subModule.Assemblies.Select(Path.GetFileNameWithoutExtension));
             }
 
-            ModuleLoadedAssemblies.AddRange(AppDomain.CurrentDomain.GetAssemblies().Where(a => moduleAssemblies.Contains(a.GetName().Name)));
-            ExternalLoadedAssemblies.AddRange(AppDomain.CurrentDomain.GetAssemblies().Where(a => !moduleAssemblies.Contains(a.GetName().Name)));
+            ModuleLoadedAssemblies.AddRange(AccessTools2.AllAssemblies().Where(a => moduleAssemblies.Contains(a.GetName().Name)));
+            ExternalLoadedAssemblies.AddRange(AccessTools2.AllAssemblies().Where(a => !moduleAssemblies.Contains(a.GetName().Name)));
 
             foreach (var originalMethod in Harmony.GetAllPatchedMethods())
             {
@@ -48,9 +49,9 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             }
         }
 
-        private static IEnumerable<StacktraceEntry> GetAllInvolvedModules(Exception ex, int level)
+        private static IEnumerable<StacktraceEntry> GetAllInvolvedModules(Exception ex)
         {
-            static Patches? FindPatches(MethodBase method) => method is MethodInfo replacement
+            static Patches? FindPatches(MethodBase? method) => method is MethodInfo replacement
                 ? Harmony.GetOriginalMethod(replacement) is { } original ? Harmony.GetPatchInfo(original) : null
                 : null;
 
@@ -89,51 +90,58 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             var inner = ex.InnerException;
             if (inner is not null)
             {
-                foreach (var modInfo in GetAllInvolvedModules(inner, level + 1))
+                foreach (var modInfo in GetAllInvolvedModules(inner))
                 {
                     yield return modInfo;
                 }
             }
 
-            var trace = new StackTrace(ex, 0, true);
+            var trace = new EnhancedStackTrace(ex);
             foreach (var frame in trace.GetFrames() ?? Array.Empty<StackFrame>())
             {
                 if (!frame.HasMethod()) continue;
 
-                var frameMethod = frame.GetMethod();
-
+                MethodBase? method;
+                var harmonyIssue = false;
+                try
+                {
+                    method = Harmony.GetMethodFromStackframe(frame);
+                }
                 // The given generic instantiation was invalid.
                 // From what I understand, this will occur with generic methods
-                var method = frameMethod.DeclaringType is not null && frameMethod.DeclaringType.IsGenericTypeDefinition
-                    ? frameMethod
-                    : Harmony.GetMethodFromStackframe(frame);
+                // Also when static constructors throw errors, Harmony resolution will fail
+                catch (Exception)
+                {
+                    harmonyIssue = true;
+                    method = frame.GetMethod();
+                }
 
                 var frameDesc = $"{frame} (IL Offset: {frame.GetILOffset()})";
 
                 var patches = FindPatches(method);
                 foreach (var (methodBase, extendedModuleInfo) in GetFinalizers(patches))
                 {
-                    yield return new(methodBase, extendedModuleInfo, frameDesc);
+                    yield return new(methodBase, harmonyIssue, extendedModuleInfo, frameDesc);
                 }
                 foreach (var (methodBase, extendedModuleInfo) in GetPostfixes(patches))
                 {
-                    yield return new(methodBase, extendedModuleInfo, frameDesc);
+                    yield return new(methodBase, harmonyIssue, extendedModuleInfo, frameDesc);
                 }
                 foreach (var (methodBase, extendedModuleInfo) in GetPrefixes(patches))
                 {
-                    yield return new(methodBase, extendedModuleInfo, frameDesc);
+                    yield return new(methodBase, harmonyIssue, extendedModuleInfo, frameDesc);
                 }
                 foreach (var (methodBase, extendedModuleInfo) in GetTranspilers(patches))
                 {
-                    yield return new(methodBase, extendedModuleInfo, frameDesc);
+                    yield return new(methodBase, harmonyIssue, extendedModuleInfo, frameDesc);
                 }
 
                 var moduleInfo = GetModuleInfoIfMod(method);
 
-                yield return new(method, moduleInfo, frameDesc);
+                yield return new(method, harmonyIssue, moduleInfo, frameDesc);
 
                 if (method is MethodInfo methodInfo && Harmony.GetOriginalMethod(methodInfo) is { } original)
-                    yield return new(original, moduleInfo, frameDesc);
+                    yield return new(original, harmonyIssue, moduleInfo, frameDesc);
             }
         }
     }

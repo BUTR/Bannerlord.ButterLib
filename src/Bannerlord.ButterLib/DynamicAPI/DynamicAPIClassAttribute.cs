@@ -2,6 +2,9 @@
 
 namespace Bannerlord.ButterLib.DynamicAPI
 {
+    /// <summary>
+    /// Requires a public empty constructor for instance methods
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
     public sealed class DynamicAPIClassAttribute : Attribute
     {

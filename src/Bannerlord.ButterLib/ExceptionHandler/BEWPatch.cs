@@ -1,5 +1,4 @@
-﻿using Bannerlord.BUTR.Shared.Extensions;
-using Bannerlord.BUTRLoader;
+﻿using Bannerlord.BUTRLoader;
 using Bannerlord.ButterLib.Common.Extensions;
 using Bannerlord.ButterLib.ExceptionHandler.DebuggerDetection;
 
@@ -13,14 +12,9 @@ using Microsoft.Extensions.Logging.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-
-using TaleWorlds.MountAndBlade;
-
-using Module = TaleWorlds.MountAndBlade.Module;
 
 namespace Bannerlord.ButterLib.ExceptionHandler
 {
@@ -37,7 +31,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
     [BUTRLoaderInterceptor]
     internal sealed class BEWPatch
     {
-        private static bool IsDebuggerAttached()
+        public static bool IsDebuggerAttached()
         {
             if (Debugger.IsAttached)
                 return true;
@@ -81,11 +75,8 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             if (ExceptionHandlerSubSystem.Instance?.DisableWhenDebuggerIsAttached == true && IsDebuggerAttached())
                 return;
 
-            if (__exception is not null && !SuppressedExceptions.Contains(ExceptionIdentifier.FromException(__exception)))
-            {
-                SuppressedExceptions.Add(ExceptionIdentifier.FromException(__exception));
-                HtmlBuilder.BuildAndShow(new CrashReport(__exception));
-            }
+            if (__exception is not null)
+                ExceptionReporter.Show(__exception);
         }
 
         internal static void Enable(Harmony harmony)

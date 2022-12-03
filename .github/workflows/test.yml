@@ -14,7 +14,7 @@ on:
   pull_request:
     branches:
       - dev
-    # will be triggereg when undrafting or requesting review
+    # will be triggered when undrafting or requesting review
     types: [review_requested, ready_for_review]
     paths:
       - '.github/workflows/test.yml'
@@ -76,7 +76,7 @@ jobs:
       shell: pwsh
 
     - name: ReportGenerator
-      uses: danielpalme/ReportGenerator-GitHub-Action@5.1.11
+      uses: danielpalme/ReportGenerator-GitHub-Action@5.1.12
       with:
         reports: 'coverage_butterlib_stable_debug.xml;coverage_butterlib_stable_release.xml;coverage_butterlib_impl_stable_debug.xml;coverage_butterlib_impl_stable_release.xml;coverage_butterlib_impl_beta_debug.xml;coverage_butterlib_impl_beta_release.xml;'
         targetdir: 'coveragereport'

@@ -27,7 +27,7 @@
     <DependedModuleMetadata id="Native" order="LoadAfterThis" version="e$gameversion$.*" />
     <DependedModuleMetadata id="SandBoxCore" order="LoadAfterThis" version="e$gameversion$.*" optional="true" />
     <DependedModuleMetadata id="Sandbox" order="LoadAfterThis" version="e$gameversion$.*" optional="true" />
-    <DependedModuleMetadata id="StoryMode" order="LoadAfterThis" version="e$gameversion$.*" />
+    <DependedModuleMetadata id="StoryMode" order="LoadAfterThis" version="e$gameversion$.*" optional="true" />
     <DependedModuleMetadata id="CustomBattle" order="LoadAfterThis" version="e$gameversion$.*" optional="true" />
   </DependedModuleMetadatas>
   <!-- Community Dependency Metadata -->
@@ -38,11 +38,14 @@
       <SubModuleClassType value="$moduleid$.ButterLibSubModule" />
       <Assemblies>
         <!--Helper libraries-->
+        <Assembly value="Ben.Demystifier.dll" />
         <Assembly value="Microsoft.Bcl.HashCode.dll" />
+        <Assembly value="System.Buffers.dll" />
         <Assembly value="System.Collections.Immutable.dll" />
         <Assembly value="System.Memory.dll" />
         <Assembly value="System.Reflection.Metadata.dll" />
         <Assembly value="System.Runtime.CompilerServices.Unsafe.dll" />
+        <Assembly value="System.Threading.Tasks.Extensions.dll" />
         <!--Microsoft Abstractions-->
         <Assembly value="Microsoft.Extensions.DependencyInjection.Abstractions.dll" />
         <Assembly value="Microsoft.Extensions.Logging.Abstractions.dll" />

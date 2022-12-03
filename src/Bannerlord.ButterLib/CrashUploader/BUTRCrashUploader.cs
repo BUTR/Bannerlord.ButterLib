@@ -22,10 +22,10 @@ namespace Bannerlord.ButterLib.CrashUploader
                     return CrashUploaderResult.MetadataNotFound();
 
                 // Do not send a minidump
-                var htmlReport = HtmlBuilder.Build(crashReport, string.Empty);
+                var htmlReport = HtmlBuilder.Build(crashReport);
                 var data = Encoding.UTF8.GetBytes(htmlReport);
 
-                var httpWebRequest = WebRequest.CreateHttp($"{uploadUrlAttr.Value}");
+                var httpWebRequest = WebRequest.CreateHttp(uploadUrlAttr.Value);
                 httpWebRequest.Method = "POST";
                 httpWebRequest.ContentType = "text/html";
                 httpWebRequest.ContentLength = data.Length;

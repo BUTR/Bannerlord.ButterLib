@@ -18,8 +18,8 @@ namespace Bannerlord.ButterLib.Implementation.HotKeys
         public static HotKeySubSystem? Instance { get; private set; }
 
         public string Id => "Hot Keys";
-        public string Description => "Provides a better way for mods to create hotkeys";
         public bool IsEnabled { get; private set; }
+        public string Description => "Mod Developer feature! Provides a better way for mods to create hotkeys";
         public bool CanBeDisabled => true;
         public bool CanBeSwitchedAtRuntime => false;
 
