@@ -80,7 +80,7 @@
         <_Parameter2>$(BUTRUploadUrl)</_Parameter2>
       </AssemblyAttribute>
     </ItemGroup>
-    <Warning Condition="$(BUTRUploadUrl) == ''" Text="Environment variable 'BANNERLORD_BUTR_UPLOAD_URL' is not set!"></Warning>
+    <Warning Condition="$(BUTRUploadUrl) == ''" Text="Environment variable 'BANNERLORD_BUTR_UPLOAD_URL' is not set!" />
   </Target>
 
 </Project>

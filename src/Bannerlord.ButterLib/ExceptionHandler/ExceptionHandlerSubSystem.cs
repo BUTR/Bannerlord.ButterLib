@@ -21,7 +21,31 @@ namespace Bannerlord.ButterLib.ExceptionHandler
         public bool CanBeDisabled => true;
         public bool CanBeSwitchedAtRuntime => true;
 
-        public bool DisableWhenDebuggerIsAttached { get; private set; } = true;
+        private bool _disableWhenDebuggerIsAttached = true;
+        public bool DisableWhenDebuggerIsAttached
+        {
+            get => _disableWhenDebuggerIsAttached;
+            private set
+            {
+                if (_disableWhenDebuggerIsAttached != value)
+                {
+                    _disableWhenDebuggerIsAttached = value;
+
+                    if (BEWPatch.IsDebuggerAttached())
+                    {
+                        if (_disableWhenDebuggerIsAttached)
+                            UnsubscribeToUnhandledException();
+                        else
+                            SubscribeToUnhandledException();
+                    }
+                    else
+                    {
+                        SubscribeToUnhandledException();
+                    }
+                }
+            }
+        }
+
         private bool _catchAutoGenExceptions = false;
         public bool CatchAutoGenExceptions
         {
@@ -77,7 +101,8 @@ namespace Bannerlord.ButterLib.ExceptionHandler
         {
             IsEnabled = true;
 
-            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            if (!BEWPatch.IsDebuggerAttached())
+                SubscribeToUnhandledException();
 
             BEWPatch.Enable(Harmony);
         }
@@ -86,11 +111,29 @@ namespace Bannerlord.ButterLib.ExceptionHandler
         {
             IsEnabled = false;
 
-            AppDomain.CurrentDomain.UnhandledException -= CurrentDomain_UnhandledException;
+            UnsubscribeToUnhandledException();
 
             if (BUTR.Shared.Helpers.ModuleInfoHelper.GetLoadedModules().Any(m => string.Equals(m.Id, "BetterExceptionWindow", StringComparison.InvariantCultureIgnoreCase)))
             {
                 BEWPatch.Disable(Harmony);
+            }
+        }
+
+        private static bool _isSubscribedToUnhandledException;
+        private static void SubscribeToUnhandledException()
+        {
+            if (!_isSubscribedToUnhandledException)
+            {
+                _isSubscribedToUnhandledException = true;
+                AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            }
+        }
+        private static void UnsubscribeToUnhandledException()
+        {
+            if (_isSubscribedToUnhandledException)
+            {
+                _isSubscribedToUnhandledException = false;
+                AppDomain.CurrentDomain.UnhandledException -= CurrentDomain_UnhandledException;
             }
         }
 

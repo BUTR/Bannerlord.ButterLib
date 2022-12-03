@@ -25,7 +25,7 @@ namespace Bannerlord.ButterLib.CrashUploader
                 var htmlReport = HtmlBuilder.Build(crashReport);
                 var data = Encoding.UTF8.GetBytes(htmlReport);
 
-                var httpWebRequest = WebRequest.CreateHttp($"{uploadUrlAttr.Value}");
+                var httpWebRequest = WebRequest.CreateHttp(uploadUrlAttr.Value);
                 httpWebRequest.Method = "POST";
                 httpWebRequest.ContentType = "text/html";
                 httpWebRequest.ContentLength = data.Length;

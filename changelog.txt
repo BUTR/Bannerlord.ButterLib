@@ -10,6 +10,7 @@ Game Versions: v1.0.0,v1.0.1,v1.0.2
 * Debug.Print is handled as Debug level now instead of Information
 * Limited default log file size per day to 5MB, max 7 files; others to 3MB, max 5 files
 * Limited logs in Crash Report to 2000 lines
+* ExceptionHandler was still showing CrashReport when asked not to in options
 ---------------------------------------------------------------------------------------------------
 Version: 2.5.1
 Game Versions: v1.0.0,v1.0.1

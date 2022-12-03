@@ -31,7 +31,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
     [BUTRLoaderInterceptor]
     internal sealed class BEWPatch
     {
-        private static bool IsDebuggerAttached()
+        public static bool IsDebuggerAttached()
         {
             if (Debugger.IsAttached)
                 return true;
