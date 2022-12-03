@@ -38,7 +38,9 @@
       <SubModuleClassType value="$moduleid$.ButterLibSubModule" />
       <Assemblies>
         <!--Helper libraries-->
+        <Assembly value="Ben.Demystifier.dll" />
         <Assembly value="Microsoft.Bcl.HashCode.dll" />
+        <Assembly value="System.Buffers.dll" />
         <Assembly value="System.Collections.Immutable.dll" />
         <Assembly value="System.Memory.dll" />
         <Assembly value="System.Reflection.Metadata.dll" />
