@@ -23,7 +23,7 @@ jobs:
       mod_description: ${{ steps.changelog.outputs.mod_description.test }}    
     steps:
     - name: Setup
-      uses: butr/actions-common-setup@v2.0
+      uses: butr/actions-common-setup@v2.1
       with:
         github-token: ${{secrets.GITHUB_TOKEN}}
 
