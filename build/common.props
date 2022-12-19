@@ -7,7 +7,7 @@
     <Version>2.6.1</Version>
     <!--Harmony Version-->
     <HarmonyVersion>2.2.2</HarmonyVersion>
-    <HarmonyExtensionsVersion>3.1.0.69</HarmonyExtensionsVersion>
+    <HarmonyExtensionsVersion>3.2.0.72</HarmonyExtensionsVersion>
     <HarmonyAnalyzerVersion>1.0.1.44</HarmonyAnalyzerVersion>
     <!--Microsoft Extension Libraries Version-->
     <!--Serilog depends on abstraction 2.0.0, and since we can't do app redirects, we're stuck with that-->
