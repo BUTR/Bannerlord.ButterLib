@@ -18,10 +18,10 @@
   </a>
   </br>
   <a href="https://github.com/BUTR/Bannerlord.ButterLib/actions/workflows/test.yml?query=branch%3Adev">
-    <img alt="GitHub Workflow Status (event)" src="https://img.shields.io/github/workflow/status/BUTR/Bannerlord.ButterLib/Test?branch=dev&label=Game%20Stable%20and%20Beta">
+    <img alt="GitHub Workflow Status (event)" src="https://img.shields.io/github/actions/workflow/status/BUTR/Bannerlord.ButterLib/test.yml?branch=dev&label=Game%20Stable%20and%20Beta">
   </a>
   <a href="https://github.com/BUTR/Bannerlord.ButterLib/actions/workflows/test-full.yml?query=branch%3Adev">
-    <img alt="GitHub Workflow Status (event)" src="https://img.shields.io/github/workflow/status/BUTR/Bannerlord.ButterLib/Test%20Fully?ranch=dev&label=Supported%20Game%20Versions">
+    <img alt="GitHub Workflow Status (event)" src="https://img.shields.io/github/actions/workflow/status/BUTR/Bannerlord.ButterLib/test-full.yml?branch=dev&label=Supported%20Game%20Versions">
   </a>
   <a href="https://codecov.io/gh/BUTR/Bannerlord.ButterLib">
     <img src="https://codecov.io/gh/BUTR/Bannerlord.ButterLib/branch/dev/graph/badge.svg" />
