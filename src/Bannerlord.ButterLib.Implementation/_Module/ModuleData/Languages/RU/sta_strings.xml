@@ -1,28 +1,30 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<base xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
-      xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/BUTR/Bannerlord.XmlSchemas/master/ModuleLanguage.xsd" >
+<?xml version="1.0" encoding="utf-8"?>
+<base xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/BUTR/Bannerlord.XmlSchemas/master/ModuleLanguage.xsd">
   <tags>
-    <tag language="Русский" />
+    <tag language="English"/>
   </tags>
   <strings>
-    <string id="PZthBmJc9B" text="Не удалось загрузить Идентификатор Кампаний ButterLib! Смотрите детали в файле лога мода." />
-    <string id="UdgidGXLwg" text="{BASE_DESCRIPTOR_HERO.NAME}{?BASE_DESCRIPTOR_HERO.CLAN} {BASE_DESCRIPTOR_HERO.CLAN_NAME}{?}{\?}{?BASE_DESCRIPTOR_HERO.BIRTHPLACE} из {BASE_DESCRIPTOR_HERO.BIRTHPLACE_NAME}{?}, место рождения неизвестно{\?}, {BASE_DESCRIPTOR_HERO.AGE}, {?BASE_DESCRIPTOR_HERO_PARENTS}{BASE_DESCRIPTOR_HERO_PARENTS.INFO}{?}родители неизвестны{\?}.{?BASE_DESCRIPTOR_HERO.CULTURE} {BASE_DESCRIPTOR_HERO.CULTURE_NAME}.{?}{\?}" />
-    <string id="svZkgB1GgB" text="{?BASE_DESCRIPTOR_HERO.GENDER}дочь{?}сын{\?} {BASE_DESCRIPTOR_HERO.PARENTS_BEGIN}{?BASE_DESCRIPTOR_HERO.FULL_FAMILY} и {?}{\?}{BASE_DESCRIPTOR_HERO.PARENTS_END}" />
-    <string id="gRz8MZ0YZ7" text="Этой игре не присвоен ID. Скорее всего она была начта до установки Идентификатора Кампаний ButterLib. Мы нашли другие текущие кампании, уже получившие идентификатор и имеющие схожие характеристики исходного персонажа. Если эта игра относится к одной из них, выберите соответствующую опцию." />
-    <string id="zed49rdkQR" text="Выберите '{NEW_ID}', если загруженное сохранение - это отдельная кампания, которая не имеет ничего общего с предлагаемыми опциями. В этом случае ей будет присвоен новый идентификатор." />
-    <string id="4BuIRaILsb" text="Выберите идентифицированную кампанию" />
-    <string id="wF4qRrhmEu" text="Присвоить новый ID" />
-    <string id="25Ts3iQnv6" text="Это отдельная кампания, и ей должен быть присвоен новый идентификатор." />
+    <string id="PZthBmJc9B" text="ButterLib Campaign Identifier failed to load! See details in the mod log."/>
+    <string id="UdgidGXLwg" text="{BASE_DESCRIPTOR_HERO.NAME}{?BASE_DESCRIPTOR_HERO.CLAN} {BASE_DESCRIPTOR_HERO.CLAN_NAME}{?}{\?}{?BASE_DESCRIPTOR_HERO.BIRTHPLACE} from {BASE_DESCRIPTOR_HERO.BIRTHPLACE_NAME}{?}, birthplace unknown{\?}, {BASE_DESCRIPTOR_HERO.AGE}, {?BASE_DESCRIPTOR_HERO_PARENTS}{BASE_DESCRIPTOR_HERO_PARENTS.INFO}{?}parents unknown{\?}.{?BASE_DESCRIPTOR_HERO.CULTURE} {BASE_DESCRIPTOR_HERO.CULTURE_NAME}.{?}{\?}"/>
+    <string id="svZkgB1GgB" text="{?BASE_DESCRIPTOR_HERO.GENDER}daughter{?}son{\?} of {BASE_DESCRIPTOR_HERO.PARENTS_BEGIN}{?BASE_DESCRIPTOR_HERO.FULL_FAMILY} and {?}{\?}{BASE_DESCRIPTOR_HERO.PARENTS_END}"/>
+    <string id="gRz8MZ0YZ7" text="This game has no ID. It probably was started before installing ButterLib Campaign Identifier. We have found other ongoing campaigns that have similar initial character background and were already assigned an ID. If this game refers to one of them, please, select corresponding option."/>
+    <string id="zed49rdkQR" text="Select '{NEW_ID}' if the loaded save is a separate campaign that has nothing to do with the suggested options and a new ID should be assigned to it."/>
+    <string id="4BuIRaILsb" text="Select identified ongoing campaign"/>
+    <string id="wF4qRrhmEu" text="Assign new ID"/>
+    <string id="25Ts3iQnv6" text="This is a standalone campaign and must be assigned a new ID."/>
 
-    <string id="JLkq0ZkOSI" text="{START}{?IS_PLURAL} и {?}{\\?}{END}" />
+    <string id="JLkq0ZkOSI" text="{START}{?IS_PLURAL} and {?}{\\?}{END}"/>
 
-    <string id="BguqytVG3q" text="Предупреждение от Bannerlord.ButterLib!" />
-    <string id="FE6ya1gzZR" text="{REQUIRED_MODULE} не найден!" />
-    <string id="EvI6KPAqTT" text="Обнаружен несовместимый модуль {DENIED_MODULE}!" />
-    <string id="5G9zffrgMh" text="{MODULE} загружен до {REQUIRED_MODULE}!{NL}{MODULE} должен загружаться после этого модуля!" />
-    <string id="UZ8zfvudMs" text="{MODULE} загружен после {REQUIRED_MODULE}!{NL}{MODULE} должен загружаться до этого модуля!" />
-    <string id="FcR4BXnhx8" text="В {MODULE} заданы взаимоисключающие указания отностительно {REQUIRED_MODULE}!" />
-    <string id="eXs6FLm5DP" text="Рекомендуется прервать игру. Вы хотите выйти?" />
-    <string id="aGg5Gh64gH" text="Эта версия ButterLib предназначена для e1.7.2 и выше! У вас версия игры {GAMEVERSION}!" />
+    <string id="BguqytVG3q" text="Warning from Bannerlord.ButterLib!"/>
+    <string id="FE6ya1gzZR" text="{REQUIRED_MODULE} module was not found!"/>
+    <string id="EvI6KPAqTT" text="Incompatible module {DENIED_MODULE} was found!"/>
+    <string id="5G9zffrgMh" text="{MODULE} is loaded before the {REQUIRED_MODULE}!{NL}Make sure {MODULE} is loaded after it!"/>
+    <string id="UZ8zfvudMs" text="{MODULE} is loaded after the {REQUIRED_MODULE}!{NL}Make sure {MODULE} is loaded before it!"/>
+    <string id="FcR4BXnhx8" text="{MODULE} has mutually exclusive mod order directives specified for the {REQUIRED_MODULE}!"/>
+    <string id="eXs6FLm5DP" text="It's strongly recommended to terminate the game now. Do you wish to terminate it?"/>
+    <string id="aGg5Gh64gH" text="This version of ButterLib is intended for e1.7.2 and higher! You are running {GAMEVERSION}!"/>
+    
+    <string id="B7bfrDNzIk" text="Disable when Debugger is Attached"/>
+    <string id="r3ktQzFMRz" text="Stops the Exception Handler when a debugger is attached."/>
   </strings>
 </base>
