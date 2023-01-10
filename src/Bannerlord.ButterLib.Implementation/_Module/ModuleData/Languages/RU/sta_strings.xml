@@ -5,17 +5,6 @@
     <tag language="Русский" />
   </tags>
   <strings>
-    <string id="PZthBmJc9B" text="Не удалось загрузить Идентификатор Кампаний ButterLib! Смотрите детали в файле лога мода." />
-    <string id="UdgidGXLwg" text="{BASE_DESCRIPTOR_HERO.NAME}{?BASE_DESCRIPTOR_HERO.CLAN} {BASE_DESCRIPTOR_HERO.CLAN_NAME}{?}{\?}{?BASE_DESCRIPTOR_HERO.BIRTHPLACE} из {BASE_DESCRIPTOR_HERO.BIRTHPLACE_NAME}{?}, место рождения неизвестно{\?}, {BASE_DESCRIPTOR_HERO.AGE}, {?BASE_DESCRIPTOR_HERO_PARENTS}{BASE_DESCRIPTOR_HERO_PARENTS.INFO}{?}родители неизвестны{\?}.{?BASE_DESCRIPTOR_HERO.CULTURE} {BASE_DESCRIPTOR_HERO.CULTURE_NAME}.{?}{\?}" />
-    <string id="svZkgB1GgB" text="{?BASE_DESCRIPTOR_HERO.GENDER}дочь{?}сын{\?} {BASE_DESCRIPTOR_HERO.PARENTS_BEGIN}{?BASE_DESCRIPTOR_HERO.FULL_FAMILY} и {?}{\?}{BASE_DESCRIPTOR_HERO.PARENTS_END}" />
-    <string id="gRz8MZ0YZ7" text="Этой игре не присвоен ID. Скорее всего она была начта до установки Идентификатора Кампаний ButterLib. Мы нашли другие текущие кампании, уже получившие идентификатор и имеющие схожие характеристики исходного персонажа. Если эта игра относится к одной из них, выберите соответствующую опцию." />
-    <string id="zed49rdkQR" text="Выберите '{NEW_ID}', если загруженное сохранение - это отдельная кампания, которая не имеет ничего общего с предлагаемыми опциями. В этом случае ей будет присвоен новый идентификатор." />
-    <string id="4BuIRaILsb" text="Выберите идентифицированную кампанию" />
-    <string id="wF4qRrhmEu" text="Присвоить новый ID" />
-    <string id="25Ts3iQnv6" text="Это отдельная кампания, и ей должен быть присвоен новый идентификатор." />
-
-    <string id="JLkq0ZkOSI" text="{START}{?IS_PLURAL} и {?}{\\?}{END}" />
-
     <string id="BguqytVG3q" text="Предупреждение от Bannerlord.ButterLib!" />
     <string id="FE6ya1gzZR" text="{REQUIRED_MODULE} не найден!" />
     <string id="EvI6KPAqTT" text="Обнаружен несовместимый модуль {DENIED_MODULE}!" />
@@ -23,6 +12,10 @@
     <string id="UZ8zfvudMs" text="{MODULE} загружен после {REQUIRED_MODULE}!{NL}{MODULE} должен загружаться до этого модуля!" />
     <string id="FcR4BXnhx8" text="В {MODULE} заданы взаимоисключающие указания отностительно {REQUIRED_MODULE}!" />
     <string id="eXs6FLm5DP" text="Рекомендуется прервать игру. Вы хотите выйти?" />
-    <string id="aGg5Gh64gH" text="Эта версия ButterLib предназначена для e1.7.2 и выше! У вас версия игры {GAMEVERSION}!" />
+
+    <string id="JLkq0ZkOSI" text="{START}{?IS_PLURAL} и {?}{\\?}{END}" />
+
+    <string id="B7bfrDNzIk" text="Отключать при подключении отладчика" />
+    <string id="r3ktQzFMRz" text="Остановить обработчик исключений, когда отладчик прикреплен." />
   </strings>
 </base>
