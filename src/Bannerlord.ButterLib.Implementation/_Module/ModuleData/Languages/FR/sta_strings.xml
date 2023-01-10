@@ -1,20 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<base xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/BUTR/Bannerlord.XmlSchemas/master/ModuleLanguage.xsd">
+<base xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/BUTR/Bannerlord.XmlSchemas/master/ModuleLanguage.xsd">
   <tags>
     <tag language="Français"/>
   </tags>
   <strings>
-    <string id="PZthBmJc9B" text="L'identifieur de campagne ButterLib n'a pas pu être chargé ! Voir les détails dans le log du mod."/>
-    <string id="UdgidGXLwg" text="{BASE_DESCRIPTOR_HERO.NAME}{?BASE_DESCRIPTOR_HERO.CLAN} {BASE_DESCRIPTOR_HERO.CLAN_NAME}{?}{\?}{?BASE_DESCRIPTOR_HERO.BIRTHPLACE} de {BASE_DESCRIPTOR_HERO.BIRTHPLACE_NAME}{?}, lieu de naissance inconnu{\?}, {BASE_DESCRIPTOR_HERO.AGE}, {?BASE_DESCRIPTOR_HERO_PARENTS}{BASE_DESCRIPTOR_HERO_PARENTS.INFO}{?}parents inconnus{\?}.{?BASE_DESCRIPTOR_HERO.CULTURE} {BASE_DESCRIPTOR_HERO.CULTURE_NAME}.{?}{\?}"/>
-    <string id="svZkgB1GgB" text="{?BASE_DESCRIPTOR_HERO.GENDER}fille{?}fils{\?} de {BASE_DESCRIPTOR_HERO.PARENTS_BEGIN}{?BASE_DESCRIPTOR_HERO.FULL_FAMILY} et {?}{\?}{BASE_DESCRIPTOR_HERO.PARENTS_END}"/>
-    <string id="gRz8MZ0YZ7" text="Cette partie n'a pas d'ID. Elle a probablement été démarrée avant l'installation de ButterLib Campaign Identifier. Nous avons trouvé d'autres campagnes en cours qui ont un background initial de personnage identique et qui ont déjà un ID. Si cette partie se réfère à l'une d'entre elles, veuillez sélectionner l'option correspondante."/>
-    <string id="zed49rdkQR" text="Sélectionnez &quot;{NEW_ID}&quot; si la sauvegarde chargée est une campagne séparée qui n'a aucun rapport avec les options suggérées et qu'un nouvel ID devrait lui être assignée."/>
-    <string id="4BuIRaILsb" text="Sélectionnez la campagne en cours identifiée"/>
-    <string id="wF4qRrhmEu" text="Assigner un nouvel ID"/>
-    <string id="25Ts3iQnv6" text="Ceci est une campagne solo et il faut lui assigner un nouvel ID."/>
-
-    <string id="JLkq0ZkOSI" text="{START}{?IS_PLURAL} et {?}{\?}{END}"/>
-
     <string id="BguqytVG3q" text="Alerte depuis Bannerlord.ButterLib !"/>
     <string id="FE6ya1gzZR" text="Le module {REQUIRED_MODULE} n'a pas été trouvé !"/>
     <string id="EvI6KPAqTT" text="Le module incompatible {DENIED_MODULE} a été trouvé !"/>
@@ -22,9 +12,10 @@
     <string id="UZ8zfvudMs" text="{MODULE} est chargé après {REQUIRED_MODULE} !{NL}Assurez-vous que {MODULE} soit chargé avant lui !"/>
     <string id="FcR4BXnhx8" text="{MODULE} a des directives d'ordre de mod mutuellement exclusives spécifiées pour le module {REQUIRED_MODULE} !"/>
     <string id="eXs6FLm5DP" text="Il est fortement conseillé de fermer le jeu maintenant. Souhaitez-vous fermer le jeu ?"/>
-    <string id="aGg5Gh64gH" text="Cette version de Butterlib est conçue pour la version e1.7.2 et les versions supérieures ! Vous utilisez la version {GAMEVERSION} !"/>
-    
+
     <string id="B7bfrDNzIk" text="Désactiver quand le debugger est attaché"/>
     <string id="r3ktQzFMRz" text="Arrêter le gestionnaire d’exceptions quand un debugger est attaché."/>
+
+    <string id="JLkq0ZkOSI" text="{START}{?IS_PLURAL} et {?}{\?}{END}"/>
   </strings>
 </base>
