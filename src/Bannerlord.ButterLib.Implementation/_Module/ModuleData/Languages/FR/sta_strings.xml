@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<base xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/BUTR/Bannerlord.XmlSchemas/master/ModuleLanguage.xsd">
+<base xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/BUTR/Bannerlord.XmlSchemas/master/ModuleLanguage.xsd">
   <tags>
     <tag language="Français"/>
   </tags>
@@ -13,9 +12,9 @@
     <string id="FcR4BXnhx8" text="{MODULE} a des directives d'ordre de mod mutuellement exclusives spécifiées pour le module {REQUIRED_MODULE} !"/>
     <string id="eXs6FLm5DP" text="Il est fortement conseillé de fermer le jeu maintenant. Souhaitez-vous fermer le jeu ?"/>
 
-    <string id="B7bfrDNzIk" text="Désactiver quand le debugger est attaché"/>
-    <string id="r3ktQzFMRz" text="Arrêter le gestionnaire d’exceptions quand un debugger est attaché."/>
+    <string id="JLkq0ZkOSI" text="Désactiver quand le debugger est attaché"/>
 
-    <string id="JLkq0ZkOSI" text="{START}{?IS_PLURAL} et {?}{\?}{END}"/>
+    <string id="B7bfrDNzIk" text="Arrêter le gestionnaire d’exceptions quand un debugger est attaché."/>
+    <string id="r3ktQzFMRz" text="{START}{?IS_PLURAL} et {?}{\?}{END}"/>
   </strings>
 </base>
