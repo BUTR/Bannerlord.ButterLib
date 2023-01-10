@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<base xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/BUTR/Bannerlord.XmlSchemas/master/ModuleLanguage.xsd">
+<base xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/BUTR/Bannerlord.XmlSchemas/master/ModuleLanguage.xsd">
   <tags>
     <tag language="Русский"/>
   </tags>
@@ -10,12 +9,12 @@
     <string id="EvI6KPAqTT" text="Обнаружен несовместимый модуль {DENIED_MODULE}!"/>
     <string id="5G9zffrgMh" text="{MODULE} загружен до {REQUIRED_MODULE}!{NL}{MODULE} должен загружаться после этого модуля!"/>
     <string id="UZ8zfvudMs" text="{MODULE} загружен после {REQUIRED_MODULE}!{NL}{MODULE} должен загружаться до этого модуля!"/>
-    <string id="FcR4BXnhx8" text="В {MODULE} заданы взаимоисключающие указания отностительно {REQUIRED_MODULE}!"/>
+    <string id="FcR4BXnhx8" text="В {MODULE} заданы взаимоисключающие указания относительно {REQUIRED_MODULE}!"/>
     <string id="eXs6FLm5DP" text="Рекомендуется прервать игру. Вы хотите выйти?"/>
 
-    <string id="B7bfrDNzIk" text="Отключить при подключении отладчика"/>
-    <string id="r3ktQzFMRz" text="Остановить обработчик исключений, когда отладчик прикреплен."/>
+    <string id="JLkq0ZkOSI" text="Отключить при подключении отладчика"/>
 
-    <string id="JLkq0ZkOSI" text="{START}{?IS_PLURAL} и {?}{\\?}{END}"/>
+    <string id="B7bfrDNzIk" text="Остановить обработчик исключений, когда отладчик прикреплен."/>
+    <string id="r3ktQzFMRz" text="{START}{?IS_PLURAL} и {?}{\\?}{END}"/>
   </strings>
 </base>
