@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<base xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/BUTR/Bannerlord.XmlSchemas/master/ModuleLanguage.xsd">
+  <tags>
+    <tag language="Беларуская"/>
+  </tags>
+  <strings>
+    <string id="BguqytVG3q" text="Папярэджанне ад Bannerlord.ButterLib!"/>
+    <string id="FE6ya1gzZR" text="Модуль {REQUIRED_MODULE} не быў знойдзены!"/>
+    <string id="EvI6KPAqTT" text="Знойдзены несумяшчальны модуль {DENIED_MODULE}!"/>
+    <string id="5G9zffrgMh" text="{MODULE} загружаны да {REQUIRED_MODULE}!{NL}Пераканайцеся, што {MODULE} загружаецца пасля модуля!"/>
+    <string id="UZ8zfvudMs" text="{MODULE} загружаны пасля {REQUIRED_MODULE}!{NL}Пераканайцеся, што {MODULE} загружаецца да модуля!"/>
+    <string id="FcR4BXnhx8" text="{MODULE} мае ўзаемавыключальныя ўказанні парадку загрузкі водаў для {REQUIRED_MODULE}!"/>
+    <string id="eXs6FLm5DP" text="Настойліва рэкамендуецца завяршыць гульню цяпер. Вы жадаеце завяршыць яе?"/>
+
+    <string id="JLkq0ZkOSI" text="{START}{?IS_PLURAL} і {?}{\\?}{END}"/>
+
+    <string id="B7bfrDNzIk" text="Адключыць, калі Ўключаны Адладчык"/>
+    <string id="r3ktQzFMRz" text="Прыпыненне Апрацоўніка Выключэнняў падчас ўключэння адладчыка."/>
+  </strings>
+</base>
