@@ -4,7 +4,7 @@
     <tag language="Français"/>
   </tags>
   <strings>
-    <string id="BguqytVG3q" text="Alerte depuis Bannerlord.ButterLib !"/>
+    <string id="BguqytVG3q" text="Alerte depuis Bannerlord.ButterLib!"/>
     <string id="FE6ya1gzZR" text="Le module {REQUIRED_MODULE} n'a pas été trouvé !"/>
     <string id="EvI6KPAqTT" text="Le module incompatible {DENIED_MODULE} a été trouvé !"/>
     <string id="5G9zffrgMh" text="{MODULE} est chargé avant {REQUIRED_MODULE} !{NL}Assurez-vous que {MODULE} soit chargé après lui !"/>
@@ -15,6 +15,6 @@
     <string id="JLkq0ZkOSI" text="{START}{?IS_PLURAL} et {?}{\?}{END}"/>
 
     <string id="B7bfrDNzIk" text="Désactiver quand le debugger est attaché"/>
-    <string id="r3ktQzFMRz" text="{START}{?IS_PLURAL} et {?}{\?}{END}"/>
+    <string id="r3ktQzFMRz" text="Arrêter le gestionnaire d’exceptions quand un debugger est attaché."/>
   </strings>
 </base>
