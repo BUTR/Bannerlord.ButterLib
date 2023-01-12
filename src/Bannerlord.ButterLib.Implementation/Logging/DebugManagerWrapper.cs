@@ -105,11 +105,13 @@ namespace Bannerlord.ButterLib.Implementation.Logging
 
         public void WatchVariable(string name, object value) => OriginalDebugManager.WatchVariable(name, value);
 
+#if v100 || v101 || v102 || v103
         public void BeginTelemetryScopeInternal(TelemetryLevelMask levelMask, string scopeName) => OriginalDebugManager.BeginTelemetryScopeInternal(levelMask, scopeName);
         public void EndTelemetryScopeInternal() => OriginalDebugManager.EndTelemetryScopeInternal();
 
         public void BeginTelemetryScopeBaseLevelInternal(TelemetryLevelMask levelMask, string scopeName) => OriginalDebugManager.BeginTelemetryScopeBaseLevelInternal(levelMask, scopeName);
         public void EndTelemetryScopeBaseLevelInternal() => OriginalDebugManager.EndTelemetryScopeBaseLevelInternal();
+#endif
 
         public Vec3 GetDebugVector() => OriginalDebugManager.GetDebugVector();
 
