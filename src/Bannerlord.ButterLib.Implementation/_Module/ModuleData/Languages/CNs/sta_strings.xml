@@ -14,7 +14,7 @@
 
     <string id="JLkq0ZkOSI" text="{START}{?IS_PLURAL} 和 {?}{\\?}{END}"/>
 
-    <string id="B7bfrDNzIk" text="{START}{?IS_PLURAL} and {?}{\\?}{END}"/>
-    <string id="r3ktQzFMRz" text="Warning from Bannerlord.ButterLib!"/>
+    <string id="B7bfrDNzIk" text="调试启动时禁用"/>
+    <string id="r3ktQzFMRz" text="调试启动时，禁用异常处理程序。"/>
   </strings>
 </base>
