@@ -41,7 +41,7 @@
   </ItemGroup>
 
   <PropertyGroup Condition="$(OverrideGameVersion) == ''">
-    <GameVersionFallback>e1.1.0</GameVersionFallback>
+    <GameVersionFallback>v1.0.0</GameVersionFallback>
     <!-- Parsing  supported-game-versions.txt -->
     <SGVLineCount>$([System.Text.RegularExpressions.Regex]::Split($(SGVFile), `\r\n|\r|\n`).Length)</SGVLineCount>
     <SGVLastEntryIndex>$([MSBuild]::Subtract($(SGVLineCount), 1))</SGVLastEntryIndex>
