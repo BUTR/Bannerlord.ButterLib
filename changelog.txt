@@ -2,6 +2,8 @@
 Version: 2.6.2
 Game Versions: v1.0.0,v1.0.1,v1.0.2,v1.0.3,v1.1.0
 * Adapted for v1.1.0
+* Added some localizations
+* Improvements to BetterExceptionWindow compatibility
 ---------------------------------------------------------------------------------------------------
 Version: 2.6.1
 Game Versions: v1.0.0,v1.0.1,v1.0.2
