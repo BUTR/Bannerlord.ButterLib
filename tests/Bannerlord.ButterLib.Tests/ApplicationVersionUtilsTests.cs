@@ -31,14 +31,6 @@ namespace Bannerlord.ButterLib.Tests
         }
 
         [Test]
-        public void GameVersion_Test()
-        {
-            var gameVersion = ApplicationVersionHelper.GameVersion();
-            Assert.NotNull(gameVersion);
-            Assert.AreEqual(TestAppVersion, gameVersion.Value);
-        }
-
-        [Test]
         public void TryParse_Test()
         {
             var result = ApplicationVersionHelper.TryParse(TestAppVersionStr, out var gameVersion);

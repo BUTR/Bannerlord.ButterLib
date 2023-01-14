@@ -1,6 +1,6 @@
-﻿using Bannerlord.ButterLib.DelayedSubModule;
+﻿using Bannerlord.BUTR.Shared.Helpers;
+using Bannerlord.ButterLib.DelayedSubModule;
 using Bannerlord.ButterLib.SubModuleWrappers2;
-using Bannerlord.ModuleManager;
 
 using HarmonyLib;
 
@@ -15,15 +15,15 @@ namespace Bannerlord.ButterLib.Tests.DelayedSubModule
     public class DelayedSubModuleTest
     {
         [MethodImpl(MethodImplOptions.NoInlining)]
-        private static bool MockedGetModuleInfo(Type type, ref object? __result)
+        private static bool MockedGetModuleInfo(Type type, ref ModuleInfoExtendedWithMetadata? __result)
         {
             if (type == typeof(TestSubModuleCaller))
             {
-                __result = TestHelper.ModuleInfoCaller1;
+                __result = TestHelper.ModuleInfoCaller;
             }
             if (type == typeof(TestSubModuleTarget))
             {
-                __result = TestHelper.ModuleInfoTarget1;
+                __result = TestHelper.ModuleInfoTarget;
             }
 
             return false;
@@ -44,9 +44,9 @@ namespace Bannerlord.ButterLib.Tests.DelayedSubModule
         public void SubscribeBeforeTargetLoad_Test()
         {
             [MethodImpl(MethodImplOptions.NoInlining)]
-            static bool MockedGetLoadedModules(ref IEnumerable<ModuleInfoExtended> __result)
+            static bool MockedGetLoadedModules(ref IEnumerable<ModuleInfoExtendedWithMetadata> __result)
             {
-                __result = new List<ModuleInfoExtended> { TestHelper.ModuleInfoCaller, TestHelper.ModuleInfoTarget };
+                __result = new List<ModuleInfoExtendedWithMetadata> { TestHelper.ModuleInfoCaller, TestHelper.ModuleInfoTarget };
                 return false;
             }
 
@@ -66,9 +66,9 @@ namespace Bannerlord.ButterLib.Tests.DelayedSubModule
         public void SubscribeBeforeTargetLoad_CallTargetManually_Test()
         {
             [MethodImpl(MethodImplOptions.NoInlining)]
-            static bool MockedGetLoadedModules(ref IEnumerable<ModuleInfoExtended> __result)
+            static bool MockedGetLoadedModules(ref IEnumerable<ModuleInfoExtendedWithMetadata> __result)
             {
-                __result = new List<ModuleInfoExtended> { TestHelper.ModuleInfoCaller, TestHelper.ModuleInfoTarget };
+                __result = new List<ModuleInfoExtendedWithMetadata> { TestHelper.ModuleInfoCaller, TestHelper.ModuleInfoTarget };
                 return false;
             }
 
@@ -93,9 +93,9 @@ namespace Bannerlord.ButterLib.Tests.DelayedSubModule
         public void SubscribeAfterTargetLoad_Test()
         {
             [MethodImpl(MethodImplOptions.NoInlining)]
-            static bool MockedGetLoadedModules(ref IEnumerable<ModuleInfoExtended> __result)
+            static bool MockedGetLoadedModules(ref IEnumerable<ModuleInfoExtendedWithMetadata> __result)
             {
-                __result = new List<ModuleInfoExtended> { TestHelper.ModuleInfoTarget, TestHelper.ModuleInfoCaller };
+                __result = new List<ModuleInfoExtendedWithMetadata> { TestHelper.ModuleInfoTarget, TestHelper.ModuleInfoCaller };
                 return false;
             }
 

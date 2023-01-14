@@ -13,13 +13,13 @@ namespace Bannerlord.ButterLib.Implementation.HotKeys.Patches
         internal static bool Enable(Harmony harmony)
         {
             return harmony.TryPatch(AccessTools2.Method(typeof(OptionsProvider), nameof(OptionsProvider.GetGameKeyCategoriesList)),
-                postfix: AccessTools2.Method(typeof(HotKeySubSystem), nameof(GetGameKeyCategoriesListPostfix)));
+                postfix: AccessTools2.Method(typeof(OptionsProviderPatches), nameof(GetGameKeyCategoriesListPostfix)));
         }
 
         internal static bool Disable(Harmony harmony)
         {
             harmony.Unpatch(AccessTools2.Method(typeof(OptionsProvider), nameof(OptionsProvider.GetGameKeyCategoriesList)),
-                AccessTools2.Method(typeof(HotKeySubSystem), nameof(GetGameKeyCategoriesListPostfix)));
+                AccessTools2.Method(typeof(OptionsProviderPatches), nameof(GetGameKeyCategoriesListPostfix)));
 
             return true;
         }

@@ -1,4 +1,5 @@
-﻿using Bannerlord.ModuleManager;
+﻿using Bannerlord.BUTR.Shared.Helpers;
+using Bannerlord.ModuleManager;
 
 using HarmonyLib.BUTR.Extensions;
 
@@ -10,14 +11,14 @@ namespace Bannerlord.ButterLib.Tests.DelayedSubModule
     {
         public static readonly Type? ModuleInfoType = AccessTools2.TypeByName("TaleWorlds.ModuleManager.ModuleInfo");
 
-        private static ModuleInfoExtended? _moduleInfoCaller;
-        public static ModuleInfoExtended ModuleInfoCaller
+        private static ModuleInfoExtendedWithMetadata? _moduleInfoCaller;
+        public static ModuleInfoExtendedWithMetadata ModuleInfoCaller
         {
             get
             {
                 if (_moduleInfoCaller is null)
                 {
-                    _moduleInfoCaller = new ModuleInfoExtended();
+                    _moduleInfoCaller = new ModuleInfoExtendedWithMetadata(new ModuleInfoExtended(), false, "");
                     AccessTools2.Property("Bannerlord.ModuleManager.ModuleInfoExtended:Id")?.SetValue(_moduleInfoCaller, nameof(TestSubModuleCaller));
                     AccessTools2.Property("Bannerlord.ModuleManager.ModuleInfoExtended:Name")?.SetValue(_moduleInfoCaller, nameof(TestSubModuleCaller));
                 }
@@ -26,52 +27,19 @@ namespace Bannerlord.ButterLib.Tests.DelayedSubModule
             }
         }
 
-        private static ModuleInfoExtended? _moduleInfoTarget;
-        public static ModuleInfoExtended ModuleInfoTarget
+        private static ModuleInfoExtendedWithMetadata? _moduleInfoTarget;
+        public static ModuleInfoExtendedWithMetadata ModuleInfoTarget
         {
             get
             {
                 if (_moduleInfoTarget is null)
                 {
-                    _moduleInfoTarget = new ModuleInfoExtended();
+                    _moduleInfoTarget = new ModuleInfoExtendedWithMetadata(new ModuleInfoExtended(), false, "");
                     AccessTools2.Property("Bannerlord.ModuleManager.ModuleInfoExtended:Id")?.SetValue(_moduleInfoTarget, nameof(TestSubModuleTarget));
                     AccessTools2.Property("Bannerlord.ModuleManager.ModuleInfoExtended:Name")?.SetValue(_moduleInfoTarget, nameof(TestSubModuleTarget));
                 }
 
                 return _moduleInfoTarget;
-            }
-        }
-
-
-        private static object? _moduleInfoCaller1;
-        public static object ModuleInfoCaller1
-        {
-            get
-            {
-                if (_moduleInfoCaller1 is null)
-                {
-                    _moduleInfoCaller1 = Activator.CreateInstance(ModuleInfoType);
-                    AccessTools2.Property(ModuleInfoType, "Id")?.SetValue(_moduleInfoCaller1, nameof(TestSubModuleCaller));
-                    AccessTools2.Property(ModuleInfoType, "Name")?.SetValue(_moduleInfoCaller1, nameof(TestSubModuleCaller));
-                }
-
-                return _moduleInfoCaller1;
-            }
-        }
-
-        private static object? _moduleInfoTarget1;
-        public static object ModuleInfoTarget1
-        {
-            get
-            {
-                if (_moduleInfoTarget1 is null)
-                {
-                    _moduleInfoTarget1 = Activator.CreateInstance(ModuleInfoType);
-                    AccessTools2.Property(ModuleInfoType, "Id")?.SetValue(_moduleInfoTarget1, nameof(TestSubModuleTarget));
-                    AccessTools2.Property(ModuleInfoType, "Name")?.SetValue(_moduleInfoTarget1, nameof(TestSubModuleTarget));
-                }
-
-                return _moduleInfoTarget1;
             }
         }
     }

@@ -82,6 +82,8 @@ namespace Bannerlord.ButterLib.Implementation.Tests
         [SetUp]
         public void Setup()
         {
+            TWCommon.PlatformFileHelper = new PlatformFileHelperPC("");
+
             var harmony = new Harmony($"{nameof(DependencyInjectionTests)}.{nameof(Setup)}");
             //harmony.Patch(SymbolExtensions2.GetMethodInfo(() => FSIOHelper.GetConfigPath()),
             //    prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetConfigPath)));
