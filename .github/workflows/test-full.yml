@@ -37,7 +37,7 @@ jobs:
     runs-on: windows-latest
     steps:
     - name: Tests Setup
-      uses: butr/actions-tests-setup@v1.5.4
+      uses: butr/actions-tests-setup@v1.5.6
       with:
         github-token: ${{secrets.GITHUB_TOKEN}}
 
