@@ -325,6 +325,8 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                     "devenv" => "debuggervisualstudio",
                     "JetBrains.Debugger.Worker64c" => "debuggerjetbrains",
                     "explorer" => "explorer",
+                    "NovusLauncher" => "novus",
+                    "ModOrganizer" => "modorganizer",
                     _ => $"unknown launcher - {pProcess.ProcessName}"
                 };
             }
