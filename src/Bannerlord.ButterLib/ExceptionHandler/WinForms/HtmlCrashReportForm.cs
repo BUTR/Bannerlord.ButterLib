@@ -317,7 +317,9 @@ Clicking 'Close Report' will continue with the Game's error report mechanism.
             var completionSource = new TaskCompletionSource<object?>();
             var staThread = new Thread(() =>
             {
-                Clipboard.SetText(text);
+                var dataObject = new DataObject();
+                dataObject.SetText(text, TextDataFormat.Text);
+                Clipboard.SetDataObject(dataObject, true, 10, 100);
                 completionSource.SetResult(null);
             });
             staThread.SetApartmentState(ApartmentState.STA);

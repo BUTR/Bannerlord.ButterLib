@@ -36,6 +36,12 @@ namespace Bannerlord.ButterLib.Common.Helpers
 
         /// <summary>
         /// A string tag used in <see cref="SetListVariable" /> method.
+        /// Indicates that list has at least 1 element.
+        /// </summary>
+        public const string LIST_HAS_ITEMS_TAG = "ANY";
+
+        /// <summary>
+        /// A string tag used in <see cref="SetListVariable" /> method.
         /// Indicates that list has more than 1 elements.
         /// </summary>
         public const string LIST_HAS_MULTIPLE_ITEMS_TAG = "IS_PLURAL";
@@ -303,12 +309,14 @@ namespace Bannerlord.ButterLib.Common.Helpers
             return localValues.Any()
                 ? (new()
                 {
+                    [LIST_HAS_ITEMS_TAG] = new TextObject(1),
                     [LIST_HAS_MULTIPLE_ITEMS_TAG] = new TextObject(localValues.Count != 1 ? 1 : 0),
                     [LIST_START_TAG] = new TextObject(string.Join(separator, localValues.Take(localValues.Count - 1))),
                     [LIST_END_TAG] = new TextObject(localValues.Last())
                 })
                 : (new()
                 {
+                    [LIST_HAS_ITEMS_TAG] = new TextObject(0),
                     [LIST_HAS_MULTIPLE_ITEMS_TAG] = new TextObject(0),
                     [LIST_START_TAG] = new TextObject(string.Empty),
                     [LIST_END_TAG] = new TextObject(string.Empty)

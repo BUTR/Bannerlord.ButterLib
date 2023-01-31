@@ -37,7 +37,7 @@ jobs:
     runs-on: windows-latest
     steps:
     - name: Tests Setup
-      uses: butr/actions-tests-setup@v1.5.4
+      uses: butr/actions-tests-setup@v1.5.6
       with:
         github-token: ${{secrets.GITHUB_TOKEN}}
 
@@ -71,7 +71,7 @@ jobs:
       shell: pwsh
 
     - name: ReportGenerator
-      uses: danielpalme/ReportGenerator-GitHub-Action@5.1.12
+      uses: danielpalme/ReportGenerator-GitHub-Action@5.1.13
       with:
         reports: '*.xml'
         targetdir: 'coveragereport'
