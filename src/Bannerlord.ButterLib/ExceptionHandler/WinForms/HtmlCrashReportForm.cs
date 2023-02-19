@@ -1,6 +1,7 @@
 ﻿using Bannerlord.BUTR.Shared.Helpers;
 using Bannerlord.ButterLib.Common.Extensions;
 using Bannerlord.ButterLib.CrashUploader;
+using Bannerlord.ButterLib.Extensions;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -48,6 +49,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler.WinForms
             try
             {
                 var gameSavesDirectory = new PlatformDirectoryPath(PlatformFileType.User, "Game Saves\\");
+                // TODO: What to with Xbox version? No write time available
                 var gameSavesPath = PlatformFileHelperPCExtended.GetDirectoryFullPath(gameSavesDirectory);
                 if (string.IsNullOrEmpty(gameSavesPath)) return string.Empty;
 
