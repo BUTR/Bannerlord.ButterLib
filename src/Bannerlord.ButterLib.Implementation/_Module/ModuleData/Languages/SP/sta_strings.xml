@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<base xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/BUTR/Bannerlord.XmlSchemas/master/ModuleLanguage.xsd">
+  <tags>
+    <tag language="Español"/>
+  </tags>
+  <strings>
+    <string id="BguqytVG3q" text="¡Advertencia de Bannerlord.ButterLib!"/>
+    <string id="FE6ya1gzZR" text="¡{REQUIRED_MODULE} módulo no fue encontrado!"/>
+    <string id="EvI6KPAqTT" text="¡Módulo incompatible {DENIED_MODULE} fue encontrado!"/>
+    <string id="5G9zffrgMh" text="¡{MODULE} está cargado antes de {REQUIRED_MODULE}!{NL}¡Asegúrate de que {MODULE} está cargado después!"/>
+    <string id="UZ8zfvudMs" text="¡{MODULE} está cargado después de {REQUIRED_MODULE}!{NL}¡Asegúrate de que {MODULE} está cargado antes!"/>
+    <string id="FcR4BXnhx8" text="¡{MODULE} tiene directivas de orden de mod mutuamente excluyentes especificadas para {REQUIRED_MODULE}!"/>
+    <string id="eXs6FLm5DP" text="Se recomienda encarecidamente terminar el juego ahora. ¿Quieres terminarlo?"/>
+
+    <string id="JLkq0ZkOSI" text="{START}{?IS_PLURAL} y {?}{\\?}{END}"/>
+
+    <string id="B7bfrDNzIk" text="Desactivar cuando el depurador está adjunto"/>
+    <string id="r3ktQzFMRz" text="Para el controlador de excepciones cuando el depurador está adjunto."/>
+  </strings>
+</base>
