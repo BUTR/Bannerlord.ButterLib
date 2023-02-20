@@ -249,7 +249,7 @@ namespace Bannerlord.ButterLib
             {
                 var configPath = PlatformFileHelperPCExtended.GetDirectoryFullPath(EngineFilePaths.ConfigsPath);
                 if (string.IsNullOrEmpty(configPath)) return;
-                
+
                 var oldConfigPath = Path.GetFullPath("Configs");
                 var oldPath = Path.Combine(oldConfigPath, "ModLogs");
                 var newPath = Path.Combine(configPath, "ModLogs");
