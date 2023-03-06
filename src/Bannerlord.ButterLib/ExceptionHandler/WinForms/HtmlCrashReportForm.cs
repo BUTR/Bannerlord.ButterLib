@@ -19,6 +19,7 @@ using System.Windows.Forms;
 using TaleWorlds.Engine;
 using TaleWorlds.Library;
 
+using DialogResult = System.Windows.Forms.DialogResult;
 using Path = System.IO.Path;
 
 namespace Bannerlord.ButterLib.ExceptionHandler.WinForms

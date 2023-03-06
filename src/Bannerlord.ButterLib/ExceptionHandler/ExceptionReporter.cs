@@ -13,7 +13,11 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                 return;
             }
 
+#if NET472
             HtmlBuilder.BuildAndShow(new CrashReport(exception.Demystify()));
+#else
+            HtmlBuilder.BuildAndShow(new CrashReport(exception));
+#endif
         }
     }
 }

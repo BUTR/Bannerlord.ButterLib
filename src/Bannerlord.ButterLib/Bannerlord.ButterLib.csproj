@@ -2,21 +2,22 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net472</TargetFramework>
-    <LangVersion>9.0</LangVersion>
+    <TargetFrameworks>net472;netcoreapp3.1</TargetFrameworks>
+    <LangVersion>10.0</LangVersion>
     <Nullable>enable</Nullable>
     <Platforms>x64</Platforms>
+    
     <BUTRUploadUrl>$(BANNERLORD_BUTR_UPLOAD_URL)</BUTRUploadUrl>
-    <DefineConstants>$(DefineConstants);BANNERLORDBUTRSHARED_BUTTERLIB;X64</DefineConstants>
+    <DefineConstants>$(DefineConstants);BANNERLORDBUTRSHARED_BUTTERLIB;HARMONYEXTENSIONS_HARMONYX</DefineConstants>
     <GameVersion>1.0.0</GameVersion>
   </PropertyGroup>
 
   <!--NuGet Package-->
   <PropertyGroup>
     <PackageId>Bannerlord.ButterLib</PackageId>
-    <PackageDescription>A library containing common functions for modification development. Built against e$(GameVersion).</PackageDescription>
+    <PackageDescription>A library containing common functions for modification development. Built against v$(GameVersion).</PackageDescription>
     <Title>ButterLib</Title>
-    <DevelopmentDependency>true</DevelopmentDependency>
+    <DevelopmentDependency>false</DevelopmentDependency>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIcon>Butter.png</PackageIcon>
@@ -28,37 +29,33 @@
   </ItemGroup>
   <!--NuGet Package-->
 
-  <!--Windows Forms-->
-  <ItemGroup>
-    <Reference Include="System.Windows.Forms" />
-  </ItemGroup>
-  <!--Windows Forms-->
-
   <!--NuGet References-->
   <ItemGroup>
     <PackageReference Include="Bannerlord.BUTR.Shared" Version="$(BUTRSharedVersion)" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
-    <PackageReference Include="Bannerlord.ModuleManager.Source" Version="$(BUTRModuleManagerVersion)" />
-    <PackageReference Include="Ben.Demystifier" Version="0.4.1" />
-    <PackageReference Include="IsExternalInit" Version="1.0.3" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
+    <PackageReference Include="Bannerlord.ModuleManager.Source" Version="$(BUTRModuleManagerVersion)" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
     <PackageReference Include="Harmony.Extensions" Version="$(HarmonyExtensionsVersion)" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
-    <PackageReference Include="Lib.Harmony" Version="$(HarmonyVersion)" IncludeAssets="compile" />
-    <PackageReference Include="Bannerlord.ReferenceAssemblies.Core" Version="$(GameVersion).*" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="$(ExtensionVersion)" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="$(ExtensionVersion)" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(ExtensionVersion)" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="$(ExtensionVersion)" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="$(ExtensionVersion)" />
-    <PackageReference Include="Microsoft.Extensions.Primitives" Version="$(ExtensionVersion)" />
+    <PackageReference Include="HarmonyX" Version="$(HarmonyVersion)" PrivateAssets="all" IncludeAssets="compile" />
+    <PackageReference Include="Bannerlord.ReferenceAssemblies.Core" Version="$(GameVersion).*" PrivateAssets="all" />
     <!-- The game did a ninja update from 11 to 13. We use the newer version and will ship it for 1.0.0 and 1.0.1 -->
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" PrivateAssets="all" />
+    <PackageReference Include="IsExternalInit" Version="1.0.3" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
     <PackageReference Include="Nullable" Version="1.3.1" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
-    <PackageReference Include="Serilog.Extensions.Logging" Version="3.1.0" />
-    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
-    <PackageReference Include="System.Reflection.Metadata" Version="5.0.0" />
+  </ItemGroup>
+  <ItemGroup Condition="$(TargetFramework) == 'net472'">
+    <PackageReference Include="Ben.Demystifier" Version="0.4.1" PrivateAssets="all" />
+    <PackageReference Update="System.Reflection.Metadata" Version="5.0.0" PrivateAssets="all" />
   </ItemGroup>
   <!--NuGet References-->
 
+  <!--Windows Forms-->
+  <ItemGroup Condition="$(TargetFramework) == 'net472'">
+    <Reference Include="System.Windows.Forms" PrivateAssets="all" />
+  </ItemGroup>
+  <ItemGroup Condition="$(TargetFramework) == 'netcoreapp3.1'">
+    <FrameworkReference Include="Microsoft.WindowsDesktop.App" PrivateAssets="all" />
+  </ItemGroup>
+  <!--Windows Forms-->
+  
   <!--InternalsVisibleTo-->
   <Target Name="SetInternalsVisibleToSupportedVersions" BeforeTargets="BeforeCompile">
     <ItemGroup>
