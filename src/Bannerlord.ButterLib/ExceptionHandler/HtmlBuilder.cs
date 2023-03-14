@@ -27,7 +27,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
 {
     internal static class HtmlBuilder
     {
-        private const int Version = 8;
+        private static readonly int Version = 8;
         private static readonly string NL = Environment.NewLine;
 
         public static readonly string MiniDumpTag = "<!-- MINI DUMP -->";
