@@ -4,6 +4,7 @@ using Bannerlord.ButterLib.CrashUploader;
 using Bannerlord.ButterLib.DelayedSubModule;
 using Bannerlord.ButterLib.DynamicAPI;
 using Bannerlord.ButterLib.ExceptionHandler;
+using Bannerlord.ButterLib.Extensions;
 using Bannerlord.ButterLib.ObjectSystem.Extensions;
 using Bannerlord.ButterLib.Options;
 using Bannerlord.ButterLib.SubModuleWrappers2;
@@ -25,6 +26,11 @@ using TaleWorlds.Engine;
 using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
 
+using DialogResult = System.Windows.Forms.DialogResult;
+using MessageBoxButtons = System.Windows.Forms.MessageBoxButtons;
+using MessageBoxDefaultButton = System.Windows.Forms.MessageBoxDefaultButton;
+using MessageBoxIcon = System.Windows.Forms.MessageBoxIcon;
+using MessageBoxOptions = System.Windows.Forms.MessageBoxOptions;
 using Path = System.IO.Path;
 
 namespace Bannerlord.ButterLib
@@ -246,9 +252,12 @@ namespace Bannerlord.ButterLib
         {
             try
             {
+                var configPath = PlatformFileHelperPCExtended.GetDirectoryFullPath(EngineFilePaths.ConfigsPath);
+                if (string.IsNullOrEmpty(configPath)) return;
+
                 var oldConfigPath = Path.GetFullPath("Configs");
                 var oldPath = Path.Combine(oldConfigPath, "ModLogs");
-                var newPath = Path.Combine(PlatformFileHelperPCExtended.GetDirectoryFullPath(EngineFilePaths.ConfigsPath), "ModLogs");
+                var newPath = Path.Combine(configPath, "ModLogs");
                 if (Directory.Exists(oldPath) && Directory.Exists(newPath))
                 {
                     foreach (var filePath in Directory.GetFiles(oldPath))

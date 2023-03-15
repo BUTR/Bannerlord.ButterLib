@@ -1,5 +1,4 @@
-﻿using Bannerlord.BUTR.Shared.Helpers;
-using Bannerlord.ButterLib.Common.Extensions;
+﻿using Bannerlord.ButterLib.Common.Extensions;
 using Bannerlord.ButterLib.DistanceMatrix;
 using Bannerlord.ButterLib.ExceptionHandler;
 using Bannerlord.ButterLib.Extensions;

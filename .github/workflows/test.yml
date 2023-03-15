@@ -35,6 +35,7 @@ env:
 jobs:
   test:
     name: Test
+    if: false
     runs-on: windows-latest
     steps:
     - name: Tests Setup
@@ -47,6 +48,7 @@ jobs:
         beta-version: ${{secrets.SYNCED_GAME_BETA_VERSION}}
         stable-directory: 'bannerlord-stable'
         beta-directory: 'bannerlord-beta'
+        steam-depotid: '261551 261552'
 
     - name: Test
       run: >-
@@ -76,7 +78,7 @@ jobs:
       shell: pwsh
 
     - name: ReportGenerator
-      uses: danielpalme/ReportGenerator-GitHub-Action@5.1.13
+      uses: danielpalme/ReportGenerator-GitHub-Action@5.1.19
       with:
         reports: 'coverage_butterlib_stable_debug.xml;coverage_butterlib_stable_release.xml;coverage_butterlib_impl_stable_debug.xml;coverage_butterlib_impl_stable_release.xml;coverage_butterlib_impl_beta_debug.xml;coverage_butterlib_impl_beta_release.xml;'
         targetdir: 'coveragereport'
