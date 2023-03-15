@@ -8,7 +8,6 @@
     <Platforms>x64</Platforms>
     <BuildForWindows>false</BuildForWindows>
     <BuildForWindowsStore>false</BuildForWindowsStore>
-    <EnableWindowsTargeting>true</EnableWindowsTargeting>
 
     <Configurations>Stable_Debug;Stable_Release;Beta_Debug;Beta_Release</Configurations>
     <DefineConstants>$(DefineConstants);$(GameVersionConstant);HARMONYEXTENSIONS_HARMONYX</DefineConstants>
