@@ -55,7 +55,7 @@ jobs:
 
             New-Item -ItemType directory -Force -Path "$gamefolder";
 
-            dotnet depotdownloader/DepotDownloader.dll -app 261550 -depot 261551 -beta $gameversion -filelist "$PWD/.github/resources/FileFilters.regexp" -username "${{secrets.STEAM_LOGIN}}" -password "${{secrets.STEAM_PASSWORD}}" -dir "$gamefolder";
+            dotnet depotdownloader/DepotDownloader.dll -app 261550 -depot 261551 261552 -beta $gameversion -filelist "$PWD/.github/resources/FileFilters.regexp" -username "${{secrets.STEAM_LOGIN}}" -password "${{secrets.STEAM_PASSWORD}}" -dir "$gamefolder";
         }
 
         opencover/OpenCover.Console.exe -returntargetcode -register -target:"dotnet.exe" -targetargs:"test $testproj --configuration Debug  -p:OverrideGameVersion=$($gameversions[-1]) -p:GameFolder=""$PWD/bannerlord-$($gameversions[-1])""" -filter:"${{env.TEST_FILTERS}}" -excludebyattribute:"*.ExcludeFromCodeCoverage*" -output:"coverage_butterlib_$($gameversions[-1])_debug.xml" -mergebyhash;
