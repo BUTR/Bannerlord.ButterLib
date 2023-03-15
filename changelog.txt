@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 2.7.0
+Game Versions: v1.0.0,v1.0.1,v1.0.2,v1.0.3,v1.1.0,v1.1.1
+* Support for Game Pass PC
+* Added Spanish translation
+---------------------------------------------------------------------------------------------------
 Version: 2.6.3
 Game Versions: v1.0.0,v1.0.1,v1.0.2,v1.0.3,v1.1.0
 * Compatibility with NovusLauncher and ModOrganizer
