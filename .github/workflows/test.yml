@@ -35,7 +35,6 @@ env:
 jobs:
   test:
     name: Test
-    if: false
     runs-on: windows-latest
     steps:
     - name: Tests Setup
