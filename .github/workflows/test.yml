@@ -54,12 +54,12 @@ jobs:
           $stable_version=$stable_version.substring(1);
           $beta_version=$env:BETA_VERSION;
           $beta_version=$beta_version.substring(1);
-          dotnet test tests/Bannerlord.ButterLib.Tests/Bannerlord.ButterLib.Tests.csproj --configuration Debug -p:StableVersion=$stable_version -p:GameFolder="$PWD/bannerlord-stable";
-          dotnet test tests/Bannerlord.ButterLib.Tests/Bannerlord.ButterLib.Tests.csproj --configuration Release -p:StableVersion=$stable_version -p:GameFolder="$PWD/bannerlord-stable";
-          dotnet test tests/Bannerlord.ButterLib.Implementation.Tests/Bannerlord.ButterLib.Implementation.Tests.csproj --configuration Stable_Debug -p:StableVersion=$stable_version -p:GameFolder="$PWD/bannerlord-stable";
-          dotnet test tests/Bannerlord.ButterLib.Implementation.Tests/Bannerlord.ButterLib.Implementation.Tests.csproj --configuration Stable_Release -p:StableVersion=$stable_version -p:GameFolder="$PWD/bannerlord-stable";
-          dotnet test tests/Bannerlord.ButterLib.Implementation.Tests/Bannerlord.ButterLib.Implementation.Tests.csproj --configuration Beta_Debug -p:BetaVersion=$beta_version -p:GameFolder="$PWD/bannerlord-beta";
-          dotnet test tests/Bannerlord.ButterLib.Implementation.Tests/Bannerlord.ButterLib.Implementation.Tests.csproj --configuration Beta_Release -p:BetaVersion=$beta_version -p:GameFolder="$PWD/bannerlord-beta";
+          dotnet test tests/Bannerlord.ButterLib.Tests/Bannerlord.ButterLib.Tests.csproj -f net472 --configuration Debug -p:StableVersion=$stable_version -p:GameFolder="$PWD/bannerlord-stable";
+          dotnet test tests/Bannerlord.ButterLib.Tests/Bannerlord.ButterLib.Tests.csproj -f net472 --configuration Release -p:StableVersion=$stable_version -p:GameFolder="$PWD/bannerlord-stable";
+          dotnet test tests/Bannerlord.ButterLib.Implementation.Tests/Bannerlord.ButterLib.Implementation.Tests.csproj -f net472 --configuration Stable_Debug -p:StableVersion=$stable_version -p:GameFolder="$PWD/bannerlord-stable";
+          dotnet test tests/Bannerlord.ButterLib.Implementation.Tests/Bannerlord.ButterLib.Implementation.Tests.csproj -f net472 --configuration Stable_Release -p:StableVersion=$stable_version -p:GameFolder="$PWD/bannerlord-stable";
+          dotnet test tests/Bannerlord.ButterLib.Implementation.Tests/Bannerlord.ButterLib.Implementation.Tests.csproj -f net472 --configuration Beta_Debug -p:BetaVersion=$beta_version -p:GameFolder="$PWD/bannerlord-beta";
+          dotnet test tests/Bannerlord.ButterLib.Implementation.Tests/Bannerlord.ButterLib.Implementation.Tests.csproj -f net472 --configuration Beta_Release -p:BetaVersion=$beta_version -p:GameFolder="$PWD/bannerlord-beta";
       env:
         STABLE_VERSION: ${{secrets.SYNCED_GAME_STABLE_VERSION}}
         BETA_VERSION: ${{secrets.SYNCED_GAME_BETA_VERSION}}
@@ -67,12 +67,12 @@ jobs:
 
     - name: Test Coverage
       run: >-
-          opencover/OpenCover.Console.exe -register -target:"dotnet.exe" -targetargs:"test tests/Bannerlord.ButterLib.Tests/Bannerlord.ButterLib.Tests.csproj --configuration Debug --no-build" -filter:"${{env.TEST_FILTERS}}" -excludebyattribute:"*.ExcludeFromCodeCoverage*" -output:coverage_butterlib_stable_debug.xml -mergebyhash;
-          opencover/OpenCover.Console.exe -register -target:"dotnet.exe" -targetargs:"test tests/Bannerlord.ButterLib.Tests/Bannerlord.ButterLib.Tests.csproj --configuration Release --no-build" -filter:"${{env.TEST_FILTERS}}" -excludebyattribute:"*.ExcludeFromCodeCoverage*" -output:coverage_butterlib_stable_release.xml -mergebyhash;
-          opencover/OpenCover.Console.exe -register -target:"dotnet.exe" -targetargs:"test tests/Bannerlord.ButterLib.Implementation.Tests/Bannerlord.ButterLib.Implementation.Tests.csproj --configuration Stable_Debug --no-build" -filter:"${{env.TEST_FILTERS}}" -excludebyattribute:"*.ExcludeFromCodeCoverage*" -output:coverage_butterlib_impl_stable_debug.xml -mergebyhash;
-          opencover/OpenCover.Console.exe -register -target:"dotnet.exe" -targetargs:"test tests/Bannerlord.ButterLib.Implementation.Tests/Bannerlord.ButterLib.Implementation.Tests.csproj --configuration Stable_Release --no-build" -filter:"${{env.TEST_FILTERS}}" -excludebyattribute:"*.ExcludeFromCodeCoverage*" -output:coverage_butterlib_impl_stable_release.xml -mergebyhash;
-          opencover/OpenCover.Console.exe -register -target:"dotnet.exe" -targetargs:"test tests/Bannerlord.ButterLib.Implementation.Tests/Bannerlord.ButterLib.Implementation.Tests.csproj --configuration Beta_Debug --no-build" -filter:"${{env.TEST_FILTERS}}" -excludebyattribute:"*.ExcludeFromCodeCoverage*" -output:coverage_butterlib_impl_beta_debug.xml -mergebyhash;
-          opencover/OpenCover.Console.exe -register -target:"dotnet.exe" -targetargs:"test tests/Bannerlord.ButterLib.Implementation.Tests/Bannerlord.ButterLib.Implementation.Tests.csproj --configuration Beta_Release --no-build" -filter:"${{env.TEST_FILTERS}}" -excludebyattribute:"*.ExcludeFromCodeCoverage*" -output:coverage_butterlib_impl_beta_release.xml -mergebyhash;
+          opencover/OpenCover.Console.exe -register -target:"dotnet.exe" -targetargs:"test tests/Bannerlord.ButterLib.Tests/Bannerlord.ButterLib.Tests.csproj -f net472 --configuration Debug --no-build" -filter:"${{env.TEST_FILTERS}}" -excludebyattribute:"*.ExcludeFromCodeCoverage*" -output:coverage_butterlib_stable_debug.xml -mergebyhash;
+          opencover/OpenCover.Console.exe -register -target:"dotnet.exe" -targetargs:"test tests/Bannerlord.ButterLib.Tests/Bannerlord.ButterLib.Tests.csproj -f net472 --configuration Release --no-build" -filter:"${{env.TEST_FILTERS}}" -excludebyattribute:"*.ExcludeFromCodeCoverage*" -output:coverage_butterlib_stable_release.xml -mergebyhash;
+          opencover/OpenCover.Console.exe -register -target:"dotnet.exe" -targetargs:"test tests/Bannerlord.ButterLib.Implementation.Tests/Bannerlord.ButterLib.Implementation.Tests.csproj -f net472 --configuration Stable_Debug --no-build" -filter:"${{env.TEST_FILTERS}}" -excludebyattribute:"*.ExcludeFromCodeCoverage*" -output:coverage_butterlib_impl_stable_debug.xml -mergebyhash;
+          opencover/OpenCover.Console.exe -register -target:"dotnet.exe" -targetargs:"test tests/Bannerlord.ButterLib.Implementation.Tests/Bannerlord.ButterLib.Implementation.Tests.csproj -f net472 --configuration Stable_Release --no-build" -filter:"${{env.TEST_FILTERS}}" -excludebyattribute:"*.ExcludeFromCodeCoverage*" -output:coverage_butterlib_impl_stable_release.xml -mergebyhash;
+          opencover/OpenCover.Console.exe -register -target:"dotnet.exe" -targetargs:"test tests/Bannerlord.ButterLib.Implementation.Tests/Bannerlord.ButterLib.Implementation.Tests.csproj -f net472 --configuration Beta_Debug --no-build" -filter:"${{env.TEST_FILTERS}}" -excludebyattribute:"*.ExcludeFromCodeCoverage*" -output:coverage_butterlib_impl_beta_debug.xml -mergebyhash;
+          opencover/OpenCover.Console.exe -register -target:"dotnet.exe" -targetargs:"test tests/Bannerlord.ButterLib.Implementation.Tests/Bannerlord.ButterLib.Implementation.Tests.csproj -f net472 --configuration Beta_Release --no-build" -filter:"${{env.TEST_FILTERS}}" -excludebyattribute:"*.ExcludeFromCodeCoverage*" -output:coverage_butterlib_impl_beta_release.xml -mergebyhash;
       shell: pwsh
 
     - name: ReportGenerator
