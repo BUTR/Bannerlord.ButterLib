@@ -68,7 +68,7 @@ jobs:
     - name: Install and Run ChangelogParser
       id: changelog
       run: |
-        dotnet tool install -g Bannerlord.ChangelogParser
+        dotnet tool install -g Bannerlord.ChangelogParser --ignore-failed-sources
         vers="$(bannerlord_changelog_parser latestversion -f "$PWD/changelog.txt")"
         echo "::set-output name=mod_version::$vers"
         desc="$(bannerlord_changelog_parser fulldescription -f "$PWD/changelog.txt")"
