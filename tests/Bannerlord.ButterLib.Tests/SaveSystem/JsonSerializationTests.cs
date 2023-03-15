@@ -1,5 +1,4 @@
-﻿using Bannerlord.BUTR.Shared.Helpers;
-using Bannerlord.ButterLib.SaveSystem;
+﻿using Bannerlord.ButterLib.SaveSystem;
 
 using HarmonyLib;
 
@@ -36,7 +35,7 @@ namespace Bannerlord.ButterLib.Tests.SaveSystem
         [SetUp]
         public void Setup()
         {
-            var harmony = new Harmony($"{nameof(JsonSerializationTests)}.{nameof(Setup)}");
+            //var harmony = new Harmony($"{nameof(JsonSerializationTests)}.{nameof(Setup)}");
             //harmony.Patch(SymbolExtensions.GetMethodInfo(() => FSIOHelper.GetConfigPath()),
             //    prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetConfigPath)));
 
@@ -68,7 +67,7 @@ namespace Bannerlord.ButterLib.Tests.SaveSystem
                         {
                             try
                             {
-                                return t is not null && !t.IsAbstract && !t.IsGenericType &&
+                                return t is { IsAbstract: false, IsGenericType: false } &&
                                        t.GetMembers().Any(m => m.GetCustomAttributes(true).Any(
                                            att => att.GetType() == typeof(SaveableFieldAttribute) ||
                                                   att.GetType() == typeof(SaveablePropertyAttribute)));
@@ -135,7 +134,7 @@ namespace Bannerlord.ButterLib.Tests.SaveSystem
                         {
                             try
                             {
-                                return t is not null && !t.IsAbstract && !t.IsGenericType &&
+                                return t is { IsAbstract: false, IsGenericType: false } &&
                                        t.GetMembers().Any(m => m.GetCustomAttributes(true).Any(
                                            att => att.GetType() == typeof(SaveableFieldAttribute) ||
                                                   att.GetType() == typeof(SaveablePropertyAttribute)));
@@ -176,7 +175,7 @@ namespace Bannerlord.ButterLib.Tests.SaveSystem
                 .ToList();
 
             var saveableMemberInstances = saveableMembers
-                .Where(t => !t.IsAbstract && !t.IsGenericType && !t.IsArray && t != typeof(string))
+                .Where(t => !t.IsAbstract && t is { IsGenericType: false, IsArray: false } && t != typeof(string))
                 .Select(FormatterServices.GetUninitializedObject)
                 .ToList();
 
