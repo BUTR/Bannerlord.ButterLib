@@ -6,6 +6,7 @@
     <LangVersion>10.0</LangVersion>
     <Nullable>enable</Nullable>
     <Platforms>x64</Platforms>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
 
     <BUTRUploadUrl>$(BANNERLORD_BUTR_UPLOAD_URL)</BUTRUploadUrl>
     <DefineConstants>$(DefineConstants);BANNERLORDBUTRSHARED_BUTTERLIB;HARMONYEXTENSIONS_HARMONYX</DefineConstants>
