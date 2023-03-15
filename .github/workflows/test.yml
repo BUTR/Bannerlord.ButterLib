@@ -47,6 +47,7 @@ jobs:
         beta-version: ${{secrets.SYNCED_GAME_BETA_VERSION}}
         stable-directory: 'bannerlord-stable'
         beta-directory: 'bannerlord-beta'
+        steam-depotid: '261551 261552'
 
     - name: Test
       run: >-
