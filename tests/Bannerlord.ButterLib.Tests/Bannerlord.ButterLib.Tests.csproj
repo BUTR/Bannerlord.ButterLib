@@ -23,9 +23,6 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />
   </ItemGroup>
-  <ItemGroup Condition="$(TargetFramework) == 'net472'">
-    <PackageReference Update="System.Reflection.Metadata" Version="5.0.0" PrivateAssets="all" />
-  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Bannerlord.ButterLib\Bannerlord.ButterLib.csproj" />

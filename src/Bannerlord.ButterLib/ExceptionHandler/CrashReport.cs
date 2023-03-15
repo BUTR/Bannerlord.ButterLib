@@ -96,7 +96,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                 }
             }
 
-#if NET472
+#if _NET472
             var trace = new EnhancedStackTrace(ex);
 #else
             var trace = new StackTrace(ex);
