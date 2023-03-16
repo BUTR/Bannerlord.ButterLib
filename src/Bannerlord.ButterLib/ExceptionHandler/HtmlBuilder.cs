@@ -27,7 +27,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
 {
     internal static class HtmlBuilder
     {
-        private static readonly int Version = 8;
+        private static readonly int Version = 9;
         private static readonly string NL = Environment.NewLine;
 
         public static readonly string MiniDumpTag = "<!-- MINI DUMP -->";
@@ -48,7 +48,12 @@ namespace Bannerlord.ButterLib.ExceptionHandler
         {
             var launcherType = GetLauncherType();
             var launcherVersion = GetLauncherVersion();
+            
             var butrLoaderVersion = GetBUTRLoaderVersion();
+            var blseVersion = GetBLSEVersion();
+            var launcherExVersion = GetLauncherExVersion();
+            
+            var runtime = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription;
             return @$"
 <html>
   <head>
@@ -56,7 +61,10 @@ namespace Bannerlord.ButterLib.ExceptionHandler
     <meta charset='utf-8'>
     <game version='{ApplicationVersionHelper.GameVersionStr()}'>
     <launcher type='{launcherType}' version='{launcherVersion}'>
+    <runtime value='{runtime}'>
     {(string.IsNullOrEmpty(butrLoaderVersion) ? "" : $"<butrloader version='{butrLoaderVersion}'>")}
+    {(string.IsNullOrEmpty(blseVersion) ? "" : $"<blse version='{blseVersion}'>")}
+    {(string.IsNullOrEmpty(launcherExVersion) ? "" : $"<launcherex version='{launcherExVersion}'>")}
     <report id='{crashReport.Id}' version='{Version}'>
     <style>
         .headers {{
@@ -136,7 +144,10 @@ namespace Bannerlord.ButterLib.ExceptionHandler
               <br/>
               Launcher: {launcherType} ({launcherVersion})
               <br/>
-              {(string.IsNullOrEmpty(butrLoaderVersion) ? "" : $"<butrloader version='{butrLoaderVersion}'>")}
+              Runtime: {runtime}
+              {(string.IsNullOrEmpty(blseVersion) ? "" : $"<br/>BLSE Version: {blseVersion}")}
+              {(string.IsNullOrEmpty(launcherExVersion) ? "" : $"<br/>LauncherEx Version: {launcherExVersion}")}
+              <br/>
             </div>
           </td>
            <td>
@@ -310,6 +321,16 @@ namespace Bannerlord.ButterLib.ExceptionHandler
 
             return string.Empty;
         }
+        private static string GetBLSEVersion()
+        {
+            var blseMetadata = AccessTools2.TypeByName("Bannerlord.BLSE.BLSEInterceptorAttribute")?.Assembly.GetCustomAttributes<AssemblyMetadataAttribute>();
+            return blseMetadata?.FirstOrDefault(x => x.Key == "BLSEVersion")?.Value ?? string.Empty;
+        }
+        private static string GetLauncherExVersion()
+        {
+            var launcherExMetadata = AccessTools2.TypeByName("Bannerlord.LauncherEx.Mixins.LauncherVMMixin")?.Assembly.GetCustomAttributes<AssemblyMetadataAttribute>();
+            return launcherExMetadata?.FirstOrDefault(x => x.Key == "LauncherExVersion")?.Value ?? string.Empty;
+        }
 
         private static string GetLauncherType()
         {
@@ -366,12 +387,12 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                 sb.Append("<li>")
                     .Append($"Frame: {stacktrace.Key}</br>")
                     .Append("<ul>");
-                foreach (var (method, harmonyIssue, module, _) in stacktrace)
+                foreach (var (method, methodFromStackframeIssue, module, _) in stacktrace)
                 {
                     sb.Append("<li>")
                         .Append($"Module: {(module is null ? "UNKNOWN" : module.Id)}</br>")
                         .Append($"Method: {method.FullDescription()}</br>")
-                        .Append($"HarmonyIssue: {harmonyIssue}</br>")
+                        .Append($"Method From Stackframe Issue: {methodFromStackframeIssue}</br>")
                         .Append("</li>");
                 }
                 sb.AppendLine("</ul></li>");
@@ -719,6 +740,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                 AppendPatches(nameof(patches.Postfixes), patches.Postfixes);
                 AppendPatches(nameof(patches.Finalizers), patches.Finalizers);
                 AppendPatches(nameof(patches.Transpilers), patches.Transpilers);
+                AppendPatches(nameof(patches.ILManipulators), patches.ILManipulators);
 
                 if (patchesBuilder.Length > 0)
                 {
