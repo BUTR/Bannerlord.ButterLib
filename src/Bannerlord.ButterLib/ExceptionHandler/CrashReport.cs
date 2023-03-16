@@ -13,14 +13,14 @@ using System.Reflection;
 
 namespace Bannerlord.ButterLib.ExceptionHandler
 {
-    internal record StacktraceEntry(MethodBase Method, bool HarmonyIssue, ModuleInfoExtended? ModuleInfo, string StackFrameDescription);
+    internal record StacktraceEntry(MethodBase Method, bool MethodFromStackframeIssue, ModuleInfoExtended? ModuleInfo, string StackFrameDescription);
 
     internal class CrashReport
     {
         public Guid Id { get; } = Guid.NewGuid();
         public Exception Exception { get; }
         public List<StacktraceEntry> Stacktrace { get; }
-        public List<ModuleInfoExtendedWithMetadata> LoadedModules { get; } = ModuleInfoHelper.GetLoadedModules().OfType<ModuleInfoExtendedWithMetadata>().ToList();
+        public List<ModuleInfoExtendedWithMetadata> LoadedModules { get; } = ModuleInfoHelper.GetLoadedModules().ToList();
         public List<Assembly> ModuleLoadedAssemblies { get; } = new();
         public List<Assembly> ExternalLoadedAssemblies { get; } = new();
         public Dictionary<MethodBase, Patches> LoadedHarmonyPatches { get; } = new();
@@ -70,6 +70,10 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             static IEnumerable<(MethodBase, ModuleInfoExtended)> GetFinalizers(Patches? info) => info is null
                 ? Enumerable.Empty<(MethodBase, ModuleInfoExtended)>()
                 : AddMetadata(info.Finalizers.OrderBy(t => t.priority).Select(t => t.PatchMethod));
+            
+            static IEnumerable<(MethodBase, ModuleInfoExtended)> GetILManipulators(Patches? info) => info is null
+                ? Enumerable.Empty<(MethodBase, ModuleInfoExtended)>()
+                : AddMetadata(info.ILManipulators.OrderBy(t => t.priority).Select(t => t.PatchMethod));
 
             static IEnumerable<(MethodBase, ModuleInfoExtended)> AddMetadata(IEnumerable<MethodInfo> methods)
             {
@@ -96,27 +100,28 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                 }
             }
 
-#if _NET472
             var trace = new EnhancedStackTrace(ex);
-#else
-            var trace = new StackTrace(ex);
-#endif
-            foreach (var frame in trace.GetFrames() ?? Array.Empty<StackFrame>())
+            foreach (var frame in trace.GetFrames())
             {
                 if (!frame.HasMethod()) continue;
 
                 MethodBase? method;
-                var harmonyIssue = false;
+                var methodFromStackframeIssue = false;
                 try
                 {
                     method = Harmony.GetMethodFromStackframe(frame);
                 }
+                // NullReferenceException means the method was not found. Harmony doesn't handle this case gracefully
+                catch (NullReferenceException)
+                {
+                    method = frame.GetMethod();
+                }
                 // The given generic instantiation was invalid.
                 // From what I understand, this will occur with generic methods
                 // Also when static constructors throw errors, Harmony resolution will fail
-                catch (Exception)
+                catch (Exception e)
                 {
-                    harmonyIssue = true;
+                    methodFromStackframeIssue = true;
                     method = frame.GetMethod();
                 }
 
@@ -125,27 +130,31 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                 var patches = FindPatches(method);
                 foreach (var (methodBase, extendedModuleInfo) in GetFinalizers(patches))
                 {
-                    yield return new(methodBase, harmonyIssue, extendedModuleInfo, frameDesc);
+                    yield return new(methodBase, methodFromStackframeIssue, extendedModuleInfo, frameDesc);
                 }
                 foreach (var (methodBase, extendedModuleInfo) in GetPostfixes(patches))
                 {
-                    yield return new(methodBase, harmonyIssue, extendedModuleInfo, frameDesc);
+                    yield return new(methodBase, methodFromStackframeIssue, extendedModuleInfo, frameDesc);
                 }
                 foreach (var (methodBase, extendedModuleInfo) in GetPrefixes(patches))
                 {
-                    yield return new(methodBase, harmonyIssue, extendedModuleInfo, frameDesc);
+                    yield return new(methodBase, methodFromStackframeIssue, extendedModuleInfo, frameDesc);
                 }
                 foreach (var (methodBase, extendedModuleInfo) in GetTranspilers(patches))
                 {
-                    yield return new(methodBase, harmonyIssue, extendedModuleInfo, frameDesc);
+                    yield return new(methodBase, methodFromStackframeIssue, extendedModuleInfo, frameDesc);
+                }
+                foreach (var (methodBase, extendedModuleInfo) in GetILManipulators(patches))
+                {
+                    yield return new(methodBase, methodFromStackframeIssue, extendedModuleInfo, frameDesc);
                 }
 
                 var moduleInfo = GetModuleInfoIfMod(method);
 
-                yield return new(method, harmonyIssue, moduleInfo, frameDesc);
+                yield return new(method, methodFromStackframeIssue, moduleInfo, frameDesc);
 
                 if (method is MethodInfo methodInfo && Harmony.GetOriginalMethod(methodInfo) is { } original)
-                    yield return new(original, harmonyIssue, moduleInfo, frameDesc);
+                    yield return new(original, methodFromStackframeIssue, moduleInfo, frameDesc);
             }
         }
     }

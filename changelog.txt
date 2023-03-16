@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 2.7.2
+Game Versions: v1.0.0,v1.0.1,v1.0.2,v1.0.3,v1.1.0,v1.1.1
+* Added back Ben.Demystifier
+* Updated Crash report to contain more valuable data
+---------------------------------------------------------------------------------------------------
 Version: 2.7.1
 Game Versions: v1.0.0,v1.0.1,v1.0.2,v1.0.3,v1.1.0,v1.1.1
 * Game Pass PC was missing implementation files. Thanks dzpliu for noticing!
