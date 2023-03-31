@@ -3,13 +3,13 @@
 
   <PropertyGroup>
     <TargetFrameworks>net472;netcoreapp3.1</TargetFrameworks>
-    <LangVersion>10.0</LangVersion>
+    <LangVersion>11.0</LangVersion>
     <Nullable>enable</Nullable>
     <Platforms>x64</Platforms>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
 
     <BUTRUploadUrl>$(BANNERLORD_BUTR_UPLOAD_URL)</BUTRUploadUrl>
-    <DefineConstants>$(DefineConstants);BANNERLORDBUTRSHARED_BUTTERLIB;HARMONYEXTENSIONS_HARMONYX</DefineConstants>
+    <DefineConstants>$(DefineConstants);BANNERLORDBUTRSHARED_BUTTERLIB</DefineConstants>
     <GameVersion>1.0.0</GameVersion>
   </PropertyGroup>
 
@@ -35,7 +35,7 @@
     <PackageReference Include="Bannerlord.BUTR.Shared" Version="$(BUTRSharedVersion)" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
     <PackageReference Include="Bannerlord.ModuleManager.Source" Version="$(BUTRModuleManagerVersion)" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
     <PackageReference Include="Harmony.Extensions" Version="$(HarmonyExtensionsVersion)" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
-    <PackageReference Include="HarmonyX" Version="$(HarmonyVersion)" PrivateAssets="all" IncludeAssets="compile" />
+    <PackageReference Include="Bannerlord.Lib.Harmony" Version="$(HarmonyVersion)-beta3" PrivateAssets="all" IncludeAssets="compile" />
     <PackageReference Include="Bannerlord.ReferenceAssemblies.Core" Version="$(GameVersion).*" PrivateAssets="all" />
     <!-- The game did a ninja update from 11 to 13. We use the newer version and will ship it for 1.0.0 and 1.0.1 -->
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" PrivateAssets="all" />
