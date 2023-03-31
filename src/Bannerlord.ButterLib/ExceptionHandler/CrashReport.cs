@@ -70,10 +70,6 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             static IEnumerable<(MethodBase, ModuleInfoExtended)> GetFinalizers(Patches? info) => info is null
                 ? Enumerable.Empty<(MethodBase, ModuleInfoExtended)>()
                 : AddMetadata(info.Finalizers.OrderBy(t => t.priority).Select(t => t.PatchMethod));
-            
-            static IEnumerable<(MethodBase, ModuleInfoExtended)> GetILManipulators(Patches? info) => info is null
-                ? Enumerable.Empty<(MethodBase, ModuleInfoExtended)>()
-                : AddMetadata(info.ILManipulators.OrderBy(t => t.priority).Select(t => t.PatchMethod));
 
             static IEnumerable<(MethodBase, ModuleInfoExtended)> AddMetadata(IEnumerable<MethodInfo> methods)
             {
@@ -141,10 +137,6 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                     yield return new(methodBase, methodFromStackframeIssue, extendedModuleInfo, frameDesc);
                 }
                 foreach (var (methodBase, extendedModuleInfo) in GetTranspilers(patches))
-                {
-                    yield return new(methodBase, methodFromStackframeIssue, extendedModuleInfo, frameDesc);
-                }
-                foreach (var (methodBase, extendedModuleInfo) in GetILManipulators(patches))
                 {
                     yield return new(methodBase, methodFromStackframeIssue, extendedModuleInfo, frameDesc);
                 }

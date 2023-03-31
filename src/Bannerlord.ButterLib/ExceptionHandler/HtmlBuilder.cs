@@ -27,7 +27,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
 {
     internal static class HtmlBuilder
     {
-        private static readonly int Version = 9;
+        private static readonly int Version = 10;
         private static readonly string NL = Environment.NewLine;
 
         public static readonly string MiniDumpTag = "<!-- MINI DUMP -->";
@@ -740,7 +740,6 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                 AppendPatches(nameof(patches.Postfixes), patches.Postfixes);
                 AppendPatches(nameof(patches.Finalizers), patches.Finalizers);
                 AppendPatches(nameof(patches.Transpilers), patches.Transpilers);
-                AppendPatches(nameof(patches.ILManipulators), patches.ILManipulators);
 
                 if (patchesBuilder.Length > 0)
                 {
