@@ -1,7 +1,6 @@
 ﻿using Bannerlord.BUTR.Shared.Extensions;
 using Bannerlord.BUTR.Shared.Helpers;
 using Bannerlord.ButterLib.Common.Extensions;
-using Bannerlord.ButterLib.ExceptionHandler.WinForms;
 using Bannerlord.ButterLib.Logger;
 using Bannerlord.ModuleManager;
 
@@ -40,8 +39,10 @@ namespace Bannerlord.ButterLib.ExceptionHandler
 
         public static void BuildAndShow(CrashReport crashReport)
         {
-            using var form = new HtmlCrashReportForm(crashReport);
+#if !NETSTANDARD2_0_OR_GREATER
+            using var form = new Bannerlord.ButterLib.ExceptionHandler.WinForms.HtmlCrashReportForm(crashReport);
             form.ShowDialog();
+#endif
         }
 
         public static string Build(CrashReport crashReport)

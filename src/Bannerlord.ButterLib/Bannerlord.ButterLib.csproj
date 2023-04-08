@@ -2,11 +2,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net472;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>net472;netcoreapp3.1;netstandard2.0</TargetFrameworks>
     <LangVersion>11.0</LangVersion>
     <Nullable>enable</Nullable>
     <Platforms>x64</Platforms>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
 
     <BUTRUploadUrl>$(BANNERLORD_BUTR_UPLOAD_URL)</BUTRUploadUrl>
     <DefineConstants>$(DefineConstants);BANNERLORDBUTRSHARED_BUTTERLIB</DefineConstants>
@@ -79,6 +80,27 @@
       </AssemblyAttribute>
     </ItemGroup>
     <Warning Condition="$(BUTRUploadUrl) == ''" Text="Environment variable 'BANNERLORD_BUTR_UPLOAD_URL' is not set!" />
+  </Target>
+
+  <!-- netstandard2.0 reference assemblies -->
+  <PropertyGroup Condition="$(TargetFramework) == 'netstandard2.0'">
+    <!-- Remove from /lib in NuGet -->
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <!-- Create reference Assemblies instead of a full assembly -->
+    <ProduceOnlyReferenceAssembly>true</ProduceOnlyReferenceAssembly>
+    <!-- Add our target for packing -->
+    <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);AddRefAssemblyToPackage</TargetsForTfmSpecificContentInPackage>
+  </PropertyGroup>
+  <Target Name="AddRefAssemblyToPackage" Condition="$(TargetFramework) == 'netstandard2.0'">
+    <ItemGroup>
+      <!-- Adding the Reference Assembly and the xml documentation to /ref of NuGet -->
+      <TfmSpecificPackageFile Include="$(OutDir)$(AssemblyName).dll">
+        <PackagePath>ref/netstandard2.0</PackagePath>
+      </TfmSpecificPackageFile>
+      <TfmSpecificPackageFile Include="$(OutDir)$(AssemblyName).xml">
+        <PackagePath>ref/netstandard2.0</PackagePath>
+      </TfmSpecificPackageFile>
+    </ItemGroup>
   </Target>
 
 </Project>
