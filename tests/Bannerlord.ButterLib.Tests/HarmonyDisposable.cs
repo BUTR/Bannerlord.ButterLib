@@ -10,7 +10,7 @@ namespace Bannerlord.ButterLib.Tests
 
         public void Dispose()
         {
-            UnpatchSelf();
+            UnpatchAll(Id);
         }
     }
 }
