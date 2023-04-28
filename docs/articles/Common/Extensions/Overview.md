@@ -7,11 +7,10 @@
 ### [``DependencyInjectionExtensions``](xref:Bannerlord.ButterLib.Common.Extensions.DependencyInjectionExtensions)
   
 
-### [``DictionaryExtensions``](xref:Bannerlord.ButterLib.Common.Extensions.DictionaryExtensions)
-  
-
 ### [``ICampaignExtensions``](xref:Bannerlord.ButterLib.Common.Extensions.ICampaignExtensions)
   
 
+### [``IInputContextExtensions``](xref:Bannerlord.ButterLib.Common.Extensions.IInputContextExtensions)
+
+
 ### [``MbEventExtensions``](xref:Bannerlord.ButterLib.Common.Extensions.MbEventExtensions)
-  
