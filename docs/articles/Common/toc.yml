@@ -1,7 +1,7 @@
 - name: Extensions
-  href: Extensions/
+  href: Extensions/toc.yml
   homepage: Extensions/Overview.md
 
 - name: Helpers
-  href: Helpers/
+  href: Helpers/toc.yml
   homepage: Helpers/Overview.md

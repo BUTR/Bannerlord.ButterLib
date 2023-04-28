@@ -1,41 +1,32 @@
 - name: Development
-  href: Development/
-  homepage: Development/Overview.md
+  href: Development/toc.yml
   
 - name: AssemblyVerifier
-  href: AssemblyVerifier/
-  homepage: AssemblyVerifier/Overview.md
+  href: AssemblyVerifier/toc.yml
 
 - name: Common
   href: Common/toc.yml
 
 - name: DelayedSubModule
-  href: DelayedSubModule/
-  homepage: DelayedSubModule/Overview.md
+  href: DelayedSubModule/toc.yml
 
 - name: CampaignIdentifier
-  href: CampaignIdentifier/
-  homepage: CampaignIdentifier/Overview.md
+  href: CampaignIdentifier/toc.yml
 
 - name: DistanceMatrix
-  href: DistanceMatrix/
-  homepage: DistanceMatrix/Overview.md
+  href: DistanceMatrix/toc.yml
 
 - name: HotKeys
-  href: HotKeys/
-  homepage: HotKeys/Overview.md
+  href: HotKeys/toc.yml
 
 - name: MBSubModuleBaseExtended
-  href: MBSubModuleBaseExtended/
-  homepage: MBSubModuleBaseExtended/Overview.md
+  href: MBSubModuleBaseExtended/toc.yml
 
 - name: Optional
   href: Optional/toc.yml
 
 - name: SaveSystem
-  href: SaveSystem/
-  homepage: SaveSystem/Overview.md
+  href: SaveSystem/toc.yml
 
 - name: SubModuleWrappers
-  href: SubModuleWrappers/
-  homepage: SubModuleWrappers/Overview.md
+  href: SubModuleWrappers/toc.yml
