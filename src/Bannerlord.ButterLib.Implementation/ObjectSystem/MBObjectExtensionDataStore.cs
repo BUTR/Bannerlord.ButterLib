@@ -122,7 +122,13 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
             public override string ToString() => $"{ObjectId}::{Key}";
         }
 
+#if v100 || v101 || v102 || v103 || v110 || v111 || v112 || v113 || v114 || v115
         private sealed class SavedTypeDefiner : SaveableCampaignBehaviorTypeDefiner
+#elif v120
+        private sealed class SavedTypeDefiner : SaveableTypeDefiner
+#else
+#error DEFINE
+#endif
         {
             public SavedTypeDefiner() : base(222_444_700) { }
             protected override void DefineClassTypes() => AddClassDefinition(typeof(DataKey), 1);
