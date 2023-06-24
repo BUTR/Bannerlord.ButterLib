@@ -1,4 +1,5 @@
-﻿namespace Bannerlord.ButterLib.ExceptionHandler.WinForms
+﻿#if !NETSTANDARD2_0_OR_GREATER
+namespace Bannerlord.ButterLib.ExceptionHandler.WinForms
 {
     partial class HtmlCrashReportForm
     {
@@ -62,3 +63,4 @@
         private System.Windows.Forms.WebBrowser HtmlRender;
     }
 }
+#endif

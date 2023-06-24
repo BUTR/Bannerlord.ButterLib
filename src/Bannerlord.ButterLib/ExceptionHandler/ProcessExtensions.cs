@@ -77,7 +77,10 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             public string szExeFile;
         };
 
-        [SuppressUnmanagedCodeSecurity, HostProtection(SecurityAction.LinkDemand, MayLeakOnAbort = true)]
+#if !NETSTANDARD2_0_OR_GREATER
+        [HostProtection(SecurityAction.LinkDemand, MayLeakOnAbort = true)]
+#endif
+        [SuppressUnmanagedCodeSecurity]
         private sealed class SafeSnapshotHandle : SafeHandleMinusOneIsInvalid
         {
             internal SafeSnapshotHandle() : base(true) { }

@@ -10,8 +10,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using TaleWorlds.InputSystem;
-
 using HotKeyManager = Bannerlord.ButterLib.HotKeys.HotKeyManager;
 using TWHotKeyManager = TaleWorlds.InputSystem.HotKeyManager;
 
@@ -53,7 +51,13 @@ namespace Bannerlord.ButterLib.Implementation.HotKeys
 
             var hotKeyCategoryContainer = new HotKeyCategoryContainer(_modName, _categoryName, _instanceHotKeys);
 
-            TWHotKeyManager.RegisterInitialContexts(new List<GameKeyContext> { hotKeyCategoryContainer }, true);
+#if v100 || v101 || v102 || v103 || v110 || v111 || v112 || v113 || v114 || v115
+            TWHotKeyManager.RegisterInitialContexts(new[] { hotKeyCategoryContainer }, true);
+#elif v120
+            TWHotKeyManager.RegisterInitialContexts(TWHotKeyManager.GetAllCategories().ToList().Concat(new[] { hotKeyCategoryContainer }), true);
+#else
+#error DEFINE
+#endif
             GlobalContainerStorage.Add(hotKeyCategoryContainer);
 
             var keys = hotKeyCategoryContainer.RegisteredGameKeys;

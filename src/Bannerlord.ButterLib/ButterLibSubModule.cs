@@ -18,7 +18,6 @@ using System.Diagnostics.Logger;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
 
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
@@ -26,11 +25,6 @@ using TaleWorlds.Engine;
 using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
 
-using DialogResult = System.Windows.Forms.DialogResult;
-using MessageBoxButtons = System.Windows.Forms.MessageBoxButtons;
-using MessageBoxDefaultButton = System.Windows.Forms.MessageBoxDefaultButton;
-using MessageBoxIcon = System.Windows.Forms.MessageBoxIcon;
-using MessageBoxOptions = System.Windows.Forms.MessageBoxOptions;
 using Path = System.IO.Path;
 
 namespace Bannerlord.ButterLib
@@ -198,9 +192,9 @@ namespace Bannerlord.ButterLib
                 sb.AppendLine(report);
                 sb.AppendLine();
                 sb.AppendLine(new TextObject(SMessageContinue).ToString());
-                switch (MessageBox.Show(sb.ToString(), new TextObject(SWarningTitle).ToString(), MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1, (MessageBoxOptions) 0x40000))
+                switch (System.Windows.Forms.MessageBox.Show(sb.ToString(), new TextObject(SWarningTitle).ToString(), System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Warning, System.Windows.Forms.MessageBoxDefaultButton.Button1, (System.Windows.Forms.MessageBoxOptions) 0x40000))
                 {
-                    case DialogResult.Yes:
+                    case System.Windows.Forms.DialogResult.Yes:
                         Environment.Exit(1);
                         break;
                 }

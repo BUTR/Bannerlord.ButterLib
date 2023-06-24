@@ -1,4 +1,5 @@
-﻿using Bannerlord.BUTR.Shared.Helpers;
+﻿#if !NETSTANDARD2_0_OR_GREATER
+using Bannerlord.BUTR.Shared.Helpers;
 using Bannerlord.ButterLib.Common.Extensions;
 using Bannerlord.ButterLib.CrashUploader;
 using Bannerlord.ButterLib.Extensions;
@@ -331,3 +332,4 @@ Clicking 'Close Report' will continue with the Game's error report mechanism.
         }
     }
 }
+#endif
