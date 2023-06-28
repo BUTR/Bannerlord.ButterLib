@@ -71,7 +71,7 @@ jobs:
       shell: pwsh
 
     - name: ReportGenerator
-      uses: danielpalme/ReportGenerator-GitHub-Action@5.1.19
+      uses: danielpalme/ReportGenerator-GitHub-Action@5.1.22
       with:
         reports: '*.xml'
         targetdir: 'coveragereport'
@@ -86,7 +86,7 @@ jobs:
         path: coveragereport
 
     - name: Upload ReportGenerator to CodeCov
-      uses: codecov/codecov-action@v3.1.1
+      uses: codecov/codecov-action@v3.1.4
       with:
         token: ${{secrets.CODECOV_TOKEN}}
         file: coveragereport/Cobertura.xml
