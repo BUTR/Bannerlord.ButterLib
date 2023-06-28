@@ -78,9 +78,9 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem.Patches
         private static readonly Type? CampaignBehaviorDataStoreT =
             typeof(Campaign).Assembly.GetType("TaleWorlds.CampaignSystem.CampaignBehaviorDataStore");
 
-        private static readonly MethodInfo? LoadBehaviorDataMI = AccessTools2.Method(CampaignBehaviorDataStoreT, "LoadBehaviorData");
+        private static readonly MethodInfo? LoadBehaviorDataMI = AccessTools2.Method(CampaignBehaviorDataStoreT!, "LoadBehaviorData");
 
-        private static readonly MethodInfo? SaveBehaviorDataMI = AccessTools2.Method(CampaignBehaviorDataStoreT, "SaveBehaviorData");
+        private static readonly MethodInfo? SaveBehaviorDataMI = AccessTools2.Method(CampaignBehaviorDataStoreT!, "SaveBehaviorData");
 
         // Patch implementation:
 

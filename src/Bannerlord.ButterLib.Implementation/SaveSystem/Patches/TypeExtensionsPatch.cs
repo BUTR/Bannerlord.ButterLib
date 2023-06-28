@@ -52,7 +52,7 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
 
         private static readonly Type? TargetType = typeof(MetaData).Assembly.GetType("TaleWorlds.SaveSystem.TypeExtensions");
         private static readonly Type[] TargetMethodParams = { typeof(Type), typeof(ContainerType).MakeByRefType() };
-        private static readonly MethodInfo? TargetMethod = AccessTools2.Method(TargetType, "IsContainer", TargetMethodParams);
+        private static readonly MethodInfo? TargetMethod = AccessTools2.Method(TargetType!, "IsContainer", TargetMethodParams);
         private static readonly MethodInfo? PatchMethod = AccessTools2.Method("Bannerlord.ButterLib.Implementation.SaveSystem.Patches.TypeExtensionsPatch:IsContainerPrefix");
 
         // ReSharper disable once RedundantAssignment

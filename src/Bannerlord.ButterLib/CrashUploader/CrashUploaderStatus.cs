@@ -8,5 +8,6 @@
         WrongStatusCode,
         ResponseStreamIsNull,
         FailedWithException,
+        UrlIsNullOrEmpty,
     }
 }

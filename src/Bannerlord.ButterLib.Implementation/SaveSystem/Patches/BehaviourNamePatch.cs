@@ -29,7 +29,7 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
             return true;
         }
 
-        private static void CampaignBehaviorBaseCtorPostfix(CampaignBehaviorBase __instance, ref string ___StringId)
+        private static void CampaignBehaviorBaseCtorPostfix(CampaignBehaviorBase __instance, ref string? ___StringId)
         {
             var module = ModuleInfoHelper.GetModuleByType(__instance.GetType());
             if (module is null) // A non-module dll

@@ -42,7 +42,7 @@ namespace Bannerlord.ButterLib.DynamicAPI
         private static TypeWithAttribute? GetDynamicAPIClass(Type? type)
         {
             bool Predicate(CustomAttributeData x) =>
-                PossibleClassNames.Contains(x.AttributeType.FullName) && x.ConstructorArguments.Count == 1 && x.ConstructorArguments[0].ArgumentType == typeof(string);
+                PossibleClassNames.Contains(x.AttributeType.FullName!) && x.ConstructorArguments.Count == 1 && x.ConstructorArguments[0].ArgumentType == typeof(string);
 
             if (type is null)
                 return null;
@@ -59,7 +59,7 @@ namespace Bannerlord.ButterLib.DynamicAPI
         private static MethodInfoWithAttribute? GetDynamicAPIMethod(MethodInfo? methodInfo)
         {
             bool Predicate(CustomAttributeData x) =>
-                PossibleMethodNames.Contains(x.AttributeType.FullName) && x.ConstructorArguments.Count == 1 && x.ConstructorArguments[0].ArgumentType == typeof(string);
+                PossibleMethodNames.Contains(x.AttributeType.FullName!) && x.ConstructorArguments.Count == 1 && x.ConstructorArguments[0].ArgumentType == typeof(string);
 
             if (methodInfo is null)
                 return null;
@@ -71,11 +71,11 @@ namespace Bannerlord.ButterLib.DynamicAPI
         }
 
         private static string DynamicAPIClassAttributeName(TypeWithAttribute typeWithAttribute) =>
-            (string) typeWithAttribute.CustomAttributeData.ConstructorArguments[0].Value;
+            (string) typeWithAttribute.CustomAttributeData.ConstructorArguments[0].Value!;
 
         private static string DynamicAPIMethodAttributeName(MethodInfoWithAttribute methodInfoWithAttribute)
         {
-            var name = (string) methodInfoWithAttribute.CustomAttributeData.ConstructorArguments[0].Value;
+            var name = (string) methodInfoWithAttribute.CustomAttributeData.ConstructorArguments[0].Value!;
             return $"{(methodInfoWithAttribute.MethodInfo.IsStatic ? "0static" : "0instance")}_{name}";
         }
 

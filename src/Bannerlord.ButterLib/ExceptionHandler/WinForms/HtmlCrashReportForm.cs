@@ -134,7 +134,7 @@ function handleIncludeScreenshot(cb) {
 }
 ";
 
-        private static string TableText = @$"
+        private static string TableText = $"""
 <table style='width: 100%;'>
   <tbody>
   <tr>
@@ -143,9 +143,9 @@ function handleIncludeScreenshot(cb) {
     </td>
     <td>
       <button style='float:right; margin-left:10px;' onclick='window.external.Close()'>Close Report</button>
-      {(CrashUploaderSubSystem.Instance?.IsEnabled == true
-            ? "<button style='float:right; margin-left:10px;' onclick='window.external.UploadReport()'>Upload Report as a Permalink</button>"
-            : "")}
+      {(CrashUploaderSubSystem.Instance?.IsEnabled != true ? "" : """
+      <button style='float:right; margin-left:10px;' onclick='window.external.UploadReport()'>Upload Report as a Permalink</button>
+      """)}
       <button style='float:right; margin-left:10px;' onclick='window.external.SaveReport()'>Save Report</button>
       <button style='float:right; margin-left:10px;' onclick='window.external.CopyAsHTML()'>Copy as HTML</button>
     </td>
@@ -157,15 +157,18 @@ function handleIncludeScreenshot(cb) {
       <input style='float:right;' type='checkbox' onclick='handleIncludeMiniDump(this);'>
       <label style='float:right; margin-left:10px;'>Include Mini Dump:</label>
       <input style='float:right;' type='checkbox' onclick='handleIncludeSaveFile(this);'>
+      {(ApplicationPlatform.CurrentPlatform == Platform.GDKDesktop ? "" : """
       <label style='float:right; margin-left:10px;'>Include Latest Save File:</label>
       <input style='float:right;' type='checkbox' onclick='handleIncludeScreenshot(this);'>
+      """)}
       <label style='float:right; margin-left:10px;'>Include Screenshot:</label>
     </td>
   </tr>
   </tbody>
 </table>
 Clicking 'Close Report' will continue with the Game's error report mechanism.
-<hr/>";
+<hr/>
+""";
 
         private CrashReport CrashReport { get; }
         private string ReportInHtml { get; }

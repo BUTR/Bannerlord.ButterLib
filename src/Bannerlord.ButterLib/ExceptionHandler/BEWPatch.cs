@@ -44,7 +44,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             return false;
         }
 
-        internal record ExceptionIdentifier(Type Type, string StackTrace, string Message)
+        internal record ExceptionIdentifier(Type Type, string? StackTrace, string Message)
         {
             public static ExceptionIdentifier FromException(Exception e) => new(e.GetType(), e.StackTrace, e.Message);
         }

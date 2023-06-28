@@ -35,11 +35,11 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             foreach (var subModule in LoadedModules.SelectMany(module => module.SubModules))
             {
                 moduleAssemblies.Add(Path.GetFileNameWithoutExtension(subModule.DLLName));
-                moduleAssemblies.AddRange(subModule.Assemblies.Select(Path.GetFileNameWithoutExtension));
+                moduleAssemblies.AddRange(subModule.Assemblies.Select(Path.GetFileNameWithoutExtension).OfType<string>());
             }
 
-            ModuleLoadedAssemblies.AddRange(AccessTools2.AllAssemblies().Where(a => moduleAssemblies.Contains(a.GetName().Name)));
-            ExternalLoadedAssemblies.AddRange(AccessTools2.AllAssemblies().Where(a => !moduleAssemblies.Contains(a.GetName().Name)));
+            ModuleLoadedAssemblies.AddRange(AccessTools2.AllAssemblies().Where(a => moduleAssemblies.Contains(a.GetName().Name!)));
+            ExternalLoadedAssemblies.AddRange(AccessTools2.AllAssemblies().Where(a => !moduleAssemblies.Contains(a.GetName().Name!)));
 
             foreach (var originalMethod in Harmony.GetAllPatchedMethods())
             {
@@ -101,7 +101,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             {
                 if (!frame.HasMethod()) continue;
 
-                MethodBase? method;
+                MethodBase method;
                 var methodFromStackframeIssue = false;
                 try
                 {
@@ -110,15 +110,15 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                 // NullReferenceException means the method was not found. Harmony doesn't handle this case gracefully
                 catch (NullReferenceException)
                 {
-                    method = frame.GetMethod();
+                    method = frame.GetMethod()!;
                 }
                 // The given generic instantiation was invalid.
                 // From what I understand, this will occur with generic methods
                 // Also when static constructors throw errors, Harmony resolution will fail
-                catch (Exception e)
+                catch (Exception)
                 {
                     methodFromStackframeIssue = true;
-                    method = frame.GetMethod();
+                    method = frame.GetMethod()!;
                 }
 
                 var frameDesc = $"{frame} (IL Offset: {frame.GetILOffset()})";
