@@ -81,7 +81,7 @@ namespace Bannerlord.ButterLib.DynamicAPI
 
         private static IEnumerable<Assembly> GetAssembliesToScan()
         {
-            var loadedModules = ModuleInfoHelper.GetLoadedModules().OfType<ModuleInfoExtendedWithMetadata>().ToList();
+            var loadedModules = ModuleInfoHelper.GetLoadedModules().Where(x => x is not null).ToList();
             foreach (var assembly in AccessTools2.AllAssemblies().Where(x => !x.IsDynamic && !string.IsNullOrEmpty(x.Location)))
             {
                 if (loadedModules.Any(loadedModule => ModuleInfoHelper.IsModuleAssembly(loadedModule, assembly)))

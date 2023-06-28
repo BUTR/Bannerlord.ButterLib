@@ -4,13 +4,14 @@
   <!--Development Variables-->
   <PropertyGroup>
     <!--Module Version-->
-    <Version>2.8.1</Version>
+    <Version>2.9.0</Version>
     <!--Harmony Version-->
-    <HarmonyVersion>2.2.2</HarmonyVersion>
+    <HarmonyVersion>2.3.0</HarmonyVersion>
     <HarmonyExtensionsVersion>3.2.0.77</HarmonyExtensionsVersion>
     <HarmonyAnalyzerVersion>1.0.1.44</HarmonyAnalyzerVersion>
     <!--Microsoft Extension Libraries Version-->
-    <!--Serilog depends on abstraction 2.0.0, and since we can't do app redirects, we're stuck with that-->
+    <!--Switching to v7 or any version higher will require BLSE.AssemblyResolver-->
+    <!--Also, remove Ben.Demystifier and use the NuGet then-->
     <ExtensionVersion>2.0.0</ExtensionVersion>
     <!--BuildResources Version-->
     <BuildResourcesVersion>1.1.0.102</BuildResourcesVersion>
@@ -20,12 +21,12 @@
 
   <PropertyGroup>
     <Authors>BUTR Team</Authors>
-    <Company></Company>
     <Product>ButterLib Library for Bannerlord</Product>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
+    <PackageReference Include="Serilog" Version="3.0.1" />
     <PackageReference Include="Serilog.Extensions.Logging" Version="3.1.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="$(ExtensionVersion)" />

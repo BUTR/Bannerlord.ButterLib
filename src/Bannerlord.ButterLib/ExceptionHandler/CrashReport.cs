@@ -1,8 +1,12 @@
-﻿using Bannerlord.BUTR.Shared.Helpers;
+﻿using AsmResolver.DotNet.Code.Cil;
+
+using Bannerlord.BUTR.Shared.Helpers;
 using Bannerlord.ModuleManager;
 
 using HarmonyLib;
 using HarmonyLib.BUTR.Extensions;
+
+using MonoMod.Core.Platforms;
 
 using System;
 using System.Collections.Generic;
@@ -13,7 +17,7 @@ using System.Reflection;
 
 namespace Bannerlord.ButterLib.ExceptionHandler
 {
-    internal record StacktraceEntry(MethodBase Method, bool MethodFromStackframeIssue, ModuleInfoExtended? ModuleInfo, string StackFrameDescription);
+    internal record StacktraceEntry(MethodBase Method, bool MethodFromStackframeIssue, ModuleInfoExtended? ModuleInfo, string StackFrameDescription, CilInstructionCollection? CilInstructions);
 
     internal class CrashReport
     {
@@ -35,7 +39,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             foreach (var subModule in LoadedModules.SelectMany(module => module.SubModules))
             {
                 moduleAssemblies.Add(Path.GetFileNameWithoutExtension(subModule.DLLName));
-                moduleAssemblies.AddRange(subModule.Assemblies.Select(Path.GetFileNameWithoutExtension).OfType<string>());
+                moduleAssemblies.AddRange(subModule.Assemblies.Select(Path.GetFileNameWithoutExtension).Where(x => x is not null));
             }
 
             ModuleLoadedAssemblies.AddRange(AccessTools2.AllAssemblies().Where(a => moduleAssemblies.Contains(a.GetName().Name!)));
@@ -126,27 +130,42 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                 var patches = FindPatches(method);
                 foreach (var (methodBase, extendedModuleInfo) in GetFinalizers(patches))
                 {
-                    yield return new(methodBase, methodFromStackframeIssue, extendedModuleInfo, frameDesc);
+                    yield return new(methodBase, methodFromStackframeIssue, extendedModuleInfo, frameDesc, null);
                 }
                 foreach (var (methodBase, extendedModuleInfo) in GetPostfixes(patches))
                 {
-                    yield return new(methodBase, methodFromStackframeIssue, extendedModuleInfo, frameDesc);
+                    yield return new(methodBase, methodFromStackframeIssue, extendedModuleInfo, frameDesc, null);
                 }
                 foreach (var (methodBase, extendedModuleInfo) in GetPrefixes(patches))
                 {
-                    yield return new(methodBase, methodFromStackframeIssue, extendedModuleInfo, frameDesc);
+                    yield return new(methodBase, methodFromStackframeIssue, extendedModuleInfo, frameDesc, null);
                 }
                 foreach (var (methodBase, extendedModuleInfo) in GetTranspilers(patches))
                 {
-                    yield return new(methodBase, methodFromStackframeIssue, extendedModuleInfo, frameDesc);
+                    yield return new(methodBase, methodFromStackframeIssue, extendedModuleInfo, frameDesc, null);
                 }
 
                 var moduleInfo = GetModuleInfoIfMod(method);
 
-                yield return new(method, methodFromStackframeIssue, moduleInfo, frameDesc);
+                yield return new(method, methodFromStackframeIssue, moduleInfo, frameDesc, null);
 
-                if (method is MethodInfo methodInfo && Harmony.GetOriginalMethod(methodInfo) is { } original)
-                    yield return new(original, methodFromStackframeIssue, moduleInfo, frameDesc);
+                // Further versions of Harmony will do `PlatformTriple.Current.GetIdentifiable(method) is MethodInfo identifiableMethod` themselves
+                if (method is MethodInfo && PlatformTriple.Current.GetIdentifiable(method) is MethodInfo identifiableMethod && Harmony.GetOriginalMethod(identifiableMethod) is { } original)
+                {
+                    CilInstructionCollection? instructions;
+                    try
+                    {
+                        var module = AsmResolver.DotNet.ModuleDefinition.FromModule(identifiableMethod.Module);
+                        var dynamicMethodDefinition = new AsmResolver.DotNet.Dynamic.DynamicMethodDefinition(module, identifiableMethod);
+                        var cilMethodBody = dynamicMethodDefinition.MethodBody as CilMethodBody;
+                        instructions = cilMethodBody?.Instructions;
+                    }
+                    catch (Exception)
+                    {
+                        instructions = null;
+                    }
+                    yield return new(original, methodFromStackframeIssue, moduleInfo, frameDesc, instructions);
+                }
             }
         }
     }
