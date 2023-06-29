@@ -5,12 +5,12 @@
     <TargetFrameworks>net472;netcoreapp3.1</TargetFrameworks>
     <LangVersion>10.0</LangVersion>
     <Nullable>enable</Nullable>
-    <Platforms>x64</Platforms>
+    <Platform>x64</Platform>
     <BuildForWindows>false</BuildForWindows>
     <BuildForWindowsStore>false</BuildForWindowsStore>
 
     <Configurations>Stable_Debug;Stable_Release;Beta_Debug;Beta_Release</Configurations>
-    <DefineConstants>$(DefineConstants);$(GameVersionConstant)</DefineConstants>
+    <DefineConstants>$(DefineConstants);$(GameVersionConstant);X64</DefineConstants>
 
     <AssemblyName>$(MSBuildProjectName).$(GameVersion)</AssemblyName>
   </PropertyGroup>

@@ -5,12 +5,12 @@
     <TargetFrameworks>net472;netcoreapp3.1;netstandard2.0</TargetFrameworks>
     <LangVersion>11.0</LangVersion>
     <Nullable>enable</Nullable>
-    <Platforms>x64</Platforms>
+    <Platform>x64</Platform>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
 
     <BUTRUploadUrl>$(BANNERLORD_BUTR_UPLOAD_URL)</BUTRUploadUrl>
-    <DefineConstants>$(DefineConstants);BANNERLORDBUTRSHARED_BUTTERLIB</DefineConstants>
+    <DefineConstants>$(DefineConstants);BANNERLORDBUTRSHARED_BUTTERLIB;X64</DefineConstants>
     <GameVersion>1.0.0</GameVersion>
   </PropertyGroup>
 
