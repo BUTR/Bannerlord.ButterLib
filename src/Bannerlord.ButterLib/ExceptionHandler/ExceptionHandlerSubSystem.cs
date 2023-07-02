@@ -81,7 +81,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
         private bool _useVanillaCrashHandler = false;
         public bool UseVanillaCrashHandler
         {
-            get => _catchAutoGenExceptions;
+            get => _useVanillaCrashHandler;
             private set
             {
                 if (_useVanillaCrashHandler != value)
