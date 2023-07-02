@@ -1,4 +1,4 @@
-﻿using Bannerlord.BUTRLoader;
+﻿using Bannerlord.BLSE;
 using Bannerlord.ButterLib.Common.Extensions;
 using Bannerlord.ButterLib.ExceptionHandler.DebuggerDetection;
 
@@ -28,7 +28,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
     // TaleWorlds.MountAndBlade.MissionBehaviour:OnMissionTick                -> Called by TaleWorlds.MountAndBlade.Mission:Tick
     // TaleWorlds.MountAndBlade.MBSubModuleBase:OnSubModuleLoad               -> Replicated
 
-    [BUTRLoaderInterceptor]
+    [BLSELoaderInterceptor]
     internal sealed class BEWPatch
     {
         public static bool IsDebuggerAttached()

@@ -1,12 +1,8 @@
-﻿using AsmResolver.DotNet.Code.Cil;
-
-using Bannerlord.BUTR.Shared.Helpers;
+﻿using Bannerlord.BUTR.Shared.Helpers;
 using Bannerlord.ModuleManager;
 
 using HarmonyLib;
 using HarmonyLib.BUTR.Extensions;
-
-using MonoMod.Core.Platforms;
 
 using System;
 using System.Collections.Generic;
@@ -17,7 +13,7 @@ using System.Reflection;
 
 namespace Bannerlord.ButterLib.ExceptionHandler
 {
-    internal record StacktraceEntry(MethodBase Method, bool MethodFromStackframeIssue, ModuleInfoExtended? ModuleInfo, string StackFrameDescription, CilInstructionCollection? CilInstructions);
+    internal record StacktraceEntry(MethodBase Method, bool MethodFromStackframeIssue, ModuleInfoExtended? ModuleInfo, string StackFrameDescription, string[] CilInstructions);
 
     internal class CrashReport
     {
@@ -130,25 +126,26 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                 var patches = FindPatches(method);
                 foreach (var (methodBase, extendedModuleInfo) in GetFinalizers(patches))
                 {
-                    yield return new(methodBase, methodFromStackframeIssue, extendedModuleInfo, frameDesc, null);
+                    yield return new(methodBase, methodFromStackframeIssue, extendedModuleInfo, frameDesc, Array.Empty<string>());
                 }
                 foreach (var (methodBase, extendedModuleInfo) in GetPostfixes(patches))
                 {
-                    yield return new(methodBase, methodFromStackframeIssue, extendedModuleInfo, frameDesc, null);
+                    yield return new(methodBase, methodFromStackframeIssue, extendedModuleInfo, frameDesc, Array.Empty<string>());
                 }
                 foreach (var (methodBase, extendedModuleInfo) in GetPrefixes(patches))
                 {
-                    yield return new(methodBase, methodFromStackframeIssue, extendedModuleInfo, frameDesc, null);
+                    yield return new(methodBase, methodFromStackframeIssue, extendedModuleInfo, frameDesc, Array.Empty<string>());
                 }
                 foreach (var (methodBase, extendedModuleInfo) in GetTranspilers(patches))
                 {
-                    yield return new(methodBase, methodFromStackframeIssue, extendedModuleInfo, frameDesc, null);
+                    yield return new(methodBase, methodFromStackframeIssue, extendedModuleInfo, frameDesc, Array.Empty<string>());
                 }
 
                 var moduleInfo = GetModuleInfoIfMod(method);
 
-                yield return new(method, methodFromStackframeIssue, moduleInfo, frameDesc, null);
+                yield return new(method, methodFromStackframeIssue, moduleInfo, frameDesc, Array.Empty<string>());
 
+                /*
                 // Further versions of Harmony will do `PlatformTriple.Current.GetIdentifiable(method) is MethodInfo identifiableMethod` themselves
                 if (method is MethodInfo && PlatformTriple.Current.GetIdentifiable(method) is MethodInfo identifiableMethod && Harmony.GetOriginalMethod(identifiableMethod) is { } original)
                 {
@@ -166,6 +163,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                     }
                     yield return new(original, methodFromStackframeIssue, moduleInfo, frameDesc, instructions);
                 }
+                */
             }
         }
     }

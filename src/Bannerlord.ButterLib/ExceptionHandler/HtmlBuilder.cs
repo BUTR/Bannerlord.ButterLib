@@ -398,7 +398,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                         .Append($"Method From Stackframe Issue: {methodFromStackframeIssue}</br>")
                         .Append("</li>");
                 }
-                if (stacktrace.FirstOrDefault(x => x.CilInstructions is not null) is { CilInstructions: { } cilInstructions })
+                if (stacktrace.FirstOrDefault(x => x.CilInstructions.Length > 0) is { CilInstructions: { } cilInstructions })
                 {
                     foreach (var instruction in cilInstructions)
                         sbCil.Append('\t').Append(instruction).AppendLine();
