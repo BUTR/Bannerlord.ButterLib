@@ -147,21 +147,23 @@ namespace Bannerlord.ButterLib.ExceptionHandler
 
                 /*
                 // Further versions of Harmony will do `PlatformTriple.Current.GetIdentifiable(method) is MethodInfo identifiableMethod` themselves
-                if (method is MethodInfo && PlatformTriple.Current.GetIdentifiable(method) is MethodInfo identifiableMethod && Harmony.GetOriginalMethod(identifiableMethod) is { } original)
+                if (method is MethodInfo && MonoMod.Core.Platforms.PlatformTriple.Current.GetIdentifiable(method) is MethodInfo identifiableMethod && Harmony.GetOriginalMethod(identifiableMethod) is { } original)
                 {
-                    CilInstructionCollection? instructions;
+                    AsmResolver.DotNet.Code.Cil.CilInstructionCollection? instructions;
                     try
                     {
                         var module = AsmResolver.DotNet.ModuleDefinition.FromModule(identifiableMethod.Module);
                         var dynamicMethodDefinition = new AsmResolver.DotNet.Dynamic.DynamicMethodDefinition(module, identifiableMethod);
-                        var cilMethodBody = dynamicMethodDefinition.MethodBody as CilMethodBody;
+                        var cilMethodBody = dynamicMethodDefinition.MethodBody as AsmResolver.DotNet.Code.Cil.CilMethodBody;
                         instructions = cilMethodBody?.Instructions;
                     }
                     catch (Exception)
                     {
                         instructions = null;
                     }
-                    yield return new(original, methodFromStackframeIssue, moduleInfo, frameDesc, instructions);
+
+                    var instructionsStr = instructions.Select(x => x.ToString()).ToArray();
+                    yield return new(original, methodFromStackframeIssue, moduleInfo, frameDesc, instructionsStr);
                 }
                 */
             }

@@ -43,6 +43,9 @@
     <PackageReference Include="Bannerlord.ReferenceAssemblies.Native" Version="$(GameVersion).*-*" PrivateAssets="all" />
 
     <PackageReference Include="IsExternalInit" Version="1.0.3" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
+
+    <!-- AsmResolver.DotNet.Dynamic force pulls System.Runtime.CompilerSerices.Unsafe v6, downgrade it -->
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.5.3" />
   </ItemGroup>
   <!--NuGet References-->
 
