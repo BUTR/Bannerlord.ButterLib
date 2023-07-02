@@ -39,8 +39,6 @@ namespace Bannerlord.ButterLib
 @"{=BguqytVG3q}Warning from Bannerlord.ButterLib!";
         private const string SMessageContinue =
 @"{=eXs6FLm5DP}It's strongly recommended to terminate the game now. Do you wish to terminate it?";
-        private const string SMessageWrongGameVersion =
-@"{=aGg5Gh64gH}This version of ButterLib is intended for e1.7.2 and higher! You are running {GAMEVERSION}!";
 
         internal event Action<float>? OnApplicationTickEvent;
 
