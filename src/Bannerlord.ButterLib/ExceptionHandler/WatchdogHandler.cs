@@ -21,9 +21,12 @@ namespace Bannerlord.ButterLib.ExceptionHandler
         // Disable Watchdog by renaming it, thus performing a soft delete in it's eyes
         public static void DisableTWWatchdog()
         {
+            var watchdogLibraryFile = new FileInfo(WatchdogLibraryName);
+            if (!watchdogLibraryFile.Exists) return;
+
             var libraryPtr = LoadLibrary(WatchdogLibraryName);
             // Don't like the fact that I can't get the concrete memory size
-            var size = (int) new FileInfo(WatchdogLibraryName).Length;
+            var size = (int) watchdogLibraryFile.Length;
 
             var librarySpan = new ReadOnlySpan<byte>(libraryPtr, size);
 
@@ -45,9 +48,12 @@ namespace Bannerlord.ButterLib.ExceptionHandler
 
         public static void EnableTWWatchdog()
         {
+            var watchdogLibraryFile = new FileInfo(WatchdogLibraryName);
+            if (!watchdogLibraryFile.Exists) return;
+
             var libraryPtr = LoadLibrary(WatchdogLibraryName);
             // Don't like the fact that I can't get the concrete memory size
-            var size = (int) new FileInfo(WatchdogLibraryName).Length;
+            var size = (int) watchdogLibraryFile.Length;
 
             var librarySpan = new ReadOnlySpan<byte>(libraryPtr, size);
 
