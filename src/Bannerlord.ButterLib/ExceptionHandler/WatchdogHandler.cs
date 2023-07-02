@@ -21,23 +21,22 @@ namespace Bannerlord.ButterLib.ExceptionHandler
         // Disable Watchdog by renaming it, thus performing a soft delete in it's eyes
         public static void DisableTWWatchdog()
         {
-            var library = LoadLibrary(WatchdogLibraryName);
+            var libraryPtr = LoadLibrary(WatchdogLibraryName);
             // Don't like the fact that I can't get the concrete memory size
             var size = (int) new FileInfo(WatchdogLibraryName).Length;
-            var watchdogSize = WatchdogOriginal.Length;
 
-            var libraryMemoryBlock = new Span<byte>(library, size);
+            var librarySpan = new ReadOnlySpan<byte>(libraryPtr, size);
 
-            var searchSpan = libraryMemoryBlock;
+            var searchSpan = librarySpan;
             var searchSpanOffset = 0;
             while (searchSpan.IndexOf(WatchdogOriginal) is var idx and not -1)
             {
-                var address = library + searchSpanOffset + idx;
-                var textMemoryBlock = new Span<byte>(address, watchdogSize);
+                var watchdogLocationPtr = libraryPtr + searchSpanOffset + idx;
+                var watchdogLocationSpan = new Span<byte>(watchdogLocationPtr, WatchdogOriginal.Length);
 
-                VirtualProtect(address, watchdogSize, PAGE_EXECUTE_READWRITE, out var old);
-                WatchdogReplacement.CopyTo(textMemoryBlock);
-                VirtualProtect(address, watchdogSize, old, out _);
+                VirtualProtect(watchdogLocationPtr, watchdogLocationSpan.Length, PAGE_EXECUTE_READWRITE, out var old);
+                WatchdogReplacement.CopyTo(watchdogLocationSpan);
+                VirtualProtect(watchdogLocationPtr, watchdogLocationSpan.Length, old, out _);
 
                 searchSpanOffset = idx;
                 searchSpan = searchSpan.Slice(searchSpanOffset);
@@ -46,23 +45,22 @@ namespace Bannerlord.ButterLib.ExceptionHandler
 
         public static void EnableTWWatchdog()
         {
-            var library = LoadLibrary(WatchdogLibraryName);
+            var libraryPtr = LoadLibrary(WatchdogLibraryName);
             // Don't like the fact that I can't get the concrete memory size
             var size = (int) new FileInfo(WatchdogLibraryName).Length;
-            var watchdogSize = WatchdogOriginal.Length;
 
-            var libraryMemoryBlock = new Span<byte>(library, size);
+            var librarySpan = new ReadOnlySpan<byte>(libraryPtr, size);
 
-            var searchSpan = libraryMemoryBlock;
+            var searchSpan = librarySpan;
             var searchSpanOffset = 0;
             while (searchSpan.IndexOf(WatchdogReplacement) is var idx and not -1)
             {
-                var address = library + searchSpanOffset + idx;
-                var textMemoryBlock = new Span<byte>(address, watchdogSize);
+                var watchdogLocationPtr = libraryPtr + searchSpanOffset + idx;
+                var watchdogLocationSpan = new Span<byte>(watchdogLocationPtr, WatchdogOriginal.Length);
 
-                VirtualProtect(address, watchdogSize, PAGE_EXECUTE_READWRITE, out var old);
-                WatchdogOriginal.CopyTo(textMemoryBlock);
-                VirtualProtect(address, watchdogSize, old, out _);
+                VirtualProtect(watchdogLocationPtr, watchdogLocationSpan.Length, PAGE_EXECUTE_READWRITE, out var old);
+                WatchdogOriginal.CopyTo(watchdogLocationSpan);
+                VirtualProtect(watchdogLocationPtr, watchdogLocationSpan.Length, old, out _);
 
                 searchSpanOffset = idx;
                 searchSpan = searchSpan.Slice(searchSpanOffset);
