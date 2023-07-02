@@ -45,7 +45,7 @@ namespace Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended
             // Think about DelayedSubModuleManager.Unregister
         }
 
-        internal static void LogNoHooksIssue(ILogger logger, int originalCallIndex, int finallyIndex, List<CodeInstruction> codes, MethodBase currentMethod)
+        internal static void LogNoHooksIssue(ILogger logger, int originalCallIndex, int finallyIndex, List<CodeInstruction> codes, MethodBase? currentMethod)
         {
             var issueInfo = new StringBuilder("Indexes: ");
             issueInfo.Append($"\n\toriginalCallIndex = {originalCallIndex}.\n\tfinallyIndex={finallyIndex}.");

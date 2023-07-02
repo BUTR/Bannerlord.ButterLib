@@ -13,7 +13,7 @@ using System.Reflection;
 
 namespace Bannerlord.ButterLib.ExceptionHandler
 {
-    internal record StacktraceEntry(MethodBase Method, bool MethodFromStackframeIssue, ModuleInfoExtended? ModuleInfo, string StackFrameDescription);
+    internal record StacktraceEntry(MethodBase Method, bool MethodFromStackframeIssue, ModuleInfoExtended? ModuleInfo, string StackFrameDescription, string[] CilInstructions);
 
     internal class CrashReport
     {
@@ -35,11 +35,11 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             foreach (var subModule in LoadedModules.SelectMany(module => module.SubModules))
             {
                 moduleAssemblies.Add(Path.GetFileNameWithoutExtension(subModule.DLLName));
-                moduleAssemblies.AddRange(subModule.Assemblies.Select(Path.GetFileNameWithoutExtension));
+                moduleAssemblies.AddRange(subModule.Assemblies.Select(Path.GetFileNameWithoutExtension).Where(x => x is not null));
             }
 
-            ModuleLoadedAssemblies.AddRange(AccessTools2.AllAssemblies().Where(a => moduleAssemblies.Contains(a.GetName().Name)));
-            ExternalLoadedAssemblies.AddRange(AccessTools2.AllAssemblies().Where(a => !moduleAssemblies.Contains(a.GetName().Name)));
+            ModuleLoadedAssemblies.AddRange(AccessTools2.AllAssemblies().Where(a => moduleAssemblies.Contains(a.GetName().Name!)));
+            ExternalLoadedAssemblies.AddRange(AccessTools2.AllAssemblies().Where(a => !moduleAssemblies.Contains(a.GetName().Name!)));
 
             foreach (var originalMethod in Harmony.GetAllPatchedMethods())
             {
@@ -101,7 +101,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             {
                 if (!frame.HasMethod()) continue;
 
-                MethodBase? method;
+                MethodBase method;
                 var methodFromStackframeIssue = false;
                 try
                 {
@@ -110,15 +110,15 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                 // NullReferenceException means the method was not found. Harmony doesn't handle this case gracefully
                 catch (NullReferenceException)
                 {
-                    method = frame.GetMethod();
+                    method = frame.GetMethod()!;
                 }
                 // The given generic instantiation was invalid.
                 // From what I understand, this will occur with generic methods
                 // Also when static constructors throw errors, Harmony resolution will fail
-                catch (Exception e)
+                catch (Exception)
                 {
                     methodFromStackframeIssue = true;
-                    method = frame.GetMethod();
+                    method = frame.GetMethod()!;
                 }
 
                 var frameDesc = $"{frame} (IL Offset: {frame.GetILOffset()})";
@@ -126,27 +126,46 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                 var patches = FindPatches(method);
                 foreach (var (methodBase, extendedModuleInfo) in GetFinalizers(patches))
                 {
-                    yield return new(methodBase, methodFromStackframeIssue, extendedModuleInfo, frameDesc);
+                    yield return new(methodBase, methodFromStackframeIssue, extendedModuleInfo, frameDesc, Array.Empty<string>());
                 }
                 foreach (var (methodBase, extendedModuleInfo) in GetPostfixes(patches))
                 {
-                    yield return new(methodBase, methodFromStackframeIssue, extendedModuleInfo, frameDesc);
+                    yield return new(methodBase, methodFromStackframeIssue, extendedModuleInfo, frameDesc, Array.Empty<string>());
                 }
                 foreach (var (methodBase, extendedModuleInfo) in GetPrefixes(patches))
                 {
-                    yield return new(methodBase, methodFromStackframeIssue, extendedModuleInfo, frameDesc);
+                    yield return new(methodBase, methodFromStackframeIssue, extendedModuleInfo, frameDesc, Array.Empty<string>());
                 }
                 foreach (var (methodBase, extendedModuleInfo) in GetTranspilers(patches))
                 {
-                    yield return new(methodBase, methodFromStackframeIssue, extendedModuleInfo, frameDesc);
+                    yield return new(methodBase, methodFromStackframeIssue, extendedModuleInfo, frameDesc, Array.Empty<string>());
                 }
 
                 var moduleInfo = GetModuleInfoIfMod(method);
 
-                yield return new(method, methodFromStackframeIssue, moduleInfo, frameDesc);
+                yield return new(method, methodFromStackframeIssue, moduleInfo, frameDesc, Array.Empty<string>());
 
-                if (method is MethodInfo methodInfo && Harmony.GetOriginalMethod(methodInfo) is { } original)
-                    yield return new(original, methodFromStackframeIssue, moduleInfo, frameDesc);
+                /*
+                // Further versions of Harmony will do `PlatformTriple.Current.GetIdentifiable(method) is MethodInfo identifiableMethod` themselves
+                if (method is MethodInfo && MonoMod.Core.Platforms.PlatformTriple.Current.GetIdentifiable(method) is MethodInfo identifiableMethod && Harmony.GetOriginalMethod(identifiableMethod) is { } original)
+                {
+                    AsmResolver.DotNet.Code.Cil.CilInstructionCollection? instructions;
+                    try
+                    {
+                        var module = AsmResolver.DotNet.ModuleDefinition.FromModule(identifiableMethod.Module);
+                        var dynamicMethodDefinition = new AsmResolver.DotNet.Dynamic.DynamicMethodDefinition(module, identifiableMethod);
+                        var cilMethodBody = dynamicMethodDefinition.MethodBody as AsmResolver.DotNet.Code.Cil.CilMethodBody;
+                        instructions = cilMethodBody?.Instructions;
+                    }
+                    catch (Exception)
+                    {
+                        instructions = null;
+                    }
+
+                    var instructionsStr = instructions.Select(x => x.ToString()).ToArray();
+                    yield return new(original, methodFromStackframeIssue, moduleInfo, frameDesc, instructionsStr);
+                }
+                */
             }
         }
     }

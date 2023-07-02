@@ -47,6 +47,8 @@ namespace Bannerlord.ButterLib.CrashUploader
 
                 using var responseReader = new StreamReader(stream);
                 var result = await responseReader.ReadLineAsync().ConfigureAwait(false);
+                if (string.IsNullOrEmpty(result))
+                    return CrashUploaderResult.ResponseUrlIsNullOrEmpty();
                 return CrashUploaderResult.Success(result);
             }
             catch (Exception e)

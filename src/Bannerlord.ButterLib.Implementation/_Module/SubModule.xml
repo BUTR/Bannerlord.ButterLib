@@ -9,6 +9,9 @@
   <ModuleCategory value="Singleplayer" />
   <Url value="https://www.nexusmods.com/mountandblade2bannerlord/mods/2018" />
   <DependedModules>
+    <!-- Uncomment when doing ExtensionVersion > 2.0.0
+    <DependedModule Id="BLSE.AssemblyResolver" />
+    -->
     <DependedModule Id="Bannerlord.Harmony" DependentVersion="v$harmonyversion$" />
   </DependedModules>
   <ModulesToLoadAfterThis>

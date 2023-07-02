@@ -13,7 +13,7 @@ namespace Bannerlord.ButterLib.SaveSystem
 
         private static bool TypeImplementsGenericInterface(Type concreteType, Type interfaceType) => concreteType.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == interfaceType);
 
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
         {
             if (value is IDictionary dictionary)
             {
@@ -33,12 +33,12 @@ namespace Bannerlord.ButterLib.SaveSystem
             }
         }
 
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
         {
             if (existingValue is not IDictionary dict)
             {
                 var contract = serializer.ContractResolver.ResolveContract(objectType);
-                dict = (IDictionary) contract.DefaultCreator();
+                dict = (IDictionary) contract.DefaultCreator!();
             }
 
             if (reader.TokenType == JsonToken.StartArray)

@@ -1,8 +1,8 @@
 ﻿using System;
 
 // ReSharper disable once CheckNamespace
-namespace Bannerlord.BUTRLoader
+namespace Bannerlord.BLSE
 {
     [AttributeUsage(AttributeTargets.Class)]
-    internal sealed class BUTRLoaderInterceptorAttribute : Attribute { }
+    internal sealed class BLSELoaderInterceptorAttribute : Attribute { }
 }

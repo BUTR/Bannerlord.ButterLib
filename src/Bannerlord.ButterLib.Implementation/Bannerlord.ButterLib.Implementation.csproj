@@ -5,12 +5,12 @@
     <TargetFrameworks>net472;netcoreapp3.1</TargetFrameworks>
     <LangVersion>10.0</LangVersion>
     <Nullable>enable</Nullable>
-    <Platforms>x64</Platforms>
+    <Platform>x64</Platform>
     <BuildForWindows>false</BuildForWindows>
     <BuildForWindowsStore>false</BuildForWindowsStore>
 
     <Configurations>Stable_Debug;Stable_Release;Beta_Debug;Beta_Release</Configurations>
-    <DefineConstants>$(DefineConstants);$(GameVersionConstant)</DefineConstants>
+    <DefineConstants>$(DefineConstants);$(GameVersionConstant);X64</DefineConstants>
 
     <AssemblyName>$(MSBuildProjectName).$(GameVersion)</AssemblyName>
   </PropertyGroup>
@@ -35,12 +35,17 @@
   <ItemGroup>
     <PackageReference Include="Bannerlord.BuildResources" Version="$(BuildResourcesVersion)" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
 
-    <PackageReference Include="Bannerlord.Lib.Harmony" Version="$(HarmonyVersion)" PrivateAssets="all" IncludeAssets="compile" />
+    <PackageReference Include="Lib.Harmony" Version="$(HarmonyVersion)-prerelease.2" PrivateAssets="all" IncludeAssets="compile" />
+    <!-- Disable MonoMod.Backports since we don't need it for compilation -->
+    <PackageReference Include="MonoMod.Backports" Version="*" PrivateAssets="all" IncludeAssets="none" />
 
     <PackageReference Include="Bannerlord.ReferenceAssemblies.Core" Version="$(GameVersion).*-*" PrivateAssets="all" />
     <PackageReference Include="Bannerlord.ReferenceAssemblies.Native" Version="$(GameVersion).*-*" PrivateAssets="all" />
 
     <PackageReference Include="IsExternalInit" Version="1.0.3" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
+
+    <!-- AsmResolver.DotNet.Dynamic force pulls System.Runtime.CompilerSerices.Unsafe v6, downgrade it -->
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.5.3" />
   </ItemGroup>
   <!--NuGet References-->
 

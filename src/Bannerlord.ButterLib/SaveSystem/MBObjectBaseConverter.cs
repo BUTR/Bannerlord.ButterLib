@@ -29,7 +29,7 @@ namespace Bannerlord.ButterLib.SaveSystem
             serializer.Serialize(writer, null);
         }
 
-        public override object? ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
         {
             if (serializer.Deserialize<MBGUID?>(reader) is { } mbguid)
             {

@@ -107,13 +107,13 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
             internal readonly MBGUID ObjectId;
 
             [SaveableField(1)]
-            internal readonly string Key;
+            internal readonly string? Key;
 
             private DataKey(MBGUID objectId, string key) => (ObjectId, Key) = (objectId, key);
 
             internal static DataKey Make(MBObjectBase obj, string key) => new(obj.Id, key);
 
-            public bool Equals(DataKey other) => ObjectId == other.ObjectId && !(Key is null || other.Key is null) && Key.Equals(other.Key);
+            public bool Equals(DataKey? other) => ObjectId == other?.ObjectId && !(Key is null || other.Key is null) && Key.Equals(other.Key);
 
             public override bool Equals(object? obj) => obj is DataKey k && Equals(k);
 

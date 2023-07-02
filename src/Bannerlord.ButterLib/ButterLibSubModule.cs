@@ -78,6 +78,8 @@ namespace Bannerlord.ButterLib
             this.AddDefaultSerilogLogger();
             this.AddSerilogLoggerProvider("butterlib.txt", new[] { "Bannerlord.ButterLib.*" });
             this.AddSerilogLoggerProvider("trace.txt", new[] { "System.Diagnostics.Logger.*" });
+            //this.AddSteamWriterLogger("harmony.txt", out var harmonyStreamWriter);
+            //HarmonyLib.FileLog.LogWriter = harmonyStreamWriter;
 
             Services.AddSubSystem<DelayedSubModuleSubSystem>();
             Services.AddSubSystem<ExceptionHandlerSubSystem>();

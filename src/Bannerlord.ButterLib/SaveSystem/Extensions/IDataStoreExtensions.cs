@@ -28,7 +28,7 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
             return strBuilder.ToString();
         }
 
-        public static bool SyncDataAsJson<T>(this IDataStore dataStore, string key, ref T data, JsonSerializerSettings? settings = null)
+        public static bool SyncDataAsJson<T>(this IDataStore dataStore, string key, ref T? data, JsonSerializerSettings? settings = null)
         {
             // If the type we're synchronizing is a string or string array, then it's ambiguous
             // with our own internal storage types, which imply that the strings contain valid
@@ -63,7 +63,7 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
                     var jsonDataChunks = Array.Empty<string>();
                     if (dataStore.SyncData(key, ref jsonDataChunks))
                     {
-                        var (format, jsonData) = JsonConvert.DeserializeObject<JsonData>(ChunksToString(jsonDataChunks ?? Array.Empty<string>()), settings);
+                        var (format, jsonData) = JsonConvert.DeserializeObject<JsonData?>(ChunksToString(jsonDataChunks ?? Array.Empty<string>()), settings) ?? new(-1, string.Empty);
                         data = format switch
                         {
                             2 => JsonConvert.DeserializeObject<T>(jsonData, settings),

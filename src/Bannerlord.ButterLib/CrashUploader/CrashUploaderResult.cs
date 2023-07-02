@@ -7,6 +7,7 @@
         public static CrashUploaderResult ResponseIsNotHttpWebResponse() => new(CrashUploaderStatus.ResponseIsNotHttpWebResponse);
         public static CrashUploaderResult WrongStatusCode(string statusCode) => new(CrashUploaderStatus.WrongStatusCode) { StatusCode = statusCode };
         public static CrashUploaderResult ResponseStreamIsNull() => new(CrashUploaderStatus.ResponseStreamIsNull);
+        public static CrashUploaderResult ResponseUrlIsNullOrEmpty() => new(CrashUploaderStatus.UrlIsNullOrEmpty);
         public static CrashUploaderResult FailedWithException(string exception) => new(CrashUploaderStatus.FailedWithException) { Exception = exception };
 
         public CrashUploaderStatus Status { get; }

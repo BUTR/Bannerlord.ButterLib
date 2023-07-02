@@ -144,7 +144,7 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
             if (obj is null)
             {
                 var prefix = errPrefix ?? string.Empty;
-                _log.LogError($"{prefix}{name} is null!");
+                _log.LogError("{Prefix}{Name} is null!", prefix, name);
                 return false;
             }
 
@@ -168,7 +168,7 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
 
             internal virtual bool IsReady => ThisNotNull(PatchMethod, nameof(PatchMethod)) & ThisNotNull(TargetMethod, nameof(TargetMethod));
 
-            private MethodInfo? ResolvePatchMethod() => AccessTools2.Method(GetType().DeclaringType, PatchMethodName);
+            private MethodInfo? ResolvePatchMethod() => AccessTools2.Method(GetType().DeclaringType!, PatchMethodName);
 
             protected bool ThisNotNull(object? obj, string objName) => NotNull(obj, objName, $"Patch {PatchMethodName}: ");
         }
