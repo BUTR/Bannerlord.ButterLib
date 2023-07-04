@@ -12,7 +12,7 @@ namespace Bannerlord.ButterLib.SubModuleWrappers2
         private readonly Harmony Harmony = new("Bannerlord.ButterLib.SubModuleWrappers2");
 
         public string Id => "SubModuleWrappers2";
-        public string Description => "Mod Developer feature! A wrapper for MBSubModuleBase based on Harmony patches.";
+        public string Description => "{=Butterlib.WrapperHint}Mod Developer feature! A wrapper for MBSubModuleBase based on Harmony patches.";
         public bool IsEnabled => true;
         public bool CanBeDisabled => false;
         public bool CanBeSwitchedAtRuntime => false;

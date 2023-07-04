@@ -16,7 +16,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
         internal readonly Harmony Harmony = new("Bannerlord.ButterLib.ExceptionHandler.BEW");
 
         public string Id => "ExceptionHandler";
-        public string Description => "Captures game crashes and creates reports out of them.";
+        public string Description => "{=Butterlib.ExceptionHandlerHint}Captures game crashes and creates reports out of them.";
         public bool IsEnabled { get; private set; }
         public bool CanBeDisabled => true;
         public bool CanBeSwitchedAtRuntime => true;

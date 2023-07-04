@@ -10,7 +10,7 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem
         public static SaveSystemSubSystem? Instance { get; private set; }
 
         public string Id => "Save System";
-        public string Description => @"Extends and fixes the game's save system:
+        public string Description => @"{=ButterlibLoggingHint}Extends and fixes the game's save system:
 * Fixes possible collision with save names;
 * Fixes save corruption & crashes when duplicate types are defined;
 * Adds support for saving many more container types;
