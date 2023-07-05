@@ -10,7 +10,8 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
         public static ObjectSystemSubSystem? Instance { get; private set; }
 
         public string Id => "Object System";
-        public string Description => "Mod Developer feature!";
+        public string Name => "{=IA0mVgHJgo}Object System";
+        public string Description => "{=mFZTv1nwOx}Mod Developer feature!";
         public bool IsEnabled { get; private set; }
         public bool CanBeDisabled => true;
         public bool CanBeSwitchedAtRuntime => false;

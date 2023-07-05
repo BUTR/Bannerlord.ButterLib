@@ -23,5 +23,24 @@
 
     <string id="ZD69h3IpF5" text="Use Vanilla Crash Handler" />
     <string id="o0DgSNv5V1" text="Disables ButterLib's and BEW's Crash Handlers with the new Watchdog Crash Handler. Do not enable if not sure." />
+
+    <string id="Ox6uK8fZWs" text="Distance Matrix" />
+    <string id="WQ4r2n0mYj" text="Mod Developer feature! Provides helpers to calculate distance between objects on map." />
+    <string id="jvV6QDc7AJ" text="Hot Keys" />
+    <string id="wNNYwgUeus" text="Mod Developer feature! Provides a better way for mods to create hotkeys" />
+    <string id="JGylAT3SrB" text="MBSubModuleBase Extended" />
+    <string id="XfveBQYVWH" text="Mod Developer feature! Introduces a MBSubModuleBase-derived abstract class, that provides new SubModule events." />
+    <string id="IA0mVgHJgo" text="Object System" />
+    <string id="mFZTv1nwOx" text="Mod Developer feature!" />
+    <string id="66A5N9278w" text="Save System" />
+    <string id="9ybOxGpWb5" text="Extends and fixes the game's save system:{NL}* Fixes possible collision with save names;{NL}* Fixes save corruption &amp; crashes when duplicate types are defined;{NL}* Adds support for saving many more container types;{NL}This might alter the save file, disabling the feature might render the save file unloadable!" />
+    <string id="UsLlrwMTjJ" text="Crash Uploader" />
+    <string id="hjeoN9NwZm" text="Uploads the crash reports to BUTR for an easy file hosting." />
+    <string id="joCJ9xpDvM" text="Delayed SubModule" />
+    <string id="Gznum6kuzv" text="Mod Developer feature! Provides helpers to run methods after SubModule events." />
+    <string id="ZypQtNNcVN" text="Exception Handler" />
+    <string id="UreeIeLQYS" text="Captures game crashes and creates reports out of them." />
+    <string id="NkAAB8EEu2" text="SubModule Wrappers" />
+    <string id="izmKJPjkjN" text="Mod Developer feature! A wrapper for MBSubModuleBase based on Harmony patches." />
   </strings>
 </base>
