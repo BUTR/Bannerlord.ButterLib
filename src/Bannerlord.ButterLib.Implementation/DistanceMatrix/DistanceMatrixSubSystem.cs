@@ -9,7 +9,8 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
         public static DistanceMatrixSubSystem? Instance { get; private set; }
 
         public string Id => "Distance Matrix";
-        public string Description => "Mod Developer feature! Provides helpers to calculate distance between objects on map.";
+        public string Name => "{=Ox6uK8fZWs}Distance Matrix";
+        public string Description => "{=WQ4r2n0mYj}Mod Developer feature! Provides helpers to calculate distance between objects on map.";
         public bool IsEnabled { get; private set; } = false;
         public bool CanBeDisabled => true;
         public bool CanBeSwitchedAtRuntime => false;

@@ -7,7 +7,6 @@ namespace Bannerlord.ButterLib.ExceptionHandler.DebuggerDetection
     internal static class ProcessDebug
     {
         private const int PROCESS_DEBUG_OBJECT_HANDLE = 30;
-        private const int PROCESS_DEBUG_PORT = 7;
 
         [DllImport("ntdll.dll", SetLastError = true)]
         private static extern int NtQueryInformationProcess(IntPtr processHandle, int processInformationClass,
@@ -31,26 +30,5 @@ namespace Bannerlord.ButterLib.ExceptionHandler.DebuggerDetection
             );
             return status == 0 && (IntPtr) 0 != flProcessDebugObject;
         }
-
-        /*
-        /// <summary>
-        /// The CheckRemoteDebuggerPresent function is assigned the DebugPort value,
-        /// as the ProcessInformationClass parameter value (the second one) is 7.
-        /// It was originally published on https://www.apriorit.com/
-        /// </summary>
-        /// <returns></returns>
-        public static bool CheckProcessDebugPort()
-        {
-            var status = NtQueryInformationProcess
-            (
-                Process.GetCurrentProcess().Handle,
-                PROCESS_DEBUG_PORT,
-                out var flProcessDebugPort,
-                IntPtr.Size,
-                IntPtr.Zero
-            );
-            return status == 0 && (IntPtr) (-1) == flProcessDebugPort;
-        }
-        */
     }
 }
