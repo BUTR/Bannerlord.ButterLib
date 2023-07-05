@@ -10,10 +10,11 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem
         public static SaveSystemSubSystem? Instance { get; private set; }
 
         public string Id => "Save System";
-        public string Description => @"{=Butterlib.SavesysHint}Extends and fixes the game's save system:
-* Fixes possible collision with save names;
-* Fixes save corruption & crashes when duplicate types are defined;
-* Adds support for saving many more container types;
+        public string Name => "{=66A5N9278w}Save System";
+        public string Description => @"{=9ybOxGpWb5}Extends and fixes the game's save system:{NL}
+* Fixes possible collision with save names;{NL}
+* Fixes save corruption & crashes when duplicate types are defined;{NL}
+* Adds support for saving many more container types;{NL}
 This might alter the save file, disabling the feature might render the save file unloadable!";
         public bool IsEnabled { get; private set; }
         public bool CanBeDisabled => true;

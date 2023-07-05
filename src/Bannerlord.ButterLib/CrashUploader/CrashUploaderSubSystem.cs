@@ -7,7 +7,8 @@ namespace Bannerlord.ButterLib.CrashUploader
         public static CrashUploaderSubSystem? Instance { get; private set; }
 
         public string Id => "CrashUploader";
-        public string Description => "{=Butterlib.UploaderHint}Uploads the crash reports to BUTR for an easy file hosting.";
+        public string Name => "{=UsLlrwMTjJ}Crash Uploader";
+        public string Description => "{=hjeoN9NwZm}Uploads the crash reports to BUTR for an easy file hosting.";
         public bool IsEnabled { get; private set; }
         public bool CanBeDisabled => true;
         public bool CanBeSwitchedAtRuntime => true;

@@ -15,7 +15,8 @@ namespace Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended
     {
         public static MBSubModuleBaseExSubSystem? Instance { get; private set; }
         public string Id => "MBSubModuleBase extended";
-        public string Description => "{=Butterlib.ExtendedHint}Mod Developer feature!  Introduces a MBSubModuleBase-derived abstract class, that provides new SubModule events.";
+        public string Name => "{=JGylAT3SrB}MBSubModuleBase Extended";
+        public string Description => "{=XfveBQYVWH}Mod Developer feature! Introduces a MBSubModuleBase-derived abstract class, that provides new SubModule events.";
         public bool IsEnabled { get; private set; }
         public bool CanBeDisabled => true;
         public bool CanBeSwitchedAtRuntime => false;
