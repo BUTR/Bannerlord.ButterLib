@@ -66,7 +66,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                         if (IsEnabled)
                         {
                             //BEWPatch.Disable(Harmony);
-                            BEWPatch.EnableAutoGenCatch(Harmony);
+                            //BEWPatch.EnableAutoGenCatch(Harmony);
                         }
                     }
                     else
@@ -74,7 +74,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                         if (IsEnabled)
                         {
                             //BEWPatch.Enable(Harmony);
-                            BEWPatch.DisableAutoGenCatch(Harmony);
+                            //BEWPatch.DisableAutoGenCatch(Harmony);
                         }
                     }
                 }
@@ -110,7 +110,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             if (!_wasButrLoaderInterceptorCalled)
             {
                 BEWPatch.Enable(Harmony);
-                BEWPatch.EnableAutoGenCatch(Harmony);
+                //BEWPatch.EnableAutoGenCatch(Harmony);
             }
         }
 
