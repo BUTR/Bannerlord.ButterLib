@@ -176,7 +176,7 @@ namespace Bannerlord.ButterLib.Logger.Extensions
                 {
                     if (index < 0 || index >= Count)
                         throw new IndexOutOfRangeException(nameof(index));
-                    return index == Count - 1 ? new KeyValuePair<string, object>("{OriginalFormat}", _originalMessage) : _formatter.GetValue(_values, index);
+                    return index == Count - 1 ? new KeyValuePair<string, object>("{OriginalFormat}", _originalMessage) : _formatter!.GetValue(_values!, index);
                 }
             }
 

@@ -27,7 +27,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
 {
     internal static class HtmlBuilder
     {
-        private static readonly int Version = 11;
+        private static readonly int Version = 12;
         private static readonly string NL = Environment.NewLine;
 
         public static readonly string MiniDumpTag = "<!-- MINI DUMP -->";
@@ -325,12 +325,12 @@ namespace Bannerlord.ButterLib.ExceptionHandler
         }
         private static string GetBLSEVersion()
         {
-            var blseMetadata = AccessTools2.TypeByName("Bannerlord.BLSE.BLSEInterceptorAttribute")?.Assembly.GetCustomAttributes<AssemblyMetadataAttribute>();
+            var blseMetadata = AccessTools2.AllAssemblies().FirstOrDefault(x => x.GetName().Name == "Bannerlord.BLSE")?.GetCustomAttributes<AssemblyMetadataAttribute>();
             return blseMetadata?.FirstOrDefault(x => x.Key == "BLSEVersion")?.Value ?? string.Empty;
         }
         private static string GetLauncherExVersion()
         {
-            var launcherExMetadata = AccessTools2.TypeByName("Bannerlord.LauncherEx.Mixins.LauncherVMMixin")?.Assembly.GetCustomAttributes<AssemblyMetadataAttribute>();
+            var launcherExMetadata = AccessTools2.AllAssemblies().FirstOrDefault(x => x.GetName().Name == "Bannerlord.LauncherEx")?.GetCustomAttributes<AssemblyMetadataAttribute>();
             return launcherExMetadata?.FirstOrDefault(x => x.Key == "LauncherExVersion")?.Value ?? string.Empty;
         }
 
