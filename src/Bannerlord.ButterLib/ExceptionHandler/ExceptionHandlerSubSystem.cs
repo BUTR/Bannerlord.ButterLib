@@ -3,6 +3,7 @@ using Bannerlord.ButterLib.SubSystems;
 using Bannerlord.ButterLib.SubSystems.Settings;
 
 using HarmonyLib;
+using HarmonyLib.BUTR.Extensions;
 
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,10 @@ namespace Bannerlord.ButterLib.ExceptionHandler
     [BLSEInterceptor]
     internal sealed class ExceptionHandlerSubSystem : ISubSystem, ISubSystemSettings<ExceptionHandlerSubSystem>
     {
+        private delegate void DetachWatchdogDelegate();
+        private static readonly DetachWatchdogDelegate DetachWatchdog =
+            AccessTools2.GetDelegate<DetachWatchdogDelegate>("TaleWorlds.Engine.Utilities:DetachWatchdog");
+
         public static ExceptionHandlerSubSystem? Instance { get; private set; }
 
         internal readonly Harmony Harmony = new("Bannerlord.ButterLib.ExceptionHandler.BEW");
@@ -76,6 +81,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             if (!_wasButrLoaderInterceptorCalled)
             {
                 BEWPatch.Enable(Harmony);
+                DetachWatchdog?.Invoke();
             }
         }
 
