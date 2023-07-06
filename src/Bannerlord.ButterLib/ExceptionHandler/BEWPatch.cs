@@ -6,7 +6,6 @@ using HarmonyLib.BUTR.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -55,11 +54,13 @@ namespace Bannerlord.ButterLib.ExceptionHandler
 
         private static void Finalizer(Exception? __exception)
         {
-            if (ExceptionHandlerSubSystem.Instance?.DisableWhenDebuggerIsAttached == true && IsDebuggerAttached())
-                return;
-
             if (__exception is not null)
+            {
+                if (ExceptionHandlerSubSystem.Instance?.DisableWhenDebuggerIsAttached == true && IsDebuggerAttached())
+                    return;
+
                 ExceptionReporter.Show(__exception);
+            }
         }
 
         internal static void Enable(Harmony harmony)
@@ -94,14 +95,6 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                 transpiler: AccessTools2.Method(typeof(BEWPatch), nameof(BlankTranspiler)));
         }
 
-        internal static void EnableAutoGenCatch(Harmony harmony)
-        {
-            var callbacksGeneratedTypes = AccessTools2.AllAssemblies().SelectMany(x => x.GetTypes().Where(y => y.Name.EndsWith("CallbacksGenerated")));
-            var callbackGeneratedMethods = callbacksGeneratedTypes.SelectMany(AccessTools.GetDeclaredMethods);
-            foreach (var method in callbackGeneratedMethods.Where(x => x.GetCustomAttributesData().Any(y => y.AttributeType.Name == "MonoPInvokeCallbackAttribute")))
-                harmony.Patch(method, finalizer: new HarmonyMethod(FinalizerMethod, before: BEW));
-        }
-
         internal static void Disable(Harmony harmony)
         {
             harmony.Unpatch(ManagedApplicationTickMethod, FinalizerMethod);
@@ -109,14 +102,6 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             harmony.Unpatch(ScreenManagerTickMethod, FinalizerMethod);
             harmony.Unpatch(ManagedScriptHolderTickComponentsMethod, FinalizerMethod);
             harmony.Unpatch(MissionTickMethod, FinalizerMethod);
-        }
-
-        internal static void DisableAutoGenCatch(Harmony harmony)
-        {
-            var callbacksGeneratedTypes = AccessTools2.AllAssemblies().SelectMany(x => x.GetTypes().Where(y => y.Name.EndsWith("CallbacksGenerated")));
-            var callbackGeneratedMethods = callbacksGeneratedTypes.SelectMany(AccessTools.GetDeclaredMethods);
-            foreach (var method in callbackGeneratedMethods.Where(x => x.GetCustomAttributesData().Any(y => y.AttributeType.Name == "MonoPInvokeCallbackAttribute")))
-                harmony.Unpatch(method, FinalizerMethod);
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]

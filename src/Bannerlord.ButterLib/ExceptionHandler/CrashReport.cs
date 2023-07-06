@@ -82,7 +82,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
                 }
             }
 
-            static ModuleInfoExtended? GetModuleInfoIfMod(MethodBase? method) => method?.DeclaringType is not null
+            static ModuleInfoExtended? GetModuleInfoIfMod(MethodBase? method) => method?.DeclaringType is { Assembly.IsDynamic: false }
                 ? ModuleInfoHelper.GetModuleByType(method.DeclaringType)
                 : null;
 
