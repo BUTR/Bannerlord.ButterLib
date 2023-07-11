@@ -217,7 +217,7 @@ Clicking 'Close Report' will continue with the Game's error report mechanism.
 
         public async void UploadReport()
         {
-            var crashUploader = ButterLibSubModule.Instance?.GetServiceProvider()?.GetRequiredService<ICrashUploader>();
+            var crashUploader = ButterLibSubModule.Instance?.GetServiceProvider()?.GetService<ICrashUploader>();
             if (crashUploader is null)
             {
                 MessageBox.Show("Failed to get the crash uploader!", "Error!");

@@ -18,6 +18,6 @@ namespace Bannerlord.ButterLib.Common.Extensions
     {
         private static ICampaignExtensions? _instance;
         private static ICampaignExtensions? Instance =>
-            _instance ??= ButterLibSubModule.Instance?.GetServiceProvider()?.GetRequiredService<ICampaignExtensions>();
+            _instance ??= ButterLibSubModule.Instance?.GetServiceProvider()?.GetService<ICampaignExtensions>();
     }
 }

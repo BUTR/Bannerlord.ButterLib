@@ -39,7 +39,7 @@ namespace Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended.Patches
         internal static bool Enable(Harmony harmony)
         {
             var provider = ButterLibSubModule.Instance?.GetServiceProvider() ?? ButterLibSubModule.Instance?.GetTempServiceProvider();
-            _log = provider?.GetRequiredService<ILogger<ModulePatch>>() ?? NullLogger<ModulePatch>.Instance;
+            _log = provider?.GetService<ILogger<ModulePatch>>() ?? NullLogger<ModulePatch>.Instance;
 
             return
                 CheckRequiredMethodInfos()

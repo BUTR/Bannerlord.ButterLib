@@ -16,5 +16,30 @@
 
     <string id="B7bfrDNzIk" text="调试启动时禁用"/>
     <string id="r3ktQzFMRz" text="调试启动时，禁用异常处理程序。"/>
+
+    <string id="jorWb502pD" text="捕捉自动生成的代码异常。（低性能）&#10;（禁用）"/>
+    <string id="ji1brrsEZz" text="捕捉每个 本机 -&gt; 托管 的调用。应该能捕捉每一个没有正常捕捉到的异常。可能会稍微降低整体性能。"/>
+
+    <string id="ZD69h3IpF5" text="使用原版崩溃处理程序。"/>
+    <string id="o0DgSNv5V1" text="使用新的 Watchdog 崩溃处理程序时，禁用 ButterLib 的和 BEW 的崩溃处理程序。如果不确定，不要启用。"/>
+
+    <string id="Ox6uK8fZWs" text="距离矩阵"/>
+    <string id="WQ4r2n0mYj" text="Mod 开发者功能！辅助计算地图上物体间的距离。"/>
+    <string id="jvV6QDc7AJ" text="热键"/>
+    <string id="wNNYwgUeus" text="Mod 开发者功能！方便各个 mods 创建热键。"/>
+    <string id="JGylAT3SrB" text="MBSubModuleBase 拓展"/>
+    <string id="XfveBQYVWH" text="Mod 开发者功能！引入 MBSubModuleBase-衍生抽象类，这提供了新的 SubModule 事件。"/>
+    <string id="IA0mVgHJgo" text="对象系统"/>
+    <string id="mFZTv1nwOx" text="Mod 开发者功能！"/>
+    <string id="66A5N9278w" text="保存系统"/>
+    <string id="9ybOxGpWb5" text="扩展并修复了游戏的保存系统：{NL}* 修复了因存档名相同导致的冲突；{NL}* 修复了因重复类型定义导致的存档损坏&amp;崩溃；{NL}* 增加了对更多容器类型的存档支持；{NL}这可能会改变存档文件，禁用该功能可能会导致存档无法加载！"/>
+    <string id="UsLlrwMTjJ" text="崩溃上传器"/>
+    <string id="hjeoN9NwZm" text="上传崩溃报告到 BUTR ，方便文件存储。"/>
+    <string id="joCJ9xpDvM" text="延迟 SubModule"/>
+    <string id="Gznum6kuzv" text="Mod 开发者功能！辅助开发者在 SubModule 事件之后，去跑 methods。"/>
+    <string id="ZypQtNNcVN" text="异常处理程序"/>
+    <string id="UreeIeLQYS" text="捕捉游戏崩溃，创建报告。"/>
+    <string id="NkAAB8EEu2" text="SubModule 包装器"/>
+    <string id="izmKJPjkjN" text="Mod 开发者功能！基于 Harmony patches 包装 MBSubModuleBase。"/>
   </strings>
 </base>

@@ -22,7 +22,7 @@ namespace Bannerlord.ButterLib.HotKeys
     {
         private static IHotKeyManagerStatic? _staticInstance;
         internal static IHotKeyManagerStatic? StaticInstance =>
-            _staticInstance ??= ButterLibSubModule.Instance?.GetServiceProvider()?.GetRequiredService<IHotKeyManagerStatic>();
+            _staticInstance ??= ButterLibSubModule.Instance?.GetServiceProvider()?.GetService<IHotKeyManagerStatic>();
 
         /// <summary>
         /// The available categories in the main menu for your hotkey to appear under.

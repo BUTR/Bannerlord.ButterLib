@@ -24,7 +24,7 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
         public void Enable()
         {
             if (GameInitialized)
-                throw new Exception("Distance Matrix SubSystem can't be enabled after campaign start!");
+                return;
 
             IsEnabled = true;
         }
@@ -32,7 +32,7 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
         public void Disable()
         {
             if (GameInitialized)
-                throw new Exception("Distance Matrix SubSystem can't be disabled after campaign start!");
+                return;
 
             IsEnabled = false;
         }

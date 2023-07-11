@@ -22,7 +22,7 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
 
         public override void SyncData(IDataStore dataStore)
         {
-            var keeper = ButterLibSubModule.Instance?.GetServiceProvider()?.GetRequiredService<IMBObjectKeeper>();
+            var keeper = ButterLibSubModule.Instance?.GetServiceProvider()?.GetService<IMBObjectKeeper>();
             keeper?.Sync(dataStore);
 
             if (dataStore.IsSaving)

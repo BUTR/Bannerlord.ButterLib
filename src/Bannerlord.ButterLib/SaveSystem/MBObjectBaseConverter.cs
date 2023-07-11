@@ -19,7 +19,7 @@ namespace Bannerlord.ButterLib.SaveSystem
         {
             if (value is MBObjectBase mbObject)
             {
-                var keeper = ButterLibSubModule.Instance?.GetServiceProvider()?.GetRequiredService<IMBObjectKeeper>();
+                var keeper = ButterLibSubModule.Instance?.GetServiceProvider()?.GetService<IMBObjectKeeper>();
                 keeper?.Keep(mbObject);
 
                 serializer.Serialize(writer, mbObject.Id);
@@ -33,7 +33,7 @@ namespace Bannerlord.ButterLib.SaveSystem
         {
             if (serializer.Deserialize<MBGUID?>(reader) is { } mbguid)
             {
-                var finder = ButterLibSubModule.Instance?.GetServiceProvider()?.GetRequiredService<IMBObjectFinder>();
+                var finder = ButterLibSubModule.Instance?.GetServiceProvider()?.GetService<IMBObjectFinder>();
                 return finder?.Find(mbguid, objectType);
             }
             return null;

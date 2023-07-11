@@ -28,7 +28,7 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem.Patches
         internal static void Enable(Harmony harmony)
         {
             var provider = ButterLibSubModule.Instance?.GetServiceProvider() ?? ButterLibSubModule.Instance?.GetTempServiceProvider();
-            _log = provider?.GetRequiredService<ILogger<CampaignBehaviorManagerPatch>>() ?? NullLogger<CampaignBehaviorManagerPatch>.Instance;
+            _log = provider?.GetService<ILogger<CampaignBehaviorManagerPatch>>() ?? NullLogger<CampaignBehaviorManagerPatch>.Instance;
 
             if (OnGameLoadedTargetMI is null)
                 _log.LogError("{Method} is null", nameof(OnGameLoadedTargetMI));
@@ -87,7 +87,7 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem.Patches
         [MethodImpl(MethodImplOptions.NoInlining)]
         private static void OnGameLoadedPrefix(object? ____campaignBehaviorDataStore)
         {
-            var mbObjectVariableStorage = ButterLibSubModule.Instance?.GetServiceProvider()?.GetRequiredService<IMBObjectExtensionDataStore>();
+            var mbObjectVariableStorage = ButterLibSubModule.Instance?.GetServiceProvider()?.GetService<IMBObjectExtensionDataStore>();
 
             if (mbObjectVariableStorage is null)
             {
@@ -114,7 +114,7 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem.Patches
         [MethodImpl(MethodImplOptions.NoInlining)]
         private static void OnBeforeSavePostfix(object? ____campaignBehaviorDataStore)
         {
-            var mbObjectVariableStorage = ButterLibSubModule.Instance?.GetServiceProvider()?.GetRequiredService<IMBObjectExtensionDataStore>();
+            var mbObjectVariableStorage = ButterLibSubModule.Instance?.GetServiceProvider()?.GetService<IMBObjectExtensionDataStore>();
 
             if (mbObjectVariableStorage is null)
             {

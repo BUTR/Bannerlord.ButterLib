@@ -16,7 +16,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Extensions
         private static IMBObjectExtensionDataStore? _instance;
 
         private static IMBObjectExtensionDataStore? Instance =>
-            _instance ??= ButterLibSubModule.Instance?.GetServiceProvider()?.GetRequiredService<IMBObjectExtensionDataStore>();
+            _instance ??= ButterLibSubModule.Instance?.GetServiceProvider()?.GetService<IMBObjectExtensionDataStore>();
 
         internal static void OnGameEnd() => _instance = null;
 

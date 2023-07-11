@@ -147,8 +147,8 @@ namespace Bannerlord.ButterLib.Common.Extensions
             where TImplementation : class, ISubSystem, new()
         {
             var instance = new TImplementation();
-            services.AddSingleton<TImplementation>(sp => instance);
-            services.AddSingleton<ISubSystem>(sp => sp.GetRequiredService<TImplementation>());
+            services.AddSingleton<TImplementation>(_ => instance);
+            services.AddSingleton<ISubSystem>(sp => sp.GetService<TImplementation>());
             return services;
         }
 

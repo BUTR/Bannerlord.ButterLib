@@ -13,6 +13,8 @@ namespace System.Diagnostics.Logger
             public string Message { get; init; } = default!;
         }
 
+        // There are some cases when System.Numerics.Vectors is not found
+        // BLSE fixes that, but we might revert to string handling before BLSE is mandatory
         private static ParseResult? Parse(ReadOnlySpan<char> str)
         {
             if (str.IndexOf(':') is var logLevelIdx && logLevelIdx == -1)
