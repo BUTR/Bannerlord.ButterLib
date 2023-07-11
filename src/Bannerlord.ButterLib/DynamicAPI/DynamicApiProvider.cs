@@ -102,6 +102,10 @@ namespace Bannerlord.ButterLib.DynamicAPI
                     {
                         return e.Types.Select(GetDynamicAPIClass);
                     }
+                    catch (Exception)
+                    {
+                        return Enumerable.Empty<TypeWithAttribute?>();
+                    }
                 })
                 .OfType<TypeWithAttribute>()
                 .ToDictionary(DynamicAPIClassAttributeName, x => x.Type);
