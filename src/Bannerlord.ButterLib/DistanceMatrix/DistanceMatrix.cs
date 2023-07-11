@@ -20,7 +20,7 @@ namespace Bannerlord.ButterLib.DistanceMatrix
     {
         private static IDistanceMatrixStatic? _staticInstance;
         internal static IDistanceMatrixStatic? StaticInstance =>
-            _staticInstance ??= ButterLibSubModule.Instance?.GetServiceProvider()?.GetRequiredService<IDistanceMatrixStatic>();
+            _staticInstance ??= ButterLibSubModule.Instance?.GetServiceProvider()?.GetService<IDistanceMatrixStatic>();
 
 
         /// <summary>

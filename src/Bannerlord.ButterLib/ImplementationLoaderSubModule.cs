@@ -230,7 +230,7 @@ namespace Bannerlord.ButterLib
         {
             ServiceRegistrationWasCalled = true;
 
-            var logger = this.GetTempServiceProvider()?.GetRequiredService<ILogger<ImplementationLoaderSubModule>>() ?? NullLogger<ImplementationLoaderSubModule>.Instance;
+            var logger = this.GetTempServiceProvider()?.GetService<ILogger<ImplementationLoaderSubModule>>() ?? NullLogger<ImplementationLoaderSubModule>.Instance;
             _subModules.AddRange(LoadAllImplementations(logger).Select(x => new MBSubModuleBaseWrapper(x)).ToList());
 
             base.OnServiceRegistration();
@@ -240,7 +240,7 @@ namespace Bannerlord.ButterLib
         {
             if (!ServiceRegistrationWasCalled)
             {
-                var logger = this.GetTempServiceProvider()?.GetRequiredService<ILogger<ImplementationLoaderSubModule>>() ?? NullLogger<ImplementationLoaderSubModule>.Instance;
+                var logger = this.GetTempServiceProvider()?.GetService<ILogger<ImplementationLoaderSubModule>>() ?? NullLogger<ImplementationLoaderSubModule>.Instance;
                 _subModules.AddRange(LoadAllImplementations(logger).Select(x => new MBSubModuleBaseWrapper(x)).ToList());
             }
 

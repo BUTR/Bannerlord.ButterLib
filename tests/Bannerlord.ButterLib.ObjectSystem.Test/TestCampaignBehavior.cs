@@ -30,8 +30,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
 
         public TestCampaignBehavior()
         {
-            _log = this.GetServiceProvider()?.GetRequiredService<ILogger<TestCampaignBehavior>>()
-                   ?? NullLogger<TestCampaignBehavior>.Instance;
+            _log = this.GetServiceProvider()?.GetService<ILogger<TestCampaignBehavior>>() ?? NullLogger<TestCampaignBehavior>.Instance;
 
             _log.LogTrace("{Behavior} initialized", nameof(TestCampaignBehavior));
         }

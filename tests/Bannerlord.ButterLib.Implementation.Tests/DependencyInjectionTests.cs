@@ -109,7 +109,7 @@ namespace Bannerlord.ButterLib.Implementation.Tests
         {
             var serviceProvider = ButterLibSubModule.Instance!.GetServiceProvider()!;
 
-            var campaignExtensions = serviceProvider.GetRequiredService<ICampaignExtensions>();
+            var campaignExtensions = serviceProvider.GetService<ICampaignExtensions>();
             Assert.NotNull(campaignExtensions);
             Assert.True(campaignExtensions is CampaignExtensionsImplementation);
         }
@@ -125,7 +125,7 @@ namespace Bannerlord.ButterLib.Implementation.Tests
             var serviceProvider = ButterLibSubModule.Instance!.GetServiceProvider()!;
             var scope = serviceProvider.CreateScope();
 
-            var distanceMatrix = scope.ServiceProvider.GetRequiredService<DistanceMatrix<Settlement>>();
+            var distanceMatrix = scope.ServiceProvider.GetService<DistanceMatrix<Settlement>>();
             Assert.NotNull(distanceMatrix);
             Assert.True(distanceMatrix.GetType().GetGenericTypeDefinition() == typeof(DistanceMatrixImplementation<>));
             Assert.AreEqual(distanceMatrix.GetType().GenericTypeArguments, new[] { typeof(Settlement) });

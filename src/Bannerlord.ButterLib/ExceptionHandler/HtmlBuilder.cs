@@ -747,7 +747,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler
             var sb = new StringBuilder();
 
             sb.AppendLine("<ul>");
-            foreach (var logSource in ButterLibSubModule.Instance?.GetServiceProvider()?.GetRequiredService<IEnumerable<ILogSource>>() ?? Enumerable.Empty<ILogSource>())
+            foreach (var logSource in ButterLibSubModule.Instance?.GetServiceProvider()?.GetService<IEnumerable<ILogSource>>() ?? Enumerable.Empty<ILogSource>())
             {
                 sb.Append("<li>").Append("<a>").Append(logSource.Name).Append("</a></br>").Append("<ul>");
 
