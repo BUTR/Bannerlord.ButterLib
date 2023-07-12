@@ -7,14 +7,39 @@
     <string id="BguqytVG3q" text="Bannerlord.ButterLib からの警告!"/>
     <string id="FE6ya1gzZR" text="モジュール {REQUIRED_MODULE} が見つかりません!"/>
     <string id="EvI6KPAqTT" text="互換性のないモジュール {DENIED_MODULE} が検出されました!"/>
-    <string id="5G9zffrgMh" text="{MODULE} が {REQUIRED_MODULE} より前に読み込まれています!{NL}{MODULE} が後に読み込まれるように確認してください!"/>
-    <string id="UZ8zfvudMs" text="{MODULE} が {REQUIRED_MODULE} より後に読み込まれています!{NL}{MODULE} が先に読み込まれるように確認してください!"/>
-    <string id="FcR4BXnhx8" text="{MODULE} は {REQUIRED_MODULE} に対して互いに矛盾するロード順が指定されています!"/>
+    <string id="5G9zffrgMh" text="{MODULE} が {REQUIRED_MODULE} より前に読み込まれています!{NL}{MODULE} が後に読み込まれるようになっているかを確認してください!"/>
+    <string id="UZ8zfvudMs" text="{MODULE} が {REQUIRED_MODULE} より後に読み込まれています!{NL}{MODULE} が先に読み込まれるようなっているかを確認してください!"/>
+    <string id="FcR4BXnhx8" text="{MODULE} には {REQUIRED_MODULE} と互いに矛盾するロード順が指定されています!"/>
     <string id="eXs6FLm5DP" text="すぐにゲームを終了することを強く推奨します。すぐに終了しますか?"/>
 
     <string id="JLkq0ZkOSI" text="{START}{?IS_PLURAL} と {?}{\\?}{END}"/>
 
     <string id="B7bfrDNzIk" text="デバッガが作動しているときは無効にする"/>
-    <string id="r3ktQzFMRz" text="デバッガがある場合は、例外ハンドラを停止してください。"/>
+    <string id="r3ktQzFMRz" text="デバッガを有効にしている場合は、例外ハンドラを停止してください。"/>
+
+    <string id="jorWb502pD" text="例外の自動生成 (パフォーマンスが低下します) (DISABLED)"/>
+    <string id="ji1brrsEZz" text="Native-&gt;Managed の呼び出しを全て catch します。全ての例外を標準的な方法で受け取るわけではありません。全体的にパフォーマンスが少し低下します。"/>
+
+    <string id="ZD69h3IpF5" text="バニラのクラッシュハンドラを使用"/>
+    <string id="o0DgSNv5V1" text="Watchdog クラッシュハンドラを使ったButterLib と BEW のクラッシュハンドラを無効にします。この操作に詳しくない場合はオンにしないでください。"/>
+
+    <string id="Ox6uK8fZWs" text="距離行列"/>
+    <string id="WQ4r2n0mYj" text="(開発者向けの機能) マップ上のオブジェクト間の距離を計算するヘルパーを使用します。"/>
+    <string id="jvV6QDc7AJ" text="ホットキー"/>
+    <string id="wNNYwgUeus" text="(開発者向けの機能) modに簡単にホットキー機能を追加できるようにします。"/>
+    <string id="JGylAT3SrB" text="MBSubModuleBaseの拡張"/>
+    <string id="XfveBQYVWH" text="(開発者向けの機能) MBSubModuleBase の抽象派生クラスを導入します。このクラスにはいくつかの新規のSubModuleイベントが追加されています。"/>
+    <string id="IA0mVgHJgo" text="オブジェクトシステム"/>
+    <string id="mFZTv1nwOx" text="(開発者向けの機能)"/>
+    <string id="66A5N9278w" text="セーブシステム"/>
+    <string id="9ybOxGpWb5" text="ゲームのセーブシステムの拡張と修正を行います:{NL}* セーブの名前が競合する可能性がある問題の修正{NL}* 型が重複して定義されているセーブデータが破損・クラッシュする問題の修正{NL}* セーブデータに対するより多くのコンテナ型のサポート{NL}これによりセーブファイルが書き換わる可能性があり、機能を無効にするとセーブファイルが読み込み不可になるおそれがあります!"/>
+    <string id="UsLlrwMTjJ" text="クラッシュ報告のアップローダ"/>
+    <string id="hjeoN9NwZm" text="簡単にファイルをホスティングできるBUTR にクラッシュレポートをアップロードします。"/>
+    <string id="joCJ9xpDvM" text="SubModuleの遅延読み込み"/>
+    <string id="Gznum6kuzv" text="(開発者向けの機能) SubModuleイベント後にメソッドを実行するためのヘルパーを提供します。"/>
+    <string id="ZypQtNNcVN" text="例外ハンドラ"/>
+    <string id="UreeIeLQYS" text="ゲームのクラッシュ情報を取得しバグ報告を作成します。"/>
+    <string id="NkAAB8EEu2" text="SubModuleラッパー"/>
+    <string id="izmKJPjkjN" text="(開発者向けの機能) Harmonyパッチを利用した MBSubModuleBase のラッパーです。"/>
   </strings>
 </base>
