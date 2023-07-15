@@ -212,7 +212,8 @@ Clicking 'Close Report' will continue with the Game's error report mechanism.
 
         public async void CopyAsHTML()
         {
-            await SetClipboardTextAsync(ReportInHtml);
+            if (!await SetClipboardTextAsync(ReportInHtml))
+                MessageBox.Show("Failed to copy the HTML content to the clipboard!", "Error!");
         }
 
         public async void UploadReport()
@@ -229,8 +230,10 @@ Clicking 'Close Report' will continue with the Game's error report mechanism.
             {
                 case CrashUploaderStatus.Success:
                 {
-                    await SetClipboardTextAsync(result.Url ?? string.Empty);
-                    MessageBox.Show($"Report available at\n{result.Url}\nThe url was copied to the clipboard!", "Success!");
+                    if (await SetClipboardTextAsync(result.Url ?? string.Empty))
+                        MessageBox.Show($"Report available at\n{result.Url}\nThe url was copied to the clipboard!", "Success!");
+                    else
+                        MessageBox.Show($"Report available at\n{result.Url}\nFailed to copy the url to the clipboard!", "Success!");
                     break;
                 }
                 case CrashUploaderStatus.MetadataNotFound:
@@ -319,19 +322,26 @@ Clicking 'Close Report' will continue with the Game's error report mechanism.
         private static bool UriIsValid(string url) =>
             Uri.TryCreate(url, UriKind.Absolute, out var uriResult) && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
 
-        private static async Task SetClipboardTextAsync(string text)
+        private static async Task<bool> SetClipboardTextAsync(string text)
         {
-            var completionSource = new TaskCompletionSource<object?>();
+            var completionSource = new TaskCompletionSource<bool>();
             var staThread = new Thread(() =>
             {
-                var dataObject = new DataObject();
-                dataObject.SetText(text, TextDataFormat.Text);
-                Clipboard.SetDataObject(dataObject, true, 10, 100);
-                completionSource.SetResult(null);
+                try
+                {
+                    var dataObject = new DataObject();
+                    dataObject.SetText(text, TextDataFormat.Text);
+                    Clipboard.SetDataObject(dataObject, true, 10, 100);
+                    completionSource.SetResult(true);
+                }
+                catch (Exception)
+                {
+                    completionSource.SetResult(false);
+                }
             });
             staThread.SetApartmentState(ApartmentState.STA);
             staThread.Start();
-            await completionSource.Task;
+            return await completionSource.Task;
         }
     }
 }
