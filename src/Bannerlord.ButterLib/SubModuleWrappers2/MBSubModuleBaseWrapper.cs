@@ -79,7 +79,7 @@ namespace Bannerlord.ButterLib.SubModuleWrappers2
             OnApplicationTickInstance = AccessTools2.GetDelegate<OnApplicationTickDelegate, MBSubModuleBase>(subModule, nameof(OnApplicationTick));
             InitializeGameStarterInstance = AccessTools2.GetDelegate<InitializeGameStarterDelegate, MBSubModuleBase>(subModule, nameof(InitializeGameStarter));
 
-            OnServiceRegistrationInstance = AccessTools2.GetDelegate<OnServiceRegistrationDelegate, MBSubModuleBase>(subModule, nameof(OnServiceRegistration));
+            OnServiceRegistrationInstance = AccessTools2.GetDelegate<OnServiceRegistrationDelegate, MBSubModuleBase>(subModule, nameof(OnServiceRegistration), logErrorInTrace: false);
 
             OnConfigChangedInstance = AccessTools2.GetDelegate<OnConfigChangedDelegate, MBSubModuleBase>(subModule, nameof(OnConfigChanged));
             OnGameLoadedInstance = AccessTools2.GetDelegate<OnGameLoadedDelegate, MBSubModuleBase>(subModule, nameof(OnGameLoaded));

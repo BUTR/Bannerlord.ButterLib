@@ -1,4 +1,4 @@
-[``SaveSystem``](xref:Bannerlord.ButterLib.SaveSystem) provides wrappers and extensions to the game's save system.  
+[``SaveSystem``](xref:Bannerlord.ButterLib.SaveSystem) provides wrappers and extensions to the game's save system.
 
 # SyncDataAsJson
 
@@ -41,8 +41,15 @@ public class CustomBehavior : CampaignBehaviorBase
         // ... perhaps more SyncDataAsJson calls for other data ...
     }
 
-    [SaveableClass(1)]
-    private MyClass    // Why private? Just to point out that access levels aren't an issue.
+    [Serializable] // If the struct/class has the Serializable attribute`SaveableField and SaveableProperty will be ignored
+    public MyStruct
+    {
+        public int X;
+        public int Y;
+        public int Z;
+    }
+
+    private MyClass // Why private? Just to point out that access levels aren't an issue.
     {
         public int _unsavedField = 42;
 
@@ -60,7 +67,7 @@ public class CustomBehavior : CampaignBehaviorBase
 ```
 
 This extension is the next step in the evolution of best practices and just plain less frustrating practices for the synchronization of your mod's custom data to savegames.
-  
+
 ### Notes:
 
 * Built-in [``MBObjectBase``](xref:TaleWorlds.ObjectSystem.MBObjectBase)-derived types (e.g., [``Hero``](xref:TaleWorlds.CampaignSystem.Hero) or [``Town``](xref:TaleWorlds.CampaignSystem.Town)) have a [custom converter](xref:Bannerlord.ButterLib.SaveSystem.MBObjectBaseConverter). They are serialized as their [``Id``](xref:TaleWorlds.ObjectSystem.MBObjectBase#collapsible-TaleWorlds_ObjectSystem_MBObjectBase_Id) property. [``MBObjectManager``](xref:TaleWorlds.ObjectSystem.MBObjectManager) is used to resolve these numeric IDs to the correct, live game object references at deserialization time.

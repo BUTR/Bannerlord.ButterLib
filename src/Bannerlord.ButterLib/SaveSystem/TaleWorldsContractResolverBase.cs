@@ -15,7 +15,7 @@ namespace Bannerlord.ButterLib.SaveSystem
 
         protected static bool IsContainerFallback(Type type)
         {
-            if (type.IsGenericType && !type.IsGenericTypeDefinition)
+            if (type is { IsGenericType: true, IsGenericTypeDefinition: false })
             {
                 var genericTypeDefinition = type.GetGenericTypeDefinition();
                 if (genericTypeDefinition == typeof(Dictionary<,>))

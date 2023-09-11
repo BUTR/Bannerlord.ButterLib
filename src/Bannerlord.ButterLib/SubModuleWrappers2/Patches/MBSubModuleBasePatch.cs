@@ -310,8 +310,8 @@ namespace Bannerlord.ButterLib.SubModuleWrappers2.Patches
 
                 // TODO: Won't work
                 & harmony.TryPatch(
-                    AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnServiceRegistration"),
-                    postfix: AccessTools2.Method("Bannerlord.ButterLib.SubModuleWrappers2.Patches.MBSubModuleBasePatch:OnServiceRegistrationPostfix"))
+                    AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnServiceRegistration", logErrorInTrace: false),
+                    postfix: AccessTools2.Method("Bannerlord.ButterLib.SubModuleWrappers2.Patches.MBSubModuleBasePatch:OnServiceRegistrationPostfix", logErrorInTrace: false))
 
                 & harmony.TryPatch(
                     AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:DoLoading"),

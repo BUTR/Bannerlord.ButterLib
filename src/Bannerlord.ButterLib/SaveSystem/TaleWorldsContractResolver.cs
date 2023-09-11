@@ -18,14 +18,14 @@ namespace Bannerlord.ButterLib.SaveSystem
             if ((_isContainerDelegate is not null && _isContainerDelegate(type)) || (_isContainerDelegate is null && IsContainerFallback(type)))
                 return base.CreateProperties(type, memberSerialization);
 
+            // Serializable should be respected as is
+            if (type.GetCustomAttribute<SerializableAttribute>() is not null)
+                return base.CreateProperties(type, memberSerialization);
+
             // SaveableRootClassAttribute is not needed
             // SaveableInterfaceAttribute is not used by the game
-            if (type.GetMembers().All(m => m.GetCustomAttributes(true).Any(
-                att => att.GetType() != typeof(SaveableFieldAttribute) ||
-                       att.GetType() != typeof(SaveablePropertyAttribute))))
-            {
+            if (type.GetMembers().All(m => m.GetCustomAttributes(true).Any(att => att.GetType() != typeof(SaveableFieldAttribute) || att.GetType() != typeof(SaveablePropertyAttribute))))
                 return new List<JsonProperty>();
-            }
 
             var fields = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
                 .Where(x => x.GetCustomAttribute<SaveableFieldAttribute>(true) is not null);
