@@ -53,7 +53,7 @@ namespace Bannerlord.ButterLib.Implementation.HotKeys
 
 #if v100 || v101 || v102 || v103 || v110 || v111 || v112 || v113 || v114 || v115
             TWHotKeyManager.RegisterInitialContexts(new[] { hotKeyCategoryContainer }, true);
-#elif v120 || v121
+#elif v120 || v121 || v122 || v123
             TWHotKeyManager.RegisterInitialContexts(TWHotKeyManager.GetAllCategories().ToList().Concat(new[] { hotKeyCategoryContainer }), true);
 #else
 #error DEFINE
