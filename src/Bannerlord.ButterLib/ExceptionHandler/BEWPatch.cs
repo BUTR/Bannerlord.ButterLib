@@ -24,15 +24,25 @@ namespace Bannerlord.ButterLib.ExceptionHandler
 
     internal sealed class BEWPatch
     {
+        private static bool _cachedDebuggerAttached;
+        private static int _lastCheckTicks;
+
         public static bool IsDebuggerAttached()
         {
+            var currentTicks = Environment.TickCount;
+            if (currentTicks - _lastCheckTicks < 100)
+                return _cachedDebuggerAttached;
+
+            _cachedDebuggerAttached = false;
+
             if (Debugger.IsAttached)
-                return true;
+                _cachedDebuggerAttached = true;
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                return ProcessDebug.CheckProcessDebugObjectHandle();
+                _cachedDebuggerAttached = ProcessDebug.CheckProcessDebugObjectHandle();
 
-            return false;
+            _lastCheckTicks = currentTicks;
+            return _cachedDebuggerAttached;
         }
 
         internal record ExceptionIdentifier(Type Type, string? StackTrace, string Message)

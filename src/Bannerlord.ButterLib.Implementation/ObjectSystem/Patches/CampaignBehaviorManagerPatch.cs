@@ -62,7 +62,8 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem.Patches
         // Target and patch methods:
 
         private static readonly MethodInfo? OnGameLoadedTargetMI =
-            AccessTools2.Method("TaleWorlds.CampaignSystem.CampaignBehaviors.CampaignBehaviorManager:OnGameLoaded");
+            AccessTools2.Method("TaleWorlds.CampaignSystem.CampaignBehaviors.CampaignBehaviorManager:OnGameLoaded") ??
+            AccessTools2.Method("TaleWorlds.CampaignSystem.CampaignBehaviors.CampaignBehaviorManager:InitializeCampaignBehaviors");
 
         private static readonly MethodInfo? OnBeforeSaveTargetMI =
             AccessTools2.Method("TaleWorlds.CampaignSystem.CampaignBehaviors.CampaignBehaviorManager:OnBeforeSave");

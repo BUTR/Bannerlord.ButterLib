@@ -4,7 +4,7 @@
   <!--Development Variables-->
   <PropertyGroup>
     <!--Module Version-->
-    <Version>2.8.11</Version>
+    <Version>2.8.12</Version>
     <!--Harmony Version-->
     <HarmonyVersion>2.2.2</HarmonyVersion>
     <HarmonyExtensionsVersion>3.2.0.77</HarmonyExtensionsVersion>
@@ -14,7 +14,7 @@
     <!--Also, remove Ben.Demystifier and use the NuGet then-->
     <ExtensionVersion>2.0.0</ExtensionVersion>
     <!--BuildResources Version-->
-    <BuildResourcesVersion>1.1.0.102</BuildResourcesVersion>
+    <BuildResourcesVersion>1.1.0.104</BuildResourcesVersion>
     <BUTRSharedVersion>3.0.0.137</BUTRSharedVersion>
     <BUTRModuleManagerVersion>5.0.209</BUTRModuleManagerVersion>
   </PropertyGroup>
@@ -35,7 +35,8 @@
     <PackageReference Include="Microsoft.Extensions.Logging" Version="$(ExtensionVersion)" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="$(ExtensionVersion)" />
     <PackageReference Include="Microsoft.Extensions.Primitives" Version="$(ExtensionVersion)" />
-    <PackageReference Include="System.Memory" Version="4.5.5" />
+    <PackageReference Include="System.Memory" Version="4.5.4" />
+    <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />
     <PackageReference Include="System.Reflection.Metadata" Version="1.8.1" />
   </ItemGroup>
   <ItemGroup Condition="$(TargetFramework) == 'netcoreapp3.1'">
