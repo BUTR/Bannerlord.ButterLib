@@ -75,19 +75,17 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
 
         public void SetVariable(MBObjectBase @object, string name, object? data) => _vars[DataKey.Make(@object, name)] = data;
 
-#nullable disable
-        public bool TryGetVariable<T>(MBObjectBase @object, string name, out T value)
+        public bool TryGetVariable<T>(MBObjectBase @object, string name, out T? value)
         {
-            if (_vars.TryGetValue(DataKey.Make(@object, name), out var val) && (val is T || val is null))
+            if (_vars.TryGetValue(DataKey.Make(@object, name), out var val) && val is T or null)
             {
-                value = (T) val;
+                value = (T?) val;
                 return true;
             }
 
             value = default;
             return false;
         }
-#nullable restore
 
         /* Flags Implementation */
 
@@ -101,23 +99,9 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
 
         /* DataKey Implementation */
 
-        private sealed class DataKey : IEquatable<DataKey>
+        private sealed record DataKey([field: SaveableField(0)] MBGUID ObjectId, [field: SaveableField(1)] string? Key)
         {
-            [SaveableField(0)]
-            internal readonly MBGUID ObjectId;
-
-            [SaveableField(1)]
-            internal readonly string? Key;
-
-            private DataKey(MBGUID objectId, string key) => (ObjectId, Key) = (objectId, key);
-
             internal static DataKey Make(MBObjectBase obj, string key) => new(obj.Id, key);
-
-            public bool Equals(DataKey? other) => ObjectId == other?.ObjectId && !(Key is null || other.Key is null) && Key.Equals(other.Key);
-
-            public override bool Equals(object? obj) => obj is DataKey k && Equals(k);
-
-            public override int GetHashCode() => HashCode.Combine(ObjectId, Key);
 
             public override string ToString() => $"{ObjectId}::{Key}";
         }

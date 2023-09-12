@@ -50,17 +50,17 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
             return true;
         }
 
-        private static readonly Type? TargetType = typeof(MetaData).Assembly.GetType("TaleWorlds.SaveSystem.TypeExtensions");
+        private static readonly Type? TargetType = AccessTools2.TypeByName("TaleWorlds.SaveSystem.TypeExtensions");
         private static readonly Type[] TargetMethodParams = { typeof(Type), typeof(ContainerType).MakeByRefType() };
         private static readonly MethodInfo? TargetMethod = AccessTools2.Method(TargetType!, "IsContainer", TargetMethodParams);
-        private static readonly MethodInfo? PatchMethod = AccessTools2.Method("Bannerlord.ButterLib.Implementation.SaveSystem.Patches.TypeExtensionsPatch:IsContainerPrefix");
+        private static readonly MethodInfo? PatchMethod = SymbolExtensions2.GetMethodInfo((Type x, ContainerType y, bool z) => IsContainerPrefix(x, out y, ref z));
 
         // ReSharper disable once RedundantAssignment
         private static bool IsContainerPrefix(Type type, out ContainerType containerType, ref bool __result)
         {
             containerType = ContainerType.None;
 
-            if (type.IsGenericType && !type.IsGenericTypeDefinition)
+            if (type is {IsGenericType: true, IsGenericTypeDefinition: false})
                 type = type.GetGenericTypeDefinition();
 
             if (type.IsArray)
