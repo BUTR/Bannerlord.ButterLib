@@ -26,13 +26,13 @@ namespace Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended.Patches
         private static readonly Type? TargetType = typeof(TWModule);
 
         private static readonly MethodInfo? miTargetMethodUnLoad = AccessTools2.Method(TargetType, "FinalizeSubModules");
-        private static readonly MethodInfo? miPatchMethodUnLoad = AccessTools2.Method("Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended.Patches.ModulePatch:FinalizeSubModulesPostfix");
+        private static readonly MethodInfo? miPatchMethodUnLoad = SymbolExtensions2.GetMethodInfo((TWModule x) => FinalizeSubModulesPostfix(x));
 
         private static readonly MethodInfo? miTargetMethodScreenAsRoot = AccessTools2.Method(TargetType, "SetInitialModuleScreenAsRootScreen");
-        private static readonly MethodInfo? miPatchMethodScreenAsRoot = AccessTools2.Method("Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended.Patches.ModulePatch:Transpiler");
+        private static readonly MethodInfo? miPatchMethodScreenAsRoot = SymbolExtensions2.GetMethodInfo((IEnumerable<CodeInstruction> x) => Transpiler(x));
 
         private static readonly MethodInfo? miMBSubModuleBaseScreenAsRootEvent = AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnBeforeInitialModuleScreenSetAsRoot");
-        private static readonly MethodInfo? miDelayedScreenAsRootEventCaller = AccessTools2.Method("Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended.Patches.ModulePatch:DelayedScreenAsRootEvent");
+        private static readonly MethodInfo? miDelayedScreenAsRootEventCaller = SymbolExtensions2.GetMethodInfo((TWModule x) => DelayedScreenAsRootEvent(x));
 
         internal static bool Enable(Harmony harmony)
         {

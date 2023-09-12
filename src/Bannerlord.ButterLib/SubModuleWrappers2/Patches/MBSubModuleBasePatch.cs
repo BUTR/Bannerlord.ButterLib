@@ -291,76 +291,76 @@ namespace Bannerlord.ButterLib.SubModuleWrappers2.Patches
             return true
                 & harmony.TryPatch(
                     AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnSubModuleLoad"),
-                    postfix: AccessTools2.Method("Bannerlord.ButterLib.SubModuleWrappers2.Patches.MBSubModuleBasePatch:OnSubModuleLoadPostfix"))
+                    postfix: SymbolExtensions2.GetMethodInfo((MBSubModuleBase x) => OnSubModuleLoadPostfix(x)))
                 & harmony.TryPatch(
                     AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnSubModuleUnloaded"),
-                    postfix: AccessTools2.Method("Bannerlord.ButterLib.SubModuleWrappers2.Patches.MBSubModuleBasePatch:OnSubModuleUnloadedPostfix"))
+                    postfix: SymbolExtensions2.GetMethodInfo((MBSubModuleBase x) => OnSubModuleUnloadedPostfix(x)))
                 & harmony.TryPatch(
                     AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnApplicationTick"),
-                    postfix: AccessTools2.Method("Bannerlord.ButterLib.SubModuleWrappers2.Patches.MBSubModuleBasePatch:OnApplicationTickPostfix"))
+                    postfix: SymbolExtensions2.GetMethodInfo((MBSubModuleBase x, float y) => OnApplicationTickPostfix(x, ref y)))
                 & harmony.TryPatch(
                     AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnBeforeInitialModuleScreenSetAsRoot"),
-                    postfix: AccessTools2.Method("Bannerlord.ButterLib.SubModuleWrappers2.Patches.MBSubModuleBasePatch:OnBeforeInitialModuleScreenSetAsRootPostfix"))
+                    postfix: SymbolExtensions2.GetMethodInfo((MBSubModuleBase x) => OnBeforeInitialModuleScreenSetAsRootPostfix(x)))
                 & harmony.TryPatch(
                     AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnGameStart"),
-                    postfix: AccessTools2.Method("Bannerlord.ButterLib.SubModuleWrappers2.Patches.MBSubModuleBasePatch:OnGameStartPostfix"))
+                    postfix: SymbolExtensions2.GetMethodInfo((MBSubModuleBase x, Game y, IGameStarter z) => OnGameStartPostfix(x, y, z)))
                 & harmony.TryPatch(
                     AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:InitializeGameStarter"),
-                    postfix: AccessTools2.Method("Bannerlord.ButterLib.SubModuleWrappers2.Patches.MBSubModuleBasePatch:InitializeGameStarterPostfix"))
+                    postfix: SymbolExtensions2.GetMethodInfo((MBSubModuleBase x, Game y, IGameStarter z) => InitializeGameStarterPostfix(x, y, z)))
 
                 // TODO: Won't work
                 & harmony.TryPatch(
                     AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnServiceRegistration", logErrorInTrace: false),
-                    postfix: AccessTools2.Method("Bannerlord.ButterLib.SubModuleWrappers2.Patches.MBSubModuleBasePatch:OnServiceRegistrationPostfix", logErrorInTrace: false))
+                    postfix: SymbolExtensions2.GetMethodInfo((MBSubModuleBase x) => OnServiceRegistrationPostfix(x)))
 
                 & harmony.TryPatch(
                     AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:DoLoading"),
-                    postfix: AccessTools2.Method("Bannerlord.ButterLib.SubModuleWrappers2.Patches.MBSubModuleBasePatch:DoLoadingPostfix"))
+                    postfix: SymbolExtensions2.GetMethodInfo((MBSubModuleBase x, bool y, Game z) => DoLoadingPostfix(x, ref y, z)))
                 & harmony.TryPatch(
                     AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnGameLoaded"),
-                    postfix: AccessTools2.Method("Bannerlord.ButterLib.SubModuleWrappers2.Patches.MBSubModuleBasePatch:OnGameLoadedPostfix"))
+                    postfix: SymbolExtensions2.GetMethodInfo((MBSubModuleBase x, Game y, object z) => OnGameLoadedPostfix(x, y, z)))
                 & harmony.TryPatch(
                     AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnCampaignStart"),
-                    postfix: AccessTools2.Method("Bannerlord.ButterLib.SubModuleWrappers2.Patches.MBSubModuleBasePatch:OnCampaignStartPostfix"))
+                    postfix: SymbolExtensions2.GetMethodInfo((MBSubModuleBase x, Game y, object z) => OnCampaignStartPostfix(x, y, z)))
                 & harmony.TryPatch(
                     AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:BeginGameStart"),
-                    postfix: AccessTools2.Method("Bannerlord.ButterLib.SubModuleWrappers2.Patches.MBSubModuleBasePatch:BeginGameStartPostfix"))
+                    postfix: SymbolExtensions2.GetMethodInfo((MBSubModuleBase x, Game y) => BeginGameStartPostfix(x, y)))
                 & harmony.TryPatch(
                     AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnGameEnd"),
-                    postfix: AccessTools2.Method("Bannerlord.ButterLib.SubModuleWrappers2.Patches.MBSubModuleBasePatch:OnGameEndPostfix"))
+                    postfix: SymbolExtensions2.GetMethodInfo((MBSubModuleBase x, Game y) => OnGameEndPostfix(x, y)))
                 & harmony.TryPatch(
                     AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnGameInitializationFinished"),
-                    postfix: AccessTools2.Method("Bannerlord.ButterLib.SubModuleWrappers2.Patches.MBSubModuleBasePatch:OnGameInitializationFinishedPostfix"))
+                    postfix: SymbolExtensions2.GetMethodInfo((MBSubModuleBase x, Game y) => OnGameInitializationFinishedPostfix(x, y)))
                 & harmony.TryPatch(
                     AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnBeforeMissionBehaviorInitialize"),
-                    postfix: AccessTools2.Method("Bannerlord.ButterLib.SubModuleWrappers2.Patches.MBSubModuleBasePatch:OnBeforeMissionBehaviourInitializePostfix"))
+                    postfix: SymbolExtensions2.GetMethodInfo((MBSubModuleBase x, Mission y) => OnBeforeMissionBehaviourInitializePostfix(x, y)))
                 & harmony.TryPatch(
                     AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnMissionBehaviorInitialize"),
-                    postfix: AccessTools2.Method("Bannerlord.ButterLib.SubModuleWrappers2.Patches.MBSubModuleBasePatch:OnMissionBehaviourInitializePostfix"))
+                    postfix: SymbolExtensions2.GetMethodInfo((MBSubModuleBase x, Mission y) => OnMissionBehaviourInitializePostfix(x, y)))
                 & harmony.TryPatch(
                     AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnMultiplayerGameStart"),
-                    postfix: AccessTools2.Method("Bannerlord.ButterLib.SubModuleWrappers2.Patches.MBSubModuleBasePatch:OnMultiplayerGameStartPostfix"))
+                    postfix: SymbolExtensions2.GetMethodInfo((MBSubModuleBase x, Game y, object z) => OnMultiplayerGameStartPostfix(x, y, z)))
                 & harmony.TryPatch(
                     AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnNewGameCreated"),
-                    postfix: AccessTools2.Method("Bannerlord.ButterLib.SubModuleWrappers2.Patches.MBSubModuleBasePatch:OnNewGameCreatedPostfix"))
+                    postfix: SymbolExtensions2.GetMethodInfo((MBSubModuleBase x, Game y, object z) => OnNewGameCreatedPostfix(x, y, z)))
                 & harmony.TryPatch(
                     AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:RegisterSubModuleObjects"),
-                    postfix: AccessTools2.Method("Bannerlord.ButterLib.SubModuleWrappers2.Patches.MBSubModuleBasePatch:RegisterSubModuleObjectsPostfix"))
+                    postfix: SymbolExtensions2.GetMethodInfo((MBSubModuleBase x, bool y) => RegisterSubModuleObjectsPostfix(x, y)))
                 & harmony.TryPatch(
                     AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:AfterRegisterSubModuleObjects"),
-                    postfix: AccessTools2.Method("Bannerlord.ButterLib.SubModuleWrappers2.Patches.MBSubModuleBasePatch:AfterRegisterSubModuleObjectsPostfix"))
+                    postfix: SymbolExtensions2.GetMethodInfo((MBSubModuleBase x, bool y) => AfterRegisterSubModuleObjectsPostfix(x, y)))
                 & harmony.TryPatch(
                     AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnAfterGameInitializationFinished"),
-                    postfix: AccessTools2.Method("Bannerlord.ButterLib.SubModuleWrappers2.Patches.MBSubModuleBasePatch:OnAfterGameInitializationFinishedPostfix"))
+                    postfix: SymbolExtensions2.GetMethodInfo((MBSubModuleBase x, Game y, object z) => OnAfterGameInitializationFinishedPostfix(x, y, z)))
                 & harmony.TryPatch(
                     AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnConfigChanged"),
-                    postfix: AccessTools2.Method("Bannerlord.ButterLib.SubModuleWrappers2.Patches.MBSubModuleBasePatch:OnConfigChangedPostfix"))
+                    postfix: SymbolExtensions2.GetMethodInfo((MBSubModuleBase x) => OnConfigChangedPostfix(x)))
                 & harmony.TryPatch(
                     AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnInitialState"),
-                    postfix: AccessTools2.Method("Bannerlord.ButterLib.SubModuleWrappers2.Patches.MBSubModuleBasePatch:OnInitialStatePostfix"))
+                    postfix: SymbolExtensions2.GetMethodInfo((MBSubModuleBase x) => OnInitialStatePostfix(x)))
                 & harmony.TryPatch(
                     AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:AfterAsyncTickTick"),
-                    postfix: AccessTools2.Method("Bannerlord.ButterLib.SubModuleWrappers2.Patches.MBSubModuleBasePatch:AfterAsyncTickTickPostfix"));
+                    postfix: SymbolExtensions2.GetMethodInfo((MBSubModuleBase x, float y) => AfterAsyncTickTickPostfix(x, y)));
 #pragma warning restore format // @formatter:on
         }
     }

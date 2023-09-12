@@ -47,19 +47,19 @@ namespace Bannerlord.ButterLib.DelayedSubModule
             var harmony = new Harmony("butterlib.delayedsubmoduleloader.static");
             harmony.Patch(
                 AccessTools2.DeclaredMethod("TaleWorlds.MountAndBlade.MBSubModuleBase:OnSubModuleLoad"),
-                postfix: new HarmonyMethod(typeof(DelayedSubModuleManager), nameof(BaseSubModuleLoadPostfix)));
+                postfix: new HarmonyMethod(SymbolExtensions2.GetMethodInfo((MBSubModuleBase x) => BaseSubModuleLoadPostfix(x))));
             harmony.Patch(
                 AccessTools2.DeclaredMethod("TaleWorlds.MountAndBlade.MBSubModuleBase:OnSubModuleUnloaded"),
-                postfix: new HarmonyMethod(typeof(DelayedSubModuleManager), nameof(BaseOnSubModuleUnloadedPostfix)));
+                postfix: new HarmonyMethod(SymbolExtensions2.GetMethodInfo((MBSubModuleBase x) => BaseOnSubModuleUnloadedPostfix(x))));
             harmony.Patch(
                 AccessTools2.DeclaredMethod("TaleWorlds.MountAndBlade.MBSubModuleBase:OnBeforeInitialModuleScreenSetAsRoot"),
-                postfix: new HarmonyMethod(typeof(DelayedSubModuleManager), nameof(BaseOnBeforeInitialModuleScreenSetAsRootPostfix)));
+                postfix: new HarmonyMethod(SymbolExtensions2.GetMethodInfo((MBSubModuleBase x) => BaseOnBeforeInitialModuleScreenSetAsRootPostfix(x))));
             harmony.Patch(
                 AccessTools2.DeclaredMethod("TaleWorlds.MountAndBlade.MBSubModuleBase:OnGameStart"),
-                postfix: new HarmonyMethod(typeof(DelayedSubModuleManager), nameof(BaseOnGameStartPostfix)));
+                postfix: new HarmonyMethod(SymbolExtensions2.GetMethodInfo((MBSubModuleBase x) => BaseOnGameStartPostfix(x))));
             harmony.Patch(
                 AccessTools2.DeclaredMethod("TaleWorlds.MountAndBlade.MBSubModuleBase:OnGameEnd"),
-                postfix: new HarmonyMethod(typeof(DelayedSubModuleManager), nameof(BaseOnGameEndPostfix)));
+                postfix: new HarmonyMethod(SymbolExtensions2.GetMethodInfo((MBSubModuleBase x) => BaseOnGameEndPostfix(x))));
         }
         [MethodImpl(MethodImplOptions.NoInlining)]
         private static void BaseSubModuleLoadPostfix(MBSubModuleBase __instance)
@@ -119,8 +119,8 @@ namespace Bannerlord.ButterLib.DelayedSubModule
             {
                 harmony.Patch(
                     onSubModuleLoad,
-                    prefix: new HarmonyMethod(AccessTools2.DeclaredMethod("Bannerlord.ButterLib.DelayedSubModule.DelayedSubModuleManager:SubModuleLoadPrefix"), priority, before, after),
-                    postfix: new HarmonyMethod(AccessTools2.DeclaredMethod("Bannerlord.ButterLib.DelayedSubModule.DelayedSubModuleManager:SubModuleLoadPostfix"), priority, before, after));
+                    prefix: new HarmonyMethod(SymbolExtensions2.GetMethodInfo((MBSubModuleBase x) => SubModuleLoadPrefix(x)), priority, before, after),
+                    postfix: new HarmonyMethod(SymbolExtensions2.GetMethodInfo((MBSubModuleBase x) => SubModuleLoadPostfix(x)), priority, before, after));
             }
 
 
@@ -129,8 +129,8 @@ namespace Bannerlord.ButterLib.DelayedSubModule
             {
                 harmony.Patch(
                     AccessTools2.DeclaredMethod(subModule, "OnSubModuleUnloaded"),
-                    prefix: new HarmonyMethod(AccessTools2.DeclaredMethod("Bannerlord.ButterLib.DelayedSubModule.DelayedSubModuleManager:OnSubModuleUnloadedPrefix"), priority, before, after),
-                    postfix: new HarmonyMethod(AccessTools2.DeclaredMethod("Bannerlord.ButterLib.DelayedSubModule.DelayedSubModuleManager:OnSubModuleUnloadedPostfix"), priority, before, after));
+                    prefix: new HarmonyMethod(SymbolExtensions2.GetMethodInfo((MBSubModuleBase x) => OnSubModuleUnloadedPrefix(x)), priority, before, after),
+                    postfix: new HarmonyMethod(SymbolExtensions2.GetMethodInfo((MBSubModuleBase x) => OnSubModuleUnloadedPostfix(x)), priority, before, after));
             }
 
 
@@ -139,8 +139,8 @@ namespace Bannerlord.ButterLib.DelayedSubModule
             {
                 harmony.Patch(
                     AccessTools2.DeclaredMethod(subModule, "OnBeforeInitialModuleScreenSetAsRoot"),
-                    prefix: new HarmonyMethod(AccessTools2.DeclaredMethod("Bannerlord.ButterLib.DelayedSubModule.DelayedSubModuleManager:OnBeforeInitialModuleScreenSetAsRootPrefix"), priority, before, after),
-                    postfix: new HarmonyMethod(AccessTools2.DeclaredMethod("Bannerlord.ButterLib.DelayedSubModule.DelayedSubModuleManager:OnBeforeInitialModuleScreenSetAsRootPostfix"), priority, before, after));
+                    prefix: new HarmonyMethod(SymbolExtensions2.GetMethodInfo((MBSubModuleBase x) => OnBeforeInitialModuleScreenSetAsRootPrefix(x)), priority, before, after),
+                    postfix: new HarmonyMethod(SymbolExtensions2.GetMethodInfo((MBSubModuleBase x) => OnBeforeInitialModuleScreenSetAsRootPostfix(x)), priority, before, after));
             }
 
             var onGameStart = AccessTools2.DeclaredMethod(subModule, "OnGameStart");
@@ -148,8 +148,8 @@ namespace Bannerlord.ButterLib.DelayedSubModule
             {
                 harmony.Patch(
                     AccessTools2.DeclaredMethod(subModule, "OnGameStart"),
-                    prefix: new HarmonyMethod(AccessTools2.DeclaredMethod("Bannerlord.ButterLib.DelayedSubModule.DelayedSubModuleManager:OnGameStartPrefix"), priority, before, after),
-                    postfix: new HarmonyMethod(AccessTools2.DeclaredMethod("Bannerlord.ButterLib.DelayedSubModule.DelayedSubModuleManager:OnGameStartPostfix"), priority, before, after));
+                    prefix: new HarmonyMethod(SymbolExtensions2.GetMethodInfo((MBSubModuleBase x) => OnGameStartPrefix(x)), priority, before, after),
+                    postfix: new HarmonyMethod(SymbolExtensions2.GetMethodInfo((MBSubModuleBase x) => OnGameStartPostfix(x)), priority, before, after));
             }
 
 
@@ -158,8 +158,8 @@ namespace Bannerlord.ButterLib.DelayedSubModule
             {
                 harmony.Patch(
                     AccessTools2.DeclaredMethod(subModule, "OnGameEnd"),
-                    prefix: new HarmonyMethod(AccessTools2.DeclaredMethod("Bannerlord.ButterLib.DelayedSubModule.DelayedSubModuleManager:OnGameEndPrefix"), priority, before, after),
-                    postfix: new HarmonyMethod(AccessTools2.DeclaredMethod("Bannerlord.ButterLib.DelayedSubModule.DelayedSubModuleManager:OnGameEndPostfix"), priority, before, after));
+                    prefix: new HarmonyMethod(SymbolExtensions2.GetMethodInfo((MBSubModuleBase x) => OnGameEndPrefix(x)), priority, before, after),
+                    postfix: new HarmonyMethod(SymbolExtensions2.GetMethodInfo((MBSubModuleBase x) => OnGameEndPostfix(x)), priority, before, after));
             }
         }
 

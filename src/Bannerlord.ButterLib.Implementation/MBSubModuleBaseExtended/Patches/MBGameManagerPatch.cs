@@ -28,13 +28,13 @@ namespace Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended.Patches
         private static readonly MethodInfo? miTargetMethodGameStart = AccessTools2.Method("TaleWorlds.MountAndBlade.MBGameManager:OnGameStart");
         private static readonly MethodInfo? miTargetMethodGameEnd = AccessTools2.Method("TaleWorlds.MountAndBlade.MBGameManager:OnGameEnd");
 
-        private static readonly MethodInfo? miPatchMethod = AccessTools2.Method("Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended.Patches.MBGameManagerPatch:Transpiler");
+        private static readonly MethodInfo? miPatchMethod = SymbolExtensions2.GetMethodInfo((IEnumerable<CodeInstruction> x, MethodBase y) => Transpiler(x, y));
 
         private static readonly MethodInfo? miMBSubModuleBaseOnGameStartEvent = AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnGameStart");
         private static readonly MethodInfo? miMBSubModuleBaseOnGameEndEvent = AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnGameEnd");
 
-        private static readonly MethodInfo? miDelayedOnGameStartEventCaller = AccessTools2.Method("Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended.Patches.MBGameManagerPatch:DelayedOnGameStartEvent");
-        private static readonly MethodInfo? miDelayedOnGameEndEventCaller = AccessTools2.Method("Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended.Patches.MBGameManagerPatch:DelayedOnGameEndEvent");
+        private static readonly MethodInfo? miDelayedOnGameStartEventCaller = SymbolExtensions2.GetMethodInfo((Game x, IGameStarter y) => DelayedOnGameStartEvent(x, y));
+        private static readonly MethodInfo? miDelayedOnGameEndEventCaller = SymbolExtensions2.GetMethodInfo((Game x) => DelayedOnGameEndEvent(x));
 
         internal static bool Enable(Harmony harmony)
         {

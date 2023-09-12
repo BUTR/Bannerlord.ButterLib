@@ -77,7 +77,7 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
 
         private static bool CanAddTypeDefinition(TypeDefinitionBase? typeDef, Dictionary<Type, TypeDefinitionBase> typeDict)
         {
-            if (typeDef is null || typeDef.Type is null)
+            if (typeDef?.Type is null)
                 return false;
 
             if (typeDict.ContainsKey(typeDef.Type))
