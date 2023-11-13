@@ -2,6 +2,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -28,15 +30,24 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
             return strBuilder.ToString();
         }
 
+        private static string Serialize<T>(ref T? data, JsonSerializer serializer)
+        {
+            var sb = new StringBuilder(256);
+            var sw = new StringWriter(sb, CultureInfo.InvariantCulture);
+            using var jsonWriter = new JsonTextWriter(sw);
+            jsonWriter.Formatting = Formatting.None;
+            serializer.Serialize(jsonWriter, data, typeof(T));
+            return sb.ToString();
+        }
+
+        private static T? Deserialize<T>(string json, JsonSerializer serializer)
+        {
+            using var reader = new JsonTextReader(new StringReader(json));
+            return serializer.Deserialize<T>(reader);
+        }
+
         public static bool SyncDataAsJson<T>(this IDataStore dataStore, string key, ref T? data, JsonSerializerSettings? settings = null)
         {
-            // If the type we're synchronizing is a string or string array, then it's ambiguous
-            // with our own internal storage types, which imply that the strings contain valid
-            // JSON. Standard binary serialization can handle these types just fine, so we avoid
-            // the ambiguity by passing this data straight to the game's binary serializer.
-            if (typeof(T) == typeof(string) || typeof(T) == typeof(string[]))
-                return dataStore.SyncData(key, ref data);
-
             settings ??= new JsonSerializerSettings
             {
                 ContractResolver = new TaleWorldsContractResolver(),
@@ -46,11 +57,24 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
                 //PreserveReferencesHandling = PreserveReferencesHandling.Objects
             };
 
+            return SyncDataAsJson(dataStore, key, ref data, JsonSerializer.Create(settings));
+        }
+        
+        public static bool SyncDataAsJson<T>(this IDataStore dataStore, string key, ref T? data, JsonSerializer serializer)
+        {
+            // If the type we're synchronizing is a string or string array, then it's ambiguous
+            // with our own internal storage types, which imply that the strings contain valid
+            // JSON. Standard binary serialization can handle these types just fine, so we avoid
+            // the ambiguity by passing this data straight to the game's binary serializer.
+            if (typeof(T) == typeof(string) || typeof(T) == typeof(string[]))
+                return dataStore.SyncData(key, ref data);
+
             if (dataStore.IsSaving)
             {
-                var dataJson = JsonConvert.SerializeObject(data, Formatting.None, settings);
-                var jsonData = JsonConvert.SerializeObject(new JsonData(2, dataJson));
-                var chunks = ToChunks(jsonData, short.MaxValue - 1024).ToArray();
+                var dataJson = Serialize(ref data, serializer);
+                var jsonData = new JsonData(2, dataJson);
+                var jsonDataJson = Serialize(ref jsonData, serializer);
+                var chunks = ToChunks(jsonDataJson, short.MaxValue - 1024).ToArray();
                 return dataStore.SyncData(key, ref chunks);
             }
 
@@ -63,10 +87,10 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
                     var jsonDataChunks = Array.Empty<string>();
                     if (dataStore.SyncData(key, ref jsonDataChunks))
                     {
-                        var (format, jsonData) = JsonConvert.DeserializeObject<JsonData?>(ChunksToString(jsonDataChunks ?? Array.Empty<string>()), settings) ?? new(-1, string.Empty);
+                        var (format, jsonData) = Deserialize<JsonData?>(ChunksToString(jsonDataChunks ?? Array.Empty<string>()), serializer) ?? new(-1, string.Empty);
                         data = format switch
                         {
-                            2 => JsonConvert.DeserializeObject<T>(jsonData, settings),
+                            2 => Deserialize<T>(jsonData, serializer),
                             _ => data
                         };
                         return true;
@@ -80,7 +104,7 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
                     var jsonData = "";
                     if (dataStore.SyncData(key, ref jsonData)) // try to get as JSON string
                     {
-                        data = JsonConvert.DeserializeObject<T>(jsonData, settings);
+                        data = Deserialize<T>(jsonData, serializer);
                         return true;
                     }
                 }
