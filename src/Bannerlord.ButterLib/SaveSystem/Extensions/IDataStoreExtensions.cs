@@ -35,7 +35,7 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
             var sb = new StringBuilder(256);
             var sw = new StringWriter(sb, CultureInfo.InvariantCulture);
             using var jsonWriter = new JsonTextWriter(sw);
-            jsonWriter.Formatting = serializer.Formatting;
+            jsonWriter.Formatting = Formatting.None;
             serializer.Serialize(jsonWriter, data, typeof(T));
             return sb.ToString();
         }
