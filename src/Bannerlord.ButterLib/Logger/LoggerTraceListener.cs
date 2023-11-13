@@ -86,7 +86,7 @@ namespace System.Diagnostics.Logger
             }
         }
 
-        public override void Write(string message)
+        public override void Write(string? message)
         {
             if (Parse(message.AsSpan()) is { } result)
                 Log(result);
@@ -94,7 +94,7 @@ namespace System.Diagnostics.Logger
                 _logger.LogInformation("{Message}", message);
         }
 
-        public override void WriteLine(string message)
+        public override void WriteLine(string? message)
         {
             if (Parse(message.AsSpan()) is { } result)
                 Log(result);

@@ -33,7 +33,7 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
         private static string Serialize<T>(ref T? data, JsonSerializer serializer)
         {
             var sb = new StringBuilder(256);
-            var sw = new StringWriter(sb, CultureInfo.InvariantCulture);
+            using var sw = new StringWriter(sb, CultureInfo.InvariantCulture);
             using var jsonWriter = new JsonTextWriter(sw);
             jsonWriter.Formatting = Formatting.None;
             serializer.Serialize(jsonWriter, data, typeof(T));
@@ -72,8 +72,7 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
             if (dataStore.IsSaving)
             {
                 var dataJson = Serialize(ref data, serializer);
-                var jsonData = new JsonData(2, dataJson);
-                var jsonDataJson = Serialize(ref jsonData, serializer);
+                var jsonDataJson = JsonConvert.SerializeObject(new JsonData(2, dataJson));
                 var chunks = ToChunks(jsonDataJson, short.MaxValue - 1024).ToArray();
                 return dataStore.SyncData(key, ref chunks);
             }
@@ -87,7 +86,7 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
                     var jsonDataChunks = Array.Empty<string>();
                     if (dataStore.SyncData(key, ref jsonDataChunks))
                     {
-                        var (format, jsonData) = Deserialize<JsonData?>(ChunksToString(jsonDataChunks ?? Array.Empty<string>()), serializer) ?? new(-1, string.Empty);
+                        var (format, jsonData) = JsonConvert.DeserializeObject<JsonData?>(ChunksToString(jsonDataChunks ?? Array.Empty<string>())) ?? new(-1, string.Empty);
                         data = format switch
                         {
                             2 => Deserialize<T>(jsonData, serializer),

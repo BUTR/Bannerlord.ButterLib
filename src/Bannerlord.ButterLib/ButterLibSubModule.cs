@@ -192,12 +192,15 @@ namespace Bannerlord.ButterLib
                 sb.AppendLine(report);
                 sb.AppendLine();
                 sb.AppendLine(new TextObject(SMessageContinue).ToString());
+#if !NETSTANDARD2_0
+
                 switch (System.Windows.Forms.MessageBox.Show(sb.ToString(), new TextObject(SWarningTitle).ToString(), System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Warning, System.Windows.Forms.MessageBoxDefaultButton.Button1, (System.Windows.Forms.MessageBoxOptions) 0x40000))
                 {
                     case System.Windows.Forms.DialogResult.Yes:
                         Environment.Exit(1);
                         break;
                 }
+#endif
             }
         }
 
