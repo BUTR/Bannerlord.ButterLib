@@ -57,7 +57,7 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem.Patches
         [MethodImpl(MethodImplOptions.NoInlining)]
         private static void OnGameLoadedPrefix(object? ____campaignBehaviorDataStore)
         {
-            var provider = ButterLibSubModule.Instance?.GetServiceProvider() ?? ButterLibSubModule.Instance?.GetTempServiceProvider();
+            var provider = ButterLibSubModule.Instance?.GetServiceProvider();
             var log = provider?.GetService<ILogger<CampaignBehaviorManagerPatch>>() ?? NullLogger<CampaignBehaviorManagerPatch>.Instance;
 
             if (____campaignBehaviorDataStore is null)
@@ -66,7 +66,7 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem.Patches
                 return;
             }
 
-            if (ButterLibSubModule.Instance?.GetServiceProvider()?.GetService<IMBObjectExtensionDataStore>() is not { } mbObjectVariableStorage)
+            if (provider?.GetService<IMBObjectExtensionDataStore>() is not { } mbObjectVariableStorage)
             {
                 log.LogError("{Method}: {Variable} is null", nameof(OnGameLoadedPrefix), nameof(mbObjectVariableStorage));
                 return;
@@ -80,7 +80,7 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem.Patches
 
             if (AccessTools2.GetDelegate<LoadBehaviorDataDelegate>(____campaignBehaviorDataStore, ____campaignBehaviorDataStore.GetType(), "LoadBehaviorData") is not { } loadBehaviorData)
             {
-                log.LogError("{Method}: {Variable} is not a SaveBehaviorDataDelegate", nameof(OnGameLoadedPrefix), nameof(loadBehaviorData));
+                log.LogError("{Method}: {Variable} is not a LoadBehaviorDataDelegate", nameof(OnGameLoadedPrefix), nameof(loadBehaviorData));
                 return;
             }
 
@@ -98,7 +98,7 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem.Patches
         [MethodImpl(MethodImplOptions.NoInlining)]
         private static void OnBeforeSavePostfix(object? ____campaignBehaviorDataStore)
         {
-            var provider = ButterLibSubModule.Instance?.GetServiceProvider() ?? ButterLibSubModule.Instance?.GetTempServiceProvider();
+            var provider = ButterLibSubModule.Instance?.GetServiceProvider();
             var log = provider?.GetService<ILogger<CampaignBehaviorManagerPatch>>() ?? NullLogger<CampaignBehaviorManagerPatch>.Instance;
 
             if (____campaignBehaviorDataStore is null)
@@ -107,7 +107,7 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem.Patches
                 return;
             }
 
-            if (ButterLibSubModule.Instance?.GetServiceProvider()?.GetService<IMBObjectExtensionDataStore>() is not { } mbObjectVariableStorage)
+            if (provider?.GetService<IMBObjectExtensionDataStore>() is not { } mbObjectVariableStorage)
             {
                 log.LogError("{Method}: {Variable} is null", nameof(OnBeforeSavePostfix), nameof(mbObjectVariableStorage));
                 return;

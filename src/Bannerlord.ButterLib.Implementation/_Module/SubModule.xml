@@ -4,10 +4,11 @@
   <Id value="$moduleid$" />
   <Name value="$modulename$" />
   <Version value="v$version$" />
-  <ModuleType value="Community"/>
   <DefaultModule value="false" />
   <ModuleCategory value="Singleplayer" />
+  <ModuleType value="Community"/>
   <Url value="https://www.nexusmods.com/mountandblade2bannerlord/mods/2018" />
+  <UpdateInfo value="NexusMods:2018" />
   <DependedModules>
     <!-- Uncomment when doing ExtensionVersion > 2.0.0
     <DependedModule Id="BLSE.AssemblyResolver" />
@@ -27,11 +28,11 @@
     <DependedModuleMetadata id="Bannerlord.Harmony" order="LoadBeforeThis" version="v$harmonyversion$" />
     <DependedModuleMetadata id="BetterExceptionWindow" order="LoadBeforeThis" optional="true" />
 
-    <DependedModuleMetadata id="Native" order="LoadAfterThis" version="e$gameversion$.*" />
-    <DependedModuleMetadata id="SandBoxCore" order="LoadAfterThis" version="e$gameversion$.*" optional="true" />
-    <DependedModuleMetadata id="Sandbox" order="LoadAfterThis" version="e$gameversion$.*" optional="true" />
-    <DependedModuleMetadata id="StoryMode" order="LoadAfterThis" version="e$gameversion$.*" optional="true" />
-    <DependedModuleMetadata id="CustomBattle" order="LoadAfterThis" version="e$gameversion$.*" optional="true" />
+    <DependedModuleMetadata id="Native" order="LoadAfterThis" version="$gameversion$.*" />
+    <DependedModuleMetadata id="SandBoxCore" order="LoadAfterThis" version="$gameversion$.*" optional="true" />
+    <DependedModuleMetadata id="Sandbox" order="LoadAfterThis" version="$gameversion$.*" optional="true" />
+    <DependedModuleMetadata id="StoryMode" order="LoadAfterThis" version="$gameversion$.*" optional="true" />
+    <DependedModuleMetadata id="CustomBattle" order="LoadAfterThis" version="$gameversion$.*" optional="true" />
   </DependedModuleMetadatas>
   <!-- Community Dependency Metadata -->
   <SubModules>
@@ -53,6 +54,7 @@
       <Name value="ButterLib Implementation Loader" />
       <DLLName value="$moduleid$.dll" />
       <SubModuleClassType value="$moduleid$.ImplementationLoaderSubModule" />
+      <Assemblies/>
       <Tags />
     </SubModule>
   </SubModules>

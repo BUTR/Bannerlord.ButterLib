@@ -33,7 +33,7 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
         private static string Serialize<T>(ref T? data, JsonSerializer serializer)
         {
             var sb = new StringBuilder(256);
-            var sw = new StringWriter(sb, CultureInfo.InvariantCulture);
+            using var sw = new StringWriter(sb, CultureInfo.InvariantCulture);
             using var jsonWriter = new JsonTextWriter(sw);
             jsonWriter.Formatting = Formatting.None;
             serializer.Serialize(jsonWriter, data, typeof(T));

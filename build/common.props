@@ -4,7 +4,7 @@
   <!--Development Variables-->
   <PropertyGroup>
     <!--Module Version-->
-    <Version>2.8.14</Version>
+    <Version>2.8.15</Version>
     <!--Harmony Version-->
     <HarmonyVersion>2.2.2</HarmonyVersion>
     <HarmonyExtensionsVersion>3.2.0.77</HarmonyExtensionsVersion>
