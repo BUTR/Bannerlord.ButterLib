@@ -71,7 +71,7 @@ jobs:
       shell: pwsh
 
     - name: ReportGenerator
-      uses: danielpalme/ReportGenerator-GitHub-Action@5.1.26
+      uses: danielpalme/ReportGenerator-GitHub-Action@5.2.0
       with:
         reports: '*.xml'
         targetdir: 'coveragereport'
