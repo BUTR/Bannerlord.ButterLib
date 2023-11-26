@@ -108,7 +108,7 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
 
 #if v100 || v101 || v102 || v103 || v110 || v111 || v112 || v113 || v114 || v115
         private sealed class SavedTypeDefiner : SaveableCampaignBehaviorTypeDefiner
-#elif v120 || v121 || v122 || v123 || v124
+#elif v120 || v121 || v122 || v123 || v124 || v125
         private sealed class SavedTypeDefiner : SaveableTypeDefiner
 #else
 #error DEFINE

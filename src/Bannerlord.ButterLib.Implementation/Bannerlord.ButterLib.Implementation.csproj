@@ -43,16 +43,30 @@
     <PackageReference Include="Bannerlord.ReferenceAssemblies.Native" Version="$(GameVersion).*-*" PrivateAssets="all" />
 
     <PackageReference Include="IsExternalInit" Version="1.0.3" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
-
-    <!-- AsmResolver.DotNet.Dynamic force pulls System.Runtime.CompilerSerices.Unsafe v6, downgrade it -->
-    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.5.3" />
   </ItemGroup>
   <!--NuGet References-->
+
+  <!--
+  <ItemGroup>
+      <Reference Include="$(GameFolder)\bin\Win64_Shipping_Client\Newtonsoft.Json.dll">
+          <HintPath>%(Identity)</HintPath>
+          <Private>False</Private>
+      </Reference>
+      <Reference Include="$(GameFolder)\bin\Win64_Shipping_Client\TaleWorlds.*.dll" Exclude="$(GameFolder)\bin\Win64_Shipping_Client\TaleWorlds.Native.dll">
+          <HintPath>%(Identity)</HintPath>
+          <Private>False</Private>
+      </Reference>
+      <Reference Include="$(GameFolder)\Modules\Native\bin\Win64_Shipping_Client\*.dll">
+          <HintPath>%(Identity)</HintPath>
+          <Private>False</Private>
+      </Reference>
+  </ItemGroup>
+  -->
 
   <ItemGroup>
     <ProjectReference Include="..\Bannerlord.ButterLib\Bannerlord.ButterLib.csproj" />
   </ItemGroup>
-
+  
   <!--InternalsVisibleTo-->
   <ItemGroup>
     <InternalsVisibleTo Include="Bannerlord.ButterLib.Tests" />

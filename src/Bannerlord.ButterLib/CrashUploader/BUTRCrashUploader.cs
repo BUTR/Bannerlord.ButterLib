@@ -1,6 +1,9 @@
-﻿using Bannerlord.ButterLib.ExceptionHandler;
+﻿using BUTR.CrashReport.Models;
+
+using Newtonsoft.Json;
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -12,7 +15,9 @@ namespace Bannerlord.ButterLib.CrashUploader
 {
     internal class BUTRCrashUploader : ICrashUploader
     {
-        public async Task<CrashUploaderResult> UploadAsync(CrashReport crashReport)
+        public sealed record CrashReportUploadBody(CrashReportModel CrashReport, IEnumerable<LogSource> LogSources);
+
+        public async Task<CrashUploaderResult> UploadAsync(CrashReportModel crashReportModel, IEnumerable<LogSource> logSources)
         {
             try
             {
@@ -22,12 +27,11 @@ namespace Bannerlord.ButterLib.CrashUploader
                     return CrashUploaderResult.MetadataNotFound();
 
                 // Do not send a minidump
-                var htmlReport = HtmlBuilder.Build(crashReport);
-                var data = Encoding.UTF8.GetBytes(htmlReport);
+                var data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(new CrashReportUploadBody(crashReportModel, logSources)));
 
                 var httpWebRequest = WebRequest.CreateHttp(uploadUrlAttr.Value);
                 httpWebRequest.Method = "POST";
-                httpWebRequest.ContentType = "text/html";
+                httpWebRequest.ContentType = "application/json";
                 httpWebRequest.ContentLength = data.Length;
                 httpWebRequest.UserAgent = $"ButterLib CrashUploader v{assembly.GetName().Version}";
 

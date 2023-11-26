@@ -33,29 +33,45 @@
 
   <!--NuGet References-->
   <ItemGroup>
-    <!--
-    <PackageReference Include="AsmResolver.DotNet.Dynamic" Version="5.3.0" PrivateAssets="all" />
-    -->
     <PackageReference Include="Bannerlord.BUTR.Shared" Version="$(BUTRSharedVersion)" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
     <PackageReference Include="Bannerlord.ModuleManager.Source" Version="$(BUTRModuleManagerVersion)" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
+    <PackageReference Include="BUTR.CrashReport.Models" Version="$(CrashReportVersion)" />
+    <PackageReference Include="BUTR.CrashReport" Version="$(CrashReportVersion)" />
+    <PackageReference Include="BUTR.CrashReport.Bannerlord.Source" Version="$(CrashReportVersion)" />
     <PackageReference Include="Harmony.Extensions" Version="$(HarmonyExtensionsVersion)" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
     <PackageReference Include="Lib.Harmony" Version="$(HarmonyVersion)" PrivateAssets="all" IncludeAssets="compile" />
     <PackageReference Include="MonoMod.Backports" Version="1.0.0" PrivateAssets="all" IncludeAssets="none" />
-    <PackageReference Include="Bannerlord.ReferenceAssemblies.Core" Version="$(GameVersion).*" PrivateAssets="all" />
+
+    <PackageReference Include="Bannerlord.ReferenceAssemblies.Core" Version="$(GameVersion).*-*" PrivateAssets="all" />
+
     <!-- The game did a ninja update from 11 to 13. We use the newer version and will ship it for 1.0.0 and 1.0.1 -->
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" PrivateAssets="all" />
     <PackageReference Include="IsExternalInit" Version="1.0.3" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
     <PackageReference Include="Nullable" Version="1.3.1" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
+    <PackageReference Include="Required" Version="1.0.0" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Ben.Demystifier\src\Ben.Demystifier\Ben.Demystifier.csproj" PrivateAssets="all" />
-  </ItemGroup>
-  <!-- Once we can use it, show CIL+C# in the decompiler
+  <!--NuGet References-->
+
   <ItemGroup Condition="$(TargetFramework) == 'net472'">
-    <PackageReference Include="ICSharpCode.Decompiler" Version="8.0.0.7345" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
+    <Reference Include="System.IO.Compression" />
+  </ItemGroup>
+
+  <!--
+  <ItemGroup>
+    <Reference Include="$(GameFolder)\bin\Win64_Shipping_Client\Newtonsoft.Json.dll">
+      <HintPath>%(Identity)</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="$(GameFolder)\bin\Win64_Shipping_Client\TaleWorlds.*.dll" Exclude="$(GameFolder)\bin\Win64_Shipping_Client\TaleWorlds.Native.dll">
+      <HintPath>%(Identity)</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="BUTR.CrashReport">
+      <HintPath>..\..\..\BUTR.CrashReport\src\BUTR.CrashReport\bin\Debug\netstandard2.0\BUTR.CrashReport.dll</HintPath>
+    </Reference>
+    <Compile Include="..\..\..\BUTR.CrashReport\src\BUTR.CrashReport.Bannerlord.Source\*.cs" />
   </ItemGroup>
   -->
-  <!--NuGet References-->
 
   <!--Windows Forms-->
   <ItemGroup Condition="$(TargetFramework) == 'net472'">

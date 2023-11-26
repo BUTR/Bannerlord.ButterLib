@@ -1,119 +1,75 @@
 ﻿#if !NETSTANDARD2_0_OR_GREATER
-using Bannerlord.BUTR.Shared.Helpers;
 using Bannerlord.ButterLib.Common.Extensions;
 using Bannerlord.ButterLib.CrashUploader;
-using Bannerlord.ButterLib.Extensions;
+
+using BUTR.CrashReport;
+using BUTR.CrashReport.Bannerlord;
+using BUTR.CrashReport.Models;
+
+using JetBrains.Annotations;
 
 using Microsoft.Extensions.DependencyInjection;
 
 using System;
 using System.Diagnostics;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
-using System.IO.Compression;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using TaleWorlds.Engine;
 using TaleWorlds.Library;
 
 using DialogResult = System.Windows.Forms.DialogResult;
-using Path = System.IO.Path;
 
 namespace Bannerlord.ButterLib.ExceptionHandler.WinForms
 {
     public partial class HtmlCrashReportForm : Form
     {
-        private static bool HasBetterExceptionWindow =>
-            ModuleInfoHelper.GetLoadedModules().Any(m => string.Equals(m.Id, "BetterExceptionWindow", StringComparison.InvariantCultureIgnoreCase));
+        private static bool UriIsValid(string url) =>
+            Uri.TryCreate(url, UriKind.Absolute, out var uriResult) && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
 
-
-        private static string GetCompressedMiniDump()
+        private static async Task<bool> SetClipboardTextAsync(string text)
         {
-            try
+            var completionSource = new TaskCompletionSource<bool>();
+            var staThread = new Thread(() =>
             {
-                if (!MiniDump.TryDump(out var stream)) return string.Empty;
-
-                using var _ = stream;
-                return Convert.ToBase64String(stream.ToArray());
-            }
-            catch (Exception)
-            {
-                return string.Empty;
-            }
-        }
-
-        private static string GetCompressedSaveFile()
-        {
-            try
-            {
-                var gameSavesDirectory = new PlatformDirectoryPath(PlatformFileType.User, "Game Saves\\");
-                // TODO: What to with Xbox version? No write time available
-                var gameSavesPath = PlatformFileHelperPCExtended.GetDirectoryFullPath(gameSavesDirectory);
-                if (string.IsNullOrEmpty(gameSavesPath)) return string.Empty;
-
-                var latestSaveFile = new DirectoryInfo(gameSavesPath).EnumerateFiles("*.sav", SearchOption.TopDirectoryOnly)
-                    .OrderByDescending(x => x.LastWriteTimeUtc)
-                    .FirstOrDefault();
-                if (latestSaveFile is null) return string.Empty;
-
-                using var compressedDataStream = new MemoryStream();
-                using var fs = latestSaveFile.OpenRead();
-                using var zipStream = new GZipStream(compressedDataStream, CompressionMode.Compress, true);
-                fs.Position = 0;
-                fs.CopyTo(zipStream);
-                return Convert.ToBase64String(compressedDataStream.ToArray());
-            }
-            catch (Exception)
-            {
-                return string.Empty;
-            }
-        }
-
-        private static string GetScreenshot()
-        {
-            try
-            {
-                var tempBmp = Path.Combine(Path.GetTempPath(), $"{Path.GetRandomFileName()}.bmp");
-
-                Utilities.TakeScreenshot(tempBmp);
-
-                using var image = Image.FromFile(tempBmp);
-                using var encoderParameters = new EncoderParameters(1) { Param = { [0] = new EncoderParameter(Encoder.Quality, 80L) } };
-
-                using var stream = new MemoryStream();
-                image.Save(stream, ImageCodecInfo.GetImageDecoders().First(codec => codec.FormatID == ImageFormat.Jpeg.Guid), encoderParameters);
-                return Convert.ToBase64String(stream.ToArray());
-            }
-            catch (Exception)
-            {
-                return string.Empty;
-            }
+                try
+                {
+                    var dataObject = new DataObject();
+                    dataObject.SetText(text, TextDataFormat.Text);
+                    Clipboard.SetDataObject(dataObject, true, 10, 100);
+                    completionSource.SetResult(true);
+                }
+                catch (Exception)
+                {
+                    completionSource.SetResult(false);
+                }
+            });
+            staThread.SetApartmentState(ApartmentState.STA);
+            staThread.Start();
+            return await completionSource.Task;
         }
 
 
         // https://gist.github.com/eikes/2299607
         // Copyright: Eike Send http://eike.se/nd
         // License: MIT License
-        private static string ScriptText = @"
+        private static readonly string ScriptText = """
 if (!document.getElementsByClassName) {
   document.getElementsByClassName = function(search) {
     var d = document, elements, pattern, i, results = [];
     if (d.querySelectorAll) { // IE8
-      return d.querySelectorAll(""."" + search);
+      return d.querySelectorAll("." + search);
     }
     if (d.evaluate) { // IE6, IE7
-      pattern = "".//*[contains(concat(' ', @class, ' '), ' "" + search + "" ')]"";
+      pattern = ".//*[contains(concat(' ', @class, ' '), ' " + search + " ')]";
       elements = d.evaluate(pattern, d, null, 0, null);
       while ((i = elements.iterateNext())) {
         results.push(i);
       }
     } else {
-      elements = d.getElementsByTagName(""*"");
-      pattern = new RegExp(""(^|\\s)"" + search + ""(\\s|$)"");
+      elements = d.getElementsByTagName("*");
+      pattern = new RegExp("(^|\\s)" + search + "(\\s|$)");
       for (i = 0; i < elements.length; i++) {
         if ( pattern.test(elements[i].className) ) {
           results.push(elements[i]);
@@ -132,55 +88,59 @@ function handleIncludeSaveFile(cb) {
 function handleIncludeScreenshot(cb) {
   window.external.SetIncludeScreenshot(cb.checked);
 }
-";
+""";
 
-        private static string TableText = $"""
+        private static readonly string TableText = $"""
 <table style='width: 100%;'>
   <tbody>
-  <tr>
-    <td style='width: 50%;'>
-      <h1>Intercepted an exception!</h1>
-    </td>
-    <td>
-      <button style='float:right; margin-left:10px;' onclick='window.external.Close()'>Close Report</button>
-      {(CrashUploaderSubSystem.Instance?.IsEnabled != true ? "" : """
-      <button style='float:right; margin-left:10px;' onclick='window.external.UploadReport()'>Upload Report as a Permalink</button>
-      """)}
-      <button style='float:right; margin-left:10px;' onclick='window.external.SaveReport()'>Save Report</button>
-      <button style='float:right; margin-left:10px;' onclick='window.external.CopyAsHTML()'>Copy as HTML</button>
-    </td>
-  </tr>
-  <tr>
-    <td style='width: 50%;'>
-    </td>
-    <td>
-      <input style='float:right;' type='checkbox' onclick='handleIncludeMiniDump(this);'>
-      <label style='float:right; margin-left:10px;'>Include Mini Dump:</label>
-      <input style='float:right;' type='checkbox' onclick='handleIncludeSaveFile(this);'>
-      {(ApplicationPlatform.CurrentPlatform == Platform.GDKDesktop ? "" : """
-      <label style='float:right; margin-left:10px;'>Include Latest Save File:</label>
-      <input style='float:right;' type='checkbox' onclick='handleIncludeScreenshot(this);'>
-      """)}
-      <label style='float:right; margin-left:10px;'>Include Screenshot:</label>
-    </td>
-  </tr>
+    <tr>
+      <td style='width: 50%;'>
+        <h1>Intercepted an exception!</h1>
+      </td>
+      <td>
+        <button style='float:right; margin-left:10px;' onclick='window.external.Close()'>Close Report</button>
+        {(CrashUploaderSubSystem.Instance?.IsEnabled != true ? "" : """
+        <button style='float:right; margin-left:10px;' onclick='window.external.UploadReport()'>Upload Report as a Permalink</button>
+        """)}
+        <button style='float:right; margin-left:10px;' onclick='window.external.SaveReportZIP()'>Save Report as ZIP</button>
+        <button style='float:right; margin-left:10px;' onclick='window.external.SaveReportHTML()'>Save Report as HTML</button>
+        <button style='float:right; margin-left:10px;' onclick='window.external.CopyAsHTML()'>Copy as HTML</button>
+      </td>
+    </tr>
+    <tr>
+      <td style='width: 50%;'>
+      </td>
+      <td>
+        <label style='float:left;'>Save Report as HTML Options:</label>
+        <input style='float:right;' type='checkbox' onclick='handleIncludeMiniDump(this);'/>
+        <label style='float:right; margin-left:10px;'>Include Mini Dump:</label>
+        <input style='float:right;' type='checkbox' onclick='handleIncludeSaveFile(this);'/>
+        {(ApplicationPlatform.CurrentPlatform == Platform.GDKDesktop ? "" : """
+        <label style='float:right; margin-left:10px;'>Include Latest Save File:</label>
+        <input style='float:right;' type='checkbox' onclick='handleIncludeScreenshot(this);'/>
+        """)}
+        <label style='float:right; margin-left:10px;'>Include Screenshot:</label>
+      </td>
+    </tr>
   </tbody>
 </table>
 Clicking 'Close Report' will continue with the Game's error report mechanism.
-<hr/>
+<hr />
 """;
 
-        private CrashReport CrashReport { get; }
+        private CrashReportModel CrashReport { get; }
+        private LogSource[] LogSources { get; }
         private string ReportInHtml { get; }
 
         public bool IncludeMiniDump { get; set; }
         public bool IncludeSaveFile { get; set; }
         public bool IncludeScreenshot { get; set; }
 
-        internal HtmlCrashReportForm(CrashReport crashReport)
+        internal HtmlCrashReportForm(CrashReportInfo crashReport)
         {
-            CrashReport = crashReport;
-            ReportInHtml = HtmlBuilder.Build(crashReport);
+            CrashReport = CrashReportCreator.Create(crashReport);
+            LogSources = CreatorShared.GetLogSources().ToArray();
+            ReportInHtml = CrashReportHtmlRenderer.Build(CrashReport, LogSources);
 
             InitializeComponent();
             HtmlRender.ObjectForScripting = this;
@@ -225,7 +185,7 @@ Clicking 'Close Report' will continue with the Game's error report mechanism.
                 return;
             }
 
-            var result = await crashUploader.UploadAsync(CrashReport).ConfigureAwait(false);
+            var result = await crashUploader.UploadAsync(CrashReport, LogSources).ConfigureAwait(false);
             switch (result.Status)
             {
                 case CrashUploaderStatus.Success:
@@ -250,11 +210,12 @@ Clicking 'Close Report' will continue with the Game's error report mechanism.
             }
         }
 
-        public void SaveReport()
+        [UsedImplicitly]
+        public void SaveReportHTML()
         {
             using var saveFileDialog = new SaveFileDialog
             {
-                Filter = "HTML files|*.html;*.htm|All files (*.*)|*.*",
+                Filter = "HTML files|*.html|All files (*.*)|*.*",
                 RestoreDirectory = true,
                 AddExtension = true,
                 CheckPathExists = true,
@@ -265,48 +226,29 @@ Clicking 'Close Report' will continue with the Game's error report mechanism.
             };
             if (saveFileDialog.ShowDialog() == DialogResult.OK && saveFileDialog.OpenFile() is { } fileStream)
             {
-                var report = ReportInHtml;
-
-                if (IncludeMiniDump)
-                    report = report
-                        .Replace(HtmlBuilder.MiniDumpTag, GetCompressedMiniDump())
-                        .Replace(HtmlBuilder.MiniDumpButtonTag, @"
-<![if !IE]>
-              <br/>
-              <br/>
-              <button onclick='minidump(this)'>Get MiniDump</button>
-<![endif]>");
-
-                if (IncludeSaveFile)
-                    report = report
-                        .Replace(HtmlBuilder.SaveFileTag, GetCompressedSaveFile())
-                        .Replace(HtmlBuilder.SaveFileButtonTag, @"
-<![if !IE]>
-              <br/>
-              <br/>
-              <button onclick='savefile(this)'>Get Save File</button>
-<![endif]>");
-
-                if (IncludeScreenshot)
-                    report = report
-                        .Replace(HtmlBuilder.ScreenshotTag, GetScreenshot())
-                        .Replace(HtmlBuilder.ScreenshotButtonTag, @"
-<![if !IE]>
-              <br/>
-              <br/>
-              <button onclick='screenshot(this)'>Show Screenshot</button>
-<![endif]>");
-
-                if (IncludeMiniDump || IncludeSaveFile)
-                    report = report
-                        .Replace(HtmlBuilder.DecompressScriptTag, @"
-<![if !IE]>
-    <script src=""https://cdn.jsdelivr.net/pako/1.0.3/pako_inflate.min.js""></script>
-<![endif]>");
-
                 using var stream = fileStream;
-                using var streamWriter = new StreamWriter(fileStream);
-                streamWriter.Write(report);
+                CreatorHtml.Create(CrashReport, ReportInHtml, IncludeMiniDump, IncludeSaveFile, IncludeScreenshot, stream);
+            }
+        }
+
+        [UsedImplicitly]
+        public void SaveReportZIP()
+        {
+            using var saveFileDialog = new SaveFileDialog
+            {
+                Filter = "ZIP files|*.zip|All files (*.*)|*.*",
+                RestoreDirectory = true,
+                AddExtension = true,
+                CheckPathExists = true,
+                ValidateNames = true,
+                FileName = "crashreport",
+                CreatePrompt = true,
+                OverwritePrompt = true
+            };
+            if (saveFileDialog.ShowDialog() == DialogResult.OK && saveFileDialog.OpenFile() is { } fileStream)
+            {
+                using var stream = fileStream;
+                CreatorZip.Create(CrashReport, stream);
             }
         }
 
@@ -317,31 +259,6 @@ Clicking 'Close Report' will continue with the Game's error report mechanism.
                 e.Cancel = true;
                 Process.Start(uri);
             }
-        }
-
-        private static bool UriIsValid(string url) =>
-            Uri.TryCreate(url, UriKind.Absolute, out var uriResult) && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
-
-        private static async Task<bool> SetClipboardTextAsync(string text)
-        {
-            var completionSource = new TaskCompletionSource<bool>();
-            var staThread = new Thread(() =>
-            {
-                try
-                {
-                    var dataObject = new DataObject();
-                    dataObject.SetText(text, TextDataFormat.Text);
-                    Clipboard.SetDataObject(dataObject, true, 10, 100);
-                    completionSource.SetResult(true);
-                }
-                catch (Exception)
-                {
-                    completionSource.SetResult(false);
-                }
-            });
-            staThread.SetApartmentState(ApartmentState.STA);
-            staThread.Start();
-            return await completionSource.Task;
         }
     }
 }
