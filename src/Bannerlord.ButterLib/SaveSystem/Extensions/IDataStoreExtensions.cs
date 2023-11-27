@@ -59,7 +59,7 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
 
             return SyncDataAsJson(dataStore, key, ref data, JsonSerializer.Create(settings));
         }
-        
+
         public static bool SyncDataAsJson<T>(this IDataStore dataStore, string key, ref T? data, JsonSerializer serializer)
         {
             // If the type we're synchronizing is a string or string array, then it's ambiguous

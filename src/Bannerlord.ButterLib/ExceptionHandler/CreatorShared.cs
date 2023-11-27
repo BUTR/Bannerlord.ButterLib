@@ -1,4 +1,4 @@
-using Bannerlord.ButterLib.Common.Extensions;
+﻿using Bannerlord.ButterLib.Common.Extensions;
 using Bannerlord.ButterLib.Extensions;
 using Bannerlord.ButterLib.Logger;
 
