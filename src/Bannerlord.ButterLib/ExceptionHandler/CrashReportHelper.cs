@@ -1,4 +1,4 @@
-using Bannerlord.BUTR.Shared.Helpers;
+﻿using Bannerlord.BUTR.Shared.Helpers;
 
 using BUTR.CrashReport;
 using BUTR.CrashReport.Bannerlord;

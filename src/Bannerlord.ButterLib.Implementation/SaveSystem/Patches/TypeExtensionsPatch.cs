@@ -60,7 +60,7 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
         {
             containerType = ContainerType.None;
 
-            if (type is {IsGenericType: true, IsGenericTypeDefinition: false})
+            if (type is { IsGenericType: true, IsGenericTypeDefinition: false })
                 type = type.GetGenericTypeDefinition();
 
             if (type.IsArray)
