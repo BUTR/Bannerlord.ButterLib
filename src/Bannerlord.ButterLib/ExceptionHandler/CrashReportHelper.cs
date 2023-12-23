@@ -44,6 +44,17 @@ internal class CrashReportHelper : ICrashReportHelper
                 }
             }
 
+            if (IsOfficialModule(stacktraceEntry.ModuleInfo) || IsOfficialMethod(stacktraceEntry.Method))
+            {
+                stacktraceEntry.CSharpInstructions = Array.Empty<string>();
+                stacktraceEntry.CSharpILMixedInstructions = Array.Empty<string>();
+            }
+            if (IsOfficialModule(stacktraceEntry.OriginalMethod?.ModuleInfo) || IsOfficialMethod(stacktraceEntry.OriginalMethod?.Method))
+            {
+                stacktraceEntry.OriginalMethod!.CSharpInstructions = Array.Empty<string>();
+                stacktraceEntry.OriginalMethod.CSharpILMixedInstructions = Array.Empty<string>();
+            }
+
             yield return stacktraceEntry;
         }
     }
@@ -54,4 +65,19 @@ internal class CrashReportHelper : ICrashReportHelper
 
 
     public IEnumerable<Assembly> Assemblies() => AccessTools2.AllAssemblies();
+
+    private static bool IsOfficialModule(IModuleInfo? moduleInfo) => moduleInfo is ModuleInfo { InternalModuleInfo.IsOfficial: true };
+    private static bool IsOfficialMethod(MethodBase? method)
+    {
+        if (method?.Module.Assembly is not { } assembly)
+            return false;
+
+        if (assembly.GetCustomAttribute<AssemblyConfigurationAttribute>() is { } assemblyConfiguration)
+        {
+            return string.Equals(assemblyConfiguration.Configuration, "Shipping_Client", StringComparison.OrdinalIgnoreCase);
+        }
+
+        var assemblyName = assembly.GetName();
+        return assemblyName.Name.Contains("TaleWorlds");
+    }
 }

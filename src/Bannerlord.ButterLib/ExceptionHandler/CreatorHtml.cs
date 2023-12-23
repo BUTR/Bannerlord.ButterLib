@@ -7,6 +7,7 @@ using Newtonsoft.Json.Converters;
 using System;
 using System.IO;
 using System.IO.Compression;
+using System.Text;
 
 namespace Bannerlord.ButterLib.ExceptionHandler;
 
@@ -71,6 +72,18 @@ internal static class CreatorHtml
         }
     }
 
+    private static string CompressJson(string jsonModel)
+    {
+        using var uncompressedStream = new MemoryStream(Encoding.UTF8.GetBytes(jsonModel));
+        using var compressedStream = new MemoryStream();
+        using (var compressorStream = new DeflateStream(compressedStream, CompressionLevel.Fastest, true))
+        {
+            uncompressedStream.CopyTo(compressorStream);
+        }
+        var compressedBytes = compressedStream.ToArray();
+        return Convert.ToBase64String(compressedBytes);
+    }
+    
     public static void Create(CrashReportModel crashReport, string html, bool includeMiniDump, bool includeSaveFile, bool includeScreenshot, Stream stream)
     {
         var json = JsonConvert.SerializeObject(crashReport, new JsonSerializerSettings
@@ -82,7 +95,7 @@ internal static class CreatorHtml
             Converters = { new StringEnumConverter() }
         });
 
-        var report = CrashReportHtmlRenderer.AddData(html, json,
+        var report = CrashReportHtmlRenderer.AddData(html, CompressJson(json),
             includeMiniDump ? GetCompressedMiniDump() : null,
             includeSaveFile ? GetCompressedSaveFile() : null,
             includeScreenshot ? GetScreenshot() : null);
