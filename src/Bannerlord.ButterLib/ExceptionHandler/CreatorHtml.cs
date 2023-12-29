@@ -83,7 +83,7 @@ internal static class CreatorHtml
         var compressedBytes = compressedStream.ToArray();
         return Convert.ToBase64String(compressedBytes);
     }
-    
+
     public static void Create(CrashReportModel crashReport, string html, bool includeMiniDump, bool includeSaveFile, bool includeScreenshot, Stream stream)
     {
         var json = JsonConvert.SerializeObject(crashReport, new JsonSerializerSettings
