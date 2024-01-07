@@ -31,6 +31,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bannerlord.ButterLib", "Bannerlord.ButterLib\Bannerlord.ButterLib.csproj", "{17BE8506-B22B-4705-A777-C862888DA1F5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{98D79DD7-266F-4EB7-915A-31BB67D2A9B8}"
+	ProjectSection(SolutionItems) = preProject
+		..\docs\docfx.json = ..\docs\docfx.json
+		..\docs\toc.yml = ..\docs\toc.yml
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{AAC60DC8-6952-44D5-B9BD-789902E27273}"
 EndProject
@@ -39,6 +43,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bannerlord.ButterLib.Implementation.Tests", "..\tests\Bannerlord.ButterLib.Implementation.Tests\Bannerlord.ButterLib.Implementation.Tests.csproj", "{CC56F4AA-1C6F-4B20-9DA3-79A30E1F6734}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Optional", "Optional", "{025F5566-540B-44B2-92D7-0C069F65FC98}"
+	ProjectSection(SolutionItems) = preProject
+		..\docs\articles\Optional\toc.yml = ..\docs\articles\Optional\toc.yml
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DependencyInjection", "DependencyInjection", "{4228E9A3-C94E-4228-A432-41A7632E663E}"
 	ProjectSection(SolutionItems) = preProject
@@ -47,53 +54,66 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DependencyInjection", "Depe
 		..\docs\articles\Optional\DependencyInjection\Stage-1.md = ..\docs\articles\Optional\DependencyInjection\Stage-1.md
 		..\docs\articles\Optional\DependencyInjection\Stage-2.md = ..\docs\articles\Optional\DependencyInjection\Stage-2.md
 		..\docs\articles\Optional\DependencyInjection\Stage-3.md = ..\docs\articles\Optional\DependencyInjection\Stage-3.md
+		..\docs\articles\Optional\DependencyInjection\toc.yml = ..\docs\articles\Optional\DependencyInjection\toc.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Logging", "Logging", "{24B1E618-737D-4EF2-89BE-8D7CBCF69BC3}"
 	ProjectSection(SolutionItems) = preProject
 		..\docs\articles\Optional\Logging\Overview.md = ..\docs\articles\Optional\Logging\Overview.md
+		..\docs\articles\Optional\Logging\toc.yml = ..\docs\articles\Optional\Logging\toc.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AssemblyVerifier", "AssemblyVerifier", "{D5C3EA41-BE06-41DB-B7F9-60BB0EFDC0B6}"
 	ProjectSection(SolutionItems) = preProject
 		..\docs\articles\AssemblyVerifier\Overview.md = ..\docs\articles\AssemblyVerifier\Overview.md
+		..\docs\articles\AssemblyVerifier\toc.yml = ..\docs\articles\AssemblyVerifier\toc.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CampaignIdentifier", "CampaignIdentifier", "{5217581D-2AF9-4218-B7A0-A09110BA1434}"
 	ProjectSection(SolutionItems) = preProject
 		..\docs\articles\CampaignIdentifier\Overview.md = ..\docs\articles\CampaignIdentifier\Overview.md
+		..\docs\articles\CampaignIdentifier\toc.yml = ..\docs\articles\CampaignIdentifier\toc.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DistanceMatrix", "DistanceMatrix", "{F626B2A9-96E8-4838-9FD7-1BDB2F0D4867}"
 	ProjectSection(SolutionItems) = preProject
 		..\docs\articles\DistanceMatrix\Overview.md = ..\docs\articles\DistanceMatrix\Overview.md
+		..\docs\articles\DistanceMatrix\toc.yml = ..\docs\articles\DistanceMatrix\toc.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SubModuleWrappers", "SubModuleWrappers", "{8BC9CF61-16CD-49CE-A9C1-F7B3E4205D8C}"
 	ProjectSection(SolutionItems) = preProject
 		..\docs\articles\SubModuleWrappers\Overview.md = ..\docs\articles\SubModuleWrappers\Overview.md
+		..\docs\articles\SubModuleWrappers\toc.yml = ..\docs\articles\SubModuleWrappers\toc.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DelayedSubModule", "DelayedSubModule", "{45845F8C-E085-4210-8EC4-99C30BA25805}"
 	ProjectSection(SolutionItems) = preProject
 		..\docs\articles\DelayedSubModule\Overview.md = ..\docs\articles\DelayedSubModule\Overview.md
+		..\docs\articles\DelayedSubModule\toc.yml = ..\docs\articles\DelayedSubModule\toc.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{C6CCF42F-1FF0-41C2-A9E2-CE2536FFB8B0}"
+	ProjectSection(SolutionItems) = preProject
+		..\docs\articles\Common\toc.yml = ..\docs\articles\Common\toc.yml
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensions", "Extensions", "{8DC26B0D-516B-428B-8632-FE4760E8B0DA}"
 	ProjectSection(SolutionItems) = preProject
 		..\docs\articles\Common\Extensions\Overview.md = ..\docs\articles\Common\Extensions\Overview.md
+		..\docs\articles\Common\Extensions\toc.yml = ..\docs\articles\Common\Extensions\toc.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Helpers", "Helpers", "{D898106F-DFC9-4CB5-8AB7-A93B635F8176}"
 	ProjectSection(SolutionItems) = preProject
 		..\docs\articles\Common\Helpers\Overview.md = ..\docs\articles\Common\Helpers\Overview.md
+		..\docs\articles\Common\Helpers\toc.yml = ..\docs\articles\Common\Helpers\toc.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SaveSystem", "SaveSystem", "{553C01B8-F0D3-4252-B9C8-5967F6CFF46B}"
 	ProjectSection(SolutionItems) = preProject
 		..\docs\articles\SaveSystem\Overview.md = ..\docs\articles\SaveSystem\Overview.md
+		..\docs\articles\SaveSystem\toc.yml = ..\docs\articles\SaveSystem\toc.yml
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bannerlord.ButterLib.ObjectSystem.Test", "..\tests\Bannerlord.ButterLib.ObjectSystem.Test\Bannerlord.ButterLib.ObjectSystem.Test.csproj", "{451849FC-0522-493D-B0DF-9538ABDBE56D}"
@@ -101,6 +121,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HotKeys", "HotKeys", "{8D79D0B9-F5BB-4497-A315-C3A36A1923D0}"
 	ProjectSection(SolutionItems) = preProject
 		..\docs\articles\HotKeys\Overview.md = ..\docs\articles\HotKeys\Overview.md
+		..\docs\articles\HotKeys\toc.yml = ..\docs\articles\HotKeys\toc.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{43B4A632-B25F-4424-8810-3D60FD54E203}"
@@ -110,6 +131,12 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Development", "Development", "{4C1C912A-C043-4BA3-A3A9-95989F1061B2}"
 	ProjectSection(SolutionItems) = preProject
 		..\docs\articles\Development\Overview.md = ..\docs\articles\Development\Overview.md
+		..\docs\articles\Development\toc.yml = ..\docs\articles\Development\toc.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "articles", "articles", "{F217B917-FD82-4297-A0AE-F40F5EA17A64}"
+	ProjectSection(SolutionItems) = preProject
+		..\docs\articles\toc.yml = ..\docs\articles\toc.yml
 	EndProjectSection
 EndProject
 Global
@@ -286,23 +313,24 @@ Global
 		{AAC60DC8-6952-44D5-B9BD-789902E27273} = {F11F675F-87A9-4959-92FE-6B44D9500F1B}
 		{C2FEF2CB-356C-4045-948D-F0755ABA6378} = {AAC60DC8-6952-44D5-B9BD-789902E27273}
 		{CC56F4AA-1C6F-4B20-9DA3-79A30E1F6734} = {AAC60DC8-6952-44D5-B9BD-789902E27273}
-		{025F5566-540B-44B2-92D7-0C069F65FC98} = {98D79DD7-266F-4EB7-915A-31BB67D2A9B8}
 		{4228E9A3-C94E-4228-A432-41A7632E663E} = {025F5566-540B-44B2-92D7-0C069F65FC98}
 		{24B1E618-737D-4EF2-89BE-8D7CBCF69BC3} = {025F5566-540B-44B2-92D7-0C069F65FC98}
-		{D5C3EA41-BE06-41DB-B7F9-60BB0EFDC0B6} = {98D79DD7-266F-4EB7-915A-31BB67D2A9B8}
-		{5217581D-2AF9-4218-B7A0-A09110BA1434} = {98D79DD7-266F-4EB7-915A-31BB67D2A9B8}
-		{F626B2A9-96E8-4838-9FD7-1BDB2F0D4867} = {98D79DD7-266F-4EB7-915A-31BB67D2A9B8}
-		{8BC9CF61-16CD-49CE-A9C1-F7B3E4205D8C} = {98D79DD7-266F-4EB7-915A-31BB67D2A9B8}
-		{45845F8C-E085-4210-8EC4-99C30BA25805} = {98D79DD7-266F-4EB7-915A-31BB67D2A9B8}
-		{C6CCF42F-1FF0-41C2-A9E2-CE2536FFB8B0} = {98D79DD7-266F-4EB7-915A-31BB67D2A9B8}
 		{8DC26B0D-516B-428B-8632-FE4760E8B0DA} = {C6CCF42F-1FF0-41C2-A9E2-CE2536FFB8B0}
 		{D898106F-DFC9-4CB5-8AB7-A93B635F8176} = {C6CCF42F-1FF0-41C2-A9E2-CE2536FFB8B0}
-		{553C01B8-F0D3-4252-B9C8-5967F6CFF46B} = {98D79DD7-266F-4EB7-915A-31BB67D2A9B8}
 		{451849FC-0522-493D-B0DF-9538ABDBE56D} = {43B4A632-B25F-4424-8810-3D60FD54E203}
-		{8D79D0B9-F5BB-4497-A315-C3A36A1923D0} = {98D79DD7-266F-4EB7-915A-31BB67D2A9B8}
 		{43B4A632-B25F-4424-8810-3D60FD54E203} = {AAC60DC8-6952-44D5-B9BD-789902E27273}
 		{5C1705E2-CC31-4215-A4CE-7A8AFF6D9BC3} = {43B4A632-B25F-4424-8810-3D60FD54E203}
-		{4C1C912A-C043-4BA3-A3A9-95989F1061B2} = {98D79DD7-266F-4EB7-915A-31BB67D2A9B8}
+		{F217B917-FD82-4297-A0AE-F40F5EA17A64} = {98D79DD7-266F-4EB7-915A-31BB67D2A9B8}
+		{D5C3EA41-BE06-41DB-B7F9-60BB0EFDC0B6} = {F217B917-FD82-4297-A0AE-F40F5EA17A64}
+		{5217581D-2AF9-4218-B7A0-A09110BA1434} = {F217B917-FD82-4297-A0AE-F40F5EA17A64}
+		{C6CCF42F-1FF0-41C2-A9E2-CE2536FFB8B0} = {F217B917-FD82-4297-A0AE-F40F5EA17A64}
+		{45845F8C-E085-4210-8EC4-99C30BA25805} = {F217B917-FD82-4297-A0AE-F40F5EA17A64}
+		{4C1C912A-C043-4BA3-A3A9-95989F1061B2} = {F217B917-FD82-4297-A0AE-F40F5EA17A64}
+		{F626B2A9-96E8-4838-9FD7-1BDB2F0D4867} = {F217B917-FD82-4297-A0AE-F40F5EA17A64}
+		{8D79D0B9-F5BB-4497-A315-C3A36A1923D0} = {F217B917-FD82-4297-A0AE-F40F5EA17A64}
+		{025F5566-540B-44B2-92D7-0C069F65FC98} = {F217B917-FD82-4297-A0AE-F40F5EA17A64}
+		{553C01B8-F0D3-4252-B9C8-5967F6CFF46B} = {F217B917-FD82-4297-A0AE-F40F5EA17A64}
+		{8BC9CF61-16CD-49CE-A9C1-F7B3E4205D8C} = {F217B917-FD82-4297-A0AE-F40F5EA17A64}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {368BCFA9-8202-4785-AAD4-E8D3D1913736}

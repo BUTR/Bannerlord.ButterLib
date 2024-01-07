@@ -12,23 +12,15 @@
   ],
   "build": {
     "xref": [
+      "https://learn.microsoft.com/en-us/dotnet/.xrefmap.json",
       "xrefs/Newtonsoft.Json-xrefmap.yml",
       "https://butr.github.io/Bannerlord.ReferenceAssemblies.Documentation/xrefmap.yml"
     ],
-    "xrefService": [
-      "https://xref.docs.microsoft.com/query?uid={uid}"
-    ],
     "content": [
-      {
-        "files": [ "**/**.{md,yml}" ],
-        "exclude": [ "_site/**", "obj/**" ]
-      }
+      { "files": [ "**/**.{md,yml}" ], "exclude": [ "_site/**", "obj/**" ] }
     ],
     "resource": [
-      {
-        "files": [ "**/images/**", "codesnippet/**", "CNAME" ],
-        "exclude": [ "_site/**", "obj/**" ]
-      }
+      { "files": [ "**/images/**", "codesnippet/**", "CNAME" ], "exclude": [ "_site/**", "obj/**" ] }
     ],
     "dest": "_site",
     "globalMetadata": {
@@ -36,16 +28,19 @@
       "_appLogoPath": "images/BUTR48.svg",
       "_appName": "ButterLib",
       "_appTitle": "ButterLib Documentation",
-      "_appFooter": "© 2020-2023 Bannerlord's Unofficial Tools & Resources"
+      "_appFooter": "© 2020-2024 Bannerlord's Unofficial Tools & Resources"
     },
     "globalMetadataFiles": [],
     "fileMetadataFiles": [],
     "template": [
       "default",
-      "modern"
+      "modern",
+      "_template/last-modified",
+      "_template/my-template"
     ],
     "postProcessors": [
-      "ExtractSearchIndex"
+      "ExtractSearchIndex",
+      "LastModifiedPostProcessor"
     ]
   }
 }

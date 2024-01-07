@@ -40,7 +40,7 @@
     <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />
     <PackageReference Include="System.Reflection.Metadata" Version="1.8.1" />
   </ItemGroup>
-  <ItemGroup Condition="$(TargetFramework) == 'netcoreapp3.1'">
+  <ItemGroup Condition="$(TargetFramework) == 'net6'">
     <FrameworkReference Include="Microsoft.AspNetCore.App"  />
   </ItemGroup>
   
