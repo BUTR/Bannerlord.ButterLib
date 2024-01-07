@@ -77,6 +77,8 @@ namespace Bannerlord.ButterLib.Implementation.Tests
             return false;
         }
 
+        private static bool MockedDetachWatchdog() => false;
+
 
         [SetUp]
         public void Setup()
@@ -91,6 +93,8 @@ namespace Bannerlord.ButterLib.Implementation.Tests
             var engineUtilitiesType = Type.GetType("TaleWorlds.Engine.Utilities, TaleWorlds.Engine", false);
             harmony.Patch(engineUtilitiesType?.GetMethod("GetModulesNames", BindingFlags.Public | BindingFlags.Static),
                 prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetModuleNames)));
+            harmony.Patch(AccessTools2.Method("TaleWorlds.Engine.Utilities:DetachWatchdog"),
+                prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedDetachWatchdog)));
 
             var subModule = new ButterLibSubModule();
             var subModuleWrapper = new MBSubModuleBaseWrapper(subModule);

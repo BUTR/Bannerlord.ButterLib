@@ -16,6 +16,7 @@ using System.Runtime.Serialization;
 
 using TaleWorlds.CampaignSystem.Roster;
 using TaleWorlds.Core;
+using TaleWorlds.Localization;
 using TaleWorlds.SaveSystem;
 
 namespace Bannerlord.ButterLib.Tests.SaveSystem
@@ -101,6 +102,8 @@ namespace Bannerlord.ButterLib.Tests.SaveSystem
                 // Workaround
                 if (saveableClassInstance is FlattenedTroopRoster flattenedTroopRoster && ElementDictionary is not null)
                     ElementDictionary(flattenedTroopRoster) = new Dictionary<UniqueTroopDescriptor, FlattenedTroopRosterElement>();
+                if (saveableClassInstance is TextObject textObject)
+                    textObject.Value = "";
 
                 try
                 {
@@ -185,6 +188,8 @@ namespace Bannerlord.ButterLib.Tests.SaveSystem
                 // Workaround
                 if (saveableMemberInstance is FlattenedTroopRoster flattenedTroopRoster && ElementDictionary is not null)
                     ElementDictionary(flattenedTroopRoster) = new Dictionary<UniqueTroopDescriptor, FlattenedTroopRosterElement>();
+                if (saveableMemberInstance is TextObject textObject)
+                    textObject.Value = "";
 
                 try
                 {

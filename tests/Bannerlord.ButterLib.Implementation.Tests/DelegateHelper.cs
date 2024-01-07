@@ -22,5 +22,8 @@ namespace Bannerlord.ButterLib.Implementation.Tests
 
         public delegate bool MockedGetModuleNamesDelegate(ref string[] __result);
         public static MethodInfo GetMethodInfo(this MockedGetModuleNamesDelegate @delegate) => @delegate.Method;
+
+        public delegate bool MockedDetachWatchdogDelegate();
+        public static MethodInfo GetMethodInfo(this MockedDetachWatchdogDelegate @delegate) => @delegate.Method;
     }
 }
