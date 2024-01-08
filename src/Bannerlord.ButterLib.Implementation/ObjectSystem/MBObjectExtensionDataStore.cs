@@ -115,12 +115,12 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem
 #endif
         {
             public SavedTypeDefiner() : base(222_444_700) { }
-        protected override void DefineClassTypes() => AddClassDefinition(typeof(DataKey), 1);
-        protected override void DefineContainerDefinitions()
-        {
-            ConstructContainerDefinition(typeof(ConcurrentDictionary<DataKey, object?>));
-            ConstructContainerDefinition(typeof(ConcurrentDictionary<DataKey, bool>));
+            protected override void DefineClassTypes() => AddClassDefinition(typeof(DataKey), 1);
+            protected override void DefineContainerDefinitions()
+            {
+                ConstructContainerDefinition(typeof(ConcurrentDictionary<DataKey, object?>));
+                ConstructContainerDefinition(typeof(ConcurrentDictionary<DataKey, bool>));
+            }
         }
     }
-}
 }
