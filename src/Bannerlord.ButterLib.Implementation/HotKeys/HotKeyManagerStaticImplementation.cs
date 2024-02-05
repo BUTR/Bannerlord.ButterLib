@@ -10,14 +10,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Bannerlord.ButterLib.Implementation.HotKeys
-{
-    internal sealed class HotKeyManagerStaticImplementation : IHotKeyManagerStatic
-    {
-        public IList<HotKeyBase> HotKeys => HotKeyManagerImplementation.GlobalHotKeyStorage;
+namespace Bannerlord.ButterLib.Implementation.HotKeys;
 
-        public HotKeyManager Create(string modName)
-        {
+internal sealed class HotKeyManagerStaticImplementation : IHotKeyManagerStatic
+{
+    public IList<HotKeyBase> HotKeys => HotKeyManagerImplementation.GlobalHotKeyStorage;
+
+    public HotKeyManager Create(string modName)
+    {
             var doesModAlreadyHaveRegisteredKeys = TaleWorlds.InputSystem.HotKeyManager.GetAllCategories()
                 .Any(x => string.Equals(x.GameKeyCategoryId, modName, StringComparison.OrdinalIgnoreCase));
 
@@ -27,8 +27,8 @@ namespace Bannerlord.ButterLib.Implementation.HotKeys
             return new HotKeyManagerImplementation(modName);
         }
 
-        public HotKeyManager CreateWithOwnCategory(string modName, string categoryName)
-        {
+    public HotKeyManager CreateWithOwnCategory(string modName, string categoryName)
+    {
             var doesModAlreadyHaveRegisteredKeys = TaleWorlds.InputSystem.HotKeyManager.GetAllCategories()
                 .Any(x => string.Equals(x.GameKeyCategoryId, modName, StringComparison.OrdinalIgnoreCase));
 
@@ -37,5 +37,4 @@ namespace Bannerlord.ButterLib.Implementation.HotKeys
 
             return new HotKeyManagerImplementation(modName, categoryName);
         }
-    }
 }

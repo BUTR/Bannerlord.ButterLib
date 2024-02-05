@@ -1,22 +1,22 @@
 ﻿using Microsoft.Extensions.Logging;
 
 // ReSharper disable once CheckNamespace
-namespace System.Diagnostics.Logger
-{
-    internal class LoggerTraceListener : TraceListener
-    {
-        private record ParseResult
-        {
-            public string Process { get; init; } = default!;
-            public TraceEventType Level { get; init; } = default!;
-            public int EventId { get; init; } = default!;
-            public string Message { get; init; } = default!;
-        }
+namespace System.Diagnostics.Logger;
 
-        // There are some cases when System.Numerics.Vectors is not found
-        // BLSE fixes that, but we might revert to string handling before BLSE is mandatory
-        private static ParseResult? Parse(ReadOnlySpan<char> str)
-        {
+internal class LoggerTraceListener : TraceListener
+{
+    private record ParseResult
+    {
+        public string Process { get; init; } = default!;
+        public TraceEventType Level { get; init; } = default!;
+        public int EventId { get; init; } = default!;
+        public string Message { get; init; } = default!;
+    }
+
+    // There are some cases when System.Numerics.Vectors is not found
+    // BLSE fixes that, but we might revert to string handling before BLSE is mandatory
+    private static ParseResult? Parse(ReadOnlySpan<char> str)
+    {
             if (str.IndexOf(':') is var logLevelIdx && logLevelIdx == -1)
                 return null;
 
@@ -46,18 +46,18 @@ namespace System.Diagnostics.Logger
         }
 
 
-        public override bool IsThreadSafe => true;
-        public override string Name { get; set; } = "ILogger Tracer";
+    public override bool IsThreadSafe => true;
+    public override string Name { get; set; } = "ILogger Tracer";
 
-        private readonly ILogger _logger;
+    private readonly ILogger _logger;
 
-        public LoggerTraceListener(ILogger logger)
-        {
+    public LoggerTraceListener(ILogger logger)
+    {
             _logger = logger;
         }
 
-        private void Log(ParseResult result)
-        {
+    private void Log(ParseResult result)
+    {
             switch (result.Level)
             {
                 case TraceEventType.Critical:
@@ -86,20 +86,19 @@ namespace System.Diagnostics.Logger
             }
         }
 
-        public override void Write(string? message)
-        {
+    public override void Write(string? message)
+    {
             if (Parse(message.AsSpan()) is { } result)
                 Log(result);
             else
                 _logger.LogInformation("{Message}", message);
         }
 
-        public override void WriteLine(string? message)
-        {
+    public override void WriteLine(string? message)
+    {
             if (Parse(message.AsSpan()) is { } result)
                 Log(result);
             else
                 _logger.LogInformation("{Message}", message);
         }
-    }
 }

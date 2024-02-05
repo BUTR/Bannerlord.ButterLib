@@ -21,17 +21,17 @@ using TaleWorlds.MountAndBlade;
 
 using AccessTools2 = HarmonyLib.BUTR.Extensions.AccessTools2;
 
-namespace Bannerlord.ButterLib
-{
-    /// <summary>
-    /// Loads all ButterLib's implementation libraries that are supported by the game.
-    /// </summary>
-    public sealed class ImplementationLoaderSubModule : MBSubModuleBaseListWrapper
-    {
-        private delegate MBSubModuleBase ConstructorDelegate();
+namespace Bannerlord.ButterLib;
 
-        private static IEnumerable<MBSubModuleBase> LoadAllImplementations(ILogger? logger)
-        {
+/// <summary>
+/// Loads all ButterLib's implementation libraries that are supported by the game.
+/// </summary>
+public sealed class ImplementationLoaderSubModule : MBSubModuleBaseListWrapper
+{
+    private delegate MBSubModuleBase ConstructorDelegate();
+
+    private static IEnumerable<MBSubModuleBase> LoadAllImplementations(ILogger? logger)
+    {
             logger?.LogInformation("Loading implementations...");
 
             var implementationAssemblies = new List<Assembly>();
@@ -155,8 +155,8 @@ namespace Bannerlord.ButterLib
             logger?.LogInformation("Finished loading implementations");
         }
 
-        private static IEnumerable<(FileInfo Implementation, ApplicationVersion Version)> GetImplementations(IEnumerable<FileInfo> implementations, ILogger? logger = null)
-        {
+    private static IEnumerable<(FileInfo Implementation, ApplicationVersion Version)> GetImplementations(IEnumerable<FileInfo> implementations, ILogger? logger = null)
+    {
             foreach (var implementation in implementations)
             {
                 var found = false;
@@ -198,8 +198,8 @@ namespace Bannerlord.ButterLib
             }
         }
 
-        private static IEnumerable<(FileInfo Implementation, ApplicationVersion Version)> ImplementationForGameVersion(ApplicationVersion gameVersion, IEnumerable<(FileInfo Implementation, ApplicationVersion Verion)> implementations)
-        {
+    private static IEnumerable<(FileInfo Implementation, ApplicationVersion Version)> ImplementationForGameVersion(ApplicationVersion gameVersion, IEnumerable<(FileInfo Implementation, ApplicationVersion Verion)> implementations)
+    {
             foreach (var (implementation, version) in implementations)
             {
                 if (version.Revision == -1) // Implementation does not specify the revision
@@ -218,16 +218,16 @@ namespace Bannerlord.ButterLib
                 }
             }
         }
-        private static (FileInfo Implementation, ApplicationVersion Version) ImplementationLatest(IEnumerable<(FileInfo Implementation, ApplicationVersion Version)> implementations)
-        {
+    private static (FileInfo Implementation, ApplicationVersion Version) ImplementationLatest(IEnumerable<(FileInfo Implementation, ApplicationVersion Version)> implementations)
+    {
             return implementations.MaxBy(x => x.Version, new ApplicationVersionComparer(), out _);
         }
 
 
-        private bool ServiceRegistrationWasCalled { get; set; }
+    private bool ServiceRegistrationWasCalled { get; set; }
 
-        public override void OnServiceRegistration()
-        {
+    public override void OnServiceRegistration()
+    {
             ServiceRegistrationWasCalled = true;
 
             var logger = this.GetTempServiceProvider()?.GetService<ILogger<ImplementationLoaderSubModule>>() ?? NullLogger<ImplementationLoaderSubModule>.Instance;
@@ -236,8 +236,8 @@ namespace Bannerlord.ButterLib
             base.OnServiceRegistration();
         }
 
-        public override void OnSubModuleLoad()
-        {
+    public override void OnSubModuleLoad()
+    {
             if (!ServiceRegistrationWasCalled)
             {
                 var logger = this.GetTempServiceProvider()?.GetService<ILogger<ImplementationLoaderSubModule>>() ?? NullLogger<ImplementationLoaderSubModule>.Instance;
@@ -246,5 +246,4 @@ namespace Bannerlord.ButterLib
 
             base.OnSubModuleLoad();
         }
-    }
 }

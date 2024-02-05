@@ -14,21 +14,21 @@ using System.Reflection;
 
 using TaleWorlds.SaveSystem;
 
-namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
-{
-    /// <summary>
-    /// Replaces TaleWorlds.SaveSystem.TypeExtensions.IsContainer(this Type, out ContainerType)
-    /// </summary>
-    /// <remarks>
-    /// Our implementation is much more flexible and allows for the SaveSystem to support many more types of containers
-    /// in a safe way (i.e., no issues with the deserialization of these containers if ButterLib is removed).
-    /// </remarks>
-    internal sealed class TypeExtensionsPatch
-    {
-        private static ILogger _log = default!;
+namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches;
 
-        internal static bool Enable(Harmony harmony)
-        {
+/// <summary>
+/// Replaces TaleWorlds.SaveSystem.TypeExtensions.IsContainer(this Type, out ContainerType)
+/// </summary>
+/// <remarks>
+/// Our implementation is much more flexible and allows for the SaveSystem to support many more types of containers
+/// in a safe way (i.e., no issues with the deserialization of these containers if ButterLib is removed).
+/// </remarks>
+internal sealed class TypeExtensionsPatch
+{
+    private static ILogger _log = default!;
+
+    internal static bool Enable(Harmony harmony)
+    {
             var provider = ButterLibSubModule.Instance?.GetServiceProvider() ?? ButterLibSubModule.Instance?.GetTempServiceProvider();
             _log = provider?.GetService<ILogger<TypeExtensionsPatch>>() ?? NullLogger<TypeExtensionsPatch>.Instance;
 
@@ -38,8 +38,8 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
                    && harmony.Patch(TargetMethod, prefix: new HarmonyMethod(PatchMethod)) is not null;
         }
 
-        internal static bool Disable(Harmony harmony)
-        {
+    internal static bool Disable(Harmony harmony)
+    {
             if (NotNull(TargetType, nameof(TargetType))
                 & NotNull(TargetMethod, nameof(TargetMethod))
                 & NotNull(PatchMethod, nameof(PatchMethod)))
@@ -50,14 +50,14 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
             return true;
         }
 
-        private static readonly Type? TargetType = AccessTools2.TypeByName("TaleWorlds.SaveSystem.TypeExtensions");
-        private static readonly Type[] TargetMethodParams = { typeof(Type), typeof(ContainerType).MakeByRefType() };
-        private static readonly MethodInfo? TargetMethod = AccessTools2.Method(TargetType!, "IsContainer", TargetMethodParams);
-        private static readonly MethodInfo? PatchMethod = SymbolExtensions2.GetMethodInfo((Type x, ContainerType y, bool z) => IsContainerPrefix(x, out y, ref z));
+    private static readonly Type? TargetType = AccessTools2.TypeByName("TaleWorlds.SaveSystem.TypeExtensions");
+    private static readonly Type[] TargetMethodParams = { typeof(Type), typeof(ContainerType).MakeByRefType() };
+    private static readonly MethodInfo? TargetMethod = AccessTools2.Method(TargetType!, "IsContainer", TargetMethodParams);
+    private static readonly MethodInfo? PatchMethod = SymbolExtensions2.GetMethodInfo((Type x, ContainerType y, bool z) => IsContainerPrefix(x, out y, ref z));
 
-        // ReSharper disable once RedundantAssignment
-        private static bool IsContainerPrefix(Type type, out ContainerType containerType, ref bool __result)
-        {
+    // ReSharper disable once RedundantAssignment
+    private static bool IsContainerPrefix(Type type, out ContainerType containerType, ref bool __result)
+    {
             containerType = ContainerType.None;
 
             if (type is { IsGenericType: true, IsGenericTypeDefinition: false })
@@ -76,8 +76,8 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
             return false;
         }
 
-        private static bool NotNull<T>(T obj, string name) where T : class?
-        {
+    private static bool NotNull<T>(T obj, string name) where T : class?
+    {
             if (obj is null)
             {
                 _log.LogError("{Name} is null!", name);
@@ -86,5 +86,4 @@ namespace Bannerlord.ButterLib.Implementation.SaveSystem.Patches
 
             return true;
         }
-    }
 }

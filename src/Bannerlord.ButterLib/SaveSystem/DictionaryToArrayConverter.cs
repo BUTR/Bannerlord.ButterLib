@@ -5,16 +5,16 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Bannerlord.ButterLib.SaveSystem
+namespace Bannerlord.ButterLib.SaveSystem;
+
+public sealed class DictionaryToArrayConverter : JsonConverter
 {
-    public sealed class DictionaryToArrayConverter : JsonConverter
+    public override bool CanConvert(Type objectType) => typeof(IDictionary).IsAssignableFrom(objectType) || TypeImplementsGenericInterface(objectType, typeof(IDictionary<,>));
+
+    private static bool TypeImplementsGenericInterface(Type concreteType, Type interfaceType) => concreteType.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == interfaceType);
+
+    public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
     {
-        public override bool CanConvert(Type objectType) => typeof(IDictionary).IsAssignableFrom(objectType) || TypeImplementsGenericInterface(objectType, typeof(IDictionary<,>));
-
-        private static bool TypeImplementsGenericInterface(Type concreteType, Type interfaceType) => concreteType.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == interfaceType);
-
-        public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
-        {
             if (value is IDictionary dictionary)
             {
                 var genericArguments = value.GetType().GetGenericArguments();
@@ -33,8 +33,8 @@ namespace Bannerlord.ButterLib.SaveSystem
             }
         }
 
-        public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
-        {
+    public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
+    {
             if (existingValue is not IDictionary dict)
             {
                 var contract = serializer.ContractResolver.ResolveContract(objectType);
@@ -70,5 +70,4 @@ namespace Bannerlord.ButterLib.SaveSystem
 
             return dict;
         }
-    }
 }

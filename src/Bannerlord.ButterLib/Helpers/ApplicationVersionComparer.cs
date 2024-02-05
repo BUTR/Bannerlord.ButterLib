@@ -6,26 +6,26 @@ using System.Collections.Generic;
 using TaleWorlds.Library;
 
 // ReSharper disable once CheckNamespace
-namespace Bannerlord.ButterLib.Common.Helpers
+namespace Bannerlord.ButterLib.Common.Helpers;
+
+public class ApplicationVersionComparer : IComparer<ApplicationVersion>
 {
-    public class ApplicationVersionComparer : IComparer<ApplicationVersion>
+    private readonly ref struct VersionGameTypeWrapper
     {
-        private readonly ref struct VersionGameTypeWrapper
+        private delegate IComparable GetVersionGameTypeDelegate();
+        private delegate void SetVersionGameTypeDelegate(IComparable? value);
+
+        private readonly GetVersionGameTypeDelegate? _getVersionGameTypeDelegate;
+        private readonly SetVersionGameTypeDelegate? _setVersionGameTypeDelegate;
+
+        public IComparable? VersionGameType
         {
-            private delegate IComparable GetVersionGameTypeDelegate();
-            private delegate void SetVersionGameTypeDelegate(IComparable? value);
+            get => _getVersionGameTypeDelegate?.Invoke();
+            set => _setVersionGameTypeDelegate?.Invoke(value);
+        }
 
-            private readonly GetVersionGameTypeDelegate? _getVersionGameTypeDelegate;
-            private readonly SetVersionGameTypeDelegate? _setVersionGameTypeDelegate;
-
-            public IComparable? VersionGameType
-            {
-                get => _getVersionGameTypeDelegate?.Invoke();
-                set => _setVersionGameTypeDelegate?.Invoke(value);
-            }
-
-            public VersionGameTypeWrapper(object? @object)
-            {
+        public VersionGameTypeWrapper(object? @object)
+        {
                 var type = @object?.GetType();
 
                 _getVersionGameTypeDelegate = type is not null
@@ -35,10 +35,10 @@ namespace Bannerlord.ButterLib.Common.Helpers
                     ? AccessTools2.GetPropertySetterDelegate<SetVersionGameTypeDelegate>(@object, type, nameof(VersionGameType))
                     : null;
             }
-        }
+    }
 
-        public int Compare(ApplicationVersion x, ApplicationVersion y)
-        {
+    public int Compare(ApplicationVersion x, ApplicationVersion y)
+    {
             var applicationVersionTypeComparison = x.ApplicationVersionType.CompareTo(y.ApplicationVersionType);
             if (applicationVersionTypeComparison != 0) return applicationVersionTypeComparison;
 
@@ -59,5 +59,4 @@ namespace Bannerlord.ButterLib.Common.Helpers
 
             return 0;
         }
-    }
 }

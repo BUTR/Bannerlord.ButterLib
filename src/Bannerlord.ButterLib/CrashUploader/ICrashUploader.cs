@@ -3,10 +3,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Bannerlord.ButterLib.CrashUploader
+namespace Bannerlord.ButterLib.CrashUploader;
+
+internal interface ICrashUploader
 {
-    internal interface ICrashUploader
-    {
-        Task<CrashUploaderResult> UploadAsync(CrashReportModel crashReportModel, IEnumerable<LogSource> logSources);
-    }
+    Task<CrashUploaderResult> UploadAsync(CrashReportModel crashReportModel, IEnumerable<LogSource> logSources);
 }

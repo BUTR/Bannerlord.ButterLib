@@ -19,23 +19,23 @@ using TaleWorlds.Core;
 using TaleWorlds.Localization;
 using TaleWorlds.SaveSystem;
 
-namespace Bannerlord.ButterLib.Tests.SaveSystem
+namespace Bannerlord.ButterLib.Tests.SaveSystem;
+
+public class JsonSerializationTests
 {
-    public class JsonSerializationTests
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private static bool MockedGetConfigPath(ref string __result)
     {
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        private static bool MockedGetConfigPath(ref string __result)
-        {
             __result = AppDomain.CurrentDomain.BaseDirectory;
             return false;
         }
 
-        private static readonly AccessTools.FieldRef<FlattenedTroopRoster, Dictionary<UniqueTroopDescriptor, FlattenedTroopRosterElement>>? ElementDictionary =
-            AccessTools.FieldRefAccess<FlattenedTroopRoster, Dictionary<UniqueTroopDescriptor, FlattenedTroopRosterElement>>("_elementDictionary");
+    private static readonly AccessTools.FieldRef<FlattenedTroopRoster, Dictionary<UniqueTroopDescriptor, FlattenedTroopRosterElement>>? ElementDictionary =
+        AccessTools.FieldRefAccess<FlattenedTroopRoster, Dictionary<UniqueTroopDescriptor, FlattenedTroopRosterElement>>("_elementDictionary");
 
-        [SetUp]
-        public void Setup()
-        {
+    [SetUp]
+    public void Setup()
+    {
             //var harmony = new Harmony($"{nameof(JsonSerializationTests)}.{nameof(Setup)}");
             //harmony.Patch(SymbolExtensions.GetMethodInfo(() => FSIOHelper.GetConfigPath()),
             //    prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetConfigPath)));
@@ -49,9 +49,9 @@ namespace Bannerlord.ButterLib.Tests.SaveSystem
                 Assembly.LoadFile(dll);
         }
 
-        [Test]
-        public void CheckForUnsupportedSaveableClassTypes_Test()
-        {
+    [Test]
+    public void CheckForUnsupportedSaveableClassTypes_Test()
+    {
             var settings = new JsonSerializerSettings
             {
                 ContractResolver = new TaleWorldsContractResolver(),
@@ -118,9 +118,9 @@ namespace Bannerlord.ButterLib.Tests.SaveSystem
             Assert.True(unsupportedTypes.Count == 0, "Unsupported types detected");
         }
 
-        [Test]
-        public void CheckForUnsupportedSaveableMembers_Test()
-        {
+    [Test]
+    public void CheckForUnsupportedSaveableMembers_Test()
+    {
             var settings = new JsonSerializerSettings
             {
                 ContractResolver = new TaleWorldsContractResolver(),
@@ -203,5 +203,4 @@ namespace Bannerlord.ButterLib.Tests.SaveSystem
             }
             Assert.True(unsupportedTypes.Count == 0, "Unsupported types detected");
         }
-    }
 }

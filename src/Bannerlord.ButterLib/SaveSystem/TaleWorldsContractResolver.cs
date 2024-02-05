@@ -8,12 +8,12 @@ using System.Reflection;
 
 using TaleWorlds.SaveSystem;
 
-namespace Bannerlord.ButterLib.SaveSystem
+namespace Bannerlord.ButterLib.SaveSystem;
+
+public class TaleWorldsContractResolver : TaleWorldsContractResolverBase
 {
-    public class TaleWorldsContractResolver : TaleWorldsContractResolverBase
+    protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
     {
-        protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
-        {
             // Container are an exception.
             if ((_isContainerDelegate is not null && _isContainerDelegate(type)) || (_isContainerDelegate is null && IsContainerFallback(type)))
                 return base.CreateProperties(type, memberSerialization);
@@ -48,5 +48,4 @@ namespace Bannerlord.ButterLib.SaveSystem
                 ValueProvider = base.CreateMemberValueProvider(p)
             })).ToList();
         }
-    }
 }

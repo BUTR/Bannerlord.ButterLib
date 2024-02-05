@@ -9,14 +9,14 @@ using System;
 
 using TaleWorlds.ObjectSystem;
 
-namespace Bannerlord.ButterLib.SaveSystem
-{
-    public sealed class MBObjectBaseConverter : JsonConverter
-    {
-        public override bool CanConvert(Type objectType) => typeof(MBObjectBase).IsAssignableFrom(objectType);
+namespace Bannerlord.ButterLib.SaveSystem;
 
-        public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
-        {
+public sealed class MBObjectBaseConverter : JsonConverter
+{
+    public override bool CanConvert(Type objectType) => typeof(MBObjectBase).IsAssignableFrom(objectType);
+
+    public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
+    {
             if (value is MBObjectBase mbObject)
             {
                 var keeper = ButterLibSubModule.Instance?.GetServiceProvider()?.GetService<IMBObjectKeeper>();
@@ -29,8 +29,8 @@ namespace Bannerlord.ButterLib.SaveSystem
             serializer.Serialize(writer, null);
         }
 
-        public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
-        {
+    public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
+    {
             if (serializer.Deserialize<MBGUID?>(reader) is { } mbguid)
             {
                 var finder = ButterLibSubModule.Instance?.GetServiceProvider()?.GetService<IMBObjectFinder>();
@@ -38,5 +38,4 @@ namespace Bannerlord.ButterLib.SaveSystem
             }
             return null;
         }
-    }
 }

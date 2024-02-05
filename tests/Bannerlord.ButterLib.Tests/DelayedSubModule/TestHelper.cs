@@ -5,17 +5,17 @@ using HarmonyLib.BUTR.Extensions;
 
 using System;
 
-namespace Bannerlord.ButterLib.Tests.DelayedSubModule
-{
-    internal static class TestHelper
-    {
-        public static readonly Type? ModuleInfoType = AccessTools2.TypeByName("TaleWorlds.ModuleManager.ModuleInfo");
+namespace Bannerlord.ButterLib.Tests.DelayedSubModule;
 
-        private static ModuleInfoExtendedWithMetadata? _moduleInfoCaller;
-        public static ModuleInfoExtendedWithMetadata ModuleInfoCaller
+internal static class TestHelper
+{
+    public static readonly Type? ModuleInfoType = AccessTools2.TypeByName("TaleWorlds.ModuleManager.ModuleInfo");
+
+    private static ModuleInfoExtendedWithMetadata? _moduleInfoCaller;
+    public static ModuleInfoExtendedWithMetadata ModuleInfoCaller
+    {
+        get
         {
-            get
-            {
                 if (_moduleInfoCaller is null)
                 {
                     _moduleInfoCaller = new ModuleInfoExtendedWithMetadata(new ModuleInfoExtended(), false, "");
@@ -25,13 +25,13 @@ namespace Bannerlord.ButterLib.Tests.DelayedSubModule
 
                 return _moduleInfoCaller;
             }
-        }
+    }
 
-        private static ModuleInfoExtendedWithMetadata? _moduleInfoTarget;
-        public static ModuleInfoExtendedWithMetadata ModuleInfoTarget
+    private static ModuleInfoExtendedWithMetadata? _moduleInfoTarget;
+    public static ModuleInfoExtendedWithMetadata ModuleInfoTarget
+    {
+        get
         {
-            get
-            {
                 if (_moduleInfoTarget is null)
                 {
                     _moduleInfoTarget = new ModuleInfoExtendedWithMetadata(new ModuleInfoExtended(), false, "");
@@ -41,6 +41,5 @@ namespace Bannerlord.ButterLib.Tests.DelayedSubModule
 
                 return _moduleInfoTarget;
             }
-        }
     }
 }

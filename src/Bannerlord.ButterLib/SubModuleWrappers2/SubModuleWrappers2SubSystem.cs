@@ -3,28 +3,27 @@ using Bannerlord.ButterLib.SubSystems;
 
 using HarmonyLib;
 
-namespace Bannerlord.ButterLib.SubModuleWrappers2
+namespace Bannerlord.ButterLib.SubModuleWrappers2;
+
+internal sealed class SubModuleWrappers2SubSystem : ISubSystem
 {
-    internal sealed class SubModuleWrappers2SubSystem : ISubSystem
+    public static SubModuleWrappers2SubSystem? Instance { get; private set; }
+
+    private readonly Harmony Harmony = new("Bannerlord.ButterLib.SubModuleWrappers2");
+
+    public string Id => "SubModuleWrappers2";
+    public string Name => "{=NkAAB8EEu2}SubModule Wrappers";
+    public string Description => "{=izmKJPjkjN}Mod Developer feature! A wrapper for MBSubModuleBase based on Harmony patches.";
+    public bool IsEnabled => true;
+    public bool CanBeDisabled => false;
+    public bool CanBeSwitchedAtRuntime => false;
+
+    public SubModuleWrappers2SubSystem()
     {
-        public static SubModuleWrappers2SubSystem? Instance { get; private set; }
-
-        private readonly Harmony Harmony = new("Bannerlord.ButterLib.SubModuleWrappers2");
-
-        public string Id => "SubModuleWrappers2";
-        public string Name => "{=NkAAB8EEu2}SubModule Wrappers";
-        public string Description => "{=izmKJPjkjN}Mod Developer feature! A wrapper for MBSubModuleBase based on Harmony patches.";
-        public bool IsEnabled => true;
-        public bool CanBeDisabled => false;
-        public bool CanBeSwitchedAtRuntime => false;
-
-        public SubModuleWrappers2SubSystem()
-        {
             Instance = this;
             MBSubModuleBasePatch.Enable(Harmony);
         }
 
-        public void Enable() { }
-        public void Disable() { }
-    }
+    public void Enable() { }
+    public void Disable() { }
 }

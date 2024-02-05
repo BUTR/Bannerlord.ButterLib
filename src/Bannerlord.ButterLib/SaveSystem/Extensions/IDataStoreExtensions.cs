@@ -9,18 +9,18 @@ using System.Text;
 
 using TaleWorlds.CampaignSystem;
 
-namespace Bannerlord.ButterLib.SaveSystem.Extensions
+namespace Bannerlord.ButterLib.SaveSystem.Extensions;
+
+public static class IDataStoreExtensions
 {
-    public static class IDataStoreExtensions
+    private static IEnumerable<string> ToChunks(string str, int maxChunkSize)
     {
-        private static IEnumerable<string> ToChunks(string str, int maxChunkSize)
-        {
             for (var i = 0; i < str.Length; i += maxChunkSize)
                 yield return str.Substring(i, Math.Min(maxChunkSize, str.Length - i));
         }
 
-        private static string ChunksToString(IReadOnlyList<string> chunks)
-        {
+    private static string ChunksToString(IReadOnlyList<string> chunks)
+    {
             if (chunks.Count == 0) return string.Empty;
             if (chunks.Count == 1) return chunks[0];
 
@@ -30,8 +30,8 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
             return strBuilder.ToString();
         }
 
-        private static string Serialize<T>(ref T? data, JsonSerializer serializer)
-        {
+    private static string Serialize<T>(ref T? data, JsonSerializer serializer)
+    {
             var sb = new StringBuilder(256);
             using var sw = new StringWriter(sb, CultureInfo.InvariantCulture);
             using var jsonWriter = new JsonTextWriter(sw);
@@ -40,14 +40,14 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
             return sb.ToString();
         }
 
-        private static T? Deserialize<T>(string json, JsonSerializer serializer)
-        {
+    private static T? Deserialize<T>(string json, JsonSerializer serializer)
+    {
             using var reader = new JsonTextReader(new StringReader(json));
             return serializer.Deserialize<T>(reader);
         }
 
-        public static bool SyncDataAsJson<T>(this IDataStore dataStore, string key, ref T? data, JsonSerializerSettings? settings = null)
-        {
+    public static bool SyncDataAsJson<T>(this IDataStore dataStore, string key, ref T? data, JsonSerializerSettings? settings = null)
+    {
             settings ??= new JsonSerializerSettings
             {
                 ContractResolver = new TaleWorldsContractResolver(),
@@ -60,8 +60,8 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
             return SyncDataAsJson(dataStore, key, ref data, JsonSerializer.Create(settings));
         }
 
-        public static bool SyncDataAsJson<T>(this IDataStore dataStore, string key, ref T? data, JsonSerializer serializer)
-        {
+    public static bool SyncDataAsJson<T>(this IDataStore dataStore, string key, ref T? data, JsonSerializer serializer)
+    {
             // If the type we're synchronizing is a string or string array, then it's ambiguous
             // with our own internal storage types, which imply that the strings contain valid
             // JSON. Standard binary serialization can handle these types just fine, so we avoid
@@ -121,6 +121,5 @@ namespace Bannerlord.ButterLib.SaveSystem.Extensions
             return false;
         }
 
-        private record JsonData(int Format, string Data);
-    }
+    private record JsonData(int Format, string Data);
 }

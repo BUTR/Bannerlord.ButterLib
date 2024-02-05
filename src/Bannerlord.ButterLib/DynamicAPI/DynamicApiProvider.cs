@@ -11,36 +11,36 @@ using System.Reflection;
 
 using TaleWorlds.MountAndBlade;
 
-namespace Bannerlord.ButterLib.DynamicAPI
+namespace Bannerlord.ButterLib.DynamicAPI;
+
+/// <summary>
+/// Requests will be available on <see cref="MBSubModuleBase.OnBeforeInitialModuleScreenSetAsRoot"/> stage.<br/>
+/// The reason is, we need to wait for all SubModules to have <see cref="MBSubModuleBase.OnSubModuleLoad"/> executed.
+/// </summary>
+public static class DynamicAPIProvider
 {
-    /// <summary>
-    /// Requests will be available on <see cref="MBSubModuleBase.OnBeforeInitialModuleScreenSetAsRoot"/> stage.<br/>
-    /// The reason is, we need to wait for all SubModules to have <see cref="MBSubModuleBase.OnSubModuleLoad"/> executed.
-    /// </summary>
-    public static class DynamicAPIProvider
+    private record TypeWithAttribute(Type Type, CustomAttributeData CustomAttributeData);
+    private record MethodInfoWithAttribute(MethodInfo MethodInfo, CustomAttributeData CustomAttributeData);
+
+    private delegate object DynamicAPIObjectActivator();
+
+    private static readonly HashSet<string> PossibleClassNames = new()
     {
-        private record TypeWithAttribute(Type Type, CustomAttributeData CustomAttributeData);
-        private record MethodInfoWithAttribute(MethodInfo MethodInfo, CustomAttributeData CustomAttributeData);
+        "Bannerlord.ButterLib.DynamicAPI.DynamicAPIClassAttribute",
+        "Bannerlord.DynamicAPI.DynamicAPIClassAttribute",
+    };
+    private static readonly HashSet<string> PossibleMethodNames = new()
+    {
+        "Bannerlord.ButterLib.DynamicAPI.DynamicAPIMethodAttribute",
+        "Bannerlord.DynamicAPI.DynamicAPIMethodAttribute",
+    };
 
-        private delegate object DynamicAPIObjectActivator();
+    private static readonly ConcurrentDictionary<string, DynamicAPIObjectActivator?> CachedActivators = new();
+    internal static Dictionary<string, Type>? APIClasses;
+    internal static Dictionary<Type, Dictionary<string, MethodInfo>>? APIClassMethods;
 
-        private static readonly HashSet<string> PossibleClassNames = new()
-        {
-            "Bannerlord.ButterLib.DynamicAPI.DynamicAPIClassAttribute",
-            "Bannerlord.DynamicAPI.DynamicAPIClassAttribute",
-        };
-        private static readonly HashSet<string> PossibleMethodNames = new()
-        {
-            "Bannerlord.ButterLib.DynamicAPI.DynamicAPIMethodAttribute",
-            "Bannerlord.DynamicAPI.DynamicAPIMethodAttribute",
-        };
-
-        private static readonly ConcurrentDictionary<string, DynamicAPIObjectActivator?> CachedActivators = new();
-        internal static Dictionary<string, Type>? APIClasses;
-        internal static Dictionary<Type, Dictionary<string, MethodInfo>>? APIClassMethods;
-
-        private static TypeWithAttribute? GetDynamicAPIClass(Type? type)
-        {
+    private static TypeWithAttribute? GetDynamicAPIClass(Type? type)
+    {
             bool Predicate(CustomAttributeData x) =>
                 PossibleClassNames.Contains(x.AttributeType.FullName!) && x.ConstructorArguments.Count == 1 && x.ConstructorArguments[0].ArgumentType == typeof(string);
 
@@ -56,8 +56,8 @@ namespace Bannerlord.ButterLib.DynamicAPI
             return new TypeWithAttribute(type, attribute);
         }
 
-        private static MethodInfoWithAttribute? GetDynamicAPIMethod(MethodInfo? methodInfo)
-        {
+    private static MethodInfoWithAttribute? GetDynamicAPIMethod(MethodInfo? methodInfo)
+    {
             bool Predicate(CustomAttributeData x) =>
                 PossibleMethodNames.Contains(x.AttributeType.FullName!) && x.ConstructorArguments.Count == 1 && x.ConstructorArguments[0].ArgumentType == typeof(string);
 
@@ -70,17 +70,17 @@ namespace Bannerlord.ButterLib.DynamicAPI
             return new MethodInfoWithAttribute(methodInfo, attribute);
         }
 
-        private static string DynamicAPIClassAttributeName(TypeWithAttribute typeWithAttribute) =>
-            (string) typeWithAttribute.CustomAttributeData.ConstructorArguments[0].Value!;
+    private static string DynamicAPIClassAttributeName(TypeWithAttribute typeWithAttribute) =>
+        (string) typeWithAttribute.CustomAttributeData.ConstructorArguments[0].Value!;
 
-        private static string DynamicAPIMethodAttributeName(MethodInfoWithAttribute methodInfoWithAttribute)
-        {
+    private static string DynamicAPIMethodAttributeName(MethodInfoWithAttribute methodInfoWithAttribute)
+    {
             var name = (string) methodInfoWithAttribute.CustomAttributeData.ConstructorArguments[0].Value!;
             return $"{(methodInfoWithAttribute.MethodInfo.IsStatic ? "0static" : "0instance")}_{name}";
         }
 
-        private static IEnumerable<Assembly> GetAssembliesToScan()
-        {
+    private static IEnumerable<Assembly> GetAssembliesToScan()
+    {
             var loadedModules = ModuleInfoHelper.GetLoadedModules().Where(x => x is not null).ToList();
             foreach (var assembly in AccessTools2.AllAssemblies().Where(x => !x.IsDynamic && !string.IsNullOrEmpty(x.Location)))
             {
@@ -89,8 +89,8 @@ namespace Bannerlord.ButterLib.DynamicAPI
             }
         }
 
-        internal static void Initialize()
-        {
+    internal static void Initialize()
+    {
             APIClasses = GetAssembliesToScan()
                 .SelectMany(x =>
                 {
@@ -119,12 +119,12 @@ namespace Bannerlord.ButterLib.DynamicAPI
                         .ToDictionary(DynamicAPIMethodAttributeName, y => y.MethodInfo));
         }
 
-        /// <summary>
-        /// Return an API instance, see <see cref="DynamicAPIClassAttribute"/>.
-        /// </summary>
-        /// <param name="class"></param>
-        public static DynamicAPIInstance? RequestAPIClass(string? @class)
-        {
+    /// <summary>
+    /// Return an API instance, see <see cref="DynamicAPIClassAttribute"/>.
+    /// </summary>
+    /// <param name="class"></param>
+    public static DynamicAPIInstance? RequestAPIClass(string? @class)
+    {
             if (APIClasses is null)
                 return null;
 
@@ -148,12 +148,12 @@ namespace Bannerlord.ButterLib.DynamicAPI
             return new(ctor());
         }
 
-        /// <summary>
-        /// Return a static API method, see <see cref="DynamicAPIMethodAttribute"/>.
-        /// We recommend to save the delegate instead of calling this function multiple times.
-        /// </summary>
-        public static TDelegate? RequestAPIMethod<TDelegate>(string? @class, string? method) where TDelegate : Delegate
-        {
+    /// <summary>
+    /// Return a static API method, see <see cref="DynamicAPIMethodAttribute"/>.
+    /// We recommend to save the delegate instead of calling this function multiple times.
+    /// </summary>
+    public static TDelegate? RequestAPIMethod<TDelegate>(string? @class, string? method) where TDelegate : Delegate
+    {
             if (APIClasses is null || APIClassMethods is null)
                 return null;
 
@@ -171,5 +171,4 @@ namespace Bannerlord.ButterLib.DynamicAPI
 
             return AccessTools2.GetDelegate<TDelegate>(methodInfo);
         }
-    }
 }

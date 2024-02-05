@@ -5,16 +5,16 @@ using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 
-namespace Bannerlord.ButterLib.SaveSystem
-{
-    public class TaleWorldsContractResolverBase : DefaultContractResolver
-    {
-        protected delegate bool IsContainerDelegate(Type type);
-        protected static readonly IsContainerDelegate? _isContainerDelegate =
-            AccessTools2.GetDelegate<IsContainerDelegate>("TaleWorlds.SaveSystem.TypeExtensions:IsContainer", new[] { typeof(Type) });
+namespace Bannerlord.ButterLib.SaveSystem;
 
-        protected static bool IsContainerFallback(Type type)
-        {
+public class TaleWorldsContractResolverBase : DefaultContractResolver
+{
+    protected delegate bool IsContainerDelegate(Type type);
+    protected static readonly IsContainerDelegate? _isContainerDelegate =
+        AccessTools2.GetDelegate<IsContainerDelegate>("TaleWorlds.SaveSystem.TypeExtensions:IsContainer", new[] { typeof(Type) });
+
+    protected static bool IsContainerFallback(Type type)
+    {
             if (type is { IsGenericType: true, IsGenericTypeDefinition: false })
             {
                 var genericTypeDefinition = type.GetGenericTypeDefinition();
@@ -32,5 +32,4 @@ namespace Bannerlord.ButterLib.SaveSystem
 
             return false;
         }
-    }
 }

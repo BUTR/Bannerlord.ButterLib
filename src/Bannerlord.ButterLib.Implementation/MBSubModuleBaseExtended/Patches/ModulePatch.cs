@@ -17,25 +17,25 @@ using System.Runtime.CompilerServices;
 
 using TWModule = TaleWorlds.MountAndBlade.Module;
 
-namespace Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended.Patches
+namespace Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended.Patches;
+
+internal sealed class ModulePatch
 {
-    internal sealed class ModulePatch
+    private static ILogger _log = default!;
+
+    private static readonly Type? TargetType = typeof(TWModule);
+
+    private static readonly MethodInfo? miTargetMethodUnLoad = AccessTools2.Method(TargetType, "FinalizeSubModules");
+    private static readonly MethodInfo? miPatchMethodUnLoad = SymbolExtensions2.GetMethodInfo((TWModule x) => FinalizeSubModulesPostfix(x));
+
+    private static readonly MethodInfo? miTargetMethodScreenAsRoot = AccessTools2.Method(TargetType, "SetInitialModuleScreenAsRootScreen");
+    private static readonly MethodInfo? miPatchMethodScreenAsRoot = SymbolExtensions2.GetMethodInfo((IEnumerable<CodeInstruction> x) => Transpiler(x));
+
+    private static readonly MethodInfo? miMBSubModuleBaseScreenAsRootEvent = AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnBeforeInitialModuleScreenSetAsRoot");
+    private static readonly MethodInfo? miDelayedScreenAsRootEventCaller = SymbolExtensions2.GetMethodInfo((TWModule x) => DelayedScreenAsRootEvent(x));
+
+    internal static bool Enable(Harmony harmony)
     {
-        private static ILogger _log = default!;
-
-        private static readonly Type? TargetType = typeof(TWModule);
-
-        private static readonly MethodInfo? miTargetMethodUnLoad = AccessTools2.Method(TargetType, "FinalizeSubModules");
-        private static readonly MethodInfo? miPatchMethodUnLoad = SymbolExtensions2.GetMethodInfo((TWModule x) => FinalizeSubModulesPostfix(x));
-
-        private static readonly MethodInfo? miTargetMethodScreenAsRoot = AccessTools2.Method(TargetType, "SetInitialModuleScreenAsRootScreen");
-        private static readonly MethodInfo? miPatchMethodScreenAsRoot = SymbolExtensions2.GetMethodInfo((IEnumerable<CodeInstruction> x) => Transpiler(x));
-
-        private static readonly MethodInfo? miMBSubModuleBaseScreenAsRootEvent = AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnBeforeInitialModuleScreenSetAsRoot");
-        private static readonly MethodInfo? miDelayedScreenAsRootEventCaller = SymbolExtensions2.GetMethodInfo((TWModule x) => DelayedScreenAsRootEvent(x));
-
-        internal static bool Enable(Harmony harmony)
-        {
             var provider = ButterLibSubModule.Instance?.GetServiceProvider() ?? ButterLibSubModule.Instance?.GetTempServiceProvider();
             _log = provider?.GetService<ILogger<ModulePatch>>() ?? NullLogger<ModulePatch>.Instance;
 
@@ -44,8 +44,8 @@ namespace Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended.Patches
                    && harmony.Patch(miTargetMethodScreenAsRoot, transpiler: new HarmonyMethod(miPatchMethodScreenAsRoot)) is not null;
         }
 
-        internal static bool Disable(Harmony harmony)
-        {
+    internal static bool Disable(Harmony harmony)
+    {
             if (CheckRequiredMethodInfos())
             {
                 harmony.Unpatch(miTargetMethodUnLoad, miPatchMethodUnLoad);
@@ -55,8 +55,8 @@ namespace Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended.Patches
             return true;
         }
 
-        public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
-        {
+    public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+    {
             try
             {
                 int screenAsRootEventIndex = -1, finallyIndex = -1;
@@ -95,31 +95,30 @@ namespace Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended.Patches
             }
         }
 
-        private static bool CheckRequiredMethodInfos() =>
-            MBSubModuleBaseExSubSystem.NotNull(_log, TargetType, nameof(TargetType))
-            & MBSubModuleBaseExSubSystem.NotNull(_log, miTargetMethodUnLoad, nameof(miTargetMethodUnLoad))
-            & MBSubModuleBaseExSubSystem.NotNull(_log, miPatchMethodUnLoad, nameof(miPatchMethodUnLoad))
-            & MBSubModuleBaseExSubSystem.NotNull(_log, miTargetMethodScreenAsRoot, nameof(miTargetMethodScreenAsRoot))
-            & MBSubModuleBaseExSubSystem.NotNull(_log, miPatchMethodScreenAsRoot, nameof(miPatchMethodScreenAsRoot))
-            & MBSubModuleBaseExSubSystem.NotNull(_log, miMBSubModuleBaseScreenAsRootEvent, nameof(miMBSubModuleBaseScreenAsRootEvent))
-            & MBSubModuleBaseExSubSystem.NotNull(_log, miDelayedScreenAsRootEventCaller, nameof(miDelayedScreenAsRootEventCaller));
+    private static bool CheckRequiredMethodInfos() =>
+        MBSubModuleBaseExSubSystem.NotNull(_log, TargetType, nameof(TargetType))
+        & MBSubModuleBaseExSubSystem.NotNull(_log, miTargetMethodUnLoad, nameof(miTargetMethodUnLoad))
+        & MBSubModuleBaseExSubSystem.NotNull(_log, miPatchMethodUnLoad, nameof(miPatchMethodUnLoad))
+        & MBSubModuleBaseExSubSystem.NotNull(_log, miTargetMethodScreenAsRoot, nameof(miTargetMethodScreenAsRoot))
+        & MBSubModuleBaseExSubSystem.NotNull(_log, miPatchMethodScreenAsRoot, nameof(miPatchMethodScreenAsRoot))
+        & MBSubModuleBaseExSubSystem.NotNull(_log, miMBSubModuleBaseScreenAsRootEvent, nameof(miMBSubModuleBaseScreenAsRootEvent))
+        & MBSubModuleBaseExSubSystem.NotNull(_log, miDelayedScreenAsRootEventCaller, nameof(miDelayedScreenAsRootEventCaller));
 
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        private static void FinalizeSubModulesPostfix(TWModule __instance)
-        {
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private static void FinalizeSubModulesPostfix(TWModule __instance)
+    {
             foreach (var submodule in __instance.SubModules.OfType<IMBSubModuleBaseEx>())
             {
                 submodule.OnAllSubModulesUnLoaded();
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        private static void DelayedScreenAsRootEvent(TWModule instance)
-        {
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private static void DelayedScreenAsRootEvent(TWModule instance)
+    {
             foreach (var submodule in instance.SubModules.OfType<IMBSubModuleBaseEx>())
             {
                 submodule.OnBeforeInitialModuleScreenSetAsRootDelayed();
             }
         }
-    }
 }

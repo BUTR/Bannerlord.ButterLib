@@ -3,7 +3,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>net472;net6</TargetFrameworks>
-    <LangVersion>10.0</LangVersion>
+    <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <Platform>x64</Platform>
     <BuildForWindows>false</BuildForWindows>

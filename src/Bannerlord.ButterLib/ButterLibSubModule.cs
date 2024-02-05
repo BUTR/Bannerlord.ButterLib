@@ -27,37 +27,37 @@ using TaleWorlds.MountAndBlade;
 
 using Path = System.IO.Path;
 
-namespace Bannerlord.ButterLib
+namespace Bannerlord.ButterLib;
+
+/// <summary>
+/// Main SubModule. Performs initialization of all 3 stages.
+/// </summary>
+public sealed partial class ButterLibSubModule : MBSubModuleBase
 {
-    /// <summary>
-    /// Main SubModule. Performs initialization of all 3 stages.
-    /// </summary>
-    public sealed partial class ButterLibSubModule : MBSubModuleBase
+    // We can't rely on EN since the game assumes that the default locale is always English
+    private const string SWarningTitle =
+        @"{=BguqytVG3q}Warning from Bannerlord.ButterLib!";
+    private const string SMessageContinue =
+        @"{=eXs6FLm5DP}It's strongly recommended to terminate the game now. Do you wish to terminate it?";
+
+    internal event Action<float>? OnApplicationTickEvent;
+
+    private ILogger Logger { get; set; } = default!;
+    private bool DelayedServiceCreation { get; set; }
+    private bool ServiceRegistrationWasCalled { get; set; }
+    private bool OnBeforeInitialModuleScreenSetAsRootWasCalled { get; set; }
+
+    private TextWriterTraceListener? TextWriterTraceListener { get; set; }
+
+    public ButterLibSubModule()
     {
-        // We can't rely on EN since the game assumes that the default locale is always English
-        private const string SWarningTitle =
-@"{=BguqytVG3q}Warning from Bannerlord.ButterLib!";
-        private const string SMessageContinue =
-@"{=eXs6FLm5DP}It's strongly recommended to terminate the game now. Do you wish to terminate it?";
-
-        internal event Action<float>? OnApplicationTickEvent;
-
-        private ILogger Logger { get; set; } = default!;
-        private bool DelayedServiceCreation { get; set; }
-        private bool ServiceRegistrationWasCalled { get; set; }
-        private bool OnBeforeInitialModuleScreenSetAsRootWasCalled { get; set; }
-
-        private TextWriterTraceListener? TextWriterTraceListener { get; set; }
-
-        public ButterLibSubModule()
-        {
             Instance = this;
 
             ValidateLoadOrder();
         }
 
-        public void OnServiceRegistration()
-        {
+    public void OnServiceRegistration()
+    {
             ServiceRegistrationWasCalled = true;
 
             CanBeConfigured = false;
@@ -87,8 +87,8 @@ namespace Bannerlord.ButterLib
             Services.AddSingleton<ICrashUploader, BUTRCrashUploader>();
         }
 
-        protected override void OnSubModuleLoad()
-        {
+    protected override void OnSubModuleLoad()
+    {
             base.OnSubModuleLoad();
 
             PerformMigration001();
@@ -122,8 +122,8 @@ namespace Bannerlord.ButterLib
             Logger.LogTrace("OnSubModuleLoad: Done");
         }
 
-        protected override void OnSubModuleUnloaded()
-        {
+    protected override void OnSubModuleUnloaded()
+    {
             base.OnSubModuleUnloaded();
             Logger.LogTrace("OnSubModuleUnloaded: Started...");
 
@@ -132,8 +132,8 @@ namespace Bannerlord.ButterLib
             Logger.LogTrace("OnSubModuleUnloaded: Done");
         }
 
-        protected override void OnBeforeInitialModuleScreenSetAsRoot()
-        {
+    protected override void OnBeforeInitialModuleScreenSetAsRoot()
+    {
             base.OnBeforeInitialModuleScreenSetAsRoot();
             Logger.LogTrace("OnBeforeInitialModuleScreenSetAsRoot: Started...");
 
@@ -152,10 +152,10 @@ namespace Bannerlord.ButterLib
             Logger.LogTrace("OnBeforeInitialModuleScreenSetAsRoot: Done");
         }
 
-        protected override void OnApplicationTick(float dt) => OnApplicationTickEvent?.Invoke(dt);
+    protected override void OnApplicationTick(float dt) => OnApplicationTickEvent?.Invoke(dt);
 
-        protected override void OnGameStart(Game game, IGameStarter gameStarterObject)
-        {
+    protected override void OnGameStart(Game game, IGameStarter gameStarterObject)
+    {
             base.OnGameStart(game, gameStarterObject);
             Logger.LogTrace("OnGameStart: Started");
 
@@ -165,8 +165,8 @@ namespace Bannerlord.ButterLib
             Logger.LogTrace("OnGameStart: Done");
         }
 
-        public override void OnGameEnd(Game game)
-        {
+    public override void OnGameEnd(Game game)
+    {
             base.OnGameEnd(game);
             Logger.LogTrace("OnGameEnd: Started");
 
@@ -181,31 +181,31 @@ namespace Bannerlord.ButterLib
             Logger.LogTrace("OnGameEnd: Done");
         }
 
-        private static void ValidateLoadOrder()
-        {
-            var loadedModules = ModuleInfoHelper.GetLoadedModules().ToList();
-            if (loadedModules.Count == 0) return;
+    private static void ValidateLoadOrder()
+    {
+        var loadedModules = ModuleInfoHelper.GetLoadedModules().ToList();
+        if (loadedModules.Count == 0) return;
 
-            var sb = new StringBuilder();
-            if (!ModuleInfoHelper.ValidateLoadOrder(typeof(ButterLibSubModule), out var report))
-            {
-                sb.AppendLine(report);
-                sb.AppendLine();
-                sb.AppendLine(new TextObject(SMessageContinue).ToString());
+        var sb = new StringBuilder();
+        if (!ModuleInfoHelper.ValidateLoadOrder(typeof(ButterLibSubModule), out var report))
+        {
+            sb.AppendLine(report);
+            sb.AppendLine();
+            sb.AppendLine(new TextObject(SMessageContinue).ToString());
 #if !NETSTANDARD2_0
 
-                switch (System.Windows.Forms.MessageBox.Show(sb.ToString(), new TextObject(SWarningTitle).ToString(), System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Warning, System.Windows.Forms.MessageBoxDefaultButton.Button1, (System.Windows.Forms.MessageBoxOptions) 0x40000))
-                {
-                    case System.Windows.Forms.DialogResult.Yes:
-                        Environment.Exit(1);
-                        break;
-                }
-#endif
+            switch (System.Windows.Forms.MessageBox.Show(sb.ToString(), new TextObject(SWarningTitle).ToString(), System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Warning, System.Windows.Forms.MessageBoxDefaultButton.Button1, (System.Windows.Forms.MessageBoxOptions) 0x40000))
+            {
+                case System.Windows.Forms.DialogResult.Yes:
+                    Environment.Exit(1);
+                    break;
             }
+#endif
         }
+    }
 
-        private void InitializeServices()
-        {
+    private void InitializeServices()
+    {
             if (Services is not null)
             {
                 GlobalServiceProvider = Services.BuildServiceProvider();
@@ -245,8 +245,8 @@ namespace Bannerlord.ButterLib
             }
         }
 
-        private static void PerformMigration001()
-        {
+    private static void PerformMigration001()
+    {
             try
             {
                 var configPath = PlatformFileHelperPCExtended.GetDirectoryFullPath(EngineFilePaths.ConfigsPath);
@@ -277,5 +277,4 @@ namespace Bannerlord.ButterLib
             }
             catch (Exception) { }
         }
-    }
 }

@@ -19,25 +19,25 @@ using TaleWorlds.Core;
 
 using Module = TaleWorlds.MountAndBlade.Module;
 
-namespace Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended.Patches
+namespace Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended.Patches;
+
+internal sealed class MBGameManagerPatch
 {
-    internal sealed class MBGameManagerPatch
+    private static ILogger _log = default!;
+
+    private static readonly MethodInfo? miTargetMethodGameStart = AccessTools2.Method("TaleWorlds.MountAndBlade.MBGameManager:OnGameStart");
+    private static readonly MethodInfo? miTargetMethodGameEnd = AccessTools2.Method("TaleWorlds.MountAndBlade.MBGameManager:OnGameEnd");
+
+    private static readonly MethodInfo? miPatchMethod = SymbolExtensions2.GetMethodInfo((IEnumerable<CodeInstruction> x, MethodBase y) => Transpiler(x, y));
+
+    private static readonly MethodInfo? miMBSubModuleBaseOnGameStartEvent = AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnGameStart");
+    private static readonly MethodInfo? miMBSubModuleBaseOnGameEndEvent = AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnGameEnd");
+
+    private static readonly MethodInfo? miDelayedOnGameStartEventCaller = SymbolExtensions2.GetMethodInfo((Game x, IGameStarter y) => DelayedOnGameStartEvent(x, y));
+    private static readonly MethodInfo? miDelayedOnGameEndEventCaller = SymbolExtensions2.GetMethodInfo((Game x) => DelayedOnGameEndEvent(x));
+
+    internal static bool Enable(Harmony harmony)
     {
-        private static ILogger _log = default!;
-
-        private static readonly MethodInfo? miTargetMethodGameStart = AccessTools2.Method("TaleWorlds.MountAndBlade.MBGameManager:OnGameStart");
-        private static readonly MethodInfo? miTargetMethodGameEnd = AccessTools2.Method("TaleWorlds.MountAndBlade.MBGameManager:OnGameEnd");
-
-        private static readonly MethodInfo? miPatchMethod = SymbolExtensions2.GetMethodInfo((IEnumerable<CodeInstruction> x, MethodBase y) => Transpiler(x, y));
-
-        private static readonly MethodInfo? miMBSubModuleBaseOnGameStartEvent = AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnGameStart");
-        private static readonly MethodInfo? miMBSubModuleBaseOnGameEndEvent = AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnGameEnd");
-
-        private static readonly MethodInfo? miDelayedOnGameStartEventCaller = SymbolExtensions2.GetMethodInfo((Game x, IGameStarter y) => DelayedOnGameStartEvent(x, y));
-        private static readonly MethodInfo? miDelayedOnGameEndEventCaller = SymbolExtensions2.GetMethodInfo((Game x) => DelayedOnGameEndEvent(x));
-
-        internal static bool Enable(Harmony harmony)
-        {
             var provider = ButterLibSubModule.Instance?.GetServiceProvider() ?? ButterLibSubModule.Instance?.GetTempServiceProvider();
             _log = provider?.GetService<ILogger<ModulePatch>>() ?? NullLogger<ModulePatch>.Instance;
 
@@ -47,8 +47,8 @@ namespace Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended.Patches
                 && harmony.Patch(miTargetMethodGameEnd, transpiler: new HarmonyMethod(miPatchMethod)) is not null;
         }
 
-        internal static bool Disable(Harmony harmony)
-        {
+    internal static bool Disable(Harmony harmony)
+    {
             if (CheckRequiredMethodInfos())
             {
                 harmony.Unpatch(miTargetMethodGameStart, miPatchMethod);
@@ -58,8 +58,8 @@ namespace Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended.Patches
             return true;
         }
 
-        public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, MethodBase __originalMethod)
-        {
+    public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, MethodBase __originalMethod)
+    {
             MethodInfo miToSearchFor;
             CodeInstruction[] ciToAdd;
             var originalMethodName = "TaleWorlds.MountAndBlade.MBGameManager." + __originalMethod.Name;
@@ -85,15 +85,15 @@ namespace Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended.Patches
             return AddDelayedEvent(instructions, miToSearchFor, ciToAdd, originalMethodName);
         }
 
-        private static bool CheckRequiredMethodInfos() =>
-            MBSubModuleBaseExSubSystem.NotNull(_log, miTargetMethodGameStart, nameof(miTargetMethodGameStart))
-            & MBSubModuleBaseExSubSystem.NotNull(_log, miTargetMethodGameEnd, nameof(miTargetMethodGameEnd))
-            & MBSubModuleBaseExSubSystem.NotNull(_log, miPatchMethod, nameof(miPatchMethod))
-            & MBSubModuleBaseExSubSystem.NotNull(_log, miMBSubModuleBaseOnGameStartEvent, nameof(miMBSubModuleBaseOnGameStartEvent))
-            & MBSubModuleBaseExSubSystem.NotNull(_log, miDelayedOnGameStartEventCaller, nameof(miDelayedOnGameStartEventCaller));
+    private static bool CheckRequiredMethodInfos() =>
+        MBSubModuleBaseExSubSystem.NotNull(_log, miTargetMethodGameStart, nameof(miTargetMethodGameStart))
+        & MBSubModuleBaseExSubSystem.NotNull(_log, miTargetMethodGameEnd, nameof(miTargetMethodGameEnd))
+        & MBSubModuleBaseExSubSystem.NotNull(_log, miPatchMethod, nameof(miPatchMethod))
+        & MBSubModuleBaseExSubSystem.NotNull(_log, miMBSubModuleBaseOnGameStartEvent, nameof(miMBSubModuleBaseOnGameStartEvent))
+        & MBSubModuleBaseExSubSystem.NotNull(_log, miDelayedOnGameStartEventCaller, nameof(miDelayedOnGameStartEventCaller));
 
-        private static IEnumerable<CodeInstruction> AddDelayedEvent(IEnumerable<CodeInstruction> instructions, MethodInfo miToSearchFor, CodeInstruction[] ciToAdd, string originalMethodName)
-        {
+    private static IEnumerable<CodeInstruction> AddDelayedEvent(IEnumerable<CodeInstruction> instructions, MethodInfo miToSearchFor, CodeInstruction[] ciToAdd, string originalMethodName)
+    {
             var codes = new List<CodeInstruction>(instructions);
             try
             {
@@ -131,22 +131,21 @@ namespace Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended.Patches
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        private static void DelayedOnGameStartEvent(Game game, IGameStarter gameStarter)
-        {
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private static void DelayedOnGameStartEvent(Game game, IGameStarter gameStarter)
+    {
             foreach (var submodule in Module.CurrentModule.SubModules.OfType<IMBSubModuleBaseEx>())
             {
                 submodule.OnGameStartDelayed(game, gameStarter);
             }
         }
 
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        private static void DelayedOnGameEndEvent(Game game)
-        {
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private static void DelayedOnGameEndEvent(Game game)
+    {
             foreach (var submodule in Module.CurrentModule.SubModules.OfType<IMBSubModuleBaseEx>())
             {
                 submodule.OnGameEndDelayed(game);
             }
         }
-    }
 }

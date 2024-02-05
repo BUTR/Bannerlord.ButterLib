@@ -11,14 +11,14 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bannerlord.ButterLib.CrashUploader
-{
-    internal class BUTRCrashUploader : ICrashUploader
-    {
-        public sealed record CrashReportUploadBody(CrashReportModel CrashReport, IEnumerable<LogSource> LogSources);
+namespace Bannerlord.ButterLib.CrashUploader;
 
-        public async Task<CrashUploaderResult> UploadAsync(CrashReportModel crashReportModel, IEnumerable<LogSource> logSources)
-        {
+internal class BUTRCrashUploader : ICrashUploader
+{
+    public sealed record CrashReportUploadBody(CrashReportModel CrashReport, IEnumerable<LogSource> LogSources);
+
+    public async Task<CrashUploaderResult> UploadAsync(CrashReportModel crashReportModel, IEnumerable<LogSource> logSources)
+    {
             try
             {
                 var assembly = Assembly.GetExecutingAssembly();
@@ -60,5 +60,4 @@ namespace Bannerlord.ButterLib.CrashUploader
                 return CrashUploaderResult.FailedWithException(e.ToString());
             }
         }
-    }
 }
