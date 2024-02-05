@@ -58,10 +58,10 @@ namespace Bannerlord.ButterLib.Implementation.HotKeys
                 var hotKey = HotKeyManagerImplementation.GlobalHotKeyStorage[i];
                 if (!hotKey.ShouldExecute() || hotKey.GameKey is null) continue;
 
-                if (hotKey.GameKey.KeyboardKey?.InputKey.IsDown() == true || hotKey.GameKey.ControllerKey?.InputKey.IsDown() == true)
-                    hotKey.IsDownInternal();
                 if (hotKey.GameKey.KeyboardKey?.InputKey.IsPressed() == true || hotKey.GameKey.ControllerKey?.InputKey.IsPressed() == true)
                     hotKey.OnPressedInternal();
+                if (hotKey.GameKey.KeyboardKey?.InputKey.IsDown() == true || hotKey.GameKey.ControllerKey?.InputKey.IsDown() == true)
+                    hotKey.IsDownInternal();
                 if (hotKey.GameKey.KeyboardKey?.InputKey.IsReleased() == true || hotKey.GameKey.ControllerKey?.InputKey.IsReleased() == true)
                     hotKey.OnReleasedInternal();
             }
