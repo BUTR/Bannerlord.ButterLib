@@ -27,20 +27,20 @@ internal sealed class HotKeyManagerImplementation : HotKeyManager
 
     internal HotKeyManagerImplementation(string modName, string categoryName = "")
     {
-            _modName = modName;
-            _categoryName = categoryName;
-        }
+        _modName = modName;
+        _categoryName = categoryName;
+    }
 
     public override T Add<T>(T hotkey)
     {
-            if (_instanceHotKeys.Any(x => string.Equals(x.Uid, hotkey.Uid, StringComparison.OrdinalIgnoreCase)))
-                throw new ArgumentException($"A hotkey called '{hotkey.Uid}' was already registered by this HotKeyManager!", nameof(hotkey));
+        if (_instanceHotKeys.Any(x => string.Equals(x.Uid, hotkey.Uid, StringComparison.OrdinalIgnoreCase)))
+            throw new ArgumentException($"A hotkey called '{hotkey.Uid}' was already registered by this HotKeyManager!", nameof(hotkey));
 
-            _instanceHotKeys.Add(hotkey);
-            hotkey.Id = _currentId;
-            _currentId++;
-            return hotkey;
-        }
+        _instanceHotKeys.Add(hotkey);
+        hotkey.Id = _currentId;
+        _currentId++;
+        return hotkey;
+    }
 
     public override T Add<T>() => Add(new T());
 

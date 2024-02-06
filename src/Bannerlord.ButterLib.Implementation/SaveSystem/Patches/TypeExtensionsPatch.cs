@@ -29,26 +29,26 @@ internal sealed class TypeExtensionsPatch
 
     internal static bool Enable(Harmony harmony)
     {
-            var provider = ButterLibSubModule.Instance?.GetServiceProvider() ?? ButterLibSubModule.Instance?.GetTempServiceProvider();
-            _log = provider?.GetService<ILogger<TypeExtensionsPatch>>() ?? NullLogger<TypeExtensionsPatch>.Instance;
+        var provider = ButterLibSubModule.Instance?.GetServiceProvider() ?? ButterLibSubModule.Instance?.GetTempServiceProvider();
+        _log = provider?.GetService<ILogger<TypeExtensionsPatch>>() ?? NullLogger<TypeExtensionsPatch>.Instance;
 
-            return NotNull(TargetType, nameof(TargetType))
-                   & NotNull(TargetMethod, nameof(TargetMethod))
-                   & NotNull(PatchMethod, nameof(PatchMethod))
-                   && harmony.Patch(TargetMethod, prefix: new HarmonyMethod(PatchMethod)) is not null;
-        }
+        return NotNull(TargetType, nameof(TargetType))
+               & NotNull(TargetMethod, nameof(TargetMethod))
+               & NotNull(PatchMethod, nameof(PatchMethod))
+               && harmony.Patch(TargetMethod, prefix: new HarmonyMethod(PatchMethod)) is not null;
+    }
 
     internal static bool Disable(Harmony harmony)
     {
-            if (NotNull(TargetType, nameof(TargetType))
-                & NotNull(TargetMethod, nameof(TargetMethod))
-                & NotNull(PatchMethod, nameof(PatchMethod)))
-            {
-                harmony.Unpatch(TargetMethod, PatchMethod);
-            }
-
-            return true;
+        if (NotNull(TargetType, nameof(TargetType))
+            & NotNull(TargetMethod, nameof(TargetMethod))
+            & NotNull(PatchMethod, nameof(PatchMethod)))
+        {
+            harmony.Unpatch(TargetMethod, PatchMethod);
         }
+
+        return true;
+    }
 
     private static readonly Type? TargetType = AccessTools2.TypeByName("TaleWorlds.SaveSystem.TypeExtensions");
     private static readonly Type[] TargetMethodParams = { typeof(Type), typeof(ContainerType).MakeByRefType() };
@@ -58,32 +58,32 @@ internal sealed class TypeExtensionsPatch
     // ReSharper disable once RedundantAssignment
     private static bool IsContainerPrefix(Type type, out ContainerType containerType, ref bool __result)
     {
-            containerType = ContainerType.None;
+        containerType = ContainerType.None;
 
-            if (type is { IsGenericType: true, IsGenericTypeDefinition: false })
-                type = type.GetGenericTypeDefinition();
+        if (type is { IsGenericType: true, IsGenericTypeDefinition: false })
+            type = type.GetGenericTypeDefinition();
 
-            if (type.IsArray)
-                containerType = ContainerType.Array;
-            else if (typeof(IDictionary).IsAssignableFrom(type))
-                containerType = ContainerType.Dictionary;
-            else if (typeof(IList).IsAssignableFrom(type))
-                containerType = ContainerType.List;
-            else if (type == typeof(Queue<>) || type == typeof(Queue))
-                containerType = ContainerType.Queue;
+        if (type.IsArray)
+            containerType = ContainerType.Array;
+        else if (typeof(IDictionary).IsAssignableFrom(type))
+            containerType = ContainerType.Dictionary;
+        else if (typeof(IList).IsAssignableFrom(type))
+            containerType = ContainerType.List;
+        else if (type == typeof(Queue<>) || type == typeof(Queue))
+            containerType = ContainerType.Queue;
 
-            __result = containerType != ContainerType.None;
-            return false;
-        }
+        __result = containerType != ContainerType.None;
+        return false;
+    }
 
     private static bool NotNull<T>(T obj, string name) where T : class?
     {
-            if (obj is null)
-            {
-                _log.LogError("{Name} is null!", name);
-                return false;
-            }
-
-            return true;
+        if (obj is null)
+        {
+            _log.LogError("{Name} is null!", name);
+            return false;
         }
+
+        return true;
+    }
 }

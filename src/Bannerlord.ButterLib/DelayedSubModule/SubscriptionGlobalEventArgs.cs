@@ -61,19 +61,19 @@ public class SubscriptionGlobalEventArgs : EventArgs
     /// is not a valid <see cref="SubscriptionGlobalEventArgs"/> enum.</exception>
     public SubscriptionGlobalEventArgs(Type type, bool isBase, SubscriptionType subscriptionType, string methodName)
     {
-            if (!typeof(MBSubModuleBase).IsAssignableFrom(type))
-            {
-                throw new ArgumentException($"{type.FullName} is not supported type.", nameof(type));
-            }
-            if (!Enum.IsDefined(typeof(SubscriptionType), subscriptionType))
-            {
-                throw new ArgumentOutOfRangeException(nameof(subscriptionType), subscriptionType, $"DelayedSubModuleEventArgs .ctor is supplied with not supported {nameof(DelayedSubModule.SubscriptionType)} value.");
-            }
-            Type = type;
-            IsBase = isBase;
-            SubscriptionType = subscriptionType;
-            MethodName = methodName;
+        if (!typeof(MBSubModuleBase).IsAssignableFrom(type))
+        {
+            throw new ArgumentException($"{type.FullName} is not supported type.", nameof(type));
         }
+        if (!Enum.IsDefined(typeof(SubscriptionType), subscriptionType))
+        {
+            throw new ArgumentOutOfRangeException(nameof(subscriptionType), subscriptionType, $"DelayedSubModuleEventArgs .ctor is supplied with not supported {nameof(DelayedSubModule.SubscriptionType)} value.");
+        }
+        Type = type;
+        IsBase = isBase;
+        SubscriptionType = subscriptionType;
+        MethodName = methodName;
+    }
 
     public bool IsValid<T>(string methodName, SubscriptionType subscriptionType) where T : MBSubModuleBase =>
         IsValid(typeof(T), methodName, subscriptionType);

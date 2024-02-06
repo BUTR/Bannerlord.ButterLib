@@ -25,56 +25,56 @@ internal class MBSubModuleBaseExSubSystem : ISubSystem
 
     public MBSubModuleBaseExSubSystem()
     {
-            Instance = this;
-        }
+        Instance = this;
+    }
     public void Enable()
     {
-            IsEnabled = true;
+        IsEnabled = true;
 
-            ModulePatch.Enable(_harmony);
-            MBGameManagerPatch.Enable(_harmony);
+        ModulePatch.Enable(_harmony);
+        MBGameManagerPatch.Enable(_harmony);
 
-            // There is no way to patch Module.InitializeSubModules to add OnAllSubModulesLoaded.
-            // We tried to patch the last loaded submodule instead, but that caused problems if it had PatchAll() called in it.
-            // So for now we removed OnAllSubModulesLoaded event entirely.
-        }
+        // There is no way to patch Module.InitializeSubModules to add OnAllSubModulesLoaded.
+        // We tried to patch the last loaded submodule instead, but that caused problems if it had PatchAll() called in it.
+        // So for now we removed OnAllSubModulesLoaded event entirely.
+    }
     public void Disable()
     {
-            IsEnabled = false;
-            ModulePatch.Disable(_harmony);
-            MBGameManagerPatch.Disable(_harmony);
-            // Think about DelayedSubModuleManager.Unregister
-        }
+        IsEnabled = false;
+        ModulePatch.Disable(_harmony);
+        MBGameManagerPatch.Disable(_harmony);
+        // Think about DelayedSubModuleManager.Unregister
+    }
 
     internal static void LogNoHooksIssue(ILogger logger, int originalCallIndex, int finallyIndex, List<CodeInstruction> codes, MethodBase? currentMethod)
     {
-            var issueInfo = new StringBuilder("Indexes: ");
-            issueInfo.Append($"\n\toriginalCallIndex = {originalCallIndex}.\n\tfinallyIndex={finallyIndex}.");
-            issueInfo.Append($"\nIL:");
-            for (var i = 0; i < codes.Count; ++i)
-            {
-                issueInfo.Append($"\n\t{i:D4}:\t{codes[i]}");
-            }
-            // get info about other transpilers on OriginalMethod
-            var patches = Harmony.GetPatchInfo(currentMethod);
-            if (patches != null)
-            {
-                issueInfo.Append($"\nOther transpilers:");
-                foreach (var patch in patches.Transpilers)
-                {
-                    issueInfo.Append(patch.GetDebugString());
-                }
-            }
-            logger.LogDebug(issueInfo.ToString());
+        var issueInfo = new StringBuilder("Indexes: ");
+        issueInfo.Append($"\n\toriginalCallIndex = {originalCallIndex}.\n\tfinallyIndex={finallyIndex}.");
+        issueInfo.Append($"\nIL:");
+        for (var i = 0; i < codes.Count; ++i)
+        {
+            issueInfo.Append($"\n\t{i:D4}:\t{codes[i]}");
         }
+        // get info about other transpilers on OriginalMethod
+        var patches = Harmony.GetPatchInfo(currentMethod);
+        if (patches != null)
+        {
+            issueInfo.Append($"\nOther transpilers:");
+            foreach (var patch in patches.Transpilers)
+            {
+                issueInfo.Append(patch.GetDebugString());
+            }
+        }
+        logger.LogDebug(issueInfo.ToString());
+    }
 
     internal static bool NotNull<T>(ILogger logger, T obj, string name) where T : class?
     {
-            if (obj is null)
-            {
-                logger.LogError("{Name} is null!", name);
-                return false;
-            }
-            return true;
+        if (obj is null)
+        {
+            logger.LogError("{Name} is null!", name);
+            return false;
         }
+        return true;
+    }
 }

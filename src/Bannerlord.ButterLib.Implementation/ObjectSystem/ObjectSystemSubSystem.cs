@@ -20,20 +20,20 @@ internal class ObjectSystemSubSystem : ISubSystem
 
     public ObjectSystemSubSystem()
     {
-            Instance = this;
-        }
+        Instance = this;
+    }
 
     public void Enable()
     {
-            IsEnabled = true;
+        IsEnabled = true;
 
-            CampaignBehaviorManagerPatch.Enable(_harmony);
-        }
+        CampaignBehaviorManagerPatch.Enable(_harmony);
+    }
 
     public void Disable()
     {
-            IsEnabled = false;
+        IsEnabled = false;
 
-            CampaignBehaviorManagerPatch.Disable(_harmony);
-        }
+        CampaignBehaviorManagerPatch.Disable(_harmony);
+    }
 }

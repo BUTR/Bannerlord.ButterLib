@@ -15,21 +15,21 @@ public class TaleWorldsContractResolverBase : DefaultContractResolver
 
     protected static bool IsContainerFallback(Type type)
     {
-            if (type is { IsGenericType: true, IsGenericTypeDefinition: false })
-            {
-                var genericTypeDefinition = type.GetGenericTypeDefinition();
-                if (genericTypeDefinition == typeof(Dictionary<,>))
-                    return true;
-                if (genericTypeDefinition == typeof(List<>))
-                    return true;
-                if (genericTypeDefinition == typeof(Queue<>))
-                    return true;
-            }
-            else if (type.IsArray)
-            {
+        if (type is { IsGenericType: true, IsGenericTypeDefinition: false })
+        {
+            var genericTypeDefinition = type.GetGenericTypeDefinition();
+            if (genericTypeDefinition == typeof(Dictionary<,>))
                 return true;
-            }
-
-            return false;
+            if (genericTypeDefinition == typeof(List<>))
+                return true;
+            if (genericTypeDefinition == typeof(Queue<>))
+                return true;
         }
+        else if (type.IsArray)
+        {
+            return true;
+        }
+
+        return false;
+    }
 }

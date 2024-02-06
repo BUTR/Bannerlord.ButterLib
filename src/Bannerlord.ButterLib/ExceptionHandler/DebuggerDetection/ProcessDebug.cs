@@ -20,14 +20,14 @@ internal static class ProcessDebug
     /// </summary>
     public static bool CheckProcessDebugObjectHandle()
     {
-            var status = NtQueryInformationProcess
-            (
-                Process.GetCurrentProcess().Handle,
-                PROCESS_DEBUG_OBJECT_HANDLE,
-                out var flProcessDebugObject,
-                IntPtr.Size,
-                IntPtr.Zero
-            );
-            return status == 0 && (IntPtr) 0 != flProcessDebugObject;
-        }
+        var status = NtQueryInformationProcess
+        (
+            Process.GetCurrentProcess().Handle,
+            PROCESS_DEBUG_OBJECT_HANDLE,
+            out var flProcessDebugObject,
+            IntPtr.Size,
+            IntPtr.Zero
+        );
+        return status == 0 && (IntPtr) 0 != flProcessDebugObject;
+    }
 }

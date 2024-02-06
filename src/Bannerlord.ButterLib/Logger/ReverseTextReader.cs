@@ -34,18 +34,18 @@ internal sealed class ReverseTextReader : IEnumerable<string>
     /// <param name="encoding"></param>
     public ReverseTextReader(Stream stream, Encoding encoding)
     {
-            _stream = stream;
-            _encoding = encoding;
-            _lines = new Queue<string>(128);
-            // The stream needs to support seeking for this to work
-            if (!_stream.CanSeek)
-                throw new InvalidOperationException("The specified stream needs to support seeking to be read backwards.");
-            if (!_stream.CanRead)
-                throw new InvalidOperationException("The specified stream needs to support reading to be read backwards.");
-            // Set the current position to the end of the file
-            _stream.Position = _stream.Length;
-            _leftoverBuffer = Array.Empty<byte>();
-        }
+        _stream = stream;
+        _encoding = encoding;
+        _lines = new Queue<string>(128);
+        // The stream needs to support seeking for this to work
+        if (!_stream.CanSeek)
+            throw new InvalidOperationException("The specified stream needs to support seeking to be read backwards.");
+        if (!_stream.CanRead)
+            throw new InvalidOperationException("The specified stream needs to support reading to be read backwards.");
+        // Set the current position to the end of the file
+        _stream.Position = _stream.Length;
+        _leftoverBuffer = Array.Empty<byte>();
+    }
 
     #endregion
 
@@ -119,11 +119,11 @@ internal sealed class ReverseTextReader : IEnumerable<string>
 
     public IEnumerator<string> GetEnumerator()
     {
-            // So long as the next line isn't null...
-            while (ReadLine() is { } line)
-                // Read and return it.
-                yield return line;
-        }
+        // So long as the next line isn't null...
+        while (ReadLine() is { } line)
+            // Read and return it.
+            yield return line;
+    }
 
     IEnumerator IEnumerable.GetEnumerator() => throw new NotImplementedException();
 

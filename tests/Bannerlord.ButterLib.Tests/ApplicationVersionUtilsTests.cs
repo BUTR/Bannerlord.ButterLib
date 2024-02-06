@@ -18,23 +18,23 @@ public class ApplicationVersionUtilsTests
     [MethodImpl(MethodImplOptions.NoInlining)]
     private static bool MockedGetVersionStr(ref string __result)
     {
-            __result = TestAppVersionStr;
-            return false;
-        }
+        __result = TestAppVersionStr;
+        return false;
+    }
 
     [SetUp]
     public void Setup()
     {
-            var harmony = new Harmony($"{nameof(ApplicationVersionUtilsTests)}.{nameof(Setup)}");
-            harmony.Patch(SymbolExtensions.GetMethodInfo(() => ApplicationVersionHelper.GameVersionStr()),
-                prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetVersionStr)));
-        }
+        var harmony = new Harmony($"{nameof(ApplicationVersionUtilsTests)}.{nameof(Setup)}");
+        harmony.Patch(SymbolExtensions.GetMethodInfo(() => ApplicationVersionHelper.GameVersionStr()),
+            prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetVersionStr)));
+    }
 
     [Test]
     public void TryParse_Test()
     {
-            var result = ApplicationVersionHelper.TryParse(TestAppVersionStr, out var gameVersion);
-            Assert.True(result);
-            Assert.AreEqual(TestAppVersion, gameVersion);
-        }
+        var result = ApplicationVersionHelper.TryParse(TestAppVersionStr, out var gameVersion);
+        Assert.True(result);
+        Assert.AreEqual(TestAppVersion, gameVersion);
+    }
 }

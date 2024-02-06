@@ -69,34 +69,34 @@ public class MBSubModuleBaseWrapper : MBSubModuleBase
 
     public MBSubModuleBaseWrapper(MBSubModuleBase subModule)
     {
-            SubModule = subModule;
+        SubModule = subModule;
 
-            OnSubModuleLoadInstance = AccessTools2.GetDelegate<OnSubModuleLoadDelegate, MBSubModuleBase>(subModule, nameof(OnSubModuleLoad));
-            OnSubModuleUnloadedInstance = AccessTools2.GetDelegate<OnSubModuleUnloadedDelegate, MBSubModuleBase>(subModule, nameof(OnSubModuleUnloaded));
-            OnBeforeInitialModuleScreenSetAsRootInstance = AccessTools2.GetDelegate<OnBeforeInitialModuleScreenSetAsRootDelegate, MBSubModuleBase>(subModule, nameof(OnBeforeInitialModuleScreenSetAsRoot));
-            OnGameStartInstance = AccessTools2.GetDelegate<OnGameStartDelegate, MBSubModuleBase>(subModule, nameof(OnGameStart));
-            OnApplicationTickInstance = AccessTools2.GetDelegate<OnApplicationTickDelegate, MBSubModuleBase>(subModule, nameof(OnApplicationTick));
-            InitializeGameStarterInstance = AccessTools2.GetDelegate<InitializeGameStarterDelegate, MBSubModuleBase>(subModule, nameof(InitializeGameStarter));
+        OnSubModuleLoadInstance = AccessTools2.GetDelegate<OnSubModuleLoadDelegate, MBSubModuleBase>(subModule, nameof(OnSubModuleLoad));
+        OnSubModuleUnloadedInstance = AccessTools2.GetDelegate<OnSubModuleUnloadedDelegate, MBSubModuleBase>(subModule, nameof(OnSubModuleUnloaded));
+        OnBeforeInitialModuleScreenSetAsRootInstance = AccessTools2.GetDelegate<OnBeforeInitialModuleScreenSetAsRootDelegate, MBSubModuleBase>(subModule, nameof(OnBeforeInitialModuleScreenSetAsRoot));
+        OnGameStartInstance = AccessTools2.GetDelegate<OnGameStartDelegate, MBSubModuleBase>(subModule, nameof(OnGameStart));
+        OnApplicationTickInstance = AccessTools2.GetDelegate<OnApplicationTickDelegate, MBSubModuleBase>(subModule, nameof(OnApplicationTick));
+        InitializeGameStarterInstance = AccessTools2.GetDelegate<InitializeGameStarterDelegate, MBSubModuleBase>(subModule, nameof(InitializeGameStarter));
 
-            OnServiceRegistrationInstance = AccessTools2.GetDelegate<OnServiceRegistrationDelegate, MBSubModuleBase>(subModule, nameof(OnServiceRegistration), logErrorInTrace: false);
+        OnServiceRegistrationInstance = AccessTools2.GetDelegate<OnServiceRegistrationDelegate, MBSubModuleBase>(subModule, nameof(OnServiceRegistration), logErrorInTrace: false);
 
-            OnConfigChangedInstance = AccessTools2.GetDelegate<OnConfigChangedDelegate, MBSubModuleBase>(subModule, nameof(OnConfigChanged));
-            OnGameLoadedInstance = AccessTools2.GetDelegate<OnGameLoadedDelegate, MBSubModuleBase>(subModule, nameof(OnGameLoaded));
-            OnNewGameCreatedInstance = AccessTools2.GetDelegate<OnNewGameCreatedDelegate, MBSubModuleBase>(subModule, nameof(OnNewGameCreated));
-            BeginGameStartInstance = AccessTools2.GetDelegate<BeginGameStartDelegate, MBSubModuleBase>(subModule, nameof(BeginGameStart));
-            OnCampaignStartInstance = AccessTools2.GetDelegate<OnCampaignStartDelegate, MBSubModuleBase>(subModule, nameof(OnCampaignStart));
-            RegisterSubModuleObjectsInstance = AccessTools2.GetDelegate<RegisterSubModuleObjectsDelegate, MBSubModuleBase>(subModule, nameof(RegisterSubModuleObjects));
-            AfterRegisterSubModuleObjectsInstance = AccessTools2.GetDelegate<AfterRegisterSubModuleObjectsDelegate, MBSubModuleBase>(subModule, nameof(AfterRegisterSubModuleObjects));
-            OnMultiplayerGameStartInstance = AccessTools2.GetDelegate<OnMultiplayerGameStartDelegate, MBSubModuleBase>(subModule, nameof(OnMultiplayerGameStart));
-            OnGameInitializationFinishedInstance = AccessTools2.GetDelegate<OnGameInitializationFinishedDelegate, MBSubModuleBase>(subModule, nameof(OnGameInitializationFinished));
-            OnAfterGameInitializationFinishedInstance = AccessTools2.GetDelegate<OnAfterGameInitializationFinishedDelegate, MBSubModuleBase>(subModule, nameof(OnAfterGameInitializationFinished));
-            DoLoadingInstance = AccessTools2.GetDelegate<DoLoadingDelegate, MBSubModuleBase>(subModule, nameof(DoLoading));
-            OnGameEndInstance = AccessTools2.GetDelegate<OnGameEndDelegate, MBSubModuleBase>(subModule, nameof(OnGameEnd));
-            OnBeforeMissionBehaviourInitializeInstance = AccessTools2.GetDelegate<OnBeforeMissionBehaviourInitializeDelegate, MBSubModuleBase>(subModule, nameof(OnBeforeMissionBehaviorInitialize));
-            OnMissionBehaviourInitializeInstance = AccessTools2.GetDelegate<OnMissionBehaviourInitializeDelegate, MBSubModuleBase>(subModule, nameof(OnMissionBehaviorInitialize));
-            OnInitialStateInstance = AccessTools2.GetDelegate<OnInitialStateDelegate, MBSubModuleBase>(subModule, nameof(OnInitialState));
-            AfterAsyncTickTickInstance = AccessTools2.GetDelegate<AfterAsyncTickTickDelegate, MBSubModuleBase>(subModule, nameof(AfterAsyncTickTick));
-        }
+        OnConfigChangedInstance = AccessTools2.GetDelegate<OnConfigChangedDelegate, MBSubModuleBase>(subModule, nameof(OnConfigChanged));
+        OnGameLoadedInstance = AccessTools2.GetDelegate<OnGameLoadedDelegate, MBSubModuleBase>(subModule, nameof(OnGameLoaded));
+        OnNewGameCreatedInstance = AccessTools2.GetDelegate<OnNewGameCreatedDelegate, MBSubModuleBase>(subModule, nameof(OnNewGameCreated));
+        BeginGameStartInstance = AccessTools2.GetDelegate<BeginGameStartDelegate, MBSubModuleBase>(subModule, nameof(BeginGameStart));
+        OnCampaignStartInstance = AccessTools2.GetDelegate<OnCampaignStartDelegate, MBSubModuleBase>(subModule, nameof(OnCampaignStart));
+        RegisterSubModuleObjectsInstance = AccessTools2.GetDelegate<RegisterSubModuleObjectsDelegate, MBSubModuleBase>(subModule, nameof(RegisterSubModuleObjects));
+        AfterRegisterSubModuleObjectsInstance = AccessTools2.GetDelegate<AfterRegisterSubModuleObjectsDelegate, MBSubModuleBase>(subModule, nameof(AfterRegisterSubModuleObjects));
+        OnMultiplayerGameStartInstance = AccessTools2.GetDelegate<OnMultiplayerGameStartDelegate, MBSubModuleBase>(subModule, nameof(OnMultiplayerGameStart));
+        OnGameInitializationFinishedInstance = AccessTools2.GetDelegate<OnGameInitializationFinishedDelegate, MBSubModuleBase>(subModule, nameof(OnGameInitializationFinished));
+        OnAfterGameInitializationFinishedInstance = AccessTools2.GetDelegate<OnAfterGameInitializationFinishedDelegate, MBSubModuleBase>(subModule, nameof(OnAfterGameInitializationFinished));
+        DoLoadingInstance = AccessTools2.GetDelegate<DoLoadingDelegate, MBSubModuleBase>(subModule, nameof(DoLoading));
+        OnGameEndInstance = AccessTools2.GetDelegate<OnGameEndDelegate, MBSubModuleBase>(subModule, nameof(OnGameEnd));
+        OnBeforeMissionBehaviourInitializeInstance = AccessTools2.GetDelegate<OnBeforeMissionBehaviourInitializeDelegate, MBSubModuleBase>(subModule, nameof(OnBeforeMissionBehaviorInitialize));
+        OnMissionBehaviourInitializeInstance = AccessTools2.GetDelegate<OnMissionBehaviourInitializeDelegate, MBSubModuleBase>(subModule, nameof(OnMissionBehaviorInitialize));
+        OnInitialStateInstance = AccessTools2.GetDelegate<OnInitialStateDelegate, MBSubModuleBase>(subModule, nameof(OnInitialState));
+        AfterAsyncTickTickInstance = AccessTools2.GetDelegate<AfterAsyncTickTickDelegate, MBSubModuleBase>(subModule, nameof(AfterAsyncTickTick));
+    }
 
     public new virtual void OnSubModuleLoad() => OnSubModuleLoadInstance?.Invoke();
     public new virtual void OnSubModuleUnloaded() => OnSubModuleUnloadedInstance?.Invoke();

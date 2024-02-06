@@ -24,24 +24,24 @@ This might alter the save file, disabling the feature might render the save file
 
     public SaveSystemSubSystem()
     {
-            Instance = this;
-        }
+        Instance = this;
+    }
 
     public void Enable()
     {
-            IsEnabled = true;
+        IsEnabled = true;
 
-            BehaviourNamePatch.Enable(_harmony); // Fixes possible collision with save names
-            TypeExtensionsPatch.Enable(_harmony); // Adds support for saving many more container types
-            DefinitionContextPatch.Enable(_harmony); // Fixes save corruption & crashes when duplicate types are defined
-        }
+        BehaviourNamePatch.Enable(_harmony); // Fixes possible collision with save names
+        TypeExtensionsPatch.Enable(_harmony); // Adds support for saving many more container types
+        DefinitionContextPatch.Enable(_harmony); // Fixes save corruption & crashes when duplicate types are defined
+    }
 
     public void Disable()
     {
-            IsEnabled = false;
+        IsEnabled = false;
 
-            BehaviourNamePatch.Disable(_harmony);
-            TypeExtensionsPatch.Disable(_harmony);
-            DefinitionContextPatch.Disable(_harmony);
-        }
+        BehaviourNamePatch.Disable(_harmony);
+        TypeExtensionsPatch.Disable(_harmony);
+        DefinitionContextPatch.Disable(_harmony);
+    }
 }

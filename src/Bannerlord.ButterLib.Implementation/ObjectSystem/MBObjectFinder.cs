@@ -25,18 +25,18 @@ internal class MBObjectFinder : IMBObjectFinder
 
     private static MBObjectBase? FindCampaignObjectManager(MBGUID id, Type type)
     {
-            foreach (var cot in CampaignObjectTypeObjects?.Invoke(Campaign.Current.CampaignObjectManager) ?? Array.Empty<object>())
+        foreach (var cot in CampaignObjectTypeObjects?.Invoke(Campaign.Current.CampaignObjectManager) ?? Array.Empty<object>())
+        {
+            if (type == ObjectClassGetter?.Invoke(cot, Array.Empty<object>()) as Type && cot is IEnumerable<MBObjectBase> en && en.FirstOrDefault(o => o.Id == id) is { } result)
             {
-                if (type == ObjectClassGetter?.Invoke(cot, Array.Empty<object>()) as Type && cot is IEnumerable<MBObjectBase> en && en.FirstOrDefault(o => o.Id == id) is { } result)
-                {
-                    return result;
-                }
+                return result;
             }
-            return null;
         }
+        return null;
+    }
 
     public MBObjectBase? Find(MBGUID id, Type? type = null)
     {
-            return FindCampaignObjectManager(id, type ?? typeof(MBObjectBase));
-        }
+        return FindCampaignObjectManager(id, type ?? typeof(MBObjectBase));
+    }
 }

@@ -18,23 +18,23 @@ internal sealed class HotKeyManagerStaticImplementation : IHotKeyManagerStatic
 
     public HotKeyManager Create(string modName)
     {
-            var doesModAlreadyHaveRegisteredKeys = TaleWorlds.InputSystem.HotKeyManager.GetAllCategories()
-                .Any(x => string.Equals(x.GameKeyCategoryId, modName, StringComparison.OrdinalIgnoreCase));
+        var doesModAlreadyHaveRegisteredKeys = TaleWorlds.InputSystem.HotKeyManager.GetAllCategories()
+            .Any(x => string.Equals(x.GameKeyCategoryId, modName, StringComparison.OrdinalIgnoreCase));
 
-            if (doesModAlreadyHaveRegisteredKeys)
-                throw new ArgumentException("Hotkeys For Mod With This Name Already Exists.", nameof(modName));
+        if (doesModAlreadyHaveRegisteredKeys)
+            throw new ArgumentException("Hotkeys For Mod With This Name Already Exists.", nameof(modName));
 
-            return new HotKeyManagerImplementation(modName);
-        }
+        return new HotKeyManagerImplementation(modName);
+    }
 
     public HotKeyManager CreateWithOwnCategory(string modName, string categoryName)
     {
-            var doesModAlreadyHaveRegisteredKeys = TaleWorlds.InputSystem.HotKeyManager.GetAllCategories()
-                .Any(x => string.Equals(x.GameKeyCategoryId, modName, StringComparison.OrdinalIgnoreCase));
+        var doesModAlreadyHaveRegisteredKeys = TaleWorlds.InputSystem.HotKeyManager.GetAllCategories()
+            .Any(x => string.Equals(x.GameKeyCategoryId, modName, StringComparison.OrdinalIgnoreCase));
 
-            if (doesModAlreadyHaveRegisteredKeys)
-                throw new ArgumentException("Hotkeys For Mod With This Name Already Exists.", nameof(modName));
+        if (doesModAlreadyHaveRegisteredKeys)
+            throw new ArgumentException("Hotkeys For Mod With This Name Already Exists.", nameof(modName));
 
-            return new HotKeyManagerImplementation(modName, categoryName);
-        }
+        return new HotKeyManagerImplementation(modName, categoryName);
+    }
 }

@@ -17,6 +17,6 @@ internal record CrashUploaderResult
 
     private CrashUploaderResult(CrashUploaderStatus status)
     {
-            Status = status;
-        }
+        Status = status;
+    }
 }

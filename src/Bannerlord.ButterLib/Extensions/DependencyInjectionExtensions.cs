@@ -62,33 +62,33 @@ public static class DependencyInjectionExtensions
 
     internal static IServiceCollection? AddDefaultSerilogLogger(this MBSubModuleBase subModule)
     {
-            var services = subModule.GetServices();
+        var services = subModule.GetServices();
 
-            var serviceProvider = services.BuildServiceProvider();
-            var butterLibOptions = serviceProvider.GetService<IOptions<ButterLibOptions>>();
+        var serviceProvider = services.BuildServiceProvider();
+        var butterLibOptions = serviceProvider.GetService<IOptions<ButterLibOptions>>();
 
-            var filePath = new PlatformFilePath(ModLogsPath, "default.log");
-            var builder = new LoggerConfiguration()
-                .MinimumLevel.Is((LogEventLevel) butterLibOptions.Value.MinLogLevel)
-                .Enrich.FromLogContext()
-                .WriteTo.File(
-                    outputTemplate: OutputTemplate,
-                    path: filePath.FileFullPath,
-                    rollingInterval: RollingInterval.Day,
-                    retainedFileCountLimit: 7,
-                    fileSizeLimitBytes: 1024 * 1024 * 5,
-                    retainedFileTimeLimit: TimeSpan.FromDays(7),
-                    rollOnFileSizeLimit: true,
-                    shared: true);
+        var filePath = new PlatformFilePath(ModLogsPath, "default.log");
+        var builder = new LoggerConfiguration()
+            .MinimumLevel.Is((LogEventLevel) butterLibOptions.Value.MinLogLevel)
+            .Enrich.FromLogContext()
+            .WriteTo.File(
+                outputTemplate: OutputTemplate,
+                path: filePath.FileFullPath,
+                rollingInterval: RollingInterval.Day,
+                retainedFileCountLimit: 7,
+                fileSizeLimitBytes: 1024 * 1024 * 5,
+                retainedFileTimeLimit: TimeSpan.FromDays(7),
+                rollOnFileSizeLimit: true,
+                shared: true);
 
-            var sinks = _getSinks!(builder).OfType<IFlushableFileSink>().ToArray();
+        var sinks = _getSinks!(builder).OfType<IFlushableFileSink>().ToArray();
 
-            var logger = builder.CreateLogger();
+        var logger = builder.CreateLogger();
 
-            services.AddSingleton<ILogSource>(new RollingFileLogSource(filePath.FileFullPath, sinks));
-            services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(logger, dispose: true));
-            return services;
-        }
+        services.AddSingleton<ILogSource>(new RollingFileLogSource(filePath.FileFullPath, sinks));
+        services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(logger, dispose: true));
+        return services;
+    }
     /// <summary>
     /// Don't forget to get a new ILogger after adding a new ILoggerProvider
     /// </summary>
@@ -99,58 +99,58 @@ public static class DependencyInjectionExtensions
     /// </summary>
     public static IServiceCollection AddSerilogLoggerProvider(this MBSubModuleBase subModule, string filename, IEnumerable<string>? filter = null, Action<LoggerConfiguration>? configure = null)
     {
-            filter ??= new List<string> { $"{subModule.GetType().Assembly.GetName().Name}.*" };
-            var filterList = filter.ToList();
+        filter ??= new List<string> { $"{subModule.GetType().Assembly.GetName().Name}.*" };
+        var filterList = filter.ToList();
 
-            var services = subModule.GetServices();
-            if (services is null)
-                throw new Exception("Past Configuration stage.");
+        var services = subModule.GetServices();
+        if (services is null)
+            throw new Exception("Past Configuration stage.");
 
-            var filePath = new PlatformFilePath(ModLogsPath, filename);
-            var builder = new LoggerConfiguration()
-                .Enrich.FromLogContext()
-                .Filter.ByIncludingOnly(FromSources(filterList))
-                .WriteTo.File(
-                    outputTemplate: OutputTemplate,
-                    path: filePath.FileFullPath,
-                    rollingInterval: RollingInterval.Day,
-                    retainedFileCountLimit: 5,
-                    fileSizeLimitBytes: 1024 * 1024 * 3,
-                    retainedFileTimeLimit: TimeSpan.FromDays(3),
-                    rollOnFileSizeLimit: true);
-            configure?.Invoke(builder);
+        var filePath = new PlatformFilePath(ModLogsPath, filename);
+        var builder = new LoggerConfiguration()
+            .Enrich.FromLogContext()
+            .Filter.ByIncludingOnly(FromSources(filterList))
+            .WriteTo.File(
+                outputTemplate: OutputTemplate,
+                path: filePath.FileFullPath,
+                rollingInterval: RollingInterval.Day,
+                retainedFileCountLimit: 5,
+                fileSizeLimitBytes: 1024 * 1024 * 3,
+                retainedFileTimeLimit: TimeSpan.FromDays(3),
+                rollOnFileSizeLimit: true);
+        configure?.Invoke(builder);
 
-            var logger = builder.CreateLogger();
+        var logger = builder.CreateLogger();
 
-            services.AddSingleton<ILoggerProvider, SerilogLoggerProvider>(_ => new SerilogLoggerProvider(logger, true));
-            return services;
-        }
+        services.AddSingleton<ILoggerProvider, SerilogLoggerProvider>(_ => new SerilogLoggerProvider(logger, true));
+        return services;
+    }
 
     public static Func<LogEvent, bool> FromSources(IEnumerable<string> sources)
     {
-            if (sources is null) throw new ArgumentNullException(nameof(sources));
-            return Matching.WithProperty<string>(Constants.SourceContextPropertyName, s => s is not null && sources.Any(x => MatchWildcardString(x, s)));
-        }
+        if (sources is null) throw new ArgumentNullException(nameof(sources));
+        return Matching.WithProperty<string>(Constants.SourceContextPropertyName, s => s is not null && sources.Any(x => MatchWildcardString(x, s)));
+    }
     private static bool MatchWildcardString(string pattern, string input)
     {
-            string regexPattern = pattern.Aggregate("^", (current, c) => current + c switch
-            {
-                '*' => ".*",
-                '?' => ".",
-                _ => $"[{c}]"
-            });
-            // Lets hope that the Regex cache is sufficient.
-            return Regex.IsMatch(input, $"{regexPattern}$");
-        }
+        string regexPattern = pattern.Aggregate("^", (current, c) => current + c switch
+        {
+            '*' => ".*",
+            '?' => ".",
+            _ => $"[{c}]"
+        });
+        // Lets hope that the Regex cache is sufficient.
+        return Regex.IsMatch(input, $"{regexPattern}$");
+    }
 
     public static IServiceCollection AddSubSystem<TImplementation>(this IServiceCollection services)
         where TImplementation : class, ISubSystem, new()
     {
-            var instance = new TImplementation();
-            services.AddSingleton<TImplementation>(_ => instance);
-            services.AddSingleton<ISubSystem>(sp => sp.GetService<TImplementation>());
-            return services;
-        }
+        var instance = new TImplementation();
+        services.AddSingleton<TImplementation>(_ => instance);
+        services.AddSingleton<ISubSystem>(sp => sp.GetService<TImplementation>());
+        return services;
+    }
 
     public static ISubSystem? GetSubSystem(this IServiceProvider sp, string id) => sp.GetServices<ISubSystem>().FirstOrDefault(s => s.Id == id);
 }

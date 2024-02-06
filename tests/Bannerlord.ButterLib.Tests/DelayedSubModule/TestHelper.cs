@@ -16,15 +16,15 @@ internal static class TestHelper
     {
         get
         {
-                if (_moduleInfoCaller is null)
-                {
-                    _moduleInfoCaller = new ModuleInfoExtendedWithMetadata(new ModuleInfoExtended(), false, "");
-                    AccessTools2.Property("Bannerlord.ModuleManager.ModuleInfoExtended:Id")?.SetValue(_moduleInfoCaller, nameof(TestSubModuleCaller));
-                    AccessTools2.Property("Bannerlord.ModuleManager.ModuleInfoExtended:Name")?.SetValue(_moduleInfoCaller, nameof(TestSubModuleCaller));
-                }
-
-                return _moduleInfoCaller;
+            if (_moduleInfoCaller is null)
+            {
+                _moduleInfoCaller = new ModuleInfoExtendedWithMetadata(new ModuleInfoExtended(), false, "");
+                AccessTools2.Property("Bannerlord.ModuleManager.ModuleInfoExtended:Id")?.SetValue(_moduleInfoCaller, nameof(TestSubModuleCaller));
+                AccessTools2.Property("Bannerlord.ModuleManager.ModuleInfoExtended:Name")?.SetValue(_moduleInfoCaller, nameof(TestSubModuleCaller));
             }
+
+            return _moduleInfoCaller;
+        }
     }
 
     private static ModuleInfoExtendedWithMetadata? _moduleInfoTarget;
@@ -32,14 +32,14 @@ internal static class TestHelper
     {
         get
         {
-                if (_moduleInfoTarget is null)
-                {
-                    _moduleInfoTarget = new ModuleInfoExtendedWithMetadata(new ModuleInfoExtended(), false, "");
-                    AccessTools2.Property("Bannerlord.ModuleManager.ModuleInfoExtended:Id")?.SetValue(_moduleInfoTarget, nameof(TestSubModuleTarget));
-                    AccessTools2.Property("Bannerlord.ModuleManager.ModuleInfoExtended:Name")?.SetValue(_moduleInfoTarget, nameof(TestSubModuleTarget));
-                }
-
-                return _moduleInfoTarget;
+            if (_moduleInfoTarget is null)
+            {
+                _moduleInfoTarget = new ModuleInfoExtendedWithMetadata(new ModuleInfoExtended(), false, "");
+                AccessTools2.Property("Bannerlord.ModuleManager.ModuleInfoExtended:Id")?.SetValue(_moduleInfoTarget, nameof(TestSubModuleTarget));
+                AccessTools2.Property("Bannerlord.ModuleManager.ModuleInfoExtended:Name")?.SetValue(_moduleInfoTarget, nameof(TestSubModuleTarget));
             }
+
+            return _moduleInfoTarget;
+        }
     }
 }

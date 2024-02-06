@@ -17,120 +17,120 @@ public class MBSubModuleBaseListWrapper : MBSubModuleBase
 
     public new virtual void OnSubModuleLoad()
     {
-            foreach (var subModule in SubModules)
-                subModule.OnSubModuleLoad();
-        }
+        foreach (var subModule in SubModules)
+            subModule.OnSubModuleLoad();
+    }
     public new virtual void OnSubModuleUnloaded()
     {
-            foreach (var subModule in SubModules)
-                subModule.OnSubModuleUnloaded();
-        }
+        foreach (var subModule in SubModules)
+            subModule.OnSubModuleUnloaded();
+    }
     public new virtual void OnApplicationTick(float dt)
     {
-            foreach (var subModule in SubModules)
-                subModule.OnApplicationTick(dt);
-        }
+        foreach (var subModule in SubModules)
+            subModule.OnApplicationTick(dt);
+    }
     public new virtual void OnBeforeInitialModuleScreenSetAsRoot()
     {
-            foreach (var subModule in SubModules)
-                subModule.OnBeforeInitialModuleScreenSetAsRoot();
-        }
+        foreach (var subModule in SubModules)
+            subModule.OnBeforeInitialModuleScreenSetAsRoot();
+    }
     public new virtual void OnGameStart(Game game, IGameStarter gameStarterObject)
     {
-            foreach (var subModule in SubModules)
-                subModule.OnGameStart(game, gameStarterObject);
-        }
+        foreach (var subModule in SubModules)
+            subModule.OnGameStart(game, gameStarterObject);
+    }
     public new virtual void InitializeGameStarter(Game game, IGameStarter starterObject)
     {
-            foreach (var subModule in SubModules)
-                subModule.InitializeGameStarter(game, starterObject);
-        }
+        foreach (var subModule in SubModules)
+            subModule.InitializeGameStarter(game, starterObject);
+    }
 
     public virtual void OnServiceRegistration()
     {
-            foreach (var subModule in SubModules)
-                subModule.OnServiceRegistration();
-        }
+        foreach (var subModule in SubModules)
+            subModule.OnServiceRegistration();
+    }
 
     public new virtual bool DoLoading(Game game)
     {
-            return SubModules.All(subModule => subModule.DoLoading(game));
-        }
+        return SubModules.All(subModule => subModule.DoLoading(game));
+    }
     public new virtual void OnGameLoaded(Game game, object initializerObject)
     {
-            foreach (var subModule in SubModules)
-                subModule.OnGameLoaded(game, initializerObject);
-        }
+        foreach (var subModule in SubModules)
+            subModule.OnGameLoaded(game, initializerObject);
+    }
     public new virtual void OnCampaignStart(Game game, object starterObject)
     {
-            foreach (var subModule in SubModules)
-                subModule.OnCampaignStart(game, starterObject);
-        }
+        foreach (var subModule in SubModules)
+            subModule.OnCampaignStart(game, starterObject);
+    }
     public new virtual void BeginGameStart(Game game)
     {
-            foreach (var subModule in SubModules)
-                subModule.BeginGameStart(game);
-        }
+        foreach (var subModule in SubModules)
+            subModule.BeginGameStart(game);
+    }
     public new virtual void OnGameEnd(Game game)
     {
-            foreach (var subModule in SubModules)
-                subModule.OnGameEnd(game);
-        }
+        foreach (var subModule in SubModules)
+            subModule.OnGameEnd(game);
+    }
     public new virtual void OnGameInitializationFinished(Game game)
     {
-            foreach (var subModule in SubModules)
-                subModule.OnGameInitializationFinished(game);
-        }
+        foreach (var subModule in SubModules)
+            subModule.OnGameInitializationFinished(game);
+    }
     public new virtual void OnBeforeMissionBehaviorInitialize(Mission mission)
     {
-            foreach (var subModule in SubModules)
-                subModule.OnBeforeMissionBehaviorInitialize(mission);
-        }
+        foreach (var subModule in SubModules)
+            subModule.OnBeforeMissionBehaviorInitialize(mission);
+    }
     public new virtual void OnMissionBehaviorInitialize(Mission mission)
     {
-            foreach (var subModule in SubModules)
-                subModule.OnMissionBehaviorInitialize(mission);
-        }
+        foreach (var subModule in SubModules)
+            subModule.OnMissionBehaviorInitialize(mission);
+    }
     public new virtual void OnMultiplayerGameStart(Game game, object starterObject)
     {
-            foreach (var subModule in SubModules)
-                subModule.OnMultiplayerGameStart(game, starterObject);
-        }
+        foreach (var subModule in SubModules)
+            subModule.OnMultiplayerGameStart(game, starterObject);
+    }
     public new virtual void OnNewGameCreated(Game game, object initializerObject)
     {
-            foreach (var subModule in SubModules)
-                subModule.OnNewGameCreated(game, initializerObject);
-        }
+        foreach (var subModule in SubModules)
+            subModule.OnNewGameCreated(game, initializerObject);
+    }
     public new virtual void RegisterSubModuleObjects(bool isSavedCampaign)
     {
-            foreach (var subModule in SubModules)
-                subModule.RegisterSubModuleObjects(isSavedCampaign);
-        }
+        foreach (var subModule in SubModules)
+            subModule.RegisterSubModuleObjects(isSavedCampaign);
+    }
     public new virtual void AfterRegisterSubModuleObjects(bool isSavedCampaign)
     {
-            foreach (var subModule in SubModules)
-                subModule.AfterRegisterSubModuleObjects(isSavedCampaign);
-        }
+        foreach (var subModule in SubModules)
+            subModule.AfterRegisterSubModuleObjects(isSavedCampaign);
+    }
     public new virtual void OnAfterGameInitializationFinished(Game game, object starterObject)
     {
-            foreach (var subModule in SubModules)
-                subModule.OnAfterGameInitializationFinished(game, starterObject);
-        }
+        foreach (var subModule in SubModules)
+            subModule.OnAfterGameInitializationFinished(game, starterObject);
+    }
     public new virtual void OnConfigChanged()
     {
-            foreach (var subModule in SubModules)
-                subModule.OnConfigChanged();
-        }
+        foreach (var subModule in SubModules)
+            subModule.OnConfigChanged();
+    }
     public new virtual void OnInitialState()
     {
-            foreach (var subModule in SubModules)
-                subModule.OnInitialState();
-        }
+        foreach (var subModule in SubModules)
+            subModule.OnInitialState();
+    }
 
     public new virtual void AfterAsyncTickTick(float dt)
     {
-            foreach (var subModule in SubModules)
-                subModule.AfterAsyncTickTick(dt);
-        }
+        foreach (var subModule in SubModules)
+            subModule.AfterAsyncTickTick(dt);
+    }
 }
 #pragma warning restore CS0109 // ReSharper restore VirtualMemberNeverOverridden.Global

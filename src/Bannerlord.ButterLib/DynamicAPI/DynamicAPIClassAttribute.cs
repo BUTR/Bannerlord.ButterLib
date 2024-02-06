@@ -12,6 +12,6 @@ public sealed class DynamicAPIClassAttribute : Attribute
 
     public DynamicAPIClassAttribute(string @class)
     {
-            Class = @class;
-        }
+        Class = @class;
+    }
 }

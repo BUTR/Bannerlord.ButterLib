@@ -19,8 +19,8 @@ public static class MbEventExtensions
 
         public static void Invoke(MbEvent<T1> instance, T1 t1)
         {
-                Delegate?.Invoke(instance, t1);
-            }
+            Delegate?.Invoke(instance, t1);
+        }
     }
     internal static class MbEvent2InvokeHandler<T1, T2>
     {
@@ -29,8 +29,8 @@ public static class MbEventExtensions
 
         public static void Invoke(MbEvent<T1, T2> instance, T1 t1, T2 t2)
         {
-                Delegate?.Invoke(instance, t1, t2);
-            }
+            Delegate?.Invoke(instance, t1, t2);
+        }
     }
     internal static class MbEvent3InvokeHandler<T1, T2, T3>
     {
@@ -39,8 +39,8 @@ public static class MbEventExtensions
 
         public static void Invoke(MbEvent<T1, T2, T3> instance, T1 t1, T2 t2, T3 t3)
         {
-                Delegate?.Invoke(instance, t1, t2, t3);
-            }
+            Delegate?.Invoke(instance, t1, t2, t3);
+        }
     }
     internal static class MbEvent4InvokeHandler<T1, T2, T3, T4>
     {
@@ -49,8 +49,8 @@ public static class MbEventExtensions
 
         public static void Invoke(MbEvent<T1, T2, T3, T4> instance, T1 t1, T2 t2, T3 t3, T4 t4)
         {
-                Delegate?.Invoke(instance, t1, t2, t3, t4);
-            }
+            Delegate?.Invoke(instance, t1, t2, t3, t4);
+        }
     }
     internal static class MbEvent5InvokeHandler<T1, T2, T3, T4, T5>
     {
@@ -59,8 +59,8 @@ public static class MbEventExtensions
 
         public static void Invoke(MbEvent<T1, T2, T3, T4, T5> instance, T1 t1, T2 t2, T3 t3, T4 t4, T5 t5)
         {
-                Delegate?.Invoke(instance, t1, t2, t3, t4, t5);
-            }
+            Delegate?.Invoke(instance, t1, t2, t3, t4, t5);
+        }
     }
     internal static class MbEvent6InvokeHandler<T1, T2, T3, T4, T5, T6>
     {
@@ -69,8 +69,8 @@ public static class MbEventExtensions
 
         public static void Invoke(MbEvent<T1, T2, T3, T4, T5, T6> instance, T1 t1, T2 t2, T3 t3, T4 t4, T5 t5, T6 t6)
         {
-                Delegate?.Invoke(instance, t1, t2, t3, t4, t5, t6);
-            }
+            Delegate?.Invoke(instance, t1, t2, t3, t4, t5, t6);
+        }
     }
 
     /// <summary>Invokes all the listeners to the specified <see cref="T:TaleWorlds.CampaignSystem.MbEvent`1}" />.</summary>
@@ -83,8 +83,8 @@ public static class MbEventExtensions
     /// </remarks>
     private static void Invoke<T1>(this MbEvent<T1> instance, T1 arg1) // In case the Invoke will be private again
     {
-            MbEvent1InvokeHandler<T1>.Invoke(instance, arg1);
-        }
+        MbEvent1InvokeHandler<T1>.Invoke(instance, arg1);
+    }
 
     /// <summary>Invokes all the listeners to the specified <see cref="T:TaleWorlds.CampaignSystem.MbEvent`2}" />.</summary>
     /// <typeparam name="T1">The type of the first event argument.</typeparam>
@@ -98,8 +98,8 @@ public static class MbEventExtensions
     /// </remarks>
     public static void Invoke<T1, T2>(this MbEvent<T1, T2> instance, T1 arg1, T2 arg2)
     {
-            MbEvent2InvokeHandler<T1, T2>.Invoke(instance, arg1, arg2);
-        }
+        MbEvent2InvokeHandler<T1, T2>.Invoke(instance, arg1, arg2);
+    }
 
     /// <summary>Invokes all the listeners to the specified <see cref="T:TaleWorlds.CampaignSystem.MbEvent`3}" />.</summary>
     /// <typeparam name="T1">The type of the first event argument.</typeparam>
@@ -115,8 +115,8 @@ public static class MbEventExtensions
     /// </remarks>
     public static void Invoke<T1, T2, T3>(this MbEvent<T1, T2, T3> instance, T1 arg1, T2 arg2, T3 arg3)
     {
-            MbEvent3InvokeHandler<T1, T2, T3>.Invoke(instance, arg1, arg2, arg3);
-        }
+        MbEvent3InvokeHandler<T1, T2, T3>.Invoke(instance, arg1, arg2, arg3);
+    }
 
     /// <summary>Invokes all the listeners to the specified <see cref="T:TaleWorlds.CampaignSystem.MbEvent`4}" />.</summary>
     /// <typeparam name="T1">The type of the first event argument.</typeparam>
@@ -134,8 +134,8 @@ public static class MbEventExtensions
     /// </remarks>
     public static void Invoke<T1, T2, T3, T4>(this MbEvent<T1, T2, T3, T4> instance, T1 arg1, T2 arg2, T3 arg3, T4 arg4)
     {
-            MbEvent4InvokeHandler<T1, T2, T3, T4>.Invoke(instance, arg1, arg2, arg3, arg4);
-        }
+        MbEvent4InvokeHandler<T1, T2, T3, T4>.Invoke(instance, arg1, arg2, arg3, arg4);
+    }
 
     /// <summary>Invokes all the listeners to the specified <see cref="T:TaleWorlds.CampaignSystem.MbEvent`5}" />.</summary>
     /// <typeparam name="T1">The type of the first event argument.</typeparam>
@@ -155,8 +155,8 @@ public static class MbEventExtensions
     /// </remarks>
     public static void Invoke<T1, T2, T3, T4, T5>(this MbEvent<T1, T2, T3, T4, T5> instance, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5)
     {
-            MbEvent5InvokeHandler<T1, T2, T3, T4, T5>.Invoke(instance, arg1, arg2, arg3, arg4, arg5);
-        }
+        MbEvent5InvokeHandler<T1, T2, T3, T4, T5>.Invoke(instance, arg1, arg2, arg3, arg4, arg5);
+    }
 
     /// <summary>Invokes all the listeners to the specified <see cref="T:TaleWorlds.CampaignSystem.MbEvent`6}" />.</summary>
     /// <typeparam name="T1">The type of the first event argument.</typeparam>
@@ -178,6 +178,6 @@ public static class MbEventExtensions
     /// </remarks>
     public static void Invoke<T1, T2, T3, T4, T5, T6>(this MbEvent<T1, T2, T3, T4, T5, T6> instance, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6)
     {
-            MbEvent6InvokeHandler<T1, T2, T3, T4, T5, T6>.Invoke(instance, arg1, arg2, arg3, arg4, arg5, arg6);
-        }
+        MbEvent6InvokeHandler<T1, T2, T3, T4, T5, T6>.Invoke(instance, arg1, arg2, arg3, arg4, arg5, arg6);
+    }
 }

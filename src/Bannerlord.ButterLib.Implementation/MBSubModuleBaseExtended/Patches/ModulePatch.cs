@@ -36,64 +36,64 @@ internal sealed class ModulePatch
 
     internal static bool Enable(Harmony harmony)
     {
-            var provider = ButterLibSubModule.Instance?.GetServiceProvider() ?? ButterLibSubModule.Instance?.GetTempServiceProvider();
-            _log = provider?.GetService<ILogger<ModulePatch>>() ?? NullLogger<ModulePatch>.Instance;
+        var provider = ButterLibSubModule.Instance?.GetServiceProvider() ?? ButterLibSubModule.Instance?.GetTempServiceProvider();
+        _log = provider?.GetService<ILogger<ModulePatch>>() ?? NullLogger<ModulePatch>.Instance;
 
-            return CheckRequiredMethodInfos()
-                   && harmony.Patch(miTargetMethodUnLoad, postfix: new HarmonyMethod(miPatchMethodUnLoad)) is not null
-                   && harmony.Patch(miTargetMethodScreenAsRoot, transpiler: new HarmonyMethod(miPatchMethodScreenAsRoot)) is not null;
-        }
+        return CheckRequiredMethodInfos()
+               && harmony.Patch(miTargetMethodUnLoad, postfix: new HarmonyMethod(miPatchMethodUnLoad)) is not null
+               && harmony.Patch(miTargetMethodScreenAsRoot, transpiler: new HarmonyMethod(miPatchMethodScreenAsRoot)) is not null;
+    }
 
     internal static bool Disable(Harmony harmony)
     {
-            if (CheckRequiredMethodInfos())
-            {
-                harmony.Unpatch(miTargetMethodUnLoad, miPatchMethodUnLoad);
-                harmony.Unpatch(miTargetMethodScreenAsRoot, miPatchMethodScreenAsRoot);
-            }
-
-            return true;
+        if (CheckRequiredMethodInfos())
+        {
+            harmony.Unpatch(miTargetMethodUnLoad, miPatchMethodUnLoad);
+            harmony.Unpatch(miTargetMethodScreenAsRoot, miPatchMethodScreenAsRoot);
         }
+
+        return true;
+    }
 
     public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
     {
-            try
+        try
+        {
+            int screenAsRootEventIndex = -1, finallyIndex = -1;
+            var codes = new List<CodeInstruction>(instructions);
+            for (var i = 0; i < codes.Count; ++i)
             {
-                int screenAsRootEventIndex = -1, finallyIndex = -1;
-                var codes = new List<CodeInstruction>(instructions);
-                for (var i = 0; i < codes.Count; ++i)
+                if (screenAsRootEventIndex < 0 && codes[i].Calls(miMBSubModuleBaseScreenAsRootEvent))
                 {
-                    if (screenAsRootEventIndex < 0 && codes[i].Calls(miMBSubModuleBaseScreenAsRootEvent))
-                    {
-                        screenAsRootEventIndex = i;
-                        continue;
-                    }
-                    if (finallyIndex < 0 && codes[i].opcode == OpCodes.Endfinally)
-                    {
-                        finallyIndex = i;
-                        break;
-                    }
+                    screenAsRootEventIndex = i;
+                    continue;
                 }
-                if (screenAsRootEventIndex < 0 || finallyIndex < 0)
+                if (finallyIndex < 0 && codes[i].opcode == OpCodes.Endfinally)
                 {
-                    _log.LogDebug("Transpiler for TaleWorlds.MountAndBlade.Module.SetInitialModuleScreenAsRootScreen could not find code hooks!");
-                    MBSubModuleBaseExSubSystem.LogNoHooksIssue(_log, screenAsRootEventIndex, finallyIndex, codes, MethodBase.GetCurrentMethod());
+                    finallyIndex = i;
+                    break;
                 }
-                else
-                {
-                    codes.InsertRange(finallyIndex + 1, new CodeInstruction[] { new CodeInstruction(opcode: OpCodes.Ldarg_0),
+            }
+            if (screenAsRootEventIndex < 0 || finallyIndex < 0)
+            {
+                _log.LogDebug("Transpiler for TaleWorlds.MountAndBlade.Module.SetInitialModuleScreenAsRootScreen could not find code hooks!");
+                MBSubModuleBaseExSubSystem.LogNoHooksIssue(_log, screenAsRootEventIndex, finallyIndex, codes, MethodBase.GetCurrentMethod());
+            }
+            else
+            {
+                codes.InsertRange(finallyIndex + 1, new CodeInstruction[] { new CodeInstruction(opcode: OpCodes.Ldarg_0),
                                                                                 new CodeInstruction(opcode: OpCodes.Call, operand: miDelayedScreenAsRootEventCaller) });
-                    codes[finallyIndex + 1].MoveLabelsFrom(codes[finallyIndex + 3]);
-                }
+                codes[finallyIndex + 1].MoveLabelsFrom(codes[finallyIndex + 3]);
+            }
 
-                return codes.AsEnumerable();
-            }
-            catch (Exception ex)
-            {
-                _log.LogError(ex, "Error while applying Harmony transpiler for TaleWorlds.MountAndBlade.Module.SetInitialModuleScreenAsRootScreen");
-                return instructions;
-            }
+            return codes.AsEnumerable();
         }
+        catch (Exception ex)
+        {
+            _log.LogError(ex, "Error while applying Harmony transpiler for TaleWorlds.MountAndBlade.Module.SetInitialModuleScreenAsRootScreen");
+            return instructions;
+        }
+    }
 
     private static bool CheckRequiredMethodInfos() =>
         MBSubModuleBaseExSubSystem.NotNull(_log, TargetType, nameof(TargetType))
@@ -107,18 +107,18 @@ internal sealed class ModulePatch
     [MethodImpl(MethodImplOptions.NoInlining)]
     private static void FinalizeSubModulesPostfix(TWModule __instance)
     {
-            foreach (var submodule in __instance.SubModules.OfType<IMBSubModuleBaseEx>())
-            {
-                submodule.OnAllSubModulesUnLoaded();
-            }
+        foreach (var submodule in __instance.SubModules.OfType<IMBSubModuleBaseEx>())
+        {
+            submodule.OnAllSubModulesUnLoaded();
         }
+    }
 
     [MethodImpl(MethodImplOptions.NoInlining)]
     private static void DelayedScreenAsRootEvent(TWModule instance)
     {
-            foreach (var submodule in instance.SubModules.OfType<IMBSubModuleBaseEx>())
-            {
-                submodule.OnBeforeInitialModuleScreenSetAsRootDelayed();
-            }
+        foreach (var submodule in instance.SubModules.OfType<IMBSubModuleBaseEx>())
+        {
+            submodule.OnBeforeInitialModuleScreenSetAsRootDelayed();
         }
+    }
 }

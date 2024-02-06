@@ -9,6 +9,6 @@ public sealed class DynamicAPIMethodAttribute : Attribute
 
     public DynamicAPIMethodAttribute(string method)
     {
-            Method = method;
-        }
+        Method = method;
+    }
 }

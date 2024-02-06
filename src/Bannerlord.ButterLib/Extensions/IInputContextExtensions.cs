@@ -128,68 +128,68 @@ public static class IInputContextExtensions
 
     public static IDisposable? SubscribeToIsDownEvent<THotKeyBase>(this IInputContext inputContext, Action action) where THotKeyBase : HotKeyBase
     {
-            var hotKey = HotKeyManager.StaticInstance?.HotKeys.FirstOrDefault(x => x.GetType() == typeof(THotKeyBase));
+        var hotKey = HotKeyManager.StaticInstance?.HotKeys.FirstOrDefault(x => x.GetType() == typeof(THotKeyBase));
 
-            if (hotKey is null || !hotKey.ShouldExecute()) return null;
-            hotKey.IsDownEvent += action;
-            return new ActionOnDispose(() => hotKey.IsDownEvent -= action);
-        }
+        if (hotKey is null || !hotKey.ShouldExecute()) return null;
+        hotKey.IsDownEvent += action;
+        return new ActionOnDispose(() => hotKey.IsDownEvent -= action);
+    }
 
     public static IDisposable? SubscribeToOnPressedEvent<THotKeyBase>(this IInputContext inputContext, Action action) where THotKeyBase : HotKeyBase
     {
-            var hotKey = HotKeyManager.StaticInstance?.HotKeys.FirstOrDefault(x => x.GetType() == typeof(THotKeyBase));
+        var hotKey = HotKeyManager.StaticInstance?.HotKeys.FirstOrDefault(x => x.GetType() == typeof(THotKeyBase));
 
-            if (hotKey is null || !hotKey.ShouldExecute()) return null;
-            hotKey.OnPressedEvent += action;
-            return new ActionOnDispose(() => hotKey.OnPressedEvent -= action);
-        }
+        if (hotKey is null || !hotKey.ShouldExecute()) return null;
+        hotKey.OnPressedEvent += action;
+        return new ActionOnDispose(() => hotKey.OnPressedEvent -= action);
+    }
 
     public static IDisposable? SubscribeToOnReleasedEvent<THotKeyBase>(this IInputContext inputContext, Action action) where THotKeyBase : HotKeyBase
     {
-            var hotKey = HotKeyManager.StaticInstance?.HotKeys.FirstOrDefault(x => x.GetType() == typeof(THotKeyBase));
+        var hotKey = HotKeyManager.StaticInstance?.HotKeys.FirstOrDefault(x => x.GetType() == typeof(THotKeyBase));
 
-            if (hotKey is null || !hotKey.ShouldExecute()) return null;
-            hotKey.OnReleasedEvent += action;
-            return new ActionOnDispose(() => hotKey.OnReleasedEvent -= action);
-        }
+        if (hotKey is null || !hotKey.ShouldExecute()) return null;
+        hotKey.OnReleasedEvent += action;
+        return new ActionOnDispose(() => hotKey.OnReleasedEvent -= action);
+    }
 
     public static IDisposable? SubscribeToIsDownAndReleasedEvent<THotKeyBase>(this IInputContext inputContext, Action action) where THotKeyBase : HotKeyBase
     {
-            var hotKey = HotKeyManager.StaticInstance?.HotKeys.FirstOrDefault(x => x.GetType() == typeof(THotKeyBase));
+        var hotKey = HotKeyManager.StaticInstance?.HotKeys.FirstOrDefault(x => x.GetType() == typeof(THotKeyBase));
 
-            if (hotKey is null || !hotKey.ShouldExecute()) return null;
-            hotKey.IsDownAndReleasedEvent += action;
-            return new ActionOnDispose(() => hotKey.IsDownAndReleasedEvent -= action);
-        }
+        if (hotKey is null || !hotKey.ShouldExecute()) return null;
+        hotKey.IsDownAndReleasedEvent += action;
+        return new ActionOnDispose(() => hotKey.IsDownAndReleasedEvent -= action);
+    }
 
 
     public static bool IsHotKeyDown<THotKeyBase>(this IInputContext inputContext) where THotKeyBase : HotKeyBase
     {
-            var hotKey = HotKeyManager.StaticInstance?.HotKeys.FirstOrDefault(x => x.GetType() == typeof(THotKeyBase));
+        var hotKey = HotKeyManager.StaticInstance?.HotKeys.FirstOrDefault(x => x.GetType() == typeof(THotKeyBase));
 
-            if (hotKey is null || !hotKey.ShouldExecute() || hotKey.GameKey is null) return false;
+        if (hotKey is null || !hotKey.ShouldExecute() || hotKey.GameKey is null) return false;
 
-            return (hotKey.GameKey.KeyboardKey?.InputKey is { } keyboardKey && inputContext.IsKeyDown(keyboardKey)) ||
-                   (hotKey.GameKey.ControllerKey?.InputKey is { } controllerKey && inputContext.IsKeyDown(controllerKey));
-        }
+        return (hotKey.GameKey.KeyboardKey?.InputKey is { } keyboardKey && inputContext.IsKeyDown(keyboardKey)) ||
+               (hotKey.GameKey.ControllerKey?.InputKey is { } controllerKey && inputContext.IsKeyDown(controllerKey));
+    }
 
     public static bool IsHotKeyPressed<THotKeyBase>(this IInputContext inputContext) where THotKeyBase : HotKeyBase
     {
-            var hotKey = HotKeyManager.StaticInstance?.HotKeys.FirstOrDefault(x => x.GetType() == typeof(THotKeyBase));
+        var hotKey = HotKeyManager.StaticInstance?.HotKeys.FirstOrDefault(x => x.GetType() == typeof(THotKeyBase));
 
-            if (hotKey is null || !hotKey.ShouldExecute() || hotKey.GameKey is null) return false;
+        if (hotKey is null || !hotKey.ShouldExecute() || hotKey.GameKey is null) return false;
 
-            return (hotKey.GameKey.KeyboardKey?.InputKey is { } keyboardKey && inputContext.IsKeyPressed(keyboardKey)) ||
-                   (hotKey.GameKey.ControllerKey?.InputKey is { } controllerKey && inputContext.IsKeyPressed(controllerKey));
-        }
+        return (hotKey.GameKey.KeyboardKey?.InputKey is { } keyboardKey && inputContext.IsKeyPressed(keyboardKey)) ||
+               (hotKey.GameKey.ControllerKey?.InputKey is { } controllerKey && inputContext.IsKeyPressed(controllerKey));
+    }
 
     public static bool IsHotKeyReleased<THotKeyBase>(this IInputContext inputContext) where THotKeyBase : HotKeyBase
     {
-            var hotKey = HotKeyManager.StaticInstance?.HotKeys.FirstOrDefault(x => x.GetType() == typeof(THotKeyBase));
+        var hotKey = HotKeyManager.StaticInstance?.HotKeys.FirstOrDefault(x => x.GetType() == typeof(THotKeyBase));
 
-            if (hotKey is null || !hotKey.ShouldExecute() || hotKey.GameKey is null) return false;
+        if (hotKey is null || !hotKey.ShouldExecute() || hotKey.GameKey is null) return false;
 
-            return (hotKey.GameKey.KeyboardKey?.InputKey is { } keyboardKey && inputContext.IsKeyReleased(keyboardKey)) ||
-                   (hotKey.GameKey.ControllerKey?.InputKey is { } controllerKey && inputContext.IsKeyReleased(controllerKey));
-        }
+        return (hotKey.GameKey.KeyboardKey?.InputKey is { } keyboardKey && inputContext.IsKeyReleased(keyboardKey)) ||
+               (hotKey.GameKey.ControllerKey?.InputKey is { } controllerKey && inputContext.IsKeyReleased(controllerKey));
+    }
 }

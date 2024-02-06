@@ -18,9 +18,9 @@ public sealed partial class ButterLibSubModule
     /// </summary>
     public static void ConfigureBeforeInitialization(Action<IServiceCollection> action)
     {
-            if (CanBeConfigured)
-                BeforeInitialization.Add(action);
-        }
+        if (CanBeConfigured)
+            BeforeInitialization.Add(action);
+    }
 
 
     public static ButterLibSubModule? Instance { get; set; }

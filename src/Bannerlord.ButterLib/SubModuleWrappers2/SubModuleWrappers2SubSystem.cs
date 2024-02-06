@@ -20,9 +20,9 @@ internal sealed class SubModuleWrappers2SubSystem : ISubSystem
 
     public SubModuleWrappers2SubSystem()
     {
-            Instance = this;
-            MBSubModuleBasePatch.Enable(Harmony);
-        }
+        Instance = this;
+        MBSubModuleBasePatch.Enable(Harmony);
+    }
 
     public void Enable() { }
     public void Disable() { }

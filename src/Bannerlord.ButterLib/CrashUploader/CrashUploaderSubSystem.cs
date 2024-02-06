@@ -16,16 +16,16 @@ internal sealed class CrashUploaderSubSystem : ISubSystem
 
     public CrashUploaderSubSystem()
     {
-            Instance = this;
-        }
+        Instance = this;
+    }
 
     public void Enable()
     {
-            IsEnabled = true;
-        }
+        IsEnabled = true;
+    }
 
     public void Disable()
     {
-            IsEnabled = false;
-        }
+        IsEnabled = false;
+    }
 }

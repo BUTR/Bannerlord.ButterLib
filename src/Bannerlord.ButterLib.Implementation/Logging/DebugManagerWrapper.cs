@@ -19,44 +19,44 @@ internal sealed class DebugManagerWrapper : IDebugManager
 
     public DebugManagerWrapper(IDebugManager debugManager, ILoggerFactory loggerFactory)
     {
-            _logger = loggerFactory.CreateLogger(typeof(DebugManagerWrapper));
-            OriginalDebugManager = debugManager;
-            _debugManagerLogger = loggerFactory.CreateLogger(debugManager.GetType());
-        }
+        _logger = loggerFactory.CreateLogger(typeof(DebugManagerWrapper));
+        OriginalDebugManager = debugManager;
+        _debugManagerLogger = loggerFactory.CreateLogger(debugManager.GetType());
+    }
 
     public void DisplayDebugMessage(string message)
     {
-            _debugManagerLogger.LogDebug("{Message}", message);
-            OriginalDebugManager.DisplayDebugMessage(message);
-        }
+        _debugManagerLogger.LogDebug("{Message}", message);
+        OriginalDebugManager.DisplayDebugMessage(message);
+    }
 
     public void Print(string message, int logLevel, Debug.DebugColor color, ulong debugFilter)
     {
-            // logLevel is not used by the game right now.
-            _debugManagerLogger.LogDebug("{Message}", message);
-            OriginalDebugManager.Print(message, logLevel, color, debugFilter);
-        }
+        // logLevel is not used by the game right now.
+        _debugManagerLogger.LogDebug("{Message}", message);
+        OriginalDebugManager.Print(message, logLevel, color, debugFilter);
+    }
     public void PrintError(string error, string stackTrace, ulong debugFilter)
     {
-            _debugManagerLogger.LogError("{Error}{NL}{StackTrace}", error, Environment.NewLine, stackTrace);
-            OriginalDebugManager.PrintError(error, stackTrace, debugFilter);
-        }
+        _debugManagerLogger.LogError("{Error}{NL}{StackTrace}", error, Environment.NewLine, stackTrace);
+        OriginalDebugManager.PrintError(error, stackTrace, debugFilter);
+    }
     public void PrintWarning(string warning, ulong debugFilter)
     {
-            _debugManagerLogger.LogWarning("{Warning}", warning);
-            OriginalDebugManager.PrintWarning(warning, debugFilter);
-        }
+        _debugManagerLogger.LogWarning("{Warning}", warning);
+        OriginalDebugManager.PrintWarning(warning, debugFilter);
+    }
 
     public void SetCrashReportCustomString(string customString)
     {
-            _debugManagerLogger.LogCritical("Crash Report: {CustomString}", customString);
-            OriginalDebugManager.SetCrashReportCustomString(customString);
-        }
+        _debugManagerLogger.LogCritical("Crash Report: {CustomString}", customString);
+        OriginalDebugManager.SetCrashReportCustomString(customString);
+    }
     public void SetCrashReportCustomStack(string customStack)
     {
-            _debugManagerLogger.LogCritical("Crash Report StackTrace: {CustomStack}", customStack);
-            OriginalDebugManager.SetCrashReportCustomStack(customStack);
-        }
+        _debugManagerLogger.LogCritical("Crash Report StackTrace: {CustomStack}", customStack);
+        OriginalDebugManager.SetCrashReportCustomStack(customStack);
+    }
 
     public void SetTestModeEnabled(bool testModeEnabled) => OriginalDebugManager.SetTestModeEnabled(testModeEnabled);
 
@@ -66,27 +66,27 @@ internal sealed class DebugManagerWrapper : IDebugManager
 
     public void WriteDebugLineOnScreen(string message)
     {
-            _debugManagerLogger.LogDebug("{Message}", message);
-            OriginalDebugManager.WriteDebugLineOnScreen(message);
-        }
+        _debugManagerLogger.LogDebug("{Message}", message);
+        OriginalDebugManager.WriteDebugLineOnScreen(message);
+    }
 
     public void Assert(bool condition, string message, string callerFile, string callerMethod, int callerLine)
     {
-            if (!condition)
-                _debugManagerLogger.LogDebug("Assert Failed!: {Message}; CallerFilePath: {CallerFile}; CallerMemberName: {CallerMethod}; CallerLineNumber: {CallerLine}", message, callerFile, callerMethod, callerLine);
-            // ReSharper disable ExplicitCallerInfoArgument
-            OriginalDebugManager.Assert(condition, message, callerFile, callerMethod, callerLine);
-            // ReSharper restore ExplicitCallerInfoArgument
-        }
+        if (!condition)
+            _debugManagerLogger.LogDebug("Assert Failed!: {Message}; CallerFilePath: {CallerFile}; CallerMemberName: {CallerMethod}; CallerLineNumber: {CallerLine}", message, callerFile, callerMethod, callerLine);
+        // ReSharper disable ExplicitCallerInfoArgument
+        OriginalDebugManager.Assert(condition, message, callerFile, callerMethod, callerLine);
+        // ReSharper restore ExplicitCallerInfoArgument
+    }
 
     public void SilentAssert(bool condition, string message, bool getDump, string callerFile, string callerMethod, int callerLine)
     {
-            if (!condition)
-                _debugManagerLogger.LogDebug("Silent Assert Failed!: {Message}; CallerFilePath: {CallerFile}; CallerMemberName: {CallerMethod}; CallerLineNumber: {CallerLine}", message, callerFile, callerMethod, callerLine);
-            // ReSharper disable ExplicitCallerInfoArgument
-            OriginalDebugManager.SilentAssert(condition, message, getDump, callerFile, callerMethod, callerLine);
-            // ReSharper restore ExplicitCallerInfoArgument
-        }
+        if (!condition)
+            _debugManagerLogger.LogDebug("Silent Assert Failed!: {Message}; CallerFilePath: {CallerFile}; CallerMemberName: {CallerMethod}; CallerLineNumber: {CallerLine}", message, callerFile, callerMethod, callerLine);
+        // ReSharper disable ExplicitCallerInfoArgument
+        OriginalDebugManager.SilentAssert(condition, message, getDump, callerFile, callerMethod, callerLine);
+        // ReSharper restore ExplicitCallerInfoArgument
+    }
 
     public void RenderDebugLine(Vec3 position, Vec3 direction, uint color, bool depthCheck, float time) =>
         OriginalDebugManager.RenderDebugLine(position, direction, color, depthCheck, time);
@@ -119,13 +119,13 @@ internal sealed class DebugManagerWrapper : IDebugManager
 
     public void ShowWarning(string message)
     {
-            _debugManagerLogger.LogWarning("{Message}", message);
-            OriginalDebugManager.ShowWarning(message);
-        }
+        _debugManagerLogger.LogWarning("{Message}", message);
+        OriginalDebugManager.ShowWarning(message);
+    }
 
     public void ShowError(string message)
     {
-            _debugManagerLogger.LogError("{Message}", message);
-            OriginalDebugManager.ShowError(message);
-        }
+        _debugManagerLogger.LogError("{Message}", message);
+        OriginalDebugManager.ShowError(message);
+    }
 }

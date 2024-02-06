@@ -20,43 +20,43 @@ internal sealed class JsonButterLibOptionsModel
 
     public JsonButterLibOptionsModel()
     {
-            var filePath = new PlatformFilePath(BasePath, "Options.json");
+        var filePath = new PlatformFilePath(BasePath, "Options.json");
 
-            if (FileHelper.FileExists(filePath))
+        if (FileHelper.FileExists(filePath))
+        {
+            try
             {
-                try
-                {
-                    JsonConvert.PopulateObject(FileHelper.GetFileContentString(filePath), this);
-                }
-                catch (Exception e) when (e is JsonSerializationException)
-                {
-                    FileHelper.SaveFileString(filePath, JsonConvert.SerializeObject(this));
-                }
-                catch
-                {
-                    return;
-                }
+                JsonConvert.PopulateObject(FileHelper.GetFileContentString(filePath), this);
             }
-            else
+            catch (Exception e) when (e is JsonSerializationException)
             {
                 FileHelper.SaveFileString(filePath, JsonConvert.SerializeObject(this));
             }
+            catch
+            {
+                return;
+            }
         }
+        else
+        {
+            FileHelper.SaveFileString(filePath, JsonConvert.SerializeObject(this));
+        }
+    }
 
     private static void TryCreate(PlatformFilePath filePath, JsonButterLibOptionsModel model)
     {
-            try
-            {
-            }
-            catch { }
+        try
+        {
         }
+        catch { }
+    }
 
     private static void TryOverwrite(PlatformFilePath filePath, JsonButterLibOptionsModel model)
     {
-            try
-            {
-                FileHelper.SaveFileString(filePath, JsonConvert.SerializeObject(model));
-            }
-            catch { }
+        try
+        {
+            FileHelper.SaveFileString(filePath, JsonConvert.SerializeObject(model));
         }
+        catch { }
+    }
 }

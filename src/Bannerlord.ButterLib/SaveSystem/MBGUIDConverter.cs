@@ -12,21 +12,21 @@ public sealed class MBGUIDConverter : JsonConverter
 
     public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
     {
-            if (value is MBGUID mbguid)
-            {
-                serializer.Serialize(writer, mbguid.InternalValue);
-                return;
-            }
-
-            serializer.Serialize(writer, null);
+        if (value is MBGUID mbguid)
+        {
+            serializer.Serialize(writer, mbguid.InternalValue);
+            return;
         }
+
+        serializer.Serialize(writer, null);
+    }
 
     public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
     {
-            if (serializer.Deserialize<uint?>(reader) is { } id)
-            {
-                return new MBGUID(id);
-            }
-            return null;
+        if (serializer.Deserialize<uint?>(reader) is { } id)
+        {
+            return new MBGUID(id);
         }
+        return null;
+    }
 }
