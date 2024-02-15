@@ -1,0 +1,1263 @@
+{
+  "source_base_path": "/home/runner/work/Bannerlord.ButterLib/Bannerlord.ButterLib/docs",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "Resource",
+      "output": {
+        "resource": {
+          "relative_path": "index.json"
+        }
+      }
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "CNAME",
+      "output": {
+        "resource": {
+          "relative_path": "CNAME"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.BLSE.BLSEExceptionHandlerAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.BLSE.BLSEExceptionHandlerAttribute.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.BLSE.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.BLSE.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.BUTR.Shared.Utils.MBSubModuleBaseSimpleWrapper.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.BUTR.Shared.Utils.MBSubModuleBaseSimpleWrapper.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.BUTR.Shared.Utils.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.BUTR.Shared.Utils.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.ButterLibSaveableTypeDefiner.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.ButterLibSaveableTypeDefiner.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.ButterLibSubModule.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.ButterLibSubModule.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Common.Extensions.ApplicationVersionExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Common.Extensions.ApplicationVersionExtensions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Common.Extensions.CampaignExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Common.Extensions.CampaignExtensions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Common.Extensions.DependencyInjectionExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Common.Extensions.DependencyInjectionExtensions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Common.Extensions.MbEventExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Common.Extensions.MbEventExtensions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Common.Extensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Common.Extensions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Common.Helpers.ApplicationVersionComparer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Common.Helpers.ApplicationVersionComparer.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Common.Helpers.ElegantPairHelper.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Common.Helpers.ElegantPairHelper.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Common.Helpers.LocalizationHelper.PluralForm.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Common.Helpers.LocalizationHelper.PluralForm.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Common.Helpers.LocalizationHelper.RecursiveCaller.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Common.Helpers.LocalizationHelper.RecursiveCaller.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Common.Helpers.LocalizationHelper.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Common.Helpers.LocalizationHelper.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Common.Helpers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Common.Helpers.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.DelayedSubModule.DelayedSubModuleManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.DelayedSubModule.DelayedSubModuleManager.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.DelayedSubModule.SubscriptionEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.DelayedSubModule.SubscriptionEventArgs.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.DelayedSubModule.SubscriptionGlobalEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.DelayedSubModule.SubscriptionGlobalEventArgs.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.DelayedSubModule.SubscriptionType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.DelayedSubModule.SubscriptionType.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.DelayedSubModule.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.DelayedSubModule.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.DistanceMatrix.DistanceMatrixResult.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.DistanceMatrix.DistanceMatrixResult.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.DistanceMatrix.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.DistanceMatrix.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.DynamicAPI.DynamicAPIClassAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.DynamicAPI.DynamicAPIClassAttribute.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.DynamicAPI.DynamicAPIInstance.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.DynamicAPI.DynamicAPIInstance.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.DynamicAPI.DynamicAPIMethodAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.DynamicAPI.DynamicAPIMethodAttribute.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.DynamicAPI.DynamicAPIProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.DynamicAPI.DynamicAPIProvider.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.DynamicAPI.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.DynamicAPI.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.ExceptionHandler.ExceptionReporter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.ExceptionHandler.ExceptionReporter.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.ExceptionHandler.WinForms.HtmlCrashReportForm.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.ExceptionHandler.WinForms.HtmlCrashReportForm.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.ExceptionHandler.WinForms.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.ExceptionHandler.WinForms.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.ExceptionHandler.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.ExceptionHandler.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Extensions.IInputContextExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Extensions.IInputContextExtensions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Extensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Extensions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.HotKeys.HotKeyBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.HotKeys.HotKeyBase.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.HotKeys.HotKeyCategory.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.HotKeys.HotKeyCategory.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.HotKeys.HotKeyManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.HotKeys.HotKeyManager.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.HotKeys.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.HotKeys.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.ImplementationLoaderSubModule.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.ImplementationLoaderSubModule.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Logger.Extensions.LoggerExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Logger.Extensions.LoggerExtensions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Logger.Extensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Logger.Extensions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.MBSubModuleBaseExtended.IMBSubModuleBaseEx.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.MBSubModuleBaseExtended.IMBSubModuleBaseEx.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.MBSubModuleBaseExtended.MBSubModuleBaseEx.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.MBSubModuleBaseExtended.MBSubModuleBaseEx.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.MBSubModuleBaseExtended.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.MBSubModuleBaseExtended.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.ObjectSystem.Extensions.MBObjectBaseExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.ObjectSystem.Extensions.MBObjectBaseExtensions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.ObjectSystem.Extensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.ObjectSystem.Extensions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.ObjectSystem.IMBObjectFinder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.ObjectSystem.IMBObjectFinder.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.ObjectSystem.IMBObjectKeeper.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.ObjectSystem.IMBObjectKeeper.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.ObjectSystem.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.ObjectSystem.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Options.ButterLibOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Options.ButterLibOptions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Options.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Options.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SaveSystem.DictionaryToArrayConverter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SaveSystem.DictionaryToArrayConverter.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SaveSystem.Extensions.IDataStoreExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SaveSystem.Extensions.IDataStoreExtensions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SaveSystem.Extensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SaveSystem.Extensions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SaveSystem.MBGUIDConverter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SaveSystem.MBGUIDConverter.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SaveSystem.MBObjectBaseConverter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SaveSystem.MBObjectBaseConverter.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SaveSystem.TaleWorldsContractResolver.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SaveSystem.TaleWorldsContractResolver.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SaveSystem.TaleWorldsContractResolverBase.IsContainerDelegate.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SaveSystem.TaleWorldsContractResolverBase.IsContainerDelegate.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SaveSystem.TaleWorldsContractResolverBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SaveSystem.TaleWorldsContractResolverBase.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SaveSystem.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SaveSystem.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseWrapper.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseWrapper.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SubModuleWrappers2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SubModuleWrappers2.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SubSystems.ISubSystem.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SubSystems.ISubSystem.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SubSystems.Settings.ISubSystemSettings-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SubSystems.Settings.ISubSystemSettings-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SubSystems.Settings.SubSystemSettingsDeclaration-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SubSystems.Settings.SubSystemSettingsDeclaration-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SubSystems.Settings.SubSystemSettingsProperty-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SubSystems.Settings.SubSystemSettingsProperty-2.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SubSystems.Settings.SubSystemSettingsPropertyBool-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SubSystems.Settings.SubSystemSettingsPropertyBool-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SubSystems.Settings.SubSystemSettingsPropertyDropdown-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SubSystems.Settings.SubSystemSettingsPropertyDropdown-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SubSystems.Settings.SubSystemSettingsPropertyFloat-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SubSystems.Settings.SubSystemSettingsPropertyFloat-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SubSystems.Settings.SubSystemSettingsPropertyInt-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SubSystems.Settings.SubSystemSettingsPropertyInt-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SubSystems.Settings.SubSystemSettingsPropertyText-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SubSystems.Settings.SubSystemSettingsPropertyText-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SubSystems.Settings.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SubSystems.Settings.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SubSystems.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SubSystems.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "api/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/toc.html"
+        },
+        ".json": {
+          "relative_path": "api/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/AssemblyVerifier/Overview.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/AssemblyVerifier/Overview.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "articles/AssemblyVerifier/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "articles/AssemblyVerifier/toc.html"
+        },
+        ".json": {
+          "relative_path": "articles/AssemblyVerifier/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/CampaignIdentifier/Overview.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/CampaignIdentifier/Overview.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "articles/CampaignIdentifier/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "articles/CampaignIdentifier/toc.html"
+        },
+        ".json": {
+          "relative_path": "articles/CampaignIdentifier/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/Common/Extensions/Overview.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/Common/Extensions/Overview.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "articles/Common/Extensions/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "articles/Common/Extensions/toc.html"
+        },
+        ".json": {
+          "relative_path": "articles/Common/Extensions/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/Common/Helpers/Overview.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/Common/Helpers/Overview.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "articles/Common/Helpers/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "articles/Common/Helpers/toc.html"
+        },
+        ".json": {
+          "relative_path": "articles/Common/Helpers/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/Common/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/Common/index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "articles/Common/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "articles/Common/toc.html"
+        },
+        ".json": {
+          "relative_path": "articles/Common/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/DelayedSubModule/Overview.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/DelayedSubModule/Overview.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "articles/DelayedSubModule/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "articles/DelayedSubModule/toc.html"
+        },
+        ".json": {
+          "relative_path": "articles/DelayedSubModule/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/Development/Overview.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/Development/Overview.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "articles/Development/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "articles/Development/toc.html"
+        },
+        ".json": {
+          "relative_path": "articles/Development/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/DistanceMatrix/Overview.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/DistanceMatrix/Overview.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "articles/DistanceMatrix/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "articles/DistanceMatrix/toc.html"
+        },
+        ".json": {
+          "relative_path": "articles/DistanceMatrix/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/HotKeys/Overview.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/HotKeys/Overview.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "articles/HotKeys/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "articles/HotKeys/toc.html"
+        },
+        ".json": {
+          "relative_path": "articles/HotKeys/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/MBSubModuleBaseExtended/Overview.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/MBSubModuleBaseExtended/Overview.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "articles/MBSubModuleBaseExtended/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "articles/MBSubModuleBaseExtended/toc.html"
+        },
+        ".json": {
+          "relative_path": "articles/MBSubModuleBaseExtended/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/Optional/DependencyInjection/Initialization-Stages.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/Optional/DependencyInjection/Initialization-Stages.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/Optional/DependencyInjection/Overview.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/Optional/DependencyInjection/Overview.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/Optional/DependencyInjection/Stage-1.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/Optional/DependencyInjection/Stage-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/Optional/DependencyInjection/Stage-2.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/Optional/DependencyInjection/Stage-2.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/Optional/DependencyInjection/Stage-3.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/Optional/DependencyInjection/Stage-3.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "articles/Optional/DependencyInjection/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "articles/Optional/DependencyInjection/toc.html"
+        },
+        ".json": {
+          "relative_path": "articles/Optional/DependencyInjection/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/Optional/Logging/Overview.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/Optional/Logging/Overview.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "articles/Optional/Logging/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "articles/Optional/Logging/toc.html"
+        },
+        ".json": {
+          "relative_path": "articles/Optional/Logging/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/Optional/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/Optional/index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "articles/Optional/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "articles/Optional/toc.html"
+        },
+        ".json": {
+          "relative_path": "articles/Optional/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/SaveSystem/Overview.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/SaveSystem/Overview.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "articles/SaveSystem/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "articles/SaveSystem/toc.html"
+        },
+        ".json": {
+          "relative_path": "articles/SaveSystem/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/SubModuleWrappers/Overview.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/SubModuleWrappers/Overview.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "articles/SubModuleWrappers/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "articles/SubModuleWrappers/toc.html"
+        },
+        ".json": {
+          "relative_path": "articles/SubModuleWrappers/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "articles/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "articles/toc.html"
+        },
+        ".json": {
+          "relative_path": "articles/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/BUTR48.svg",
+      "output": {
+        "resource": {
+          "relative_path": "images/BUTR48.svg"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html"
+        },
+        ".json": {
+          "relative_path": "toc.json"
+        }
+      },
+      "version": ""
+    }
+  ],
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}
