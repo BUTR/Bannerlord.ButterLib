@@ -17,122 +17,121 @@ using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 
-namespace Bannerlord.ButterLib.Implementation
+namespace Bannerlord.ButterLib.Implementation;
+
+public sealed class SubModule : MBSubModuleBase
 {
-    public sealed class SubModule : MBSubModuleBase
+    internal static ILogger? Logger { get; private set; }
+    internal static SubModule? Instance { get; private set; }
+
+    private bool ServiceRegistrationWasCalled { get; set; }
+    private bool OnBeforeInitialModuleScreenSetAsRootWasCalled { get; set; }
+
+    public void OnServiceRegistration()
     {
-        internal static ILogger? Logger { get; private set; }
-        internal static SubModule? Instance { get; private set; }
+        ServiceRegistrationWasCalled = true;
 
-        private bool ServiceRegistrationWasCalled { get; set; }
-        private bool OnBeforeInitialModuleScreenSetAsRootWasCalled { get; set; }
-
-        public void OnServiceRegistration()
+        if (this.GetServices() is { } services)
         {
-            ServiceRegistrationWasCalled = true;
+            services.AddScoped(typeof(DistanceMatrix<>), typeof(DistanceMatrixImplementation<>));
+            services.AddSingleton<IDistanceMatrixStatic, DistanceMatrixStaticImplementation>();
 
-            if (this.GetServices() is { } services)
+            services.AddScoped<IMBObjectExtensionDataStore, MBObjectExtensionDataStore>();
+            services.AddScoped<IMBObjectFinder, MBObjectFinder>();
+            services.AddScoped<IMBObjectKeeper, MBObjectKeeper>();
+
+            services.AddScoped<HotKeyManager, HotKeyManagerImplementation>();
+            services.AddSingleton<IHotKeyManagerStatic, HotKeyManagerStaticImplementation>();
+
+            services.AddSubSystem<DistanceMatrixSubSystem>();
+            services.AddSubSystem<HotKeySubSystem>();
+            services.AddSubSystem<MBSubModuleBaseExSubSystem>();
+            services.AddSubSystem<ObjectSystemSubSystem>();
+            services.AddSubSystem<SaveSystemSubSystem>();
+        }
+    }
+
+    protected override void OnSubModuleLoad()
+    {
+        base.OnSubModuleLoad();
+
+        Instance = this;
+        var serviceProvider = ServiceRegistrationWasCalled ? this.GetServiceProvider() : this.GetTempServiceProvider();
+
+        if (!ServiceRegistrationWasCalled)
+            OnServiceRegistration();
+
+        Logger = serviceProvider.GetRequiredService<ILogger<SubModule>>();
+        Logger.LogTrace("ButterLib.Implementation: OnSubModuleLoad");
+
+        Logger.LogInformation("Wrapping DebugManager of type {Type} with DebugManagerWrapper", Debug.DebugManager.GetType());
+        Debug.DebugManager = new DebugManagerWrapper(Debug.DebugManager, serviceProvider.GetRequiredService<ILoggerFactory>());
+
+        HotKeySubSystem.Instance?.Enable();
+        MBSubModuleBaseExSubSystem.Instance?.Enable();
+        SaveSystemSubSystem.Instance?.Enable();
+
+        Logger.LogTrace("ButterLib.Implementation: OnSubModuleLoad: Done");
+    }
+
+    protected override void OnBeforeInitialModuleScreenSetAsRoot()
+    {
+        base.OnBeforeInitialModuleScreenSetAsRoot();
+        Logger.LogTrace("ButterLib.Implementation: OnBeforeInitialModuleScreenSetAsRoot");
+
+        if (!OnBeforeInitialModuleScreenSetAsRootWasCalled)
+        {
+            OnBeforeInitialModuleScreenSetAsRootWasCalled = true;
+
+            Logger = this.GetServiceProvider().GetRequiredService<ILogger<SubModule>>();
+
+            if (Debug.DebugManager is not DebugManagerWrapper)
             {
-                services.AddScoped(typeof(DistanceMatrix<>), typeof(DistanceMatrixImplementation<>));
-                services.AddSingleton<IDistanceMatrixStatic, DistanceMatrixStaticImplementation>();
-
-                services.AddScoped<IMBObjectExtensionDataStore, MBObjectExtensionDataStore>();
-                services.AddScoped<IMBObjectFinder, MBObjectFinder>();
-                services.AddScoped<IMBObjectKeeper, MBObjectKeeper>();
-
-                services.AddScoped<HotKeyManager, HotKeyManagerImplementation>();
-                services.AddSingleton<IHotKeyManagerStatic, HotKeyManagerStaticImplementation>();
-
-                services.AddSubSystem<DistanceMatrixSubSystem>();
-                services.AddSubSystem<HotKeySubSystem>();
-                services.AddSubSystem<MBSubModuleBaseExSubSystem>();
-                services.AddSubSystem<ObjectSystemSubSystem>();
-                services.AddSubSystem<SaveSystemSubSystem>();
+                Logger.LogWarning("DebugManagerWrapper was replaced with {Type}! Wrapping it with DebugManagerWrapper", Debug.DebugManager.GetType());
+                Debug.DebugManager = new DebugManagerWrapper(Debug.DebugManager, this.GetServiceProvider().GetRequiredService<ILoggerFactory>());
             }
+
+            ObjectSystemSubSystem.Instance?.Enable();
         }
 
-        protected override void OnSubModuleLoad()
+        Logger.LogTrace("ButterLib.Implementation: OnBeforeInitialModuleScreenSetAsRoot: Done");
+    }
+
+    protected override void OnGameStart(Game game, IGameStarter gameStarterObject)
+    {
+        base.OnGameStart(game, gameStarterObject);
+        Logger.LogTrace("ButterLib.Implementation: OnGameStart");
+
+        if (game.GameType is Campaign)
         {
-            base.OnSubModuleLoad();
+            var gameStarter = (CampaignGameStarter) gameStarterObject;
 
-            Instance = this;
-            var serviceProvider = ServiceRegistrationWasCalled ? this.GetServiceProvider() : this.GetTempServiceProvider();
-
-            if (!ServiceRegistrationWasCalled)
-                OnServiceRegistration();
-
-            Logger = serviceProvider.GetRequiredService<ILogger<SubModule>>();
-            Logger.LogTrace("ButterLib.Implementation: OnSubModuleLoad");
-
-            Logger.LogInformation("Wrapping DebugManager of type {Type} with DebugManagerWrapper", Debug.DebugManager.GetType());
-            Debug.DebugManager = new DebugManagerWrapper(Debug.DebugManager, serviceProvider.GetRequiredService<ILoggerFactory>());
-
-            HotKeySubSystem.Instance?.Enable();
-            MBSubModuleBaseExSubSystem.Instance?.Enable();
-            SaveSystemSubSystem.Instance?.Enable();
-
-            Logger.LogTrace("ButterLib.Implementation: OnSubModuleLoad: Done");
-        }
-
-        protected override void OnBeforeInitialModuleScreenSetAsRoot()
-        {
-            base.OnBeforeInitialModuleScreenSetAsRoot();
-            Logger.LogTrace("ButterLib.Implementation: OnBeforeInitialModuleScreenSetAsRoot");
-
-            if (!OnBeforeInitialModuleScreenSetAsRootWasCalled)
+            if (DistanceMatrixSubSystem.Instance is { } subSystem)
             {
-                OnBeforeInitialModuleScreenSetAsRootWasCalled = true;
-
-                Logger = this.GetServiceProvider().GetRequiredService<ILogger<SubModule>>();
-
-                if (Debug.DebugManager is not DebugManagerWrapper)
+                if (subSystem.IsEnabled)
                 {
-                    Logger.LogWarning("DebugManagerWrapper was replaced with {Type}! Wrapping it with DebugManagerWrapper", Debug.DebugManager.GetType());
-                    Debug.DebugManager = new DebugManagerWrapper(Debug.DebugManager, this.GetServiceProvider().GetRequiredService<ILoggerFactory>());
+                    gameStarter.AddBehavior(new GeopoliticsBehavior());
                 }
-
-                ObjectSystemSubSystem.Instance?.Enable();
+                subSystem.GameInitialized = true;
             }
-
-            Logger.LogTrace("ButterLib.Implementation: OnBeforeInitialModuleScreenSetAsRoot: Done");
         }
 
-        protected override void OnGameStart(Game game, IGameStarter gameStarterObject)
+        Logger.LogTrace("ButterLib.Implementation: OnGameStart: Done");
+    }
+
+    public override void OnGameEnd(Game game)
+    {
+        base.OnGameEnd(game);
+        Logger.LogTrace("ButterLib.Implementation: OnGameEnd");
+
+        if (game.GameType is Campaign)
         {
-            base.OnGameStart(game, gameStarterObject);
-            Logger.LogTrace("ButterLib.Implementation: OnGameStart");
-
-            if (game.GameType is Campaign)
+            if (DistanceMatrixSubSystem.Instance is { } subSystem)
             {
-                var gameStarter = (CampaignGameStarter) gameStarterObject;
-
-                if (DistanceMatrixSubSystem.Instance is { } subSystem)
-                {
-                    if (subSystem.IsEnabled)
-                    {
-                        gameStarter.AddBehavior(new GeopoliticsBehavior());
-                    }
-                    subSystem.GameInitialized = true;
-                }
+                subSystem.GameInitialized = false;
             }
-
-            Logger.LogTrace("ButterLib.Implementation: OnGameStart: Done");
         }
 
-        public override void OnGameEnd(Game game)
-        {
-            base.OnGameEnd(game);
-            Logger.LogTrace("ButterLib.Implementation: OnGameEnd");
-
-            if (game.GameType is Campaign)
-            {
-                if (DistanceMatrixSubSystem.Instance is { } subSystem)
-                {
-                    subSystem.GameInitialized = false;
-                }
-            }
-
-            Logger.LogTrace("ButterLib.Implementation: OnGameEnd: Done");
-        }
+        Logger.LogTrace("ButterLib.Implementation: OnGameEnd: Done");
     }
 }

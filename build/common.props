@@ -4,7 +4,7 @@
   <!--Development Variables-->
   <PropertyGroup>
     <!--Module Version-->
-    <Version>2.8.16</Version>
+    <Version>2.9.0</Version>
     <!--Harmony Version-->
     <HarmonyVersion>2.2.2</HarmonyVersion>
     <HarmonyExtensionsVersion>3.2.0.77</HarmonyExtensionsVersion>
@@ -15,8 +15,9 @@
     <ExtensionVersion>2.0.0</ExtensionVersion>
     <!--BuildResources Version-->
     <BuildResourcesVersion>1.1.0.104</BuildResourcesVersion>
-    <BUTRSharedVersion>3.0.0.137</BUTRSharedVersion>
-    <BUTRModuleManagerVersion>5.0.209</BUTRModuleManagerVersion>
+    <BUTRSharedVersion>3.0.0.138</BUTRSharedVersion>
+    <BUTRModuleManagerVersion>5.0.221</BUTRModuleManagerVersion>
+    <CrashReportVersion>13.0.0.47</CrashReportVersion>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -39,7 +40,7 @@
     <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />
     <PackageReference Include="System.Reflection.Metadata" Version="1.8.1" />
   </ItemGroup>
-  <ItemGroup Condition="$(TargetFramework) == 'netcoreapp3.1'">
+  <ItemGroup Condition="$(TargetFramework) == 'net6'">
     <FrameworkReference Include="Microsoft.AspNetCore.App"  />
   </ItemGroup>
   
@@ -129,7 +130,7 @@
   </PropertyGroup>
   <!--SorceLink-->
   <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All"/>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All"/>
   </ItemGroup>
   <!--CI Builds-->
   <ItemGroup Condition="$(TargetFramework) == 'net472' AND $(OS) != 'Windows_NT'">

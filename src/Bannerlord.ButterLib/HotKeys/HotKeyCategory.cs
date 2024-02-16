@@ -4,14 +4,13 @@
  * Authors: sirdoombox, BUTR.
  */
 
-namespace Bannerlord.ButterLib.HotKeys
+namespace Bannerlord.ButterLib.HotKeys;
+
+public enum HotKeyCategory
 {
-    public enum HotKeyCategory
-    {
-        Action,
-        CampaignMap,
-        MenuShortcut,
-        OrderMenu,
-        Chat
-    }
+    Action,
+    CampaignMap,
+    MenuShortcut,
+    OrderMenu,
+    Chat
 }

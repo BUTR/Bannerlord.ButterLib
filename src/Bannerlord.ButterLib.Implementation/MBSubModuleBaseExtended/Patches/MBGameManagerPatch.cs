@@ -19,134 +19,133 @@ using TaleWorlds.Core;
 
 using Module = TaleWorlds.MountAndBlade.Module;
 
-namespace Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended.Patches
+namespace Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended.Patches;
+
+internal sealed class MBGameManagerPatch
 {
-    internal sealed class MBGameManagerPatch
+    private static ILogger _log = default!;
+
+    private static readonly MethodInfo? miTargetMethodGameStart = AccessTools2.Method("TaleWorlds.MountAndBlade.MBGameManager:OnGameStart");
+    private static readonly MethodInfo? miTargetMethodGameEnd = AccessTools2.Method("TaleWorlds.MountAndBlade.MBGameManager:OnGameEnd");
+
+    private static readonly MethodInfo? miPatchMethod = SymbolExtensions2.GetMethodInfo((IEnumerable<CodeInstruction> x, MethodBase y) => Transpiler(x, y));
+
+    private static readonly MethodInfo? miMBSubModuleBaseOnGameStartEvent = AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnGameStart");
+    private static readonly MethodInfo? miMBSubModuleBaseOnGameEndEvent = AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnGameEnd");
+
+    private static readonly MethodInfo? miDelayedOnGameStartEventCaller = SymbolExtensions2.GetMethodInfo((Game x, IGameStarter y) => DelayedOnGameStartEvent(x, y));
+    private static readonly MethodInfo? miDelayedOnGameEndEventCaller = SymbolExtensions2.GetMethodInfo((Game x) => DelayedOnGameEndEvent(x));
+
+    internal static bool Enable(Harmony harmony)
     {
-        private static ILogger _log = default!;
+        var provider = ButterLibSubModule.Instance?.GetServiceProvider() ?? ButterLibSubModule.Instance?.GetTempServiceProvider();
+        _log = provider?.GetService<ILogger<ModulePatch>>() ?? NullLogger<ModulePatch>.Instance;
 
-        private static readonly MethodInfo? miTargetMethodGameStart = AccessTools2.Method("TaleWorlds.MountAndBlade.MBGameManager:OnGameStart");
-        private static readonly MethodInfo? miTargetMethodGameEnd = AccessTools2.Method("TaleWorlds.MountAndBlade.MBGameManager:OnGameEnd");
+        return
+            CheckRequiredMethodInfos()
+            && harmony.Patch(miTargetMethodGameStart, transpiler: new HarmonyMethod(miPatchMethod)) is not null
+            && harmony.Patch(miTargetMethodGameEnd, transpiler: new HarmonyMethod(miPatchMethod)) is not null;
+    }
 
-        private static readonly MethodInfo? miPatchMethod = SymbolExtensions2.GetMethodInfo((IEnumerable<CodeInstruction> x, MethodBase y) => Transpiler(x, y));
-
-        private static readonly MethodInfo? miMBSubModuleBaseOnGameStartEvent = AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnGameStart");
-        private static readonly MethodInfo? miMBSubModuleBaseOnGameEndEvent = AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnGameEnd");
-
-        private static readonly MethodInfo? miDelayedOnGameStartEventCaller = SymbolExtensions2.GetMethodInfo((Game x, IGameStarter y) => DelayedOnGameStartEvent(x, y));
-        private static readonly MethodInfo? miDelayedOnGameEndEventCaller = SymbolExtensions2.GetMethodInfo((Game x) => DelayedOnGameEndEvent(x));
-
-        internal static bool Enable(Harmony harmony)
+    internal static bool Disable(Harmony harmony)
+    {
+        if (CheckRequiredMethodInfos())
         {
-            var provider = ButterLibSubModule.Instance?.GetServiceProvider() ?? ButterLibSubModule.Instance?.GetTempServiceProvider();
-            _log = provider?.GetService<ILogger<ModulePatch>>() ?? NullLogger<ModulePatch>.Instance;
-
-            return
-                CheckRequiredMethodInfos()
-                && harmony.Patch(miTargetMethodGameStart, transpiler: new HarmonyMethod(miPatchMethod)) is not null
-                && harmony.Patch(miTargetMethodGameEnd, transpiler: new HarmonyMethod(miPatchMethod)) is not null;
+            harmony.Unpatch(miTargetMethodGameStart, miPatchMethod);
+            harmony.Unpatch(miTargetMethodGameEnd, miPatchMethod);
         }
 
-        internal static bool Disable(Harmony harmony)
+        return true;
+    }
+
+    public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, MethodBase __originalMethod)
+    {
+        MethodInfo miToSearchFor;
+        CodeInstruction[] ciToAdd;
+        var originalMethodName = "TaleWorlds.MountAndBlade.MBGameManager." + __originalMethod.Name;
+
+        switch (__originalMethod.Name)
         {
-            if (CheckRequiredMethodInfos())
-            {
-                harmony.Unpatch(miTargetMethodGameStart, miPatchMethod);
-                harmony.Unpatch(miTargetMethodGameEnd, miPatchMethod);
-            }
-
-            return true;
-        }
-
-        public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, MethodBase __originalMethod)
-        {
-            MethodInfo miToSearchFor;
-            CodeInstruction[] ciToAdd;
-            var originalMethodName = "TaleWorlds.MountAndBlade.MBGameManager." + __originalMethod.Name;
-
-            switch (__originalMethod.Name)
-            {
-                case "OnGameStart":
-                    miToSearchFor = miMBSubModuleBaseOnGameStartEvent!;
-                    ciToAdd = new CodeInstruction[] { new(opcode: OpCodes.Ldarg_1),
+            case "OnGameStart":
+                miToSearchFor = miMBSubModuleBaseOnGameStartEvent!;
+                ciToAdd = new CodeInstruction[] { new(opcode: OpCodes.Ldarg_1),
                                                       new(opcode: OpCodes.Ldarg_2),
                                                       new(opcode: OpCodes.Call, operand: miDelayedOnGameStartEventCaller) };
-                    break;
-                case "OnGameEnd":
-                    miToSearchFor = miMBSubModuleBaseOnGameEndEvent!;
-                    ciToAdd = new CodeInstruction[] { new(opcode: OpCodes.Ldarg_1),
+                break;
+            case "OnGameEnd":
+                miToSearchFor = miMBSubModuleBaseOnGameEndEvent!;
+                ciToAdd = new CodeInstruction[] { new(opcode: OpCodes.Ldarg_1),
                                                       new(opcode: OpCodes.Call, operand: miDelayedOnGameEndEventCaller) };
+                break;
+            default:
+                _log.LogError("Error while applying Harmony transpiler for {Method} - unexpected target method!", originalMethodName);
+                return instructions;
+        }
+
+        return AddDelayedEvent(instructions, miToSearchFor, ciToAdd, originalMethodName);
+    }
+
+    private static bool CheckRequiredMethodInfos() =>
+        MBSubModuleBaseExSubSystem.NotNull(_log, miTargetMethodGameStart, nameof(miTargetMethodGameStart))
+        & MBSubModuleBaseExSubSystem.NotNull(_log, miTargetMethodGameEnd, nameof(miTargetMethodGameEnd))
+        & MBSubModuleBaseExSubSystem.NotNull(_log, miPatchMethod, nameof(miPatchMethod))
+        & MBSubModuleBaseExSubSystem.NotNull(_log, miMBSubModuleBaseOnGameStartEvent, nameof(miMBSubModuleBaseOnGameStartEvent))
+        & MBSubModuleBaseExSubSystem.NotNull(_log, miDelayedOnGameStartEventCaller, nameof(miDelayedOnGameStartEventCaller));
+
+    private static IEnumerable<CodeInstruction> AddDelayedEvent(IEnumerable<CodeInstruction> instructions, MethodInfo miToSearchFor, CodeInstruction[] ciToAdd, string originalMethodName)
+    {
+        var codes = new List<CodeInstruction>(instructions);
+        try
+        {
+            int originalCallIndex = -1, finallyIndex = -1;
+            for (var i = 0; i < codes.Count; ++i)
+            {
+                if (originalCallIndex < 0 && codes[i].Calls(miToSearchFor))
+                {
+                    originalCallIndex = i;
+                    continue;
+                }
+                if (finallyIndex < 0 && codes[i].opcode == OpCodes.Endfinally)
+                {
+                    finallyIndex = i;
                     break;
-                default:
-                    _log.LogError("Error while applying Harmony transpiler for {Method} - unexpected target method!", originalMethodName);
-                    return instructions;
-            }
-
-            return AddDelayedEvent(instructions, miToSearchFor, ciToAdd, originalMethodName);
-        }
-
-        private static bool CheckRequiredMethodInfos() =>
-            MBSubModuleBaseExSubSystem.NotNull(_log, miTargetMethodGameStart, nameof(miTargetMethodGameStart))
-            & MBSubModuleBaseExSubSystem.NotNull(_log, miTargetMethodGameEnd, nameof(miTargetMethodGameEnd))
-            & MBSubModuleBaseExSubSystem.NotNull(_log, miPatchMethod, nameof(miPatchMethod))
-            & MBSubModuleBaseExSubSystem.NotNull(_log, miMBSubModuleBaseOnGameStartEvent, nameof(miMBSubModuleBaseOnGameStartEvent))
-            & MBSubModuleBaseExSubSystem.NotNull(_log, miDelayedOnGameStartEventCaller, nameof(miDelayedOnGameStartEventCaller));
-
-        private static IEnumerable<CodeInstruction> AddDelayedEvent(IEnumerable<CodeInstruction> instructions, MethodInfo miToSearchFor, CodeInstruction[] ciToAdd, string originalMethodName)
-        {
-            var codes = new List<CodeInstruction>(instructions);
-            try
-            {
-                int originalCallIndex = -1, finallyIndex = -1;
-                for (var i = 0; i < codes.Count; ++i)
-                {
-                    if (originalCallIndex < 0 && codes[i].Calls(miToSearchFor))
-                    {
-                        originalCallIndex = i;
-                        continue;
-                    }
-                    if (finallyIndex < 0 && codes[i].opcode == OpCodes.Endfinally)
-                    {
-                        finallyIndex = i;
-                        break;
-                    }
                 }
-                if (originalCallIndex < 0 || finallyIndex < 0)
-                {
-                    _log.LogDebug("Transpiler for {Method} could not find code hooks!", originalMethodName);
-                    MBSubModuleBaseExSubSystem.LogNoHooksIssue(_log, originalCallIndex, finallyIndex, codes, MethodBase.GetCurrentMethod()!);
-                }
-                else
-                {
-                    codes.InsertRange(finallyIndex + 1, ciToAdd);
-                    codes[finallyIndex + 1].MoveLabelsFrom(codes[finallyIndex + ciToAdd.Length + 1]);
-                }
-
-                return codes;
             }
-            catch (Exception ex)
+            if (originalCallIndex < 0 || finallyIndex < 0)
             {
-                _log.LogError(ex, "Error while applying Harmony transpiler for {Method}", originalMethodName);
-                return codes;
+                _log.LogDebug("Transpiler for {Method} could not find code hooks!", originalMethodName);
+                MBSubModuleBaseExSubSystem.LogNoHooksIssue(_log, originalCallIndex, finallyIndex, codes, MethodBase.GetCurrentMethod()!);
             }
+            else
+            {
+                codes.InsertRange(finallyIndex + 1, ciToAdd);
+                codes[finallyIndex + 1].MoveLabelsFrom(codes[finallyIndex + ciToAdd.Length + 1]);
+            }
+
+            return codes;
         }
-
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        private static void DelayedOnGameStartEvent(Game game, IGameStarter gameStarter)
+        catch (Exception ex)
         {
-            foreach (var submodule in Module.CurrentModule.SubModules.OfType<IMBSubModuleBaseEx>())
-            {
-                submodule.OnGameStartDelayed(game, gameStarter);
-            }
+            _log.LogError(ex, "Error while applying Harmony transpiler for {Method}", originalMethodName);
+            return codes;
         }
+    }
 
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        private static void DelayedOnGameEndEvent(Game game)
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private static void DelayedOnGameStartEvent(Game game, IGameStarter gameStarter)
+    {
+        foreach (var submodule in Module.CurrentModule.SubModules.OfType<IMBSubModuleBaseEx>())
         {
-            foreach (var submodule in Module.CurrentModule.SubModules.OfType<IMBSubModuleBaseEx>())
-            {
-                submodule.OnGameEndDelayed(game);
-            }
+            submodule.OnGameStartDelayed(game, gameStarter);
+        }
+    }
+
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private static void DelayedOnGameEndEvent(Game game)
+    {
+        foreach (var submodule in Module.CurrentModule.SubModules.OfType<IMBSubModuleBaseEx>())
+        {
+            submodule.OnGameEndDelayed(game);
         }
     }
 }

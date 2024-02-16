@@ -4,30 +4,29 @@ using System;
 
 using TaleWorlds.ObjectSystem;
 
-namespace Bannerlord.ButterLib.SaveSystem
+namespace Bannerlord.ButterLib.SaveSystem;
+
+public sealed class MBGUIDConverter : JsonConverter
 {
-    public sealed class MBGUIDConverter : JsonConverter
+    public override bool CanConvert(Type objectType) => objectType == typeof(MBGUID) || objectType == typeof(MBGUID?);
+
+    public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
     {
-        public override bool CanConvert(Type objectType) => objectType == typeof(MBGUID) || objectType == typeof(MBGUID?);
-
-        public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
+        if (value is MBGUID mbguid)
         {
-            if (value is MBGUID mbguid)
-            {
-                serializer.Serialize(writer, mbguid.InternalValue);
-                return;
-            }
-
-            serializer.Serialize(writer, null);
+            serializer.Serialize(writer, mbguid.InternalValue);
+            return;
         }
 
-        public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
+        serializer.Serialize(writer, null);
+    }
+
+    public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
+    {
+        if (serializer.Deserialize<uint?>(reader) is { } id)
         {
-            if (serializer.Deserialize<uint?>(reader) is { } id)
-            {
-                return new MBGUID(id);
-            }
-            return null;
+            return new MBGUID(id);
         }
+        return null;
     }
 }

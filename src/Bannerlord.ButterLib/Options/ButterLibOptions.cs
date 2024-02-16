@@ -1,7 +1,6 @@
-﻿namespace Bannerlord.ButterLib.Options
+﻿namespace Bannerlord.ButterLib.Options;
+
+public sealed class ButterLibOptions
 {
-    public sealed class ButterLibOptions
-    {
-        public int MinLogLevel { get; set; }
-    }
+    public int MinLogLevel { get; set; }
 }

@@ -2,39 +2,38 @@
 
 using System;
 
-namespace Bannerlord.ButterLib.Implementation.DistanceMatrix
+namespace Bannerlord.ButterLib.Implementation.DistanceMatrix;
+
+internal class DistanceMatrixSubSystem : ISubSystem
 {
-    internal class DistanceMatrixSubSystem : ISubSystem
+    public static DistanceMatrixSubSystem? Instance { get; private set; }
+
+    public string Id => "Distance Matrix";
+    public string Name => "{=Ox6uK8fZWs}Distance Matrix";
+    public string Description => "{=WQ4r2n0mYj}Mod Developer feature! Provides helpers to calculate distance between objects on map.";
+    public bool IsEnabled { get; private set; } = false;
+    public bool CanBeDisabled => true;
+    public bool CanBeSwitchedAtRuntime => false;
+    internal bool GameInitialized { get; set; } = false;
+
+    public DistanceMatrixSubSystem()
     {
-        public static DistanceMatrixSubSystem? Instance { get; private set; }
+        Instance = this;
+    }
 
-        public string Id => "Distance Matrix";
-        public string Name => "{=Ox6uK8fZWs}Distance Matrix";
-        public string Description => "{=WQ4r2n0mYj}Mod Developer feature! Provides helpers to calculate distance between objects on map.";
-        public bool IsEnabled { get; private set; } = false;
-        public bool CanBeDisabled => true;
-        public bool CanBeSwitchedAtRuntime => false;
-        internal bool GameInitialized { get; set; } = false;
+    public void Enable()
+    {
+        if (GameInitialized)
+            return;
 
-        public DistanceMatrixSubSystem()
-        {
-            Instance = this;
-        }
+        IsEnabled = true;
+    }
 
-        public void Enable()
-        {
-            if (GameInitialized)
-                return;
+    public void Disable()
+    {
+        if (GameInitialized)
+            return;
 
-            IsEnabled = true;
-        }
-
-        public void Disable()
-        {
-            if (GameInitialized)
-                return;
-
-            IsEnabled = false;
-        }
+        IsEnabled = false;
     }
 }

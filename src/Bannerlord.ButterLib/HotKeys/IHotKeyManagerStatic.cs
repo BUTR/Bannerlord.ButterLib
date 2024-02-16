@@ -6,14 +6,13 @@
 
 using System.Collections.Generic;
 
-namespace Bannerlord.ButterLib.HotKeys
+namespace Bannerlord.ButterLib.HotKeys;
+
+internal interface IHotKeyManagerStatic
 {
-    internal interface IHotKeyManagerStatic
-    {
-        IList<HotKeyBase> HotKeys { get; }
+    IList<HotKeyBase> HotKeys { get; }
 
-        HotKeyManager Create(string modName);
+    HotKeyManager Create(string modName);
 
-        HotKeyManager CreateWithOwnCategory(string modName, string categoryName);
-    }
+    HotKeyManager CreateWithOwnCategory(string modName, string categoryName);
 }

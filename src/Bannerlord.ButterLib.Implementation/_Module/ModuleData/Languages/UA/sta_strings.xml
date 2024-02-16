@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<base xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/BUTR/Bannerlord.XmlSchemas/master/ModuleLanguage.xsd">
+  <tags>
+    <tag language="Українська"/>
+  </tags>
+  <strings>
+    <string id="BguqytVG3q" text="Попередження від Bannerlord.ButterLib!"/>
+    <string id="FE6ya1gzZR" text="Модуль {REQUIRED_MODULE} не знайдено!"/>
+    <string id="EvI6KPAqTT" text="Знайдено несумісний модуль {DENIED_MODULE}!"/>
+    <string id="5G9zffrgMh" text="{MODULE} завантажується до {REQUIRED_MODULE}!{NL}Переконайтеся, що {MODULE} був завантажений після нього!"/>
+    <string id="UZ8zfvudMs" text="{MODULE} завантажений після {REQUIRED_MODULE}!{NL}Переконайтеся, що {MODULE} був завантажений до нього!"/>
+    <string id="FcR4BXnhx8" text="{MODULE} має взаємовиключні вказівки порядку моду, вказані для {REQUIRED_MODULE}!"/>
+    <string id="eXs6FLm5DP" text="Наполегливо рекомендується припинити гру зараз. Чи хочете ви її припинити?"/>
+
+    <string id="JLkq0ZkOSI" text="{START}{?IS_PLURAL} та {?}{\\?}{END}"/>
+
+    <string id="B7bfrDNzIk" text="Вимкнути, якщо Відлагоджувач встановлений"/>
+    <string id="r3ktQzFMRz" text="Зупиняє обробник винятків, коли налагоджувач встановлений."/>
+
+    <string id="jorWb502pD" text="Перехопити винятки автоматично створеного коду (низька продуктивність) (ВИМКНЕНО)"/>
+    <string id="ji1brrsEZz" text="Спіймати кожен виклик Native-&gt;Managed. Має перехоплювати всі винятки, які не перехоплюються стандартним способом. Може трохи знизити загальну продуктивність."/>
+
+    <string id="ZD69h3IpF5" text="Використовувати &quot;ванільний&quot; обробник помилок"/>
+    <string id="o0DgSNv5V1" text="Вимикає обробники збоїв ButterLib і BEW за допомогою нового обробника збоїв Watchdog. Не вмикайте, якщо не впевнені."/>
+
+    <string id="Ox6uK8fZWs" text="Матриця Відстані"/>
+    <string id="WQ4r2n0mYj" text="Функція розробника моду! Надає помічники для розрахунку відстані між об’єктами на мапі."/>
+    <string id="jvV6QDc7AJ" text="Гарячі Клавіші"/>
+    <string id="wNNYwgUeus" text="Функція розробника моду! Забезпечує кращий спосіб для створення гарячих клавіш для модів"/>
+    <string id="JGylAT3SrB" text="MBSubModuleBase розширений"/>
+    <string id="XfveBQYVWH" text="Функція розробника моду! Представляє абстрактний похідний клас MBSubModuleBasleBase, який надає нові SubModule події."/>
+    <string id="IA0mVgHJgo" text="Система Об'єктів"/>
+    <string id="mFZTv1nwOx" text="Функція розробника моду!"/>
+    <string id="66A5N9278w" text="Зберегти Систему"/>
+    <string id="9ybOxGpWb5" text="Розширює та виправляє систему збереження гри:{NL}* Виправляє можливі зіткнення з іменами збереження;{NL}* Виправляє пошкодження збереження та &amp; аварійно завершує роботу, коли визначено повторювані типи;{NL}* Додається підтримка для збереження багатьох інших типів контейнерів;{NL}Це може змінити файл збереження, вимкнення цієї функції може зробити файл збереження неможливим!"/>
+    <string id="UsLlrwMTjJ" text="Завантажувач Збоїв"/>
+    <string id="hjeoN9NwZm" text="Завантажує звіти про збої до BUTR для простого хостингу файлів."/>
+    <string id="joCJ9xpDvM" text="Відкладений SubModule"/>
+    <string id="Gznum6kuzv" text="Функція розробника моду! Надає хелпери для запуску методів після подій SubModule."/>
+    <string id="ZypQtNNcVN" text="Обробник Винятку"/>
+    <string id="UreeIeLQYS" text="Фіксує збої гри та створює звіти про них."/>
+    <string id="NkAAB8EEu2" text="Обгортки SubModule"/>
+    <string id="izmKJPjkjN" text="Функція розробника моду! Обгортка для MBSubModuleBase заснована на патчах Harmony."/>
+  </strings>
+</base>

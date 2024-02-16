@@ -15,26 +15,25 @@ using TaleWorlds.InputSystem;
 using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
 
-namespace Bannerlord.ButterLib.Implementation.HotKeys
+namespace Bannerlord.ButterLib.Implementation.HotKeys;
+
+internal sealed class HotKeyCategoryContainer : GameKeyContext
 {
-    internal sealed class HotKeyCategoryContainer : GameKeyContext
+    private static readonly int ListCapacity = Enum.GetValues(typeof(GameKeyDefinition)).Cast<int>().Max() + 200;
+
+    public HotKeyCategoryContainer(string categoryId, string categoryName, IEnumerable<HotKeyBase> keys) : base(categoryId, ListCapacity)
     {
-        private static readonly int ListCapacity = Enum.GetValues(typeof(GameKeyDefinition)).Cast<int>().Max() + 200;
+        var keyCategoryName = Module.CurrentModule.GlobalTextManager.AddGameText("str_key_category_name");
+        keyCategoryName.AddVariationWithId(categoryId, new TextObject(categoryName), new List<GameTextManager.ChoiceTag>());
 
-        public HotKeyCategoryContainer(string categoryId, string categoryName, IEnumerable<HotKeyBase> keys) : base(categoryId, ListCapacity)
+        var keyName = Module.CurrentModule.GlobalTextManager.AddGameText("str_key_name");
+        var keyDesc = Module.CurrentModule.GlobalTextManager.AddGameText("str_key_description");
+        foreach (var key in keys)
         {
-            var keyCategoryName = Module.CurrentModule.GlobalTextManager.AddGameText("str_key_category_name");
-            keyCategoryName.AddVariationWithId(categoryId, new TextObject(categoryName), new List<GameTextManager.ChoiceTag>());
-
-            var keyName = Module.CurrentModule.GlobalTextManager.AddGameText("str_key_name");
-            var keyDesc = Module.CurrentModule.GlobalTextManager.AddGameText("str_key_description");
-            foreach (var key in keys)
-            {
-                var variationId = $"{categoryId}_{(GameKeyDefinition) key.Id}";
-                keyName.AddVariationWithId(variationId, new TextObject(key.DisplayName), new List<GameTextManager.ChoiceTag>());
-                keyDesc.AddVariationWithId(variationId, new TextObject(key.Description), new List<GameTextManager.ChoiceTag>());
-                RegisterGameKey(new GameKey(key.Id, key.Uid, categoryId, key.DefaultKey, key.Category));
-            }
+            var variationId = $"{categoryId}_{(GameKeyDefinition) key.Id}";
+            keyName.AddVariationWithId(variationId, new TextObject(key.DisplayName), new List<GameTextManager.ChoiceTag>());
+            keyDesc.AddVariationWithId(variationId, new TextObject(key.Description), new List<GameTextManager.ChoiceTag>());
+            RegisterGameKey(new GameKey(key.Id, key.Uid, categoryId, key.DefaultKey, key.Category));
         }
     }
 }

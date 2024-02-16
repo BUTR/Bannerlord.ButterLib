@@ -10,105 +10,104 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-namespace Bannerlord.ButterLib.Tests.DelayedSubModule
+namespace Bannerlord.ButterLib.Tests.DelayedSubModule;
+
+public class DelayedSubModuleTest
 {
-    public class DelayedSubModuleTest
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private static bool MockedGetModuleInfo(Type type, ref ModuleInfoExtendedWithMetadata? __result)
+    {
+        if (type == typeof(TestSubModuleCaller))
+        {
+            __result = TestHelper.ModuleInfoCaller;
+        }
+        if (type == typeof(TestSubModuleTarget))
+        {
+            __result = TestHelper.ModuleInfoTarget;
+        }
+
+        return false;
+    }
+
+    [SetUp]
+    public void Setup()
+    {
+        var harmony = new Harmony($"{nameof(DelayedSubModuleTest)}.{nameof(Setup)}");
+        harmony.Patch(SymbolExtensions.GetMethodInfo(() => BUTR.Shared.Helpers.ModuleInfoHelper.GetModuleByType(null!)),
+            prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetModuleInfo)));
+
+        DelayedSubModuleManager.Register<TestSubModuleCaller>();
+        DelayedSubModuleManager.Register<TestSubModuleTarget>();
+    }
+
+    [Test]
+    public void SubscribeBeforeTargetLoad_Test()
     {
         [MethodImpl(MethodImplOptions.NoInlining)]
-        private static bool MockedGetModuleInfo(Type type, ref ModuleInfoExtendedWithMetadata? __result)
+        static bool MockedGetLoadedModules(ref IEnumerable<ModuleInfoExtendedWithMetadata> __result)
         {
-            if (type == typeof(TestSubModuleCaller))
-            {
-                __result = TestHelper.ModuleInfoCaller;
-            }
-            if (type == typeof(TestSubModuleTarget))
-            {
-                __result = TestHelper.ModuleInfoTarget;
-            }
-
+            __result = new List<ModuleInfoExtendedWithMetadata> { TestHelper.ModuleInfoCaller, TestHelper.ModuleInfoTarget };
             return false;
         }
 
-        [SetUp]
-        public void Setup()
-        {
-            var harmony = new Harmony($"{nameof(DelayedSubModuleTest)}.{nameof(Setup)}");
-            harmony.Patch(SymbolExtensions.GetMethodInfo(() => BUTR.Shared.Helpers.ModuleInfoHelper.GetModuleByType(null!)),
-                prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetModuleInfo)));
+        using var harmony = new HarmonyDisposable($"{nameof(DelayedSubModuleTest)}.{nameof(SubscribeBeforeTargetLoad_Test)}");
+        harmony.Patch(SymbolExtensions.GetMethodInfo(() => BUTR.Shared.Helpers.ModuleInfoHelper.GetLoadedModules()),
+            prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetLoadedModules)));
 
-            DelayedSubModuleManager.Register<TestSubModuleCaller>();
-            DelayedSubModuleManager.Register<TestSubModuleTarget>();
+
+        // Because the Target SubModule loads after Caller, Subscribe should not instacall the delegate
+        var delegateWasCalled = false;
+        void Delegate(object? sender, SubscriptionEventArgs e) => delegateWasCalled = true;
+        DelayedSubModuleManager.Subscribe<TestSubModuleTarget, TestSubModuleCaller>("OnSubModuleLoad", SubscriptionType.AfterMethod, Delegate);
+        Assert.False(delegateWasCalled);
+    }
+
+    [Test]
+    public void SubscribeBeforeTargetLoad_CallTargetManually_Test()
+    {
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        static bool MockedGetLoadedModules(ref IEnumerable<ModuleInfoExtendedWithMetadata> __result)
+        {
+            __result = new List<ModuleInfoExtendedWithMetadata> { TestHelper.ModuleInfoCaller, TestHelper.ModuleInfoTarget };
+            return false;
         }
 
-        [Test]
-        public void SubscribeBeforeTargetLoad_Test()
+        using var harmony = new HarmonyDisposable($"{nameof(DelayedSubModuleTest)}.{nameof(SubscribeBeforeTargetLoad_CallTargetManually_Test)}");
+        harmony.Patch(SymbolExtensions.GetMethodInfo(() => BUTR.Shared.Helpers.ModuleInfoHelper.GetLoadedModules()),
+            prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetLoadedModules)));
+
+
+        // Because the Target SubModule loads after Caller, Subscribe should not instacall the delegate
+        var delegateWasCalled = false;
+        void Delegate(object? sender, SubscriptionEventArgs e) => delegateWasCalled = true;
+        DelayedSubModuleManager.Subscribe<TestSubModuleTarget, TestSubModuleCaller>("OnSubModuleLoad", SubscriptionType.AfterMethod, Delegate);
+        Assert.False(delegateWasCalled);
+
+        // Manually trigger OnSubModuleLoad and confirm that the delegate is now called
+        var module = new MBSubModuleBaseWrapper(new TestSubModuleTarget());
+        module.OnSubModuleLoad();
+        Assert.True(delegateWasCalled);
+    }
+
+    [Test]
+    public void SubscribeAfterTargetLoad_Test()
+    {
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        static bool MockedGetLoadedModules(ref IEnumerable<ModuleInfoExtendedWithMetadata> __result)
         {
-            [MethodImpl(MethodImplOptions.NoInlining)]
-            static bool MockedGetLoadedModules(ref IEnumerable<ModuleInfoExtendedWithMetadata> __result)
-            {
-                __result = new List<ModuleInfoExtendedWithMetadata> { TestHelper.ModuleInfoCaller, TestHelper.ModuleInfoTarget };
-                return false;
-            }
-
-            using var harmony = new HarmonyDisposable($"{nameof(DelayedSubModuleTest)}.{nameof(SubscribeBeforeTargetLoad_Test)}");
-            harmony.Patch(SymbolExtensions.GetMethodInfo(() => BUTR.Shared.Helpers.ModuleInfoHelper.GetLoadedModules()),
-                prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetLoadedModules)));
-
-
-            // Because the Target SubModule loads after Caller, Subscribe should not instacall the delegate
-            var delegateWasCalled = false;
-            void Delegate(object? sender, SubscriptionEventArgs e) => delegateWasCalled = true;
-            DelayedSubModuleManager.Subscribe<TestSubModuleTarget, TestSubModuleCaller>("OnSubModuleLoad", SubscriptionType.AfterMethod, Delegate);
-            Assert.False(delegateWasCalled);
+            __result = new List<ModuleInfoExtendedWithMetadata> { TestHelper.ModuleInfoTarget, TestHelper.ModuleInfoCaller };
+            return false;
         }
 
-        [Test]
-        public void SubscribeBeforeTargetLoad_CallTargetManually_Test()
-        {
-            [MethodImpl(MethodImplOptions.NoInlining)]
-            static bool MockedGetLoadedModules(ref IEnumerable<ModuleInfoExtendedWithMetadata> __result)
-            {
-                __result = new List<ModuleInfoExtendedWithMetadata> { TestHelper.ModuleInfoCaller, TestHelper.ModuleInfoTarget };
-                return false;
-            }
-
-            using var harmony = new HarmonyDisposable($"{nameof(DelayedSubModuleTest)}.{nameof(SubscribeBeforeTargetLoad_CallTargetManually_Test)}");
-            harmony.Patch(SymbolExtensions.GetMethodInfo(() => BUTR.Shared.Helpers.ModuleInfoHelper.GetLoadedModules()),
-                prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetLoadedModules)));
+        using var harmony = new HarmonyDisposable($"{nameof(DelayedSubModuleTest)}.{nameof(SubscribeAfterTargetLoad_Test)}");
+        harmony.Patch(SymbolExtensions.GetMethodInfo(() => BUTR.Shared.Helpers.ModuleInfoHelper.GetLoadedModules()),
+            prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetLoadedModules)));
 
 
-            // Because the Target SubModule loads after Caller, Subscribe should not instacall the delegate
-            var delegateWasCalled = false;
-            void Delegate(object? sender, SubscriptionEventArgs e) => delegateWasCalled = true;
-            DelayedSubModuleManager.Subscribe<TestSubModuleTarget, TestSubModuleCaller>("OnSubModuleLoad", SubscriptionType.AfterMethod, Delegate);
-            Assert.False(delegateWasCalled);
-
-            // Manually trigger OnSubModuleLoad and confirm that the delegate is now called
-            var module = new MBSubModuleBaseWrapper(new TestSubModuleTarget());
-            module.OnSubModuleLoad();
-            Assert.True(delegateWasCalled);
-        }
-
-        [Test]
-        public void SubscribeAfterTargetLoad_Test()
-        {
-            [MethodImpl(MethodImplOptions.NoInlining)]
-            static bool MockedGetLoadedModules(ref IEnumerable<ModuleInfoExtendedWithMetadata> __result)
-            {
-                __result = new List<ModuleInfoExtendedWithMetadata> { TestHelper.ModuleInfoTarget, TestHelper.ModuleInfoCaller };
-                return false;
-            }
-
-            using var harmony = new HarmonyDisposable($"{nameof(DelayedSubModuleTest)}.{nameof(SubscribeAfterTargetLoad_Test)}");
-            harmony.Patch(SymbolExtensions.GetMethodInfo(() => BUTR.Shared.Helpers.ModuleInfoHelper.GetLoadedModules()),
-                prefix: new HarmonyMethod(DelegateHelper.GetMethodInfo(MockedGetLoadedModules)));
-
-
-            // Because the Target SubModule loads before Caller, Subscribe should instacall the delegate
-            var delegateWasCalled = false;
-            void Delegate(object? sender, SubscriptionEventArgs e) => delegateWasCalled = true;
-            DelayedSubModuleManager.Subscribe<TestSubModuleTarget, TestSubModuleCaller>("OnSubModuleLoad", SubscriptionType.AfterMethod, Delegate);
-            Assert.True(delegateWasCalled);
-        }
+        // Because the Target SubModule loads before Caller, Subscribe should instacall the delegate
+        var delegateWasCalled = false;
+        void Delegate(object? sender, SubscriptionEventArgs e) => delegateWasCalled = true;
+        DelayedSubModuleManager.Subscribe<TestSubModuleTarget, TestSubModuleCaller>("OnSubModuleLoad", SubscriptionType.AfterMethod, Delegate);
+        Assert.True(delegateWasCalled);
     }
 }

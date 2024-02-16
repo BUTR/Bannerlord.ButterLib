@@ -21,19 +21,19 @@
     "BLSE Bannerlord": {
       "commandName": "Executable",
       "executablePath": "$(GameFolder)\\bin\\Win64_Shipping_Client\\Bannerlord.BLSE.Standalone.exe",
-      "commandLineArgs": "/singleplayer _MODULES_*Bannerlord.Harmony*Bannerlord.ButterLib*Native*SandBoxCore*Sandbox*StoryMode*CustomBattle*_MODULES_",
+      "commandLineArgs": "/enablecrashhandlerwhendebuggerisattached /singleplayer _MODULES_*Bannerlord.Harmony*Bannerlord.ButterLib*Native*SandBoxCore*Sandbox*StoryMode*CustomBattle*_MODULES_",
       "workingDirectory": "$(GameFolder)\\bin\\Win64_Shipping_Client"
     },
     "BLSE BannerlordWithMCM": {
       "commandName": "Executable",
       "executablePath": "$(GameFolder)\\bin\\Win64_Shipping_Client\\Bannerlord.BLSE.Standalone.exe",
-      "commandLineArgs": "/singleplayer _MODULES_*Bannerlord.Harmony*Bannerlord.ButterLib*Bannerlord.UIExtenderEx*Bannerlord.MBOptionScreen*Native*SandBoxCore*Sandbox*StoryMode*CustomBattle*_MODULES_",
+      "commandLineArgs": "/enablecrashhandlerwhendebuggerisattached /singleplayer _MODULES_*Bannerlord.Harmony*Bannerlord.ButterLib*Bannerlord.UIExtenderEx*Bannerlord.MBOptionScreen*Native*SandBoxCore*Sandbox*StoryMode*CustomBattle*_MODULES_",
       "workingDirectory": "$(GameFolder)\\bin\\Win64_Shipping_Client"
     },
     "BLSE BannerlordWithTests": {
       "commandName": "Executable",
       "executablePath": "$(GameFolder)\\bin\\Win64_Shipping_Client\\Bannerlord.BLSE.Standalone.exe",
-      "commandLineArgs": "/singleplayer _MODULES_*Bannerlord.Harmony*Bannerlord.ButterLib*Native*SandBoxCore*Sandbox*StoryMode*CustomBattle*Bannerlord.ButterLib.HotKeys.Test*_MODULES_",
+      "commandLineArgs": "/enablecrashhandlerwhendebuggerisattached /singleplayer _MODULES_*Bannerlord.Harmony*Bannerlord.ButterLib*Native*SandBoxCore*Sandbox*StoryMode*CustomBattle*Bannerlord.ButterLib.HotKeys.Test*_MODULES_",
       "workingDirectory": "$(GameFolder)\\bin\\Win64_Shipping_Client"
     }
   }
