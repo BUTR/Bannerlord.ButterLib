@@ -109,7 +109,7 @@ internal sealed class MBObjectExtensionDataStore : CampaignBehaviorBase, IMBObje
 #if v100 || v101 || v102 || v103 || v110 || v111 || v112 || v113 || v114 || v115
         private sealed class SavedTypeDefiner : SaveableCampaignBehaviorTypeDefiner
 #elif v120 || v121 || v122 || v123 || v124 || v125 || v126 || v127 || v128 || v129
-        private sealed class SavedTypeDefiner : SaveableTypeDefiner
+    private sealed class SavedTypeDefiner : SaveableTypeDefiner
 #else
 #error DEFINE
 #endif
