@@ -1,114 +1,183 @@
-﻿using System.Collections.Generic;
+﻿using Bannerlord.ButterLib.CrashReportWindow.Extensions;
+using Bannerlord.ButterLib.CrashReportWindow.UnsafeUtils;
+
+using BUTR.CrashReport.Bannerlord;
+using BUTR.CrashReport.Models;
+
+using HonkPerf.NET.RefLinq;
+
+using ImGuiNET;
+
+using System;
+using System.Collections.Frozen;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Numerics;
-using BUTR.CrashReport.Bannerlord;
-using BUTR.CrashReport.Extensions;
-using BUTR.CrashReport.Models;
-using ImGuiNET;
 
 namespace Bannerlord.ButterLib.CrashReportWindow.Renderer;
 
 partial class ImGuiRenderer
 {
-    private static void RenderDependencies(ICollection<DependencyMetadataModel> moduleDependencyMetadatas)
+    private static readonly byte[][] _dependencyTypeNames =
+    [
+        "Load Before \0"u8.ToArray(),  // LoadBefore
+        "Load After \0"u8.ToArray(),   // LoadAfter
+        "Incompatible \0"u8.ToArray(), // Incompatible
+    ];
+
+    private static readonly byte[][] _capabilityNames = Enum.GetValues(typeof(ModuleCapabilities))
+        .Cast<ModuleCapabilities>()
+        .Select(x => UnsafeHelper.ToUtf8Array(GetEnumDescription(x)))
+        .ToArray();
+
+    private FrozenDictionary<string, byte[]> _moduleIdUpdateInfoUtf8 = default!;
+    private FrozenDictionary<string, ModuleCapabilities[]> _moduleIdCapabilities = default!;
+    private FrozenDictionary<string, Dictionary<string, byte[]>> _moduleDependencyTextUtf8 = default!;
+
+    private void InitializeInstalledModules()
     {
-        if (moduleDependencyMetadatas.Count == 0) return;
-            
-        ImGui.Text("Dependencies:");
-        foreach (var dependentModule in moduleDependencyMetadatas)
+        var moduleIdUpdateInfoUtf8 = new Dictionary<string, byte[]>();
+        var moduleIdCapabilities = new Dictionary<string, ModuleCapabilities[]>();
+        var moduleDependencyTextUtf8 = new Dictionary<string, Dictionary<string, byte[]>>();
+        for (var i = 0; i < _crashReport.Modules.Count; i++)
         {
-            var optional = dependentModule.IsOptional ? " (optional)" : string.Empty;
-            var version = !string.IsNullOrEmpty(dependentModule.Version) ? $" >= {dependentModule.Version}" : string.Empty;
-            var versionRange = !string.IsNullOrEmpty(dependentModule.VersionRange) ? $" {dependentModule.VersionRange}" : string.Empty;
-                
-            ImGui.Bullet();
-            TextSameLine(dependentModule.Type switch
+            var module = _crashReport.Modules[i];
+
+            if (module.UpdateInfo is not null)
             {
-                DependencyMetadataModelType.LoadBefore => "Load Before ",
-                DependencyMetadataModelType.LoadAfter => "Load After ",
-                DependencyMetadataModelType.Incompatible => "Incompatible ",
-                _ => ""
-            });
-            SmallButtonSameLine(dependentModule.ModuleOrPluginId);
-            ImGui.Text($"{optional}{version}{versionRange}");
+                moduleIdUpdateInfoUtf8[module.Id] = UnsafeHelper.ToUtf8Array(module.UpdateInfo.ToString());
+            }
+
+            moduleIdCapabilities[module.Id] = CrashReportShared.GetModuleCapabilities(_crashReport, module).ToArray();
+
+            for (var j = 0; j < module.DependencyMetadatas.Count; j++)
+            {
+                var dependentModule = module.DependencyMetadatas[j];
+                var optional = dependentModule.IsOptional ? " (optional)" : string.Empty;
+                var version = !string.IsNullOrEmpty(dependentModule.Version) ? $" >= {dependentModule.Version}" : string.Empty;
+                var versionRange = !string.IsNullOrEmpty(dependentModule.VersionRange) ? $" {dependentModule.VersionRange}" : string.Empty;
+
+                var final = $"{optional}{version}{versionRange}";
+                SetNestedDictionary(moduleDependencyTextUtf8, module.Id, dependentModule.ModuleOrPluginId, UnsafeHelper.ToUtf8Array(final));
+            }
+        }
+        _moduleIdUpdateInfoUtf8 = moduleIdUpdateInfoUtf8.ToFrozenDictionary(StringComparer.Ordinal);
+        _moduleIdCapabilities = moduleIdCapabilities.ToFrozenDictionary(StringComparer.Ordinal);
+        _moduleDependencyTextUtf8 = moduleDependencyTextUtf8.ToFrozenDictionary(StringComparer.Ordinal);
+    }
+
+    private void RenderDependencies(ModuleModel module)
+    {
+        if (module.DependencyMetadatas.Count == 0) return;
+
+        JmGui.Text("Dependencies:\0"u8);
+        for (var i = 0; i < module.DependencyMetadatas.Count; i++)
+        {
+            var dependentModule = module.DependencyMetadatas[i];
+            var type = Clamp(dependentModule.Type, DependencyMetadataModelType.LoadBefore, DependencyMetadataModelType.Incompatible);
+            ImGui.Bullet();
+            JmGui.TextSameLine(_dependencyTypeNames[type]);
+            JmGui.SmallButtonSameLine(dependentModule.ModuleOrPluginId);
+            JmGui.Text(_moduleDependencyTextUtf8[module.Id][dependentModule.ModuleOrPluginId]);
         }
     }
-    
-    private static void RenderCapabilitiesDependencies(ICollection<ModuleCapabilities> getModuleCapabilities)
+
+    private void RenderCapabilitiesDependencies(IList<ModuleCapabilities> getModuleCapabilities)
     {
         if (getModuleCapabilities.Count == 0) return;
-            
-        ImGui.Text("Capabilities:");
-        foreach (var capability in getModuleCapabilities)
+
+        JmGui.Text("Capabilities:\0"u8);
+        for (var i = 0; i < getModuleCapabilities.Count; i++)
         {
+            var capability = getModuleCapabilities[i];
+            var type = Clamp(capability, ModuleCapabilities.None, ModuleCapabilities.Cultures);
             ImGui.Bullet();
-            ImGui.Text(GetEnumDescription(capability));
+            JmGui.Text(_capabilityNames[type]);
         }
     }
-    
-    private static void RenderSubModules(ICollection<ModuleSubModuleModel> moduleSubModules)
+
+    private void RenderSubModules(IList<ModuleSubModuleModel> moduleSubModules)
     {
         if (moduleSubModules.Count == 0) return;
-            
-        ImGui.Text("SubModules:");
-        foreach (var subModule in moduleSubModules)
+
+        JmGui.Text("SubModules:\0"u8);
+        for (var i = 0; i < moduleSubModules.Count; i++)
         {
+            var subModule = moduleSubModules[i];
             ImGui.Bullet();
-            ImGui.PushStyleColor(ImGuiCol.ChildBg, SubModule);
-            if (ImGui.BeginChild(subModule.Name, Vector2.Zero, ImGuiChildFlags.Border | ImGuiChildFlags.AutoResizeY, ImGuiWindowFlags.None))
+            JmGui.PushStyleColor(ImGuiCol.ChildBg, in SubModule);
+            if (JmGui.BeginChild(subModule.Name, in Zero2, ImGuiChildFlags.Border | ImGuiChildFlags.AutoResizeY, ImGuiWindowFlags.None))
             {
                 ImGui.PopStyleColor();
 
-                ImGui.Text($"Name: {subModule.Name}");
-                ImGui.Text($"DLLName: {subModule.AssemblyId?.Name}");
-                ImGui.Text($"SubModuleClassType: {subModule.Entrypoint}");
+                JmGui.TextSameLine("Name: \0"u8);
+                JmGui.Text(subModule.Name);
+                JmGui.TextSameLine("DLLName: \0"u8);
+                JmGui.Text(subModule.AssemblyId?.Name ?? string.Empty);
+                JmGui.TextSameLine("SubModuleClassType: \0"u8);
+                JmGui.Text(subModule.Entrypoint);
 
-                var tags = subModule.AdditionalMetadata.Where(x => !x.Key.StartsWith("METADATA:")).ToArray();
-                If(tags.Length > 0, () =>
+                var firstTag = true;
+                foreach (var tag in subModule.AdditionalMetadata.ToRefLinq().Where(x => !x.Key.StartsWith("METADATA:")))
                 {
-                    ImGui.Text("Tags:");
-                    foreach (var metadata in tags)
+                    if (firstTag)
                     {
-                        ImGui.Bullet();
-                        ImGui.Text($"{metadata.Key}: {metadata.Value}");
+                        JmGui.Text("Tags:\0"u8);
+                        firstTag = false;
                     }
-                });
 
-                var assemblies = subModule.AdditionalMetadata.Where(x => x.Key == "METADATA:Assembly").ToArray();
-                If(assemblies.Length > 0, () =>
+                    ImGui.Bullet();
+                    JmGui.TextSameLine(tag.Key);
+                    JmGui.TextSameLine(": \0"u8);
+                    JmGui.Text(tag.Value);
+                }
+
+                var firstAssembly = true;
+                foreach (var assembly in subModule.AdditionalMetadata.ToRefLinq().Where(x => !x.Key.StartsWith("METADATA:Assembly")))
                 {
-                    ImGui.Text("Assemblies:");
-                    foreach (var metadata in assemblies)
+                    if (firstAssembly)
                     {
-                        ImGui.Bullet();
-                        ImGui.Text(metadata.Value);
+                        JmGui.Text("Tags:\0"u8);
+                        firstAssembly = false;
                     }
-                });
+
+                    ImGui.Bullet();
+                    JmGui.Text(assembly.Value);
+                }
             }
+
             ImGui.EndChild();
         }
     }
-    
+
     private void RenderAdditionalAssemblies(string moduleId)
     {
-        var assembliesPresent = _crashReport.Assemblies.Where(y => y.ModuleId == moduleId).ToArray();
-        if (assembliesPresent.Length == 0) return;
-            
-        ImGui.Text("Assemblies Present:");
-            
-        foreach (var assembly in assembliesPresent)
+        var first = true;
+        for (var i = 0; i < _crashReport.Assemblies.Count; i++)
         {
+            if (first)
+            {
+                first = false;
+                JmGui.Text("Assemblies Present:\0"u8);
+            }
+
+            var assembly = _crashReport.Assemblies[i];
+            if (assembly.ModuleId != moduleId) continue;
+
             ImGui.Bullet();
-            ImGui.Text($"{assembly.Id.Name} ({assembly.GetFullName()})");
+            JmGui.TextSameLine(assembly.Id.Name);
+            JmGui.TextSameLine(" (\0"u8);
+            JmGui.TextSameLine(_assemblyFullNameUtf8[assembly]);
+            JmGui.Text(")\0"u8);
         }
     }
-    
+
     private void RenderInstalledModules()
     {
-        foreach (var module in _crashReport.Modules)
+        for (var i = 0; i < _crashReport.Modules.Count; i++)
         {
-            var isVortexManaged = module.AdditionalMetadata.FirstOrDefault(x => x.Key == "METADATA:MANAGED_BY_VORTEX")?.Value is { } str && bool.TryParse(str, out var val) && val;
+            var module = _crashReport.Modules[i];
+            var isVortexManaged = module.AdditionalMetadata.ToRefLinq().Where(x => x.Key == "METADATA:MANAGED_BY_VORTEX").FirstOrDefault()?.Value is { } str && bool.TryParse(str, out var val) && val;
 
             var color = module switch
             {
@@ -117,43 +186,54 @@ partial class ImGuiRenderer
                 _ => UnofficialModule,
             };
 
-            ImGui.PushStyleColor(ImGuiCol.ChildBg, color);
-            if (ImGui.BeginChild(module.Id, Vector2.Zero, ImGuiChildFlags.Border | ImGuiChildFlags.AutoResizeY, ImGuiWindowFlags.None))
+            JmGui.PushStyleColor(ImGuiCol.ChildBg, in color);
+            if (JmGui.BeginChild(module.Id, in Zero2, ImGuiChildFlags.Border | ImGuiChildFlags.AutoResizeY, ImGuiWindowFlags.None))
             {
                 ImGui.PopStyleColor();
-                
-                if (ImGui.TreeNode(module.Id))
-                {
-                    RenderId("Id:", module.Id);
-                    ImGui.Text($"Name: {module.Name}");
-                    ImGui.Text($"Version: {module.Version}");
-                    ImGui.Text($"External: {module.IsExternal}");
-                    ImGui.Text($"Vortex: {isVortexManaged}");
-                    ImGui.Text($"Official: {module.IsOfficial}");
-                    ImGui.Text($"Singleplayer: {module.IsSingleplayer}");
-                    ImGui.Text($"Multiplayer: {module.IsMultiplayer}");
-                    
-                    RenderDependencies(module.DependencyMetadatas);
-                        
-                    RenderCapabilitiesDependencies(CrashReportShared.GetModuleCapabilities(_crashReport, module).ToArray());
 
-                    If(module.Url is not null, () =>
+                if (JmGui.TreeNode(module.Id))
+                {
+                    JmGui.RenderId("Id:\0"u8, module.Id);
+                    JmGui.TextSameLine("Name: \0"u8);
+                    JmGui.Text(module.Name);
+                    JmGui.TextSameLine("Version: \0"u8);
+                    JmGui.Text(module.Version);
+                    JmGui.TextSameLine("External: \0"u8);
+                    JmGui.Text(module.IsExternal);
+                    JmGui.TextSameLine("Vortex: \0"u8);
+                    JmGui.Text(isVortexManaged);
+                    JmGui.TextSameLine("Official: \0"u8);
+                    JmGui.Text(module.IsOfficial);
+                    JmGui.TextSameLine("Singleplayer: \0"u8);
+                    JmGui.Text(module.IsSingleplayer);
+                    JmGui.TextSameLine("Multiplayer: \0"u8);
+                    JmGui.Text(module.IsMultiplayer);
+
+                    RenderDependencies(module);
+
+                    RenderCapabilitiesDependencies(_moduleIdCapabilities[module.Id]);
+
+                    if (module.Url is not null)
                     {
-                        ImGui.Text("Url:");
-                        ImGui.SameLine();
-                        if (ImGui.SmallButton(module.Url))
-                            Process.Start(new ProcessStartInfo(module.Url) { UseShellExecute = true, Verb = "open" });
-                    });
-                    
-                    If(module.UpdateInfo is not null, () => ImGui.Text($"Update Info: {module.UpdateInfo}"));
+                        JmGui.TextSameLine("Url: \0"u8);
+                        if (JmGui.SmallButton(module.Url))
+                            Process.Start(new ProcessStartInfo(module.Url!) { UseShellExecute = true, Verb = "open" });
+                    }
+
+                    if (module.UpdateInfo is not null)
+                    {
+                        JmGui.TextSameLine("Update Info: \0"u8);
+                        JmGui.Text(_moduleIdUpdateInfoUtf8[module.Id]);
+                    }
 
                     RenderSubModules(module.SubModules);
-                        
+
                     RenderAdditionalAssemblies(module.Id);
-                    
+
                     ImGui.TreePop();
                 }
             }
+
             ImGui.EndChild();
         }
     }

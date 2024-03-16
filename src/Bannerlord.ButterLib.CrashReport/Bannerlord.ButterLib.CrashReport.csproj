@@ -25,7 +25,7 @@
   
   <PropertyGroup>
     <ILRepackTargetConfigurations>Debug;Release</ILRepackTargetConfigurations>
-    <ILRepackAllowDuplicateResources>false</ILRepackAllowDuplicateResources>
+    <ILRepackAllowDuplicateResources>true</ILRepackAllowDuplicateResources>
     <ILRepackMergeDebugSymbols>true</ILRepackMergeDebugSymbols>
     <ILRepackPerformInternalize>true</ILRepackPerformInternalize>
     <ILRepackCopyAttributes>false</ILRepackCopyAttributes>
@@ -36,7 +36,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="ImGui.NET" Version="1.90.1.1" />
+    <PackageReference Include="HonkPerf.NET.RefLinq" Version="1.0.0" />
+    <PackageReference Include="ImGui.NET" Version="$(ImGuiVersion)" PrivateAssets="all" />
+    <PackageReference Include="System.Collections.Immutable" Version="9.0.0-preview.2.24128.5" />
+    <PackageReference Include="System.Memory" Version="4.5.5" PrivateAssets="all" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
   </ItemGroup>
   
   <ItemGroup>
@@ -55,8 +59,8 @@
   </ItemGroup>
   
   <ItemGroup>
+    <ProjectReference Include="..\..\..\BUTR.CrashReport\src\BUTR.CrashReport\BUTR.CrashReport.csproj" PrivateAssets="all" />
     <Compile Include="..\..\..\BUTR.CrashReport\src\BUTR.CrashReport.Bannerlord.Source\*.cs" />
-    <ProjectReference Include="..\..\..\BUTR.CrashReport\src\BUTR.CrashReport\BUTR.CrashReport.csproj" Targets="DisableILRepack;Build" />
   </ItemGroup>
 
   <Target Name="ExcludeAssembliesFromILRepack" BeforeTargets="ILRepackPrepareBuild">

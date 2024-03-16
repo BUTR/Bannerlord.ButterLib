@@ -1,44 +1,63 @@
-﻿using System.Linq;
+﻿using Bannerlord.ButterLib.CrashReportWindow.Extensions;
+
 using BUTR.CrashReport.Models;
+
+using HonkPerf.NET.RefLinq;
+
 using ImGuiNET;
 
 namespace Bannerlord.ButterLib.CrashReportWindow.Renderer;
 
 partial class ImGuiRenderer
 {
+    private static readonly byte[][] _logLevelNamesUtf8 =
+    [
+        "   \0"u8.ToArray(), // None
+        "VRB\0"u8.ToArray(), // Verbose
+        "DBG\0"u8.ToArray(), // Debug
+        "INF\0"u8.ToArray(), // Information
+        "WRN\0"u8.ToArray(), // Warning
+        "ERR\0"u8.ToArray(), // Error
+        "FTL\0"u8.ToArray(), // Fatal
+    ];
+
     private void RenderLogFiles()
     {
-        foreach (var logSource in _logSources)
+        for (var i = 0; i < _logSources.Count; i++)
         {
-            if (ImGui.TreeNodeEx(logSource.Name, ImGuiTreeNodeFlags.DefaultOpen))
+            var logSource = _logSources[i];
+            if (JmGui.TreeNode(logSource.Name, ImGuiTreeNodeFlags.DefaultOpen))
             {
                 if (logSource.Logs.Count == 0) continue;
 
-                var longestType = logSource.Logs.Max(x => x.Type.Length);
-                foreach (var logEntry in logSource.Logs)
+                var longestTypeLength = logSource.Logs.ToRefLinq().Select(x => x.Type.Length).Max();
+                for (var j = 0; j < logSource.Logs.Count; j++)
                 {
-                    var toAppend = (longestType - logEntry.Type.Length) + 1;
+                    var logEntry = logSource.Logs[j];
+                    var toAppend = (longestTypeLength - logEntry.Type.Length) + 2;
 
-                    TextSameLine($"{logEntry.Date:u} [{logEntry.Type}]{string.Empty.PadRight(toAppend)}: [");
-                    TextColoredSameLine(logEntry.Level switch
+                    var date = logEntry.Date;
+                    var color = logEntry.Level switch
                     {
                         LogLevel.Fatal => Red,
                         LogLevel.Error => Red,
                         LogLevel.Warning => Orange,
                         _ => Black
-                    }, logEntry.Level switch
-                    {
-                        LogLevel.Verbose => "VRB",
-                        LogLevel.Debug => "DBG",
-                        LogLevel.Information => "INF",
-                        LogLevel.Warning => "WRN",
-                        LogLevel.Error => "ERR",
-                        LogLevel.Fatal => "FTL",
-                        _ => "   ",
-                    });
-                    ImGui.Text($"]: {logEntry.Message}");
+                    };
+                    var level = Clamp(logEntry.Level, LogLevel.None, LogLevel.Fatal);
+
+                    JmGui.TextSameLine(ref date);
+                    JmGui.TextSameLine(" [\0"u8);
+                    JmGui.TextSameLine(logEntry.Type);
+                    JmGui.TextSameLine("]\0"u8);
+                    JmGui.PadRight(toAppend);
+                    JmGui.TextSameLine("[\0"u8);
+                    JmGui.TextColoredSameLine(in color, _logLevelNamesUtf8[level]);
+                    JmGui.TextSameLine("]: \0"u8);
+                    JmGui.Text(logEntry.Message);
                 }
-                ImGui.TreePop();
+
+                JmGui.TreePop();
             }
         }
     }

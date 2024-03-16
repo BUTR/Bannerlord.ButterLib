@@ -1,14 +1,14 @@
-﻿using System.Collections.Generic;
-using BUTR.CrashReport.Bannerlord;
+﻿using BUTR.CrashReport.Bannerlord;
 using BUTR.CrashReport.Models;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Bannerlord.ButterLib.ExceptionHandler;
+namespace Bannerlord.ButterLib.CrashReportWindow.Utils;
 
 internal static class CreatorZip
 {

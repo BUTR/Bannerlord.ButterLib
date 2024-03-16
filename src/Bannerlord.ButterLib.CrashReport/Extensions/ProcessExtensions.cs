@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Microsoft.Win32.SafeHandles;
+
+using System;
 using System.Diagnostics;
 using System.Runtime.ConstrainedExecution;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Security.Permissions;
-using Microsoft.Win32.SafeHandles;
 
 namespace Bannerlord.ButterLib.CrashReportWindow.Extensions;
 

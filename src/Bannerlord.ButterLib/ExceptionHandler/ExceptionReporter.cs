@@ -1,17 +1,18 @@
-﻿using System;
+﻿using Bannerlord.BLSE;
+using Bannerlord.ButterLib.CrashUploader;
+using Bannerlord.ButterLib.Logger;
+
+using BUTR.CrashReport.Models;
+
+using Microsoft.Extensions.DependencyInjection;
+
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using Bannerlord.BLSE;
-using Bannerlord.ButterLib.CrashReportWindow;
-using Bannerlord.ButterLib.CrashUploader;
-using Bannerlord.ButterLib.Logger;
-using BUTR.CrashReport.Models;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Bannerlord.ButterLib.ExceptionHandler;
 
@@ -29,13 +30,13 @@ public static class ExceptionReporter
         }
 
         var logSources = GetLogSources().ToArray();
-        CrashReportWindow.CrashReportWindow.ShowAndWait(exception, logSources, async (crashReport, logSources) =>
+        CrashReportWindow.CrashReportWindow.ShowAndWait(exception, logSources, static async (crashReport, _logSources) =>
         {
             var crashUploader = ButterLibSubModule.ServiceProvider?.GetService<ICrashUploader>();
             if (crashUploader is null)
                 return (false, "Critical Error: Failed to get the crash uploader!");
 
-            var result = await crashUploader.UploadAsync(crashReport, logSources).ConfigureAwait(false);
+            var result = await crashUploader.UploadAsync(crashReport, _logSources).ConfigureAwait(false);
             return result.Status switch
             {
                 CrashUploaderStatus.Success => (true, result.Url ?? string.Empty),
@@ -47,7 +48,7 @@ public static class ExceptionReporter
             };
         }, BEWPatch.FinalizerMethod);
     }
-    
+
     private static IEnumerable<LogSource> GetLogSources()
     {
         var now = DateTimeOffset.Now;

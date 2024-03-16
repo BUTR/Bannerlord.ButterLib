@@ -1,21 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Bannerlord.ButterLib.CrashReportWindow.Utils;
+
+using BUTR.CrashReport.Bannerlord;
+
+using ImGuiNET;
+
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Bannerlord.ButterLib.ExceptionHandler;
-using BUTR.CrashReport.Bannerlord;
-using BUTR.CrashReport.Models;
-using ImGuiNET;
 
 namespace Bannerlord.ButterLib.CrashReportWindow.Renderer;
 
 partial class ImGuiRenderer
 {
-    private static bool _addScreenshots;
-    private static bool _addLatestSave;
-    private static bool _addMiniDump;
-
     private static async Task<bool> SetClipboardTextAsync(string text)
     {
         var completionSource = new TaskCompletionSource<bool>();
@@ -37,11 +34,15 @@ partial class ImGuiRenderer
         staThread.Start();
         return await completionSource.Task;
     }
-    
+
+    private bool _addScreenshots;
+    private bool _addLatestSave;
+    private bool _addMiniDump;
+
     private async void CopyAsHtml()
     {
         var reportAsHtml = CrashReportHtmlRenderer.Build(_crashReport, _logSources);
-        
+
         if (!await SetClipboardTextAsync(reportAsHtml))
             MessageBox.Show("Failed to copy the HTML content to the clipboard!", "Error!");
     }
@@ -66,11 +67,11 @@ partial class ImGuiRenderer
                              """, "Error!");
         }
     }
-    
+
     private void SaveCrashReportAsHtml()
     {
         var reportAsHtml = CrashReportHtmlRenderer.Build(_crashReport, _logSources);
-        
+
         using var saveFileDialog = new SaveFileDialog();
         saveFileDialog.Filter = "HTML files|*.html|All files (*.*)|*.*";
         saveFileDialog.RestoreDirectory = true;
@@ -86,7 +87,7 @@ partial class ImGuiRenderer
             CreatorHtml.Create(_crashReport, reportAsHtml, _addMiniDump, _addLatestSave, _addScreenshots, stream);
         }
     }
-    
+
     private void SaveCrashReportAsZip()
     {
         using var saveFileDialog = new SaveFileDialog();
@@ -104,64 +105,78 @@ partial class ImGuiRenderer
             CreatorZip.Create(_crashReport, _logSources, stream);
         }
     }
-    
+
     private void RenderSummary()
     {
-        if (ImGui.BeginTable("Buttons", 2))
+        if (JmGui.BeginTable("Buttons\0"u8, 2))
         {
             ImGui.TableNextColumn();
             ImGui.SetWindowFontScale(2);
-            ImGui.TextWrapped("Intercepted an exception!");
+            JmGui.TextWrapped("Intercepted an exception!\0"u8);
             ImGui.SetWindowFontScale(1);
             ImGui.TableNextColumn();
 
-            if (ImGui.Button("Save Report as HTML")) SaveCrashReportAsHtml();
+            if (JmGui.Button("Save Report as HTML\0"u8)) SaveCrashReportAsHtml();
             ImGui.SameLine();
-            if (ImGui.Button("Save Report as ZIP")) SaveCrashReportAsZip();
+            if (JmGui.Button("Save Report as ZIP\0"u8)) SaveCrashReportAsZip();
             ImGui.SameLine();
-            ImGui.PushStyleColor(ImGuiCol.Button, Orange);
-            if (ImGui.Button("Close Report and Continue")) _close();
+            JmGui.PushStyleColor(ImGuiCol.Button, in Orange);
+            if (JmGui.Button("Close Report and Continue\0"u8)) _onClose();
             ImGui.PopStyleColor();
             ImGui.TableNextColumn();
             ImGui.TableNextColumn();
-            
-            if (ImGui.Button("Copy as HTML")) CopyAsHtml();
+
+            if (JmGui.Button("Copy as HTML\0"u8)) CopyAsHtml();
             ImGui.SameLine();
-            if (ImGui.Button("Upload Report as Permalink")) UploadReport();
+            if (JmGui.Button("Upload Report as Permalink\0"u8)) UploadReport();
             ImGui.TableNextColumn();
             ImGui.TableNextColumn();
-            
-            ImGui.Text("Save Report as HTML Options:");
+
+            JmGui.Text("Save Report as HTML Options:\0"u8);
             ImGui.TableNextColumn();
             ImGui.TableNextColumn();
-            
-            ImGui.Checkbox("Include Screenshot", ref _addScreenshots);
+
+            JmGui.Checkbox("Include Screenshot\0"u8, ref _addScreenshots);
             ImGui.TableNextColumn();
             ImGui.TableNextColumn();
-            
-            ImGui.Checkbox("Include Latest Save File", ref _addLatestSave);
+
+            JmGui.Checkbox("Include Latest Save File\0"u8, ref _addLatestSave);
             ImGui.TableNextColumn();
             ImGui.TableNextColumn();
-            
-            ImGui.Checkbox("Include Mini Dump", ref _addMiniDump);
+
+            JmGui.Checkbox("Include Mini Dump\0"u8, ref _addMiniDump);
             ImGui.EndTable();
         }
-        
-        ImGui.Text("Clicking 'Close Report and Continue' will continue with the Game's error report mechanism.");
-        
+
+        JmGui.Text("Clicking 'Close Report and Continue' will continue with the Game's error report mechanism.\0"u8);
+
         ImGui.Separator();
         ImGui.NewLine();
-        
+
         ImGui.SetWindowFontScale(2);
-        ImGui.Text($"{_crashReport.Metadata.GameName} has encountered a problem and will close itself!");
+        JmGui.TextSameLine(_crashReport.Metadata.GameName ?? string.Empty);
+        JmGui.Text(" has encountered a problem and will close itself!\0"u8);
         ImGui.SetWindowFontScale(1);
+
         ImGui.NewLine();
-        ImGui.Text("This is a community Crash Report. Please save it and use it for reporting the error. Do not provide screenshots, provide the report!");
-        ImGui.Text("Most likely this error was caused by a custom installed module.");
+
+        JmGui.Text("This is a community Crash Report. Please save it and use it for reporting the error. Do not provide screenshots, provide the report!\0"u8);
+
+        JmGui.Text("Most likely this error was caused by a custom installed module.\0"u8);
+
         ImGui.NewLine();
-        ImGui.Text("If you were in the middle of something, the progress might be lost.");
+
+        JmGui.Text("If you were in the middle of something, the progress might be lost.\0"u8);
+
         ImGui.NewLine();
-        ImGui.Text($"Launcher: {_crashReport.Metadata.LauncherType} ({_crashReport.Metadata.LauncherVersion})");
-        ImGui.Text($"Runtime: {_crashReport.Metadata.Runtime}");
+
+        JmGui.TextSameLine("Launcher: \0"u8);
+        JmGui.TextSameLine(_crashReport.Metadata.LauncherType ?? string.Empty);
+        JmGui.TextSameLine(" (\0"u8);
+        JmGui.TextSameLine(_crashReport.Metadata.LauncherVersion ?? string.Empty);
+        JmGui.Text(")\0"u8);
+
+        JmGui.TextSameLine("Runtime: \0"u8);
+        JmGui.Text(_crashReport.Metadata.Runtime ?? string.Empty);
     }
 }

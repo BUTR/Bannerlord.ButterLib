@@ -1,4 +1,5 @@
 ﻿using HarmonyLib.BUTR.Extensions;
+
 using TaleWorlds.Library;
 
 namespace Bannerlord.ButterLib.CrashReportWindow.Extensions;

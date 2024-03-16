@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using BUTR.CrashReport.Interfaces;
+using BUTR.CrashReport.Models;
+
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using BUTR.CrashReport.Interfaces;
-using BUTR.CrashReport.Models;
 
 namespace Bannerlord.ButterLib.CrashReportWindow.Utils;
 
@@ -13,7 +14,7 @@ internal class StacktraceFilter : IStacktraceFilter
     {
         _bewFinalizer = bewFinalizer;
     }
-    
+
     public IEnumerable<StacktraceEntry> Filter(ICollection<StacktraceEntry> stacktraceEntries)
     {
         if (stacktraceEntries.Count == 1 && stacktraceEntries.First().ModuleInfo?.Id == "Bannerlord.Harmony")

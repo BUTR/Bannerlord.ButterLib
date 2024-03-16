@@ -19,6 +19,8 @@
     <BUTRSharedVersion>3.0.0.138</BUTRSharedVersion>
     <BUTRModuleManagerVersion>5.0.221</BUTRModuleManagerVersion>
     <CrashReportVersion>13.0.0.47</CrashReportVersion>
+    <GLFWVersion>3.4.0</GLFWVersion>
+    <ImGuiVersion>1.90.1.1</ImGuiVersion>
   </PropertyGroup>
 
   <PropertyGroup>

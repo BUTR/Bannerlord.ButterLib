@@ -1,13 +1,15 @@
-﻿using System;
+﻿using Bannerlord.ButterLib.CrashReportWindow.Extensions;
+
+using System;
 using System.IO;
 using System.Linq;
-using Bannerlord.ButterLib.CrashReportWindow.Extensions;
+
 using TaleWorlds.Engine;
 using TaleWorlds.Library;
 
 using Path = System.IO.Path;
 
-namespace Bannerlord.ButterLib.ExceptionHandler;
+namespace Bannerlord.ButterLib.CrashReportWindow.Utils;
 
 internal static class CreatorShared
 {
@@ -54,16 +56,13 @@ internal static class CreatorShared
 
             Utilities.TakeScreenshot(tempBmp);
 
-#if !NETSTANDARD2_0
             using var image = System.Drawing.Image.FromFile(tempBmp);
-            using var encoderParameters = new System.Drawing.Imaging.EncoderParameters(1) { Param = { [0] = new System.Drawing.Imaging.EncoderParameter(System.Drawing.Imaging.Encoder.Quality, 80L) } };
+            using var encoderParameters = new System.Drawing.Imaging.EncoderParameters(1);
+            encoderParameters.Param[0] = new System.Drawing.Imaging.EncoderParameter(System.Drawing.Imaging.Encoder.Quality, 80L);
 
             var stream = new MemoryStream();
             image.Save(stream, System.Drawing.Imaging.ImageCodecInfo.GetImageDecoders().First(codec => codec.FormatID == System.Drawing.Imaging.ImageFormat.Jpeg.Guid), encoderParameters);
             return stream;
-#else
-            return Stream.Null;
-#endif
 
         }
         catch (Exception)

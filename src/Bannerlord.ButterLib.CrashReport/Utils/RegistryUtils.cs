@@ -1,17 +1,18 @@
+﻿/*
 using System;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Bannerlord.ButterLib.ExceptionHandler;
+namespace Bannerlord.ButterLib.CrashReportWindow.Utils;
 
 internal static class RegistryUtils
 {
     [DllImport("Advapi32.dll", CharSet = CharSet.Unicode)]
     private static extern uint RegOpenKeyEx(UIntPtr hKey, string lpSubKey, uint ulOptions, int samDesired, out int phkResult);
-    
+
     [DllImport("Advapi32.dll")]
     private static extern uint RegCloseKey(int hKey);
-    
+
     [DllImport("advapi32.dll", CharSet = CharSet.Unicode)]
     private static extern int RegQueryValueEx(int hKey, string lpValueName, int lpReserved, ref uint lpType, StringBuilder lpData, ref uint lpcbData);
 
@@ -64,3 +65,4 @@ internal static class RegistryUtils
         }
     }
 }
+*/

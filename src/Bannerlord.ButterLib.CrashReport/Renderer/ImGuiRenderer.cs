@@ -1,34 +1,47 @@
-﻿using System;
+﻿using Bannerlord.ButterLib.CrashReportWindow.UnsafeUtils;
+
+using BUTR.CrashReport.Models;
+
+using ImGuiNET;
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Numerics;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using BUTR.CrashReport.Models;
-using ImGuiNET;
 
 namespace Bannerlord.ButterLib.CrashReportWindow.Renderer;
 
+// Generic rules to avoid allocations:
+// 1. Split any interpolated string into a hardcoded ("()"u8) and dynamic (entry.Text) parts and render them separately
+// 2. Use custom equality comparer if a key doesn't implement IEquatable<T> in dictionaries
+// 3. Use a FrozenDictionary instead of a standard. Set the EqualityComparer in the Dictionary
+// 4. Cache all dynamic strings as utf8 byte array
+// 5. Don't forget to add a null termination to your utf8 byte array
+// The only allocations left are the FrozenDictionary finds. Can't do much now.
+
 internal partial class ImGuiRenderer
 {
+    private static readonly Vector2 Zero2 = Vector2.Zero;
+    private static readonly Vector3 Zero3 = Vector3.Zero;
+    private static readonly Vector4 Zero4 = Vector4.Zero;
     private static readonly Vector4 Black = FromColor(0, 0, 0, 255);
     private static readonly Vector4 White = FromColor(255, 255, 255, 255);
     private static readonly Vector4 Red = FromColor(255, 0, 0, 255);
     private static readonly Vector4 Orange = FromColor(255, 165, 0, 255);
-    
+
     private static readonly Vector4 Background = FromColor(236, 236, 236, 255);
     private static readonly Vector4 Plugin = FromColor(255, 255, 224, 255);
     private static readonly Vector4 OfficialModule = FromColor(244, 252, 220, 255);
     private static readonly Vector4 UnofficialModule = FromColor(255, 255, 224, 255);
     private static readonly Vector4 ExternalModule = FromColor(255, 255, 224, 255);
     private static readonly Vector4 SubModule = FromColor(248, 248, 231, 255);
-    
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static Vector4 FromColor(byte r, byte g, byte b, byte a) => new((float) r / 255f, (float) g / 255f, (float) b / 255f, (float) a / 255f);
 
-    private static void If(bool value, Action action)
-    {
-        if (value) action();
-    }
 
     private static string GetEnumDescription<TEnum>(TEnum value) where TEnum : Enum
     {
@@ -36,92 +49,83 @@ internal partial class ImGuiRenderer
             .GetCustomAttributes(typeof(DescriptionAttribute), false)
             .FirstOrDefault() is not DescriptionAttribute attribute ? value.ToString() : attribute.Description;
     }
-    
-    private static bool InputText(string label, ref string input)
+
+    private static void SetNestedDictionary<TDictionary, TKey, TNestedKey, TValue>(TDictionary methodDict, TKey key, TNestedKey nestedKey, TValue value)
+        where TDictionary : IDictionary<TKey, Dictionary<TNestedKey, TValue>>, new() where TNestedKey : notnull
     {
-        return ImGui.InputText(label, ref input, ushort.MaxValue, ImGuiInputTextFlags.ReadOnly);
-    }
-    
-    private static bool InputTextMultiline(string label, ref string input, int lineCount)
-    {
-        ImGui.PushStyleColor(ImGuiCol.FrameBg, Vector4.Zero);
-        var result = ImGui.InputTextMultiline(label, ref input, ushort.MaxValue, new Vector2(-1, ImGui.GetTextLineHeight() * (lineCount + 2)), ImGuiInputTextFlags.ReadOnly);
-        ImGui.PopStyleColor();
-        
-        return result;
+        if (!methodDict.TryGetValue(key, out var codeDict))
+            methodDict[key] = (codeDict = new Dictionary<TNestedKey, TValue>());
+        codeDict[nestedKey] = value;
     }
 
-    private static void TextSameLine(string value)
+    public static int Clamp(int n, int min, int max)
     {
-        ImGui.Text(value);
-        ImGui.SameLine(0, 0);
+        if (n < min) return min;
+        if (n > max) return max;
+        return n;
+    }
+    public static int Clamp<TEnum>(TEnum n, TEnum min, TEnum max) where TEnum : Enum
+    {
+        var nInt = Unsafe.As<TEnum, int>(ref n);
+        var minInt = Unsafe.As<TEnum, int>(ref min);
+        var maxInt = Unsafe.As<TEnum, int>(ref max);
+
+        if (nInt < minInt) return minInt;
+        if (nInt > maxInt) return maxInt;
+        return nInt;
     }
 
-    private static void TextColoredSameLine(Vector4 col, string fmt)
-    {
-        ImGui.TextColored(col, fmt);
-        ImGui.SameLine(0, 0);
-    }
-
-    private static bool CheckboxSameLine(string label, ref bool v)
-    {
-        var result = ImGui.Checkbox(label, ref v);
-        ImGui.SameLine(0, 0);
-        return result;
-    }
-
-    private static bool SmallButtonSameLine(string label)
-    {
-        var result = ImGui.SmallButton(label);
-        ImGui.SameLine(0, 0);
-        return result;
-    }
-    
-    private static void RenderId(string title,  string id)
-    {
-        ImGui.Text(title);
-        ImGui.SameLine();
-        ImGui.SmallButton(id);
-    }
-    
     private readonly CrashReportModel _crashReport;
-    private readonly ICollection<LogSource> _logSources;
+    private readonly IList<LogSource> _logSources;
     private readonly Func<CrashReportModel, IEnumerable<LogSource>, Task<(bool, string)>> _upload;
-    private readonly Action _close;
+    private readonly Action _onClose;
 
-    public ImGuiRenderer(CrashReportModel crashReport, ICollection<LogSource> logSources, Func<CrashReportModel, IEnumerable<LogSource>, Task<(bool, string)>> upload, Action close)
+    private byte[] _loadedPluginsTitle = Array.Empty<byte>();
+
+    public ImGuiRenderer(CrashReportModel crashReport, IList<LogSource> logSources, Func<CrashReportModel, IEnumerable<LogSource>, Task<(bool, string)>> upload, Action onClose)
     {
         _crashReport = crashReport;
         _logSources = logSources;
         _upload = upload;
-        _close = close;
-        
-        InitializeExceptionRecursively(crashReport.Exception, 0);
+        _onClose = onClose;
+
+        InitializeMain();
+        InitializeExceptionRecursively();
+        InitializeCodeLines();
+        InitializeInvolved();
+        InitializeInstalledModules();
+        InitializeInstalledLoaderPlugins();
+        InitializeAssemblies();
+        InitializeHarmonyPatches();
     }
 
+    private void InitializeMain()
+    {
+        _loadedPluginsTitle = UnsafeHelper.ToUtf8Array($"Loaded {_crashReport.Metadata.LoaderPluginProviderName} Plugins");
+    }
 
     public void Render()
     {
-        var viewPort = ImGui.GetMainViewport();
+        var viewPort = JmGui.GetMainViewport();
         ImGui.SetNextWindowPos(viewPort.WorkPos);
         ImGui.SetNextWindowSize(viewPort.WorkSize);
         ImGui.SetNextWindowViewport(viewPort.ID);
-        
+
         ImGui.StyleColorsLight();
-        ImGui.PushStyleColor(ImGuiCol.WindowBg, Background);
-        if (ImGui.Begin("Crash Report", ImGuiWindowFlags.HorizontalScrollbar | ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoCollapse))
+        JmGui.PushStyleColor(ImGuiCol.WindowBg, in Background);
+        if (JmGui.Begin("Crash Report\0"u8, ImGuiWindowFlags.HorizontalScrollbar | ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoCollapse))
         {
             ImGui.PopStyleColor();
-            
+
             RenderSummary();
-            
+
             ImGui.NewLine();
-            ImGui.PushStyleColor(ImGuiCol.ChildBg, White);
-            if (ImGui.BeginChild("Exception", Vector2.Zero, ImGuiChildFlags.Border | ImGuiChildFlags.AutoResizeY, ImGuiWindowFlags.None))
+            JmGui.PushStyleColor(ImGuiCol.ChildBg, in White);
+            if (ImGui.BeginChild("Exception", Zero2, ImGuiChildFlags.Border | ImGuiChildFlags.AutoResizeY, ImGuiWindowFlags.None))
             {
                 ImGui.PopStyleColor();
                 ImGui.SetWindowFontScale(2);
-                if (ImGui.TreeNode("Exception"))
+                if (JmGui.TreeNode("Exception\0"u8))
                 {
                     ImGui.SetWindowFontScale(1);
                     RenderExceptionRecursively(_crashReport.Exception, 0);
@@ -131,8 +135,8 @@ internal partial class ImGuiRenderer
             }
             ImGui.EndChild();
 
-            ImGui.PushStyleColor(ImGuiCol.ChildBg, White);
-            if (ImGui.BeginChild("Enhanced Stacktrace", Vector2.Zero, ImGuiChildFlags.Border | ImGuiChildFlags.AutoResizeY, ImGuiWindowFlags.None))
+            JmGui.PushStyleColor(ImGuiCol.ChildBg, in White);
+            if (JmGui.BeginChild("Enhanced Stacktrace\0"u8, in Zero2, ImGuiChildFlags.Border | ImGuiChildFlags.AutoResizeY, ImGuiWindowFlags.None))
             {
                 ImGui.PopStyleColor();
                 ImGui.SetWindowFontScale(2);
@@ -146,27 +150,27 @@ internal partial class ImGuiRenderer
             }
             ImGui.EndChild();
 
-            ImGui.PushStyleColor(ImGuiCol.ChildBg, White);
-            if (ImGui.BeginChild("Involved Modules and Plugins", Vector2.Zero, ImGuiChildFlags.Border | ImGuiChildFlags.AutoResizeY, ImGuiWindowFlags.None))
+            JmGui.PushStyleColor(ImGuiCol.ChildBg, in White);
+            if (JmGui.BeginChild("Involved Modules and Plugins\0"u8, in Zero2, ImGuiChildFlags.Border | ImGuiChildFlags.AutoResizeY, ImGuiWindowFlags.None))
             {
                 ImGui.PopStyleColor();
                 ImGui.SetWindowFontScale(2);
-                if (ImGui.TreeNode("Involved Modules and Plugins"))
+                if (JmGui.TreeNode("Involved Modules and Plugins\0"u8))
                 {
                     ImGui.SetWindowFontScale(1);
                     RenderInvolvedModulesAndPlugins();
-                } 
+                }
                 ImGui.TreePop();
                 ImGui.SetWindowFontScale(1);
             }
             ImGui.EndChild();
 
-            ImGui.PushStyleColor(ImGuiCol.ChildBg, White);
-            if (ImGui.BeginChild("Installed Modules", Vector2.Zero, ImGuiChildFlags.Border | ImGuiChildFlags.AutoResizeY, ImGuiWindowFlags.None))
+            JmGui.PushStyleColor(ImGuiCol.ChildBg, in White);
+            if (JmGui.BeginChild("Installed Modules\0"u8, in Zero2, ImGuiChildFlags.Border | ImGuiChildFlags.AutoResizeY, ImGuiWindowFlags.None))
             {
                 ImGui.PopStyleColor();
                 ImGui.SetWindowFontScale(2);
-                if (ImGui.TreeNode("Installed Modules"))
+                if (JmGui.TreeNode("Installed Modules\0"u8))
                 {
                     ImGui.SetWindowFontScale(1);
                     RenderInstalledModules();
@@ -176,13 +180,12 @@ internal partial class ImGuiRenderer
             }
             ImGui.EndChild();
 
-            ImGui.PushStyleColor(ImGuiCol.ChildBg, White);
-            var loadedPlugins = $"Loaded {_crashReport.Metadata.LoaderPluginProviderName} Plugins";
-            if (ImGui.BeginChild(loadedPlugins, Vector2.Zero, ImGuiChildFlags.Border | ImGuiChildFlags.AutoResizeY, ImGuiWindowFlags.None))
+            JmGui.PushStyleColor(ImGuiCol.ChildBg, in White);
+            if (JmGui.BeginChild(_loadedPluginsTitle, in Zero2, ImGuiChildFlags.Border | ImGuiChildFlags.AutoResizeY, ImGuiWindowFlags.None))
             {
                 ImGui.PopStyleColor();
                 ImGui.SetWindowFontScale(2);
-                if (ImGui.TreeNode(loadedPlugins))
+                if (JmGui.TreeNode(_loadedPluginsTitle))
                 {
                     ImGui.SetWindowFontScale(1);
                     RenderLoadedLoaderPlugins();
@@ -192,12 +195,12 @@ internal partial class ImGuiRenderer
             }
             ImGui.EndChild();
 
-            ImGui.PushStyleColor(ImGuiCol.ChildBg, White);
-            if (ImGui.BeginChild("Assemblies", Vector2.Zero, ImGuiChildFlags.Border | ImGuiChildFlags.AutoResizeY, ImGuiWindowFlags.None))
+            JmGui.PushStyleColor(ImGuiCol.ChildBg, in White);
+            if (JmGui.BeginChild("Assemblies\0"u8, in Zero2, ImGuiChildFlags.Border | ImGuiChildFlags.AutoResizeY, ImGuiWindowFlags.None))
             {
                 ImGui.PopStyleColor();
                 ImGui.SetWindowFontScale(2);
-                if (ImGui.TreeNode("Assemblies"))
+                if (JmGui.TreeNode("Assemblies\0"u8))
                 {
                     ImGui.SetWindowFontScale(1);
                     RenderAssemblies();
@@ -207,12 +210,12 @@ internal partial class ImGuiRenderer
             }
             ImGui.EndChild();
 
-            ImGui.PushStyleColor(ImGuiCol.ChildBg, White);
-            if (ImGui.BeginChild("Harmony Patches", Vector2.Zero, ImGuiChildFlags.Border | ImGuiChildFlags.AutoResizeY, ImGuiWindowFlags.None))
+            JmGui.PushStyleColor(ImGuiCol.ChildBg, in White);
+            if (JmGui.BeginChild("Harmony Patches\0"u8, in Zero2, ImGuiChildFlags.Border | ImGuiChildFlags.AutoResizeY, ImGuiWindowFlags.None))
             {
                 ImGui.PopStyleColor();
                 ImGui.SetWindowFontScale(2);
-                if (ImGui.TreeNode("Harmony Patches"))
+                if (JmGui.TreeNode("Harmony Patches\0"u8))
                 {
                     ImGui.SetWindowFontScale(1);
                     RenderHarmonyPatches();
@@ -222,12 +225,12 @@ internal partial class ImGuiRenderer
             }
             ImGui.EndChild();
 
-            ImGui.PushStyleColor(ImGuiCol.ChildBg, White);
-            if (ImGui.BeginChild("Log Files", Vector2.Zero, ImGuiChildFlags.Border | ImGuiChildFlags.AutoResizeY, ImGuiWindowFlags.None))
+            JmGui.PushStyleColor(ImGuiCol.ChildBg, in White);
+            if (JmGui.BeginChild("Log Files\0"u8, in Zero2, ImGuiChildFlags.Border | ImGuiChildFlags.AutoResizeY, ImGuiWindowFlags.None))
             {
                 ImGui.PopStyleColor();
                 ImGui.SetWindowFontScale(2);
-                if (ImGui.TreeNode("Log Files"))
+                if (JmGui.TreeNode("Log Files\0"u8))
                 {
                     ImGui.SetWindowFontScale(1);
                     RenderLogFiles();
