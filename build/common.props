@@ -3,6 +3,7 @@
 
   <!--Development Variables-->
   <PropertyGroup>
+    <BaseGameVersion>1.0.0</BaseGameVersion>
     <!--Module Version-->
     <Version>2.9.0</Version>
     <!--Harmony Version-->
@@ -26,19 +27,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
-    <PackageReference Include="Serilog" Version="3.0.1" />
-    <PackageReference Include="Serilog.Extensions.Logging" Version="3.1.0" />
-    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="$(ExtensionVersion)" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="$(ExtensionVersion)" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(ExtensionVersion)" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="$(ExtensionVersion)" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="$(ExtensionVersion)" />
-    <PackageReference Include="Microsoft.Extensions.Primitives" Version="$(ExtensionVersion)" />
-    <PackageReference Include="System.Memory" Version="4.5.4" />
-    <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />
-    <PackageReference Include="System.Reflection.Metadata" Version="1.8.1" />
+    <PackageReference Condition="$(SkipDependencies) == 'false'" Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
+    <PackageReference Condition="$(SkipDependencies) == 'false'" Include="Serilog" Version="3.0.1" />
+    <PackageReference Condition="$(SkipDependencies) == 'false'" Include="Serilog.Extensions.Logging" Version="3.1.0" />
+    <PackageReference Condition="$(SkipDependencies) == 'false'" Include="Serilog.Sinks.File" Version="5.0.0" />
+    <PackageReference Condition="$(SkipDependencies) == 'false'" Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="$(ExtensionVersion)" />
+    <PackageReference Condition="$(SkipDependencies) == 'false'" Include="Microsoft.Extensions.DependencyInjection" Version="$(ExtensionVersion)" />
+    <PackageReference Condition="$(SkipDependencies) == 'false'" Include="Microsoft.Extensions.Logging.Abstractions" Version="$(ExtensionVersion)" />
+    <PackageReference Condition="$(SkipDependencies) == 'false'" Include="Microsoft.Extensions.Logging" Version="$(ExtensionVersion)" />
+    <PackageReference Condition="$(SkipDependencies) == 'false'" Include="Microsoft.Extensions.Options" Version="$(ExtensionVersion)" />
+    <PackageReference Condition="$(SkipDependencies) == 'false'" Include="Microsoft.Extensions.Primitives" Version="$(ExtensionVersion)" />
+    <PackageReference Condition="$(SkipDependencies) == 'false'" Include="System.Memory" Version="4.5.4" />
+    <PackageReference Condition="$(SkipDependencies) == 'false'" Include="System.Numerics.Vectors" Version="4.5.0" />
+    <PackageReference Condition="$(SkipDependencies) == 'false'" Include="System.Reflection.Metadata" Version="1.8.1" />
   </ItemGroup>
   <ItemGroup Condition="$(TargetFramework) == 'net6'">
     <FrameworkReference Include="Microsoft.AspNetCore.App"  />

@@ -91,8 +91,6 @@ public sealed partial class ButterLibSubModule : MBSubModuleBase
     {
         base.OnSubModuleLoad();
 
-        PerformMigration001();
-
         IServiceProvider serviceProvider;
 
         if (!ServiceRegistrationWasCalled)
@@ -193,7 +191,6 @@ public sealed partial class ButterLibSubModule : MBSubModuleBase
             sb.AppendLine();
             sb.AppendLine(new TextObject(SMessageContinue).ToString());
 #if !NETSTANDARD2_0
-
             switch (System.Windows.Forms.MessageBox.Show(sb.ToString(), new TextObject(SWarningTitle).ToString(), System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Warning, System.Windows.Forms.MessageBoxDefaultButton.Button1, (System.Windows.Forms.MessageBoxOptions) 0x40000))
             {
                 case System.Windows.Forms.DialogResult.Yes:
@@ -243,38 +240,5 @@ public sealed partial class ButterLibSubModule : MBSubModuleBase
                 }
             }
         }
-    }
-
-    private static void PerformMigration001()
-    {
-        try
-        {
-            var configPath = PlatformFileHelperPCExtended.GetDirectoryFullPath(EngineFilePaths.ConfigsPath);
-            if (string.IsNullOrEmpty(configPath)) return;
-
-            var oldConfigPath = Path.GetFullPath("Configs");
-            var oldPath = Path.Combine(oldConfigPath, "ModLogs");
-            var newPath = Path.Combine(configPath, "ModLogs");
-            if (Directory.Exists(oldPath) && Directory.Exists(newPath))
-            {
-                foreach (var filePath in Directory.GetFiles(oldPath))
-                {
-                    var fileName = Path.GetFileName(filePath);
-                    var newFilePath = Path.Combine(newPath, fileName);
-                    try
-                    {
-                        File.Copy(filePath, newFilePath, true);
-                        File.Delete(filePath);
-                    }
-                    catch (Exception) { }
-                }
-
-                if (Directory.GetFiles(oldPath) is { Length: 0 } && Directory.GetDirectories(oldPath) is { Length: 0 })
-                    Directory.Delete(oldPath, true);
-                if (Directory.GetFiles(oldConfigPath) is { Length: 0 } && Directory.GetDirectories(oldConfigPath) is { Length: 0 })
-                    Directory.Delete(oldConfigPath, true);
-            }
-        }
-        catch (Exception) { }
     }
 }

@@ -1,8 +1,7 @@
 ﻿using HarmonyLib.BUTR.Extensions;
-
 using TaleWorlds.Library;
 
-namespace Bannerlord.ButterLib.Extensions;
+namespace Bannerlord.ButterLib.CrashReportWindow.Extensions;
 
 // TODO: What to with Xbox version?
 internal static class PlatformFileHelperPCExtended

@@ -11,13 +11,13 @@
 
     <BUTRUploadUrl>$(BANNERLORD_BUTR_UPLOAD_URL)</BUTRUploadUrl>
     <DefineConstants>$(DefineConstants);BANNERLORDBUTRSHARED_BUTTERLIB;X64</DefineConstants>
-    <GameVersion>1.0.0</GameVersion>
+    <SkipDependencies>false</SkipDependencies>
   </PropertyGroup>
 
   <!--NuGet Package-->
   <PropertyGroup>
     <PackageId>Bannerlord.ButterLib</PackageId>
-    <PackageDescription>A library containing common functions for modification development. Built against v$(GameVersion).</PackageDescription>
+    <PackageDescription>A library containing common functions for modification development. Built against v$(BaseGameVersion).</PackageDescription>
     <Title>ButterLib</Title>
     <DevelopmentDependency>false</DevelopmentDependency>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
@@ -44,7 +44,7 @@
     <!-- Disable MonoMod.Backports since we don't need it for compilation -->
     <PackageReference Include="MonoMod.Backports" Version="*" PrivateAssets="all" IncludeAssets="none" />
 
-    <PackageReference Include="Bannerlord.ReferenceAssemblies.Core" Version="$(GameVersion).*-*" PrivateAssets="all" />
+    <PackageReference Include="Bannerlord.ReferenceAssemblies.Core" Version="$(BaseGameVersion).*-*" PrivateAssets="all" />
 
     <!-- The game did a ninja update from 11 to 13. We use the newer version and will ship it for 1.0.0 and 1.0.1 -->
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" PrivateAssets="all" />
@@ -53,10 +53,6 @@
     <PackageReference Include="Required" Version="1.0.0" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
   </ItemGroup>
   <!--NuGet References-->
-
-  <ItemGroup Condition="$(TargetFramework) == 'net472'">
-    <Reference Include="System.IO.Compression" />
-  </ItemGroup>
 
   <!--
   <ItemGroup>

@@ -1,4 +1,5 @@
-﻿using BUTR.CrashReport.Bannerlord;
+﻿using System.Collections.Generic;
+using BUTR.CrashReport.Bannerlord;
 using BUTR.CrashReport.Models;
 
 using Newtonsoft.Json;
@@ -11,7 +12,7 @@ namespace Bannerlord.ButterLib.ExceptionHandler;
 
 internal static class CreatorZip
 {
-    public static void Create(CrashReportModel crashReport, Stream stream)
+    public static void Create(CrashReportModel crashReport, ICollection<LogSource> logSources, Stream stream)
     {
         using var crashReportStream = new MemoryStream(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(crashReport, new JsonSerializerSettings
         {
@@ -21,8 +22,7 @@ internal static class CreatorZip
             NullValueHandling = NullValueHandling.Include,
             Converters = { new StringEnumConverter() }
         })));
-        var logs = CreatorShared.GetLogSources();
-        using var logsStream = new MemoryStream(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(logs, new JsonSerializerSettings
+        using var logsStream = new MemoryStream(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(logSources, new JsonSerializerSettings
         {
             Formatting = Formatting.None,
             StringEscapeHandling = StringEscapeHandling.EscapeHtml,
@@ -34,7 +34,7 @@ internal static class CreatorZip
         using var miniDumpSteam = CreatorShared.GetMiniDump();
         using var saveFileSteam = CreatorShared.GetSaveFile();
         using var screenshotSteam = CreatorShared.GetScreenshot();
-        using var archiveSteam = CrashReportArchiveRenderer.Build(crashReport, logs, crashReportStream, logsStream, miniDumpSteam, saveFileSteam, screenshotSteam);
+        using var archiveSteam = CrashReportArchiveRenderer.Build(crashReport, logSources, crashReportStream, logsStream, miniDumpSteam, saveFileSteam, screenshotSteam);
         archiveSteam.Seek(0, SeekOrigin.Begin);
         archiveSteam.CopyTo(stream);
     }

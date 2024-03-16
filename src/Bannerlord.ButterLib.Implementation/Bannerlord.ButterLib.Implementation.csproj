@@ -13,6 +13,7 @@
     <DefineConstants>$(DefineConstants);$(GameVersionConstant);X64</DefineConstants>
 
     <AssemblyName>$(MSBuildProjectName).$(GameVersion)</AssemblyName>
+    <SkipDependencies>false</SkipDependencies>
   </PropertyGroup>
 
   <PropertyGroup Condition="$(TargetFramework) == 'net472'">
@@ -62,6 +63,11 @@
       </Reference>
   </ItemGroup>
   -->
+  
+  <ItemGroup>
+    <PackageReference Include="glfw" Version="3.4.0" PrivateAssets="all" IncludeAssets="none" GeneratePathProperty="true" />
+    <PackageReference Include="ImGui.NET" Version="1.90.1.1" PrivateAssets="all" ExcludeAssets="native" GeneratePathProperty="true" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Bannerlord.ButterLib\Bannerlord.ButterLib.csproj" />

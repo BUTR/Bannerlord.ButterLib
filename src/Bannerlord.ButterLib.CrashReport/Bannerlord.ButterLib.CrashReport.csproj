@@ -1,0 +1,72 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net472;net6.0</TargetFrameworks>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DefineConstants>$(DefineConstants);</DefineConstants>
+    <SkipDependencies>true</SkipDependencies>
+    <RootNamespace>Bannerlord.ButterLib.CrashReportWindow</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup Condition="$(TargetFramework) == 'net472'">
+    <Reference Include="System.IO.Compression" />
+  </ItemGroup>
+  
+  <!--Windows Forms-->
+  <ItemGroup Condition="$(TargetFramework) == 'net472'">
+    <Reference Include="System.Windows.Forms" PrivateAssets="all" />
+  </ItemGroup>
+  <ItemGroup Condition="$(TargetFramework) == 'net6.0'">
+    <FrameworkReference Include="Microsoft.WindowsDesktop.App" PrivateAssets="all" />
+  </ItemGroup>
+  <!--Windows Forms-->
+  
+  <PropertyGroup>
+    <ILRepackTargetConfigurations>Debug;Release</ILRepackTargetConfigurations>
+    <ILRepackAllowDuplicateResources>false</ILRepackAllowDuplicateResources>
+    <ILRepackMergeDebugSymbols>true</ILRepackMergeDebugSymbols>
+    <ILRepackPerformInternalize>true</ILRepackPerformInternalize>
+    <ILRepackCopyAttributes>false</ILRepackCopyAttributes>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="ILRepack" Version="2.0.27" PrivateAssets="all" />
+    <PackageReference Include="ILRepack.FullAuto" Version="1.5.0" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ImGui.NET" Version="1.90.1.1" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Bannerlord.BUTR.Shared" Version="$(BUTRSharedVersion)" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
+    <PackageReference Include="Bannerlord.ModuleManager.Source" Version="$(BUTRModuleManagerVersion)" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
+    <PackageReference Include="Bannerlord.ReferenceAssemblies.Core" Version="$(BaseGameVersion).*-*" PrivateAssets="all" />
+
+    <!-- The game did a ninja update from 11 to 13. We use the newer version and will ship it for 1.0.0 and 1.0.1 -->
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" PrivateAssets="all" IncludeAssets="compile" />
+    
+    <PackageReference Include="Harmony.Extensions" Version="$(HarmonyExtensionsVersion)" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
+    <PackageReference Include="Lib.Harmony" Version="$(HarmonyVersion)" PrivateAssets="all" IncludeAssets="compile" />
+
+    <PackageReference Include="Nullable" Version="1.3.1" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
+    <PackageReference Include="IsExternalInit" Version="1.0.3" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Compile Include="..\..\..\BUTR.CrashReport\src\BUTR.CrashReport.Bannerlord.Source\*.cs" />
+    <ProjectReference Include="..\..\..\BUTR.CrashReport\src\BUTR.CrashReport\BUTR.CrashReport.csproj" Targets="DisableILRepack;Build" />
+  </ItemGroup>
+
+  <Target Name="ExcludeAssembliesFromILRepack" BeforeTargets="ILRepackPrepareBuild">
+    <PropertyGroup>
+      <!-- Exclude the Model -->
+      <ILRepackExcludeAssemblies>$(ILRepackExcludeAssemblies);$(ProjectDir)$(OutputPath)cimgui.dll;</ILRepackExcludeAssemblies>
+      <ILRepackExcludeAssemblies>$(ILRepackExcludeAssemblies);$(ProjectDir)$(OutputPath)BUTR.CrashReport.dll;</ILRepackExcludeAssemblies>
+      <ILRepackExcludeAssemblies>$(ILRepackExcludeAssemblies);$(ProjectDir)$(OutputPath)BUTR.CrashReport.Decompilers.dll;</ILRepackExcludeAssemblies>
+      <ILRepackExcludeAssemblies>$(ILRepackExcludeAssemblies);$(ProjectDir)$(OutputPath)BUTR.CrashReport.Models.dll;</ILRepackExcludeAssemblies>
+    </PropertyGroup>
+  </Target>
+
+</Project>
