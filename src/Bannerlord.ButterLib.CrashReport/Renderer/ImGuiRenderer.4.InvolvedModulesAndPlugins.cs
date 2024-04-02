@@ -1,6 +1,4 @@
-﻿using Bannerlord.BUTR.Shared.Extensions;
-
-using BUTR.CrashReport.Models;
+﻿using BUTR.CrashReport.Models;
 
 using ImGuiNET;
 
@@ -14,6 +12,7 @@ partial class ImGuiRenderer
 {
     private static readonly byte[][] _harmonyPatchTypeNames =
     [
+        [],
         "Prefix\0"u8.ToArray(),     // Prefix
         "Postfix\0"u8.ToArray(),    // Postfix
         "Transpiler\0"u8.ToArray(), // Transpiler
@@ -38,31 +37,31 @@ partial class ImGuiRenderer
 
     private void RenderInvolvedModules()
     {
-        foreach (var (moduleId, stacktraces) in _enhancedStacktraceGroupedByModuleId)
+        foreach (var kv in _enhancedStacktraceGroupedByModuleId)
         {
-            if (moduleId == "UNKNOWN") continue;
+            if (kv.Key == "UNKNOWN") continue;
 
-            if (JmGui.TreeNode(moduleId, ImGuiTreeNodeFlags.DefaultOpen))
+            if (_imgui.TreeNode(kv.Key, ImGuiTreeNodeFlags.DefaultOpen))
             {
-                JmGui.RenderId("Module Id:\0"u8, moduleId);
+                _imgui.RenderId("Module Id:\0"u8, kv.Key);
 
-                for (var j = 0; j < stacktraces.Length; j++)
+                for (var j = 0; j < kv.Value.Length; j++)
                 {
-                    var stacktrace = stacktraces[j];
-                    ImGui.Bullet();
-                    ImGui.Indent();
+                    var stacktrace = kv.Value[j];
+                    _imgui.Bullet();
+                    _imgui.Indent();
 
-                    JmGui.TextSameLine("Method: \0"u8);
-                    JmGui.Text(stacktrace.ExecutingMethod.MethodFullDescription);
-                    JmGui.TextSameLine("Frame: \0"u8);
-                    JmGui.Text(stacktrace.FrameDescription);
+                    _imgui.TextSameLine("Method: \0"u8);
+                    _imgui.Text(stacktrace.ExecutingMethod.MethodFullDescription);
+                    _imgui.TextSameLine("Frame: \0"u8);
+                    _imgui.Text(stacktrace.FrameDescription);
 
                     if (stacktrace.PatchMethods.Count > 0)
                     {
-                        JmGui.Text("Patches:\0"u8);
+                        _imgui.Text("Patches:\0"u8);
 
-                        ImGui.Bullet();
-                        ImGui.Indent();
+                        _imgui.Bullet();
+                        _imgui.Indent();
                         for (var k = 0; k < stacktrace.PatchMethods.Count; k++)
                         {
                             var method = stacktrace.PatchMethods[k];
@@ -72,55 +71,55 @@ partial class ImGuiRenderer
                             if (method.MethodName == "BlankTranspiler") continue;
                             var moduleId2 = method.ModuleId ?? "UNKNOWN";
 
-                            if (moduleId2 == "UNKNOWN") JmGui.RenderId("Module Id:\0"u8, moduleId);
-                            JmGui.TextSameLine("Method: \0"u8);
-                            JmGui.Text(method.MethodFullDescription);
+                            if (moduleId2 == "UNKNOWN") _imgui.RenderId("Module Id:\0"u8, kv.Key);
+                            _imgui.TextSameLine("Method: \0"u8);
+                            _imgui.Text(method.MethodFullDescription);
                             if (harmonyPatch is not null)
                             {
                                 var harmonyPatchType = Clamp(harmonyPatch.PatchType, HarmonyPatchType.Prefix, HarmonyPatchType.Transpiler);
-                                JmGui.TextSameLine("Harmony Patch Type: }\0"u8);
-                                JmGui.Text(_harmonyPatchTypeNames[harmonyPatchType]);
+                                _imgui.TextSameLine("Harmony Patch Type: }\0"u8);
+                                _imgui.Text(_harmonyPatchTypeNames[harmonyPatchType]);
                             }
                         }
 
-                        ImGui.Unindent();
+                        _imgui.Unindent();
                     }
 
-                    ImGui.Unindent();
+                    _imgui.Unindent();
                 }
 
-                ImGui.TreePop();
+                _imgui.TreePop();
             }
         }
     }
 
     private void RenderInvolvedPlugins()
     {
-        foreach (var (pluginId, stacktraces) in _enhancedStacktraceGroupedByLoaderPluginIdId)
+        foreach (var kv in _enhancedStacktraceGroupedByLoaderPluginIdId)
         {
-            if (pluginId == "UNKNOWN") continue;
+            if (kv.Key == "UNKNOWN") continue;
 
-            if (JmGui.TreeNode(pluginId, ImGuiTreeNodeFlags.DefaultOpen))
+            if (_imgui.TreeNode(kv.Key, ImGuiTreeNodeFlags.DefaultOpen))
             {
-                JmGui.RenderId("Plugin Id:\0"u8, pluginId);
+                _imgui.RenderId("Plugin Id:\0"u8, kv.Key);
 
-                for (var j = 0; j < stacktraces.Length; j++)
+                for (var j = 0; j < kv.Value.Length; j++)
                 {
-                    var stacktrace = stacktraces[j];
-                    ImGui.Bullet();
-                    ImGui.Indent();
+                    var stacktrace = kv.Value[j];
+                    _imgui.Bullet();
+                    _imgui.Indent();
 
-                    JmGui.TextSameLine("Method: \0"u8);
-                    JmGui.Text(stacktrace.ExecutingMethod.MethodFullDescription);
-                    JmGui.TextSameLine("Frame: \0"u8);
-                    JmGui.Text(stacktrace.FrameDescription);
+                    _imgui.TextSameLine("Method: \0"u8);
+                    _imgui.Text(stacktrace.ExecutingMethod.MethodFullDescription);
+                    _imgui.TextSameLine("Frame: \0"u8);
+                    _imgui.Text(stacktrace.FrameDescription);
 
                     if (stacktrace.PatchMethods.Count > 0)
                     {
-                        JmGui.Text("Patches:\0"u8);
+                        _imgui.Text("Patches:\0"u8);
 
-                        ImGui.Bullet();
-                        ImGui.Indent();
+                        _imgui.Bullet();
+                        _imgui.Indent();
 
                         for (var k = 0; k < stacktrace.PatchMethods.Count; k++)
                         {
@@ -131,34 +130,34 @@ partial class ImGuiRenderer
                             if (method.MethodName == "BlankTranspiler") continue;
                             var pluginId2 = method.LoaderPluginId ?? "UNKNOWN";
 
-                            if (pluginId2 == "UNKNOWN") JmGui.RenderId("Plugin Id:\0"u8, pluginId);
-                            JmGui.TextSameLine("Method: \0"u8);
-                            JmGui.Text(method.MethodFullDescription);
+                            if (pluginId2 == "UNKNOWN") _imgui.RenderId("Plugin Id:\0"u8, kv.Key);
+                            _imgui.TextSameLine("Method: \0"u8);
+                            _imgui.Text(method.MethodFullDescription);
                             if (harmonyPatch is not null)
                             {
                                 var harmonyPatchType = Clamp(harmonyPatch.PatchType, HarmonyPatchType.Prefix, HarmonyPatchType.Transpiler);
-                                JmGui.TextSameLine("Harmony Patch Type: \0"u8);
-                                JmGui.Text(_harmonyPatchTypeNames[harmonyPatchType]);
+                                _imgui.TextSameLine("Harmony Patch Type: \0"u8);
+                                _imgui.Text(_harmonyPatchTypeNames[harmonyPatchType]);
                             }
                         }
 
-                        ImGui.Unindent();
+                        _imgui.Unindent();
                     }
 
-                    ImGui.Unindent();
+                    _imgui.Unindent();
                 }
 
-                ImGui.TreePop();
+                _imgui.TreePop();
             }
         }
     }
 
     private void RenderInvolvedModulesAndPlugins()
     {
-        JmGui.Text("Based on Stacktrace:\0"u8);
-        ImGui.Indent();
+        _imgui.Text("Based on Stacktrace:\0"u8);
+        _imgui.Indent();
         RenderInvolvedModules();
         RenderInvolvedPlugins();
-        ImGui.Unindent();
+        _imgui.Unindent();
     }
 }

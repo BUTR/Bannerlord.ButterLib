@@ -22,9 +22,9 @@ internal static class MiniDump
         [DllImport("dbghelp.dll", CallingConvention = CallingConvention.Winapi, SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool MiniDumpWriteDump(IntPtr hProcess, uint ProcessId, SafeHandle hFile, MINIDUMP_TYPE DumpType,
-            [In] ref MINIDUMP_EXCEPTION_INFORMATION ExceptionParams,
-            [In] ref MINIDUMP_USER_STREAM_INFORMATION UserStreamParam,
-            [In] ref MINIDUMP_CALLBACK_INFORMATION CallbackParam);
+            ref readonly MINIDUMP_EXCEPTION_INFORMATION ExceptionParams,
+            ref readonly MINIDUMP_USER_STREAM_INFORMATION UserStreamParam,
+            ref readonly MINIDUMP_CALLBACK_INFORMATION CallbackParam);
 
         [Flags]
         public enum MINIDUMP_TYPE : int

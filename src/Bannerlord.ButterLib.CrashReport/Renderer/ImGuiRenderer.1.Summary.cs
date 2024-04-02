@@ -2,8 +2,6 @@
 
 using BUTR.CrashReport.Bannerlord;
 
-using ImGuiNET;
-
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -108,75 +106,73 @@ partial class ImGuiRenderer
 
     private void RenderSummary()
     {
-        if (JmGui.BeginTable("Buttons\0"u8, 2))
+        if (_imgui.BeginTable("Buttons\0"u8, 2))
         {
-            ImGui.TableNextColumn();
-            ImGui.SetWindowFontScale(2);
-            JmGui.TextWrapped("Intercepted an exception!\0"u8);
-            ImGui.SetWindowFontScale(1);
-            ImGui.TableNextColumn();
+            _imgui.TableNextColumn();
+            _imgui.SetWindowFontScale(2);
+            _imgui.TextWrapped("Intercepted an exception!\0"u8);
+            _imgui.SetWindowFontScale(1);
+            _imgui.TableNextColumn();
 
-            if (JmGui.Button("Save Report as HTML\0"u8)) SaveCrashReportAsHtml();
-            ImGui.SameLine();
-            if (JmGui.Button("Save Report as ZIP\0"u8)) SaveCrashReportAsZip();
-            ImGui.SameLine();
-            JmGui.PushStyleColor(ImGuiCol.Button, in Orange);
-            if (JmGui.Button("Close Report and Continue\0"u8)) _onClose();
-            ImGui.PopStyleColor();
-            ImGui.TableNextColumn();
-            ImGui.TableNextColumn();
+            if (_imgui.Button("Save Report as HTML\0"u8)) SaveCrashReportAsHtml();
+            _imgui.SameLine();
+            if (_imgui.Button("Save Report as ZIP\0"u8)) SaveCrashReportAsZip();
+            _imgui.SameLine();
+            if (_imgui.Button("Close Report and Continue\0"u8, in Secondary, in Secondary2, in Secondary3)) _onClose();
+            _imgui.TableNextColumn();
+            _imgui.TableNextColumn();
 
-            if (JmGui.Button("Copy as HTML\0"u8)) CopyAsHtml();
-            ImGui.SameLine();
-            if (JmGui.Button("Upload Report as Permalink\0"u8)) UploadReport();
-            ImGui.TableNextColumn();
-            ImGui.TableNextColumn();
+            if (_imgui.Button("Copy as HTML\0"u8)) CopyAsHtml();
+            _imgui.SameLine();
+            if (_imgui.Button("Upload Report as Permalink\0"u8)) UploadReport();
+            _imgui.TableNextColumn();
+            _imgui.TableNextColumn();
 
-            JmGui.Text("Save Report as HTML Options:\0"u8);
-            ImGui.TableNextColumn();
-            ImGui.TableNextColumn();
+            _imgui.Text("Save Report as HTML Options:\0"u8);
+            _imgui.TableNextColumn();
+            _imgui.TableNextColumn();
 
-            JmGui.Checkbox("Include Screenshot\0"u8, ref _addScreenshots);
-            ImGui.TableNextColumn();
-            ImGui.TableNextColumn();
+            _imgui.Checkbox("Include Screenshot\0"u8, ref _addScreenshots);
+            _imgui.TableNextColumn();
+            _imgui.TableNextColumn();
 
-            JmGui.Checkbox("Include Latest Save File\0"u8, ref _addLatestSave);
-            ImGui.TableNextColumn();
-            ImGui.TableNextColumn();
+            _imgui.Checkbox("Include Latest Save File\0"u8, ref _addLatestSave);
+            _imgui.TableNextColumn();
+            _imgui.TableNextColumn();
 
-            JmGui.Checkbox("Include Mini Dump\0"u8, ref _addMiniDump);
-            ImGui.EndTable();
+            _imgui.Checkbox("Include Mini Dump\0"u8, ref _addMiniDump);
+            _imgui.EndTable();
         }
 
-        JmGui.Text("Clicking 'Close Report and Continue' will continue with the Game's error report mechanism.\0"u8);
+        _imgui.Text("Clicking 'Close Report and Continue' will continue with the Game's error report mechanism.\0"u8);
 
-        ImGui.Separator();
-        ImGui.NewLine();
+        _imgui.Separator();
+        _imgui.NewLine();
 
-        ImGui.SetWindowFontScale(2);
-        JmGui.TextSameLine(_crashReport.Metadata.GameName ?? string.Empty);
-        JmGui.Text(" has encountered a problem and will close itself!\0"u8);
-        ImGui.SetWindowFontScale(1);
+        _imgui.SetWindowFontScale(2);
+        _imgui.TextSameLine(_crashReport.Metadata.GameName ?? string.Empty);
+        _imgui.Text(" has encountered a problem and will close itself!\0"u8);
+        _imgui.SetWindowFontScale(1);
 
-        ImGui.NewLine();
+        _imgui.NewLine();
 
-        JmGui.Text("This is a community Crash Report. Please save it and use it for reporting the error. Do not provide screenshots, provide the report!\0"u8);
+        _imgui.Text("This is a community Crash Report. Please save it and use it for reporting the error. Do not provide screenshots, provide the report!\0"u8);
 
-        JmGui.Text("Most likely this error was caused by a custom installed module.\0"u8);
+        _imgui.Text("Most likely this error was caused by a custom installed module.\0"u8);
 
-        ImGui.NewLine();
+        _imgui.NewLine();
 
-        JmGui.Text("If you were in the middle of something, the progress might be lost.\0"u8);
+        _imgui.Text("If you were in the middle of something, the progress might be lost.\0"u8);
 
-        ImGui.NewLine();
+        _imgui.NewLine();
 
-        JmGui.TextSameLine("Launcher: \0"u8);
-        JmGui.TextSameLine(_crashReport.Metadata.LauncherType ?? string.Empty);
-        JmGui.TextSameLine(" (\0"u8);
-        JmGui.TextSameLine(_crashReport.Metadata.LauncherVersion ?? string.Empty);
-        JmGui.Text(")\0"u8);
+        _imgui.TextSameLine("Launcher: \0"u8);
+        _imgui.TextSameLine(_crashReport.Metadata.LauncherType ?? string.Empty);
+        _imgui.TextSameLine(" (\0"u8);
+        _imgui.TextSameLine(_crashReport.Metadata.LauncherVersion ?? string.Empty);
+        _imgui.Text(")\0"u8);
 
-        JmGui.TextSameLine("Runtime: \0"u8);
-        JmGui.Text(_crashReport.Metadata.Runtime ?? string.Empty);
+        _imgui.TextSameLine("Runtime: \0"u8);
+        _imgui.Text(_crashReport.Metadata.Runtime ?? string.Empty);
     }
 }

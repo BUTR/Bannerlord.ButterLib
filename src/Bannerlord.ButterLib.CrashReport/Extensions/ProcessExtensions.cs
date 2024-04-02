@@ -11,7 +11,6 @@ namespace Bannerlord.ButterLib.CrashReportWindow.Extensions;
 
 internal static class ProcessExtensions
 {
-    public static int ParentProcessId(this Process process) => ParentProcessId(process.Id);
     public static Process? ParentProcess(this Process process) => ParentProcessId(process.Id) is var pId && pId is not -1 ? Process.GetProcessById(pId) : null;
 
     private static int ParentProcessId(int Id)
@@ -77,9 +76,7 @@ internal static class ProcessExtensions
         public string szExeFile;
     };
 
-#if !NETSTANDARD2_0_OR_GREATER
     [HostProtection(SecurityAction.LinkDemand, MayLeakOnAbort = true)]
-#endif
     [SuppressUnmanagedCodeSecurity]
     private sealed class SafeSnapshotHandle : SafeHandleMinusOneIsInvalid
     {

@@ -2,8 +2,6 @@
 
 using BUTR.CrashReport.Models;
 
-using ImGuiNET;
-
 using System;
 using System.Linq;
 using System.Text;
@@ -72,36 +70,36 @@ partial class ImGuiRenderer
         var pluginId = _stacktracesUtf8[level]?.ExecutingMethod.LoaderPluginId ?? "UNKNOWN";
         var sourcePluginId = ex.SourceLoaderPluginId ?? "UNKNOWN";
 
-        JmGui.Text("Exception Information:\0"u8);
+        _imgui.Text("Exception Information:\0"u8);
 
-        if (moduleId != "UNKNOWN") JmGui.RenderId("Potential Module Id:\0"u8, moduleId);
-        if (sourceModuleId != "UNKNOWN") JmGui.RenderId("Potential Source Module Id:\0"u8, sourceModuleId);
-        if (pluginId != "UNKNOWN") JmGui.RenderId("Potential Plugin Id:\0"u8, pluginId);
-        if (sourcePluginId != "UNKNOWN") JmGui.RenderId("Potential Source Plugin Id:\0"u8, sourcePluginId);
+        if (moduleId != "UNKNOWN") _imgui.RenderId("Potential Module Id:\0"u8, moduleId);
+        if (sourceModuleId != "UNKNOWN") _imgui.RenderId("Potential Source Module Id:\0"u8, sourceModuleId);
+        if (pluginId != "UNKNOWN") _imgui.RenderId("Potential Plugin Id:\0"u8, pluginId);
+        if (sourcePluginId != "UNKNOWN") _imgui.RenderId("Potential Source Plugin Id:\0"u8, sourcePluginId);
 
-        JmGui.TextSameLine("Type: \0"u8);
-        JmGui.Text(ex.Type);
+        _imgui.TextSameLine("Type: \0"u8);
+        _imgui.Text(ex.Type);
 
         if (!string.IsNullOrWhiteSpace(ex.Message))
         {
-            JmGui.TextSameLine("Message: \0"u8);
-            JmGui.Text(ex.Message);
+            _imgui.TextSameLine("Message: \0"u8);
+            _imgui.Text(ex.Message);
         }
 
         if (!string.IsNullOrWhiteSpace(ex.CallStack))
         {
-            JmGui.Text("Stacktrace:\0"u8);
-            ImGui.Indent();
-            JmGui.InputTextMultiline(_levelInputIdUtf8[level], _exceptionsUtf8[level], _callstackLineCount[level]);
-            ImGui.Unindent();
+            _imgui.Text("Stacktrace:\0"u8);
+            _imgui.Indent();
+            _imgui.InputTextMultiline(_levelInputIdUtf8[level], _exceptionsUtf8[level], _callstackLineCount[level]);
+            _imgui.Unindent();
         }
 
         if (ex.InnerException is not null)
         {
-            JmGui.Text("Inner Exception:\0"u8);
-            ImGui.Indent();
+            _imgui.Text("Inner Exception:\0"u8);
+            _imgui.Indent();
             RenderExceptionRecursively(ex.InnerException, level + 1);
-            ImGui.Unindent();
+            _imgui.Unindent();
         }
     }
 }

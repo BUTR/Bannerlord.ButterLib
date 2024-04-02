@@ -2,6 +2,8 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE.txt', which is part of this source code package.
 
+using System.CodeDom.Compiler;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
 
@@ -9,8 +11,31 @@ namespace Bannerlord.ButterLib.CrashReportWindow.Utils;
 
 internal static class TimerHelper
 {
-    [DllImport("ntdll.dll", SetLastError = true)]
-    private static extern int NtQueryTimerResolution(out uint MinimumResolution, out uint MaximumResolution, out uint CurrentResolution);
+    [GeneratedCode("Microsoft.Interop.LibraryImportGenerator", "8.0.10.11423")]
+    [SkipLocalsInit]
+    private static unsafe int NtQueryTimerResolution(out uint MinimumResolution, out uint MaximumResolution, out uint CurrentResolution)
+    {
+        //int __lastError;
+        Unsafe.SkipInit(out MinimumResolution);
+        Unsafe.SkipInit(out MaximumResolution);
+        Unsafe.SkipInit(out CurrentResolution);
+        int __retVal;
+        // Pin - Pin data in preparation for calling the P/Invoke.
+        fixed (uint* __CurrentResolution_native = &CurrentResolution)
+        fixed (uint* __MaximumResolution_native = &MaximumResolution)
+        fixed (uint* __MinimumResolution_native = &MinimumResolution)
+        {
+            //Marshal.SetLastSystemError(0);
+            __retVal = __PInvoke(__MinimumResolution_native, __MaximumResolution_native, __CurrentResolution_native);
+            //__lastError = Marshal.GetLastSystemError();
+        }
+
+        //Marshal.SetLastPInvokeError(__lastError);
+        return __retVal;
+        // Local P/Invoke
+        [DllImport("ntdll.dll", EntryPoint = "NtQueryTimerResolution", ExactSpelling = true)]
+        static extern int __PInvoke(uint* __MinimumResolution_native, uint* __MaximumResolution_native, uint* __CurrentResolution_native);
+    }
 
     private static readonly double LowestSleepThreshold;
 

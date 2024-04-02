@@ -32,6 +32,8 @@ internal class LoggerTraceListener : TraceListener
             return null;
 
         var eventIdIdx = eventIdMessage.IndexOf(':');
+        if (eventIdIdx == -1)
+            return null;
         if (!int.TryParse(eventIdMessage.Slice(0, eventIdIdx).ToString(), out var eventId))
             return null;
         var message = eventIdMessage.Slice(eventIdIdx + 2);

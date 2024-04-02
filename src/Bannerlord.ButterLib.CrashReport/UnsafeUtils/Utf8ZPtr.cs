@@ -17,6 +17,7 @@ internal readonly struct Utf8ZPtr
     public unsafe ref readonly byte Data => ref Unsafe.AsRef<byte>(NativePtr.ToPointer());
 
     public unsafe Utf8ZPtr(ref byte reference) { NativePtr = new IntPtr(Unsafe.AsPointer(ref reference)); }
+    public Utf8ZPtr(ref readonly ReadOnlySpan<byte> span) : this(ref MemoryMarshal.GetReference(span)) { }
     public Utf8ZPtr(ref readonly Span<byte> span) : this(ref MemoryMarshal.GetReference(span)) { }
     public Utf8ZPtr(ref readonly byte[] array) : this(ref MemoryMarshal.GetReference(array.AsSpan())) { }
 

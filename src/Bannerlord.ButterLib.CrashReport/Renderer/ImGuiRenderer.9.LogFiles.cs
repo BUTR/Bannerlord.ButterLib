@@ -6,6 +6,8 @@ using HonkPerf.NET.RefLinq;
 
 using ImGuiNET;
 
+using System;
+
 namespace Bannerlord.ButterLib.CrashReportWindow.Renderer;
 
 partial class ImGuiRenderer
@@ -21,16 +23,28 @@ partial class ImGuiRenderer
         "FTL\0"u8.ToArray(), // Fatal
     ];
 
+    private int[] _logSourceMaxTypeLengths = Array.Empty<int>();
+
+    private void InitializeLogFiles()
+    {
+        _logSourceMaxTypeLengths = new int[_logSources.Count];
+        for (var i = 0; i < _logSources.Count; i++)
+        {
+            if (_logSources[i].Logs.Count == 0) _logSourceMaxTypeLengths[i] = 0;
+            else _logSourceMaxTypeLengths[i] = _logSources[i].Logs.ToRefLinq().Select(x => x.Type.Length).Max();
+        }
+    }
+
     private void RenderLogFiles()
     {
         for (var i = 0; i < _logSources.Count; i++)
         {
             var logSource = _logSources[i];
-            if (JmGui.TreeNode(logSource.Name, ImGuiTreeNodeFlags.DefaultOpen))
+            if (_imgui.TreeNode(logSource.Name, ImGuiTreeNodeFlags.DefaultOpen))
             {
                 if (logSource.Logs.Count == 0) continue;
 
-                var longestTypeLength = logSource.Logs.ToRefLinq().Select(x => x.Type.Length).Max();
+                var longestTypeLength = _logSourceMaxTypeLengths[i];
                 for (var j = 0; j < logSource.Logs.Count; j++)
                 {
                     var logEntry = logSource.Logs[j];
@@ -46,18 +60,18 @@ partial class ImGuiRenderer
                     };
                     var level = Clamp(logEntry.Level, LogLevel.None, LogLevel.Fatal);
 
-                    JmGui.TextSameLine(ref date);
-                    JmGui.TextSameLine(" [\0"u8);
-                    JmGui.TextSameLine(logEntry.Type);
-                    JmGui.TextSameLine("]\0"u8);
-                    JmGui.PadRight(toAppend);
-                    JmGui.TextSameLine("[\0"u8);
-                    JmGui.TextColoredSameLine(in color, _logLevelNamesUtf8[level]);
-                    JmGui.TextSameLine("]: \0"u8);
-                    JmGui.Text(logEntry.Message);
+                    _imgui.TextSameLine(ref date);
+                    _imgui.TextSameLine(" [\0"u8);
+                    _imgui.TextSameLine(logEntry.Type);
+                    _imgui.TextSameLine("]\0"u8);
+                    _imgui.PadRight(toAppend);
+                    _imgui.TextSameLine("[\0"u8);
+                    _imgui.TextColoredSameLine(in color, _logLevelNamesUtf8[level]);
+                    _imgui.TextSameLine("]: \0"u8);
+                    _imgui.Text(logEntry.Message);
                 }
 
-                JmGui.TreePop();
+                _imgui.TreePop();
             }
         }
     }

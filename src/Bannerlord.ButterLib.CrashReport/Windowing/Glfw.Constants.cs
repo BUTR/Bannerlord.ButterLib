@@ -1,6 +1,6 @@
-﻿namespace Bannerlord.ButterLib.CrashReportWindow.OpenGL;
+﻿namespace Bannerlord.ButterLib.CrashReportWindow.Windowing;
 
-partial class GLFW
+partial class Glfw
 {
     public const int GLFW_VERSION_MAJOR = 3;
     public const int GLFW_VERSION_MINOR = 3;
