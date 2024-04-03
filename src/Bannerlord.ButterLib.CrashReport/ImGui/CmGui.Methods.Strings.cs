@@ -94,7 +94,7 @@ unsafe partial class CmGui
         span[length] = 0;
         fixed (byte* ptr = span)
         {
-            return igTreeNodeEx_Str(ptr, (int) flags) > 0;
+            return igTreeNodeEx_Str(ptr, flags) > 0;
         }
     }
 
@@ -106,13 +106,13 @@ unsafe partial class CmGui
         span[length] = 0;
         fixed (byte* ptr = span)
         {
-            return igBeginChild_Str(ptr, size, Unsafe.As<ImGuiChildFlags, int>(ref child_flags), Unsafe.As<ImGuiWindowFlags, int>(ref window_flags)) > 0;
+            return igBeginChild_Str(ptr, size, child_flags, window_flags) > 0;
         }
     }
 
     public bool InputTextMultiline(string label, ref string input, uint maxLength, Vector2 size, ImGuiInputTextFlags flags)
     {
-        return ImGuiNET.ImGui.InputTextMultiline(label, ref input, maxLength, size, (ImGuiNET.ImGuiInputTextFlags) flags, null, IntPtr.Zero);
+        return ImGuiNET.ImGui.InputTextMultiline(label, ref input, maxLength, size, flags, null, IntPtr.Zero);
     }
 
     /*
@@ -155,7 +155,7 @@ unsafe partial class CmGui
 
     public bool InputText(string label, ref string input, uint maxLength, ImGuiInputTextFlags flags)
     {
-        return ImGuiNET.ImGui.InputText(label, ref input, maxLength, (ImGuiNET.ImGuiInputTextFlags) flags, null, IntPtr.Zero);
+        return ImGuiNET.ImGui.InputText(label, ref input, maxLength, flags, null, IntPtr.Zero);
     }
 
     /*

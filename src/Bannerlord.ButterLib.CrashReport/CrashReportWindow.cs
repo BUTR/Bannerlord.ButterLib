@@ -1,34 +1,57 @@
-﻿using Bannerlord.ButterLib.CrashReportWindow.Controller;
+﻿using Bannerlord.BUTR.Shared.Helpers;
+using Bannerlord.ButterLib.CrashReportWindow.Controller;
 using Bannerlord.ButterLib.CrashReportWindow.Extensions;
 using Bannerlord.ButterLib.CrashReportWindow.ImGui;
-using Bannerlord.ButterLib.CrashReportWindow.OpenGL;
 using Bannerlord.ButterLib.CrashReportWindow.Renderer;
 using Bannerlord.ButterLib.CrashReportWindow.Utils;
-using Bannerlord.ButterLib.CrashReportWindow.Windowing;
 
 using BUTR.CrashReport;
 using BUTR.CrashReport.Bannerlord;
 using BUTR.CrashReport.Models;
 
+using Silk.NET.Core.Loader;
+using Silk.NET.Input;
+using Silk.NET.Input.Glfw;
+using Silk.NET.OpenGL;
+using Silk.NET.Windowing;
+using Silk.NET.Windowing.Glfw;
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Threading;
 using System.Threading.Tasks;
+
+using TaleWorlds.Library;
 
 namespace Bannerlord.ButterLib.CrashReportWindow;
 
-using static Glfw;
-
 public readonly ref struct CrashReportWindow
 {
+    static CrashReportWindow()
+    {
+        if (PathResolver.Default is DefaultPathResolver pr)
+        {
+            var modulePath = ModuleInfoHelper.GetModulePath(typeof(CrashReportWindow))!;
+            pr.Resolvers =
+            [
+                path => new[]
+                {
+                    Path.Combine(modulePath, "bin", Common.ConfigName, path)
+                }
+            ];
+        }
+
+        GlfwInput.RegisterPlatform();
+        GlfwWindowing.RegisterPlatform();
+    }
+
     public static void ShowAndWait(Exception exception, IList<LogSource> logSources, Func<CrashReportModel, IEnumerable<LogSource>, Task<(bool, string)>> upload, MethodInfo? bewFinalizer)
     {
         var metadata = new Dictionary<string, string>
         {
-            { "METADATA:TW_ConfigName", TaleWorlds.Library.Common.ConfigName },
+            { "METADATA:TW_ConfigName", Common.ConfigName },
         };
         if (Process.GetCurrentProcess().ParentProcess() is { } pProcess)
         {
@@ -45,8 +68,7 @@ public readonly ref struct CrashReportWindow
 
         try
         {
-            var window = new CrashReportWindow();
-            window.ShowAndWait(crashReportModel, logSources, upload);
+            ShowAndWait(crashReportModel, logSources, upload);
         }
         //catch (Exception) { /* ignore */ }
         catch (Exception e)
@@ -55,123 +77,61 @@ public readonly ref struct CrashReportWindow
         }
     }
 
-    private void ShowAndWait(CrashReportModel crashReportModel, IList<LogSource> logSources, Func<CrashReportModel, IEnumerable<LogSource>, Task<(bool, string)>> upload)
+    private static void ShowAndWait(CrashReportModel crashReportModel, IList<LogSource> logSources, Func<CrashReportModel, IEnumerable<LogSource>, Task<(bool, string)>> upload)
     {
-        var imgui = new CmGui(CmGui.LoadFunction);
-        var glfw = new Glfw(Glfw.LoadFunction);
+        var window = Window.Create(WindowOptions.Default with { VSync = false });
 
-        if (glfw.Init())
-            glfw.CheckErrorIgnoreInit(); // for some reason recreating the window throws not initialized
-        else
-            glfw.CheckError();
+        var gl = default(GL)!;
+        var controller = default(ImGuiController)!;
+        var imGuiRenderer = default(ImGuiRenderer)!;
 
-        glfw.WindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
-        glfw.WindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-        glfw.WindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-        glfw.WindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-        glfw.WindowHint(GLFW_RESIZABLE, GLFW_TRUE);
-        glfw.CheckError();
-
-        //var monitor = GLFW. glfw.GetPrimaryMonitor();
-        //var mode = GLFW. glfw.GetVideoMode(monitor);
-        //window = GLFW. glfw.CreateWindow(mode.width, mode.height, "BannerlordCrash Report", IntPtr.Zero, IntPtr.Zero);
-        var window = glfw.CreateWindow(800, 600, "Bannerlord Crash Report\0"u8, IntPtr.Zero, in GlfwWindowHandle.NullRef());
-        glfw.CheckError();
-
-        glfw.MakeContextCurrent(in window.Handle);
-
-        var gl = new Gl(glfw.GetProcAddress);
-
-        glfw.SwapInterval(0); // Turns VSync off.
-
-        //ref var tt = ref glfw.GetRequiredInstanceExtensions(out var count);
-        //var ttSpan = Utf8ZPtr.AsSpan(ref tt, (int) count);
-        //var ttStrings = ttSpan.ToArray().Select(s => s.AsUtf16String()).ToArray();
-
-        using var imGuiController = new ImGuiController(imgui, glfw, gl, window);
-        imGuiController.Init();
-
-        glfw.FocusWindow(in window.Handle);
-
-        var shouldClose = false;
-        void CloseAction() => shouldClose = true;
-        var imGuiRenderer = new ImGuiRenderer(imgui, crashReportModel, logSources, upload, CloseAction);
-
-        var targetElapsedTime = TimeSpan.FromMilliseconds(1000D / 60.0D);
-        var maxElapsedTime = TimeSpan.FromMilliseconds(500);
-        var accumulatedElapsedTime = TimeSpan.Zero;
-        var previousTicks = 0L;
-        var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
-        var loopTimer = Stopwatch.StartNew();
-
-        void GlfwEvents()
+        window.Load += () =>
         {
-            glfw.PollEvents();
-            if (glfw.GetKey(in window.Handle, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-                glfw.SetWindowShouldClose(in window.Handle, GLFW_TRUE);
-        }
+            var imgui = new CmGui();
+            var inputContext = window.CreateInput();
 
-        void DoUpdate(float delta)
+            gl = window.CreateOpenGL();
+            controller = new ImGuiController(imgui, gl, window, inputContext);
+            imGuiRenderer = new ImGuiRenderer(imgui, crashReportModel, logSources, upload, window.Close);
+
+            controller.Init();
+        };
+        window.FramebufferResize += s =>
         {
-            GlfwEvents();
-            imGuiController?.Update(delta);
-        }
-
-        void DoDraw()
+            gl.Viewport(s);
+        };
+        window.Render += delta =>
         {
-            gl.Clear(Gl.GL_COLOR_BUFFER_BIT);
-            imGuiController?.Render();
-            glfw.SwapBuffers(in window.Handle);
-        }
+            if (window.IsClosing) return;
 
-        // Kinda taken from MonoGame
-        void WaitFixedTime()
-        {
-        RetryLoop:
-            var currentTicks = loopTimer.Elapsed.Ticks;
-            accumulatedElapsedTime += TimeSpan.FromTicks(currentTicks - previousTicks);
-            previousTicks = currentTicks;
+            controller.Update(delta);
 
-            if (accumulatedElapsedTime < targetElapsedTime)
-            {
-                var sleepTime = (targetElapsedTime - accumulatedElapsedTime).TotalMilliseconds;
-
-                if (isWindows)
-                    TimerHelper.SleepForNoMoreThan(sleepTime);
-
-                if (!isWindows && sleepTime >= 2.0)
-                    Thread.Sleep(1);
-
-                // Keep looping until it's time to perform the next update
-                goto RetryLoop;
-            }
-
-            // Do not allow any update to take longer than our maximum.
-            if (accumulatedElapsedTime > maxElapsedTime)
-                accumulatedElapsedTime = maxElapsedTime;
-        }
-
-        double time = 0;
-        while (!shouldClose && glfw.WindowShouldClose(in window.Handle) == GLFW_FALSE)
-        {
-            var currentTime = glfw.GetTime();
-            var delta = time > 0.0 ? (float) (currentTime - time) : 1.0f / 60.0f;
-            time = currentTime;
-
-            DoUpdate(delta);
+            gl.Clear(ClearBufferMask.ColorBufferBit);
 
             imGuiRenderer.Render();
 
-            DoDraw();
+            controller.Render();
+        };
 
-            //WaitFixedTime();
+        DoLoop(window);
 
-            loopTimer.Restart();
-        }
+        controller.Dispose();
+        window.Dispose();
+    }
 
-        glfw.DestroyWindow(in window.Handle);
-        glfw.CheckError();
-        glfw.Terminate();
-        glfw.CheckError();
+    private static void DoLoop(IWindow window)
+    {
+        window.Initialize();
+        window.Run(() =>
+        {
+            window.DoEvents();
+
+            if (!window.IsClosing)
+                window.DoUpdate();
+
+            if (!window.IsClosing)
+                window.DoRender();
+        });
+        window.DoEvents();
     }
 }

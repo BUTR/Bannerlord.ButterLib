@@ -1,16 +1,16 @@
 ﻿using Bannerlord.ButterLib.CrashReportWindow.ImGui;
-using Bannerlord.ButterLib.CrashReportWindow.OpenGL;
-using Bannerlord.ButterLib.CrashReportWindow.Windowing;
 
 using ImGuiNET;
+
+using Silk.NET.Input;
+using Silk.NET.OpenGL;
+using Silk.NET.Windowing;
 
 using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace Bannerlord.ButterLib.CrashReportWindow.Controller;
-
-using static Glfw;
 
 internal partial class ImGuiController : IDisposable
 {
@@ -19,47 +19,47 @@ internal partial class ImGuiController : IDisposable
     private static readonly IntPtr _offsetOfImDrawVertUV = Marshal.OffsetOf<ImDrawVert>(nameof(ImDrawVert.uv));
     private static readonly IntPtr _offsetOfImDrawVertCol = Marshal.OffsetOf<ImDrawVert>(nameof(ImDrawVert.col));
 
+    private static readonly StandardCursor[] _mouseCursors =
+    [
+        StandardCursor.Arrow,   // ImGuiMouseCursor.Arrow
+        StandardCursor.IBeam,   // ImGuiMouseCursor.TextInput
+        StandardCursor.Arrow,   // ImGuiMouseCursor.ResizeAll
+        StandardCursor.VResize, // ImGuiMouseCursor.ResizeNS
+        StandardCursor.HResize, // ImGuiMouseCursor.ResizeEW
+        StandardCursor.Arrow,   // ImGuiMouseCursor.ResizeNESW
+        StandardCursor.Arrow,   // ImGuiMouseCursor.ResizeNWSE
+        StandardCursor.Hand,    // ImGuiMouseCursor.Hand
+        StandardCursor.Arrow    // ImGuiMouseCursor.NotAllowed
+    ];
 
     private readonly CmGui _imgui;
-    private readonly Glfw _glfw;
-    private readonly Gl _gl;
-    private readonly GlfwWindowPtr _windowPtr;
+    private readonly GL _gl;
     private readonly IntPtr _context;
     private readonly ImGui.ImGuiIOPtr _io;
 
-    private readonly IntPtr[] _mouseCursors = new IntPtr[(int) ImGuiMouseCursor.COUNT];
+    private readonly IView _view;
+    private readonly IInputContext _input;
+
+    private IKeyboard Keyboard => _input.Keyboards[0];
+    private IMouse Mouse => _input.Mice[0];
 
     private Shader _shader = default!;
     private Texture _fontTexture = default!;
     private int _attribLocationTex, _attribLocationProjMtx;
     private uint _attribLocationVtxPos, _attribLocationVtxUv, _attribLocationVtxColor;
     private uint _vboHandle, _elementsHandle, _vertexArrayObject;
-    private uint _windowsWidth, _windowsHeight, _frameBufferWidth, _frameBufferHeight;
+    private uint _windowsWidth, _windowsHeight;
 
-    private readonly WindowSizeCallback _userCallbackWindowsSize;
-    private readonly FramebufferSizeCallback _userCallbackFramebufferSize;
-    private readonly MouseButtonCallback _userCallbackMouseButton;
-    private readonly ScrollCallback _userCallbackScroll;
-    private readonly KeyCallback _userCallbackKey;
-    private readonly CharCallback _userCallbackChar;
-
-    public ImGuiController(CmGui imgui, Glfw glfw, Gl gl, GlfwWindowPtr windowPtr)
+    public ImGuiController(CmGui imgui, GL gl, IView view, IInputContext input)
     {
         _imgui = imgui;
-        _glfw = glfw;
         _gl = gl;
-        _windowPtr = windowPtr;
-
         _context = _imgui.CreateContext();
-        _imgui.SetCurrentContext(_context);
-
         _io = _imgui.GetIO();
 
-        _userCallbackWindowsSize = WindowsSizeCallback;
-        _userCallbackFramebufferSize = FramebufferSizeCallback;
-        _userCallbackMouseButton = MouseButtonCallback;
-        _userCallbackScroll = ScrollCallback;
-        _userCallbackKey = KeyCallback;
-        _userCallbackChar = CharCallback;
+        _view = view;
+        _input = input;
+
+        _imgui.SetCurrentContext(_context);
     }
 }

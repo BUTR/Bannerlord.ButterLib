@@ -8,15 +8,15 @@ namespace Bannerlord.ButterLib.CrashReportWindow.Extensions;
 internal static class PlatformFileHelperPCExtended
 {
     private delegate string GetDirectoryFullPathDelegate(object instance, PlatformDirectoryPath directoryPath);
-    private static GetDirectoryFullPathDelegate? GetDirectoryFullPathMethod =
+    private static readonly GetDirectoryFullPathDelegate? GetDirectoryFullPathMethod =
         AccessTools2.GetDelegate<GetDirectoryFullPathDelegate>("TaleWorlds.Library.PlatformFileHelperPC:GetDirectoryFullPath");
 
     private delegate string GetFileFullPathDelegate(object instance, PlatformFilePath filePath);
-    private static GetFileFullPathDelegate? GetFileFullPathMethod =
+    private static readonly GetFileFullPathDelegate? GetFileFullPathMethod =
         AccessTools2.GetDelegate<GetFileFullPathDelegate>("TaleWorlds.Library.PlatformFileHelperPC:GetFileFullPath");
 
     private delegate object GetPlatformFileHelperDelegate();
-    private static GetPlatformFileHelperDelegate? GetPlatformFileHelper =
+    private static readonly GetPlatformFileHelperDelegate? GetPlatformFileHelper =
         AccessTools2.GetPropertyGetterDelegate<GetPlatformFileHelperDelegate>("TaleWorlds.Library.Common:PlatformFileHelper");
 
 

@@ -11,7 +11,7 @@ internal readonly ref struct ImGuiViewportPtr
 {
     private unsafe ImGuiViewport* NativePtr { get; }
 
-    public unsafe ImGuiViewportPtr(IntPtr nativePtr) => NativePtr = (ImGuiViewport*) nativePtr.ToPointer();
+    public unsafe ImGuiViewportPtr(IntPtr nativePtr) => NativePtr = (ImGuiViewport*) nativePtr;
 
     public unsafe ref uint ID => ref Unsafe.AsRef<uint>(&NativePtr->ID);
     public unsafe ref Vector2 WorkPos => ref Unsafe.AsRef<Vector2>(&NativePtr->WorkPos);

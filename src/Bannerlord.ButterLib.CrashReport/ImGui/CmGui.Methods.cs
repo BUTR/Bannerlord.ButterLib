@@ -31,7 +31,7 @@ unsafe partial class CmGui
         fixed (byte* labelPtr = label)
         fixed (byte* inputPtr = input)
         {
-            var result = igInputTextMultiline(labelPtr, inputPtr, Unsafe.As<int, uint>(ref buf_size), size, Unsafe.As<ImGuiInputTextFlags, int>(ref flags), callback, user_data);
+            var result = igInputTextMultiline(labelPtr, inputPtr, Unsafe.As<int, uint>(ref buf_size), size, flags, callback, user_data);
             PopStyleColor();
             return result > 0;
         }
@@ -205,7 +205,7 @@ unsafe partial class CmGui
         var p_open = (byte*) null;
         fixed (byte* namePtr = name)
         {
-            var result = igBegin(namePtr, p_open, Unsafe.As<ImGuiWindowFlags, int>(ref flags));
+            var result = igBegin(namePtr, p_open, flags);
             PopStyleColor();
             return result > 0;
         }
@@ -218,7 +218,7 @@ unsafe partial class CmGui
         const float inner_width = 0.0f;
         fixed (byte* strIdPtr = strId)
         {
-            var result = igBeginTable(strIdPtr, column, Unsafe.As<ImGuiTableFlags, int>(ref flags), Zero2, inner_width);
+            var result = igBeginTable(strIdPtr, column, flags, Zero2, inner_width);
             return result > 0;
         }
     }
@@ -230,7 +230,7 @@ unsafe partial class CmGui
         PushStyleColor(ImGuiCol.ChildBg, in color);
         fixed (byte* strIdPtr = strId)
         {
-            var result = igBeginChild_Str(strIdPtr, size, Unsafe.As<ImGuiChildFlags, int>(ref child_flags), Unsafe.As<ImGuiWindowFlags, int>(ref window_flags));
+            var result = igBeginChild_Str(strIdPtr, size, child_flags, window_flags);
             PopStyleColor();
             PopStyleVar();
             return result > 0;
@@ -251,18 +251,18 @@ unsafe partial class CmGui
     {
         fixed (byte* labelPtr = label)
         {
-            return igTreeNodeEx_Str(labelPtr, Unsafe.As<ImGuiTreeNodeFlags, int>(ref flags)) > 0;
+            return igTreeNodeEx_Str(labelPtr, flags) > 0;
         }
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining | AggressiveOptimization)]
-    public void PushStyleColor(ImGuiCol idx, ref readonly Vector4 col) => igPushStyleColor_Vec4((int) idx, col);
+    public void PushStyleColor(ImGuiCol idx, ref readonly Vector4 col) => igPushStyleColor_Vec4(idx, col);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining | AggressiveOptimization)]
-    public void SetNextWindowPos(ref readonly Vector2 pos) => igSetNextWindowPos(pos, (int) ImGuiCond.None, Zero2);
+    public void SetNextWindowPos(ref readonly Vector2 pos) => igSetNextWindowPos(pos, ImGuiCond.None, Zero2);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining | AggressiveOptimization)]
-    public void SetNextWindowSize(ref readonly Vector2 size) => igSetNextWindowSize(size, (int) ImGuiCond.None);
+    public void SetNextWindowSize(ref readonly Vector2 size) => igSetNextWindowSize(size, ImGuiCond.None);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining | AggressiveOptimization)]
     public void SetNextWindowViewport(uint viewport_id) => igSetNextWindowViewport(viewport_id);
@@ -308,7 +308,7 @@ unsafe partial class CmGui
     public void Separator() => igSeparator();
 
     [MethodImpl(MethodImplOptions.AggressiveInlining | AggressiveOptimization)]
-    public void PushStyleVar(ImGuiStyleVar idx, float val) => igPushStyleVar_Float(Unsafe.As<ImGuiStyleVar, int>(ref idx), val);
+    public void PushStyleVar(ImGuiStyleVar idx, float val) => igPushStyleVar_Float(idx, val);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining | AggressiveOptimization)]
     public void Bullet() => igBullet();
@@ -362,11 +362,7 @@ unsafe partial class CmGui
     public void NewFrame() => igNewFrame();
 
     [MethodImpl(MethodImplOptions.AggressiveInlining | AggressiveOptimization)]
-    public ImGuiMouseCursor GetMouseCursor()
-    {
-        var result = igGetMouseCursor();
-        return Unsafe.As<int, ImGuiMouseCursor>(ref result);
-    }
+    public ImGuiMouseCursor GetMouseCursor() => igGetMouseCursor();
 
     [MethodImpl(MethodImplOptions.AggressiveInlining | AggressiveOptimization)]
     public void DestroyContext(IntPtr ctx) => igDestroyContext(ctx);

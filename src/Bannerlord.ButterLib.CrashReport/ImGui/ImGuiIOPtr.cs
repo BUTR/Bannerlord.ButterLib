@@ -14,7 +14,7 @@ internal readonly struct ImGuiIOPtr
     public unsafe ImGuiIOPtr(CmGui imgui, IntPtr nativePtr)
     {
         _imgui = imgui;
-        NativePtr = (ImGuiIO*) nativePtr.ToPointer();
+        NativePtr = (ImGuiIO*) nativePtr;
     }
 
     public unsafe ref ImGuiConfigFlags ConfigFlags => ref Unsafe.AsRef<ImGuiConfigFlags>(&NativePtr->ConfigFlags);
@@ -31,7 +31,7 @@ internal readonly struct ImGuiIOPtr
     public unsafe ref Vector2 MousePos => ref Unsafe.AsRef<Vector2>(&NativePtr->MousePos);
 
     public unsafe void AddInputCharacter(uint c) => _imgui.ImGuiIO_AddInputCharacter(NativePtr, c);
-    public unsafe void AddKeyEvent(ImGuiKey key, bool down) => _imgui.ImGuiIO_AddKeyEvent(NativePtr, Unsafe.As<ImGuiKey, int>(ref key), Unsafe.As<bool, byte>(ref down));
+    public unsafe void AddKeyEvent(ImGuiKey key, bool down) => _imgui.ImGuiIO_AddKeyEvent(NativePtr, key, Unsafe.As<bool, byte>(ref down));
     public unsafe void AddMouseButtonEvent(int button, bool down) => _imgui.ImGuiIO_AddMouseButtonEvent(NativePtr, button, Unsafe.As<bool, byte>(ref down));
     public unsafe void AddMouseWheelEvent(float wheel_x, float wheel_y) => _imgui.ImGuiIO_AddMouseWheelEvent(NativePtr, wheel_x, wheel_y);
 }
