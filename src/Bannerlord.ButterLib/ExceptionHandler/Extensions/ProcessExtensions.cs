@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using System.Security;
 using System.Security.Permissions;
 
-namespace Bannerlord.ButterLib.CrashReportWindow.Extensions;
+namespace Bannerlord.ButterLib.ExceptionHandler.Extensions;
 
 internal static class ProcessExtensions
 {
@@ -76,7 +76,9 @@ internal static class ProcessExtensions
         public string szExeFile;
     };
 
+#if !NETSTANDARD2_0
     [HostProtection(SecurityAction.LinkDemand, MayLeakOnAbort = true)]
+#endif
     [SuppressUnmanagedCodeSecurity]
     private sealed class SafeSnapshotHandle : SafeHandleMinusOneIsInvalid
     {

@@ -4,10 +4,10 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.InteropServices;
 
-using static Bannerlord.ButterLib.CrashReportWindow.Utils.MiniDump.DbgHelpNativeMethods;
-using static Bannerlord.ButterLib.CrashReportWindow.Utils.MiniDump.Kernel32NativeMethods;
+using static Bannerlord.ButterLib.ExceptionHandler.Utils.MiniDump.DbgHelpNativeMethods;
+using static Bannerlord.ButterLib.ExceptionHandler.Utils.MiniDump.Kernel32NativeMethods;
 
-namespace Bannerlord.ButterLib.CrashReportWindow.Utils;
+namespace Bannerlord.ButterLib.ExceptionHandler.Utils;
 
 internal static class MiniDump
 {
@@ -412,7 +412,9 @@ internal static class MiniDump
         var exception = new MINIDUMP_EXCEPTION_INFORMATION
         {
             ThreadId = GetCurrentThreadId(),
+#if !NETSTANDARD2_0
             ExceptionPointers = Marshal.GetExceptionPointers(),
+#endif
             ClientPointers = true,
         };
         var userStream = new MINIDUMP_USER_STREAM_INFORMATION

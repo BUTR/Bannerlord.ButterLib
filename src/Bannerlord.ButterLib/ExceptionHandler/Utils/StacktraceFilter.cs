@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Bannerlord.ButterLib.CrashReportWindow.Utils;
+namespace Bannerlord.ButterLib.ExceptionHandler.Utils;
 
 internal class StacktraceFilter : IStacktraceFilter
 {

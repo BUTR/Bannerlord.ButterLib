@@ -1,14 +1,18 @@
 ﻿using Bannerlord.BLSE;
-using Bannerlord.ButterLib.CrashUploader;
+using Bannerlord.ButterLib.ExceptionHandler.Extensions;
+using Bannerlord.ButterLib.ExceptionHandler.Utils;
 using Bannerlord.ButterLib.Logger;
 
+using BUTR.CrashReport.Bannerlord;
 using BUTR.CrashReport.Models;
+using BUTR.CrashReport.Renderer;
 
 using Microsoft.Extensions.DependencyInjection;
 
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -29,24 +33,32 @@ public static class ExceptionReporter
             return;
         }
 
-        var logSources = GetLogSources().ToArray();
-        CrashReportWindow.CrashReportWindow.ShowAndWait(exception, logSources, static async (crashReport, _logSources) =>
+        var metadata = new Dictionary<string, string>
         {
-            var crashUploader = ButterLibSubModule.ServiceProvider?.GetService<ICrashUploader>();
-            if (crashUploader is null)
-                return (false, "Critical Error: Failed to get the crash uploader!");
+            {"METADATA:TW_ConfigName", TaleWorlds.Library.Common.ConfigName},
+        };
+        if (Process.GetCurrentProcess().ParentProcess() is { } pProcess)
+        {
+            metadata.Add("Parent_Process_Name", pProcess.ProcessName);
+            metadata.Add("Parent_Process_File_Version", pProcess.MainModule?.FileVersionInfo.FileVersion ?? "0");
+        }
 
-            var result = await crashUploader.UploadAsync(crashReport, _logSources).ConfigureAwait(false);
-            return result.Status switch
-            {
-                CrashUploaderStatus.Success => (true, result.Url ?? string.Empty),
-                CrashUploaderStatus.MetadataNotFound => (false, $"Status: {result.Status}"),
-                CrashUploaderStatus.ResponseIsNotHttpWebResponse => (false, $"Status: {result.Status}"),
-                CrashUploaderStatus.ResponseStreamIsNull => (false, $"Status: {result.Status}"),
-                CrashUploaderStatus.WrongStatusCode => (false, $"Status: {result.Status}\nStatusCode: {result.StatusCode}"),
-                CrashUploaderStatus.FailedWithException => (false, $"Status: {result.Status}\nException: {result.Exception}"),
-            };
-        }, BEWPatch.FinalizerMethod);
+        var filter = new StacktraceFilter(BEWPatch.FinalizerMethod);
+        var helper = new CrashReportInfoHelper();
+        var harmonyProvider = new HarmonyProvider();
+        var crashReportRendererUtilities = new CrashReportRendererUtilities();
+
+        var logSources = GetLogSources().ToArray();
+        try
+        {
+            CrashReportWindow.ShowAndWait(exception, logSources, metadata,
+                helper, filter, helper, helper, helper, harmonyProvider, helper, helper, crashReportRendererUtilities);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     private static IEnumerable<LogSource> GetLogSources()

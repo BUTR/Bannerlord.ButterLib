@@ -1,15 +1,18 @@
-﻿using Bannerlord.ButterLib.CrashReportWindow.Extensions;
-
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 
-using TaleWorlds.Engine;
+using Bannerlord.ButterLib.ExceptionHandler.Extensions;
+
 using TaleWorlds.Library;
 
-using Path = System.IO.Path;
+#if !NETSTANDARD2_0
+using TaleWorlds.Engine;
 
-namespace Bannerlord.ButterLib.CrashReportWindow.Utils;
+using Path = System.IO.Path;
+#endif
+
+namespace Bannerlord.ButterLib.ExceptionHandler.Utils;
 
 internal static class CreatorShared
 {
@@ -50,6 +53,7 @@ internal static class CreatorShared
 
     public static Stream GetScreenshot()
     {
+#if !NETSTANDARD2_0
         try
         {
             var tempBmp = Path.Combine(Path.GetTempPath(), $"{Path.GetRandomFileName()}.bmp");
@@ -63,11 +67,13 @@ internal static class CreatorShared
             var stream = new MemoryStream();
             image.Save(stream, System.Drawing.Imaging.ImageCodecInfo.GetImageDecoders().First(codec => codec.FormatID == System.Drawing.Imaging.ImageFormat.Jpeg.Guid), encoderParameters);
             return stream;
-
         }
         catch (Exception)
         {
             return Stream.Null;
         }
+#else
+        return Stream.Null;
+#endif
     }
 }

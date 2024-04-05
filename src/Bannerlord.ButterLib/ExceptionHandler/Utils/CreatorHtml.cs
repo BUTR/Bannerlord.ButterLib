@@ -9,7 +9,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Text;
 
-namespace Bannerlord.ButterLib.CrashReportWindow.Utils;
+namespace Bannerlord.ButterLib.ExceptionHandler.Utils;
 
 internal static class CreatorHtml
 {

@@ -2,7 +2,7 @@
 
 using TaleWorlds.Library;
 
-namespace Bannerlord.ButterLib.CrashReportWindow.Extensions;
+namespace Bannerlord.ButterLib.ExceptionHandler.Extensions;
 
 // TODO: What to with Xbox version?
 internal static class PlatformFileHelperPCExtended
