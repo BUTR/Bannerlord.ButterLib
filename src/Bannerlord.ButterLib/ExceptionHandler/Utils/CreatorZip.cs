@@ -1,4 +1,5 @@
 ﻿using BUTR.CrashReport.Models;
+using BUTR.CrashReport.Renderer.Zip;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -6,7 +7,6 @@ using Newtonsoft.Json.Converters;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using BUTR.CrashReport.Renderer.Zip;
 
 namespace Bannerlord.ButterLib.ExceptionHandler.Utils;
 
@@ -14,22 +14,17 @@ internal static class CreatorZip
 {
     public static void Create(CrashReportModel crashReport, ICollection<LogSource> logSources, Stream stream)
     {
-        using var crashReportStream = new MemoryStream(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(crashReport, new JsonSerializerSettings
+        var settings = new JsonSerializerSettings
         {
             Formatting = Formatting.None,
             StringEscapeHandling = StringEscapeHandling.EscapeHtml,
             DefaultValueHandling = DefaultValueHandling.Include,
             NullValueHandling = NullValueHandling.Include,
             Converters = { new StringEnumConverter() }
-        })));
-        using var logsStream = new MemoryStream(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(logSources, new JsonSerializerSettings
-        {
-            Formatting = Formatting.None,
-            StringEscapeHandling = StringEscapeHandling.EscapeHtml,
-            DefaultValueHandling = DefaultValueHandling.Include,
-            NullValueHandling = NullValueHandling.Include,
-            Converters = { new StringEnumConverter() }
-        })));
+        };
+
+        using var crashReportStream = new MemoryStream(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(crashReport, settings)));
+        using var logsStream = new MemoryStream(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(logSources, settings)));
 
         using var miniDumpSteam = CreatorShared.GetMiniDump();
         using var saveFileSteam = CreatorShared.GetSaveFile();

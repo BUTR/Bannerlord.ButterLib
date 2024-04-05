@@ -10,6 +10,7 @@ using Bannerlord.ButterLib.CrashUploader;
 using BUTR.CrashReport.Models;
 using BUTR.CrashReport.Renderer;
 using BUTR.CrashReport.Renderer.Html;
+
 using Microsoft.Extensions.DependencyInjection;
 
 #if !NETSTANDARD2_0

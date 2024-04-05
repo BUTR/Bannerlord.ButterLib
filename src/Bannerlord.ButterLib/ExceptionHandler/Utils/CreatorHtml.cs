@@ -1,5 +1,5 @@
-﻿using BUTR.CrashReport.Bannerlord;
-using BUTR.CrashReport.Models;
+﻿using BUTR.CrashReport.Models;
+using BUTR.CrashReport.Renderer.Html;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -8,7 +8,6 @@ using System;
 using System.IO;
 using System.IO.Compression;
 using System.Text;
-using BUTR.CrashReport.Renderer.Html;
 
 namespace Bannerlord.ButterLib.ExceptionHandler.Utils;
 
