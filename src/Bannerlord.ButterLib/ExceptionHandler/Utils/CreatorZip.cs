@@ -1,5 +1,4 @@
-﻿using BUTR.CrashReport.Bannerlord;
-using BUTR.CrashReport.Models;
+﻿using BUTR.CrashReport.Models;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -7,6 +6,7 @@ using Newtonsoft.Json.Converters;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using BUTR.CrashReport.Renderer.Zip;
 
 namespace Bannerlord.ButterLib.ExceptionHandler.Utils;
 
@@ -34,7 +34,7 @@ internal static class CreatorZip
         using var miniDumpSteam = CreatorShared.GetMiniDump();
         using var saveFileSteam = CreatorShared.GetSaveFile();
         using var screenshotSteam = CreatorShared.GetScreenshot();
-        using var archiveSteam = CrashReportArchiveRenderer.Build(crashReport, logSources, crashReportStream, logsStream, miniDumpSteam, saveFileSteam, screenshotSteam);
+        using var archiveSteam = CrashReportZip.Build(crashReportStream, logsStream, miniDumpSteam, saveFileSteam, screenshotSteam);
         archiveSteam.Seek(0, SeekOrigin.Begin);
         archiveSteam.CopyTo(stream);
     }

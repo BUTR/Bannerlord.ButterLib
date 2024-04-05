@@ -9,7 +9,7 @@ using Bannerlord.ButterLib.CrashUploader;
 
 using BUTR.CrashReport.Models;
 using BUTR.CrashReport.Renderer;
-
+using BUTR.CrashReport.Renderer.Html;
 using Microsoft.Extensions.DependencyInjection;
 
 #if !NETSTANDARD2_0
@@ -96,7 +96,7 @@ internal sealed class CrashReportRendererUtilities : ICrashReportRendererUtiliti
     public async void CopyAsHtml(CrashReportModel crashReport, ICollection<LogSource> logSources)
     {
 #if !NETSTANDARD2_0
-        var reportAsHtml = CrashReportHtmlRenderer.Build(crashReport, logSources);
+        var reportAsHtml = CrashReportHtml.Build(crashReport, logSources);
 
         if (!await SetClipboardTextAsync(reportAsHtml))
             MessageBox.Show("Failed to copy the HTML content to the clipboard!", "Error!");
@@ -106,7 +106,7 @@ internal sealed class CrashReportRendererUtilities : ICrashReportRendererUtiliti
     public void SaveCrashReportAsHtml(CrashReportModel crashReport, ICollection<LogSource> logSources, bool addMiniDump, bool addLatestSave, bool addScreenshots)
     {
 #if !NETSTANDARD2_0
-        var reportAsHtml = CrashReportHtmlRenderer.Build(crashReport, logSources);
+        var reportAsHtml = CrashReportHtml.Build(crashReport, logSources);
 
         using var saveFileDialog = new SaveFileDialog();
         saveFileDialog.Filter = "HTML files|*.html|All files (*.*)|*.*";

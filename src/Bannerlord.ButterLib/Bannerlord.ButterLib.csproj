@@ -38,6 +38,8 @@
     <PackageReference Include="BUTR.CrashReport" Version="$(CrashReportVersion)" PrivateAssets="all" />
     <PackageReference Include="BUTR.CrashReport.Models" Version="$(CrashReportVersion)" PrivateAssets="all" />
     <PackageReference Include="BUTR.CrashReport.Renderer" Version="$(CrashReportVersion)" PrivateAssets="all" />
+    <PackageReference Include="BUTR.CrashReport.Renderer.Html" Version="$(CrashReportVersion)" PrivateAssets="all" />
+    <PackageReference Include="BUTR.CrashReport.Renderer.Zip" Version="$(CrashReportVersion)" PrivateAssets="all" />
     <PackageReference Include="BUTR.CrashReport.Bannerlord.Source" Version="$(CrashReportVersion)" PrivateAssets="all" />
     
     

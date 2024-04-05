@@ -8,6 +8,7 @@ using System;
 using System.IO;
 using System.IO.Compression;
 using System.Text;
+using BUTR.CrashReport.Renderer.Html;
 
 namespace Bannerlord.ButterLib.ExceptionHandler.Utils;
 
@@ -95,7 +96,7 @@ internal static class CreatorHtml
             Converters = { new StringEnumConverter() }
         });
 
-        var report = CrashReportHtmlRenderer.AddData(html, CompressJson(json),
+        var report = CrashReportHtml.AddData(html, CompressJson(json),
             includeMiniDump ? GetCompressedMiniDump() : null,
             includeSaveFile ? GetCompressedSaveFile() : null,
             includeScreenshot ? GetScreenshot() : null);
