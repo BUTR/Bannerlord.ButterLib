@@ -1,40 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Threading;
 using System.Threading.Tasks;
 
 using Bannerlord.BUTR.Shared.Helpers;
 using Bannerlord.ButterLib.CrashUploader;
 
 using BUTR.CrashReport.Models;
-using BUTR.CrashReport.Renderer;
-using BUTR.CrashReport.Renderer.Html;
 
 using Microsoft.Extensions.DependencyInjection;
 
-#if !NETSTANDARD2_0
-using BUTR.CrashReport.Bannerlord;
+#if NET472 || (NET6_0 && WINDOWS)
+using BUTR.CrashReport.Renderer.Html;
 
+using System;
+using System.Threading;
 using System.Windows.Forms;
 #endif
 
 namespace Bannerlord.ButterLib.ExceptionHandler.Utils;
 
-internal sealed class CrashReportRendererUtilities : ICrashReportRendererUtilities
+internal sealed class CrashReportRendererUtilitiesImGui : global::BUTR.CrashReport.Renderer.ImGui.ICrashReportRendererUtilities
+#if NET472 || (NET6_0 && WINDOWS)
+    , global::BUTR.CrashReport.Renderer.WinForms.ICrashReportRendererUtilities
+#endif
 {
     private static async Task<bool> SetClipboardTextAsync(string text)
     {
+#if NET472 || (NET6_0 && WINDOWS)
         var completionSource = new TaskCompletionSource<bool>();
         var staThread = new Thread(() =>
         {
             try
             {
-#if !NETSTANDARD2_0
                 var dataObject = new DataObject();
                 dataObject.SetText(text, TextDataFormat.Text);
                 Clipboard.SetDataObject(dataObject, true, 10, 100);
-#endif
                 completionSource.SetResult(true);
             }
             catch (Exception)
@@ -45,6 +45,9 @@ internal sealed class CrashReportRendererUtilities : ICrashReportRendererUtiliti
         staThread.SetApartmentState(ApartmentState.STA);
         staThread.Start();
         return await completionSource.Task;
+#else
+        return false;
+#endif
     }
 
     private static async Task<(bool, string)> UploadInternal(CrashReportModel crashReport, ICollection<LogSource> logSources)
@@ -67,13 +70,13 @@ internal sealed class CrashReportRendererUtilities : ICrashReportRendererUtiliti
 
     public IEnumerable<string> GetNativeLibrariesFolderPath()
     {
-        var modulePath = ModuleInfoHelper.GetModulePath(typeof(CrashReportRendererUtilities))!;
+        var modulePath = ModuleInfoHelper.GetModulePath(typeof(CrashReportRendererUtilitiesImGui))!;
         yield return Path.Combine(modulePath, "bin", TaleWorlds.Library.Common.ConfigName);
     }
 
     public async void Upload(CrashReportModel crashReport, ICollection<LogSource> logSources)
     {
-#if !NETSTANDARD2_0
+#if NET472 || (NET6_0 && WINDOWS)
         var result = await UploadInternal(crashReport, logSources);
         if (result.Item1)
         {
@@ -94,9 +97,16 @@ internal sealed class CrashReportRendererUtilities : ICrashReportRendererUtiliti
 #endif
     }
 
-    public async void CopyAsHtml(CrashReportModel crashReport, ICollection<LogSource> logSources)
+#if NET472 || (NET6_0 && WINDOWS)
+    string global::BUTR.CrashReport.Renderer.WinForms.ICrashReportRendererUtilities.CopyAsHtml(CrashReportModel crashReport, ICollection<LogSource> logSources)
     {
-#if !NETSTANDARD2_0
+        return CrashReportHtml.Build(crashReport, logSources);
+    }
+#endif
+
+    async void global::BUTR.CrashReport.Renderer.ImGui.ICrashReportRendererUtilities.CopyAsHtml(CrashReportModel crashReport, ICollection<LogSource> logSources)
+    {
+#if NET472 || (NET6_0 && WINDOWS)
         var reportAsHtml = CrashReportHtml.Build(crashReport, logSources);
 
         if (!await SetClipboardTextAsync(reportAsHtml))
@@ -106,7 +116,7 @@ internal sealed class CrashReportRendererUtilities : ICrashReportRendererUtiliti
 
     public void SaveCrashReportAsHtml(CrashReportModel crashReport, ICollection<LogSource> logSources, bool addMiniDump, bool addLatestSave, bool addScreenshots)
     {
-#if !NETSTANDARD2_0
+#if NET472 || (NET6_0 && WINDOWS)
         var reportAsHtml = CrashReportHtml.Build(crashReport, logSources);
 
         using var saveFileDialog = new SaveFileDialog();
@@ -128,7 +138,7 @@ internal sealed class CrashReportRendererUtilities : ICrashReportRendererUtiliti
 
     public void SaveCrashReportAsZip(CrashReportModel crashReport, ICollection<LogSource> logSources)
     {
-#if !NETSTANDARD2_0
+#if NET472 || (NET6_0 && WINDOWS)
         using var saveFileDialog = new SaveFileDialog();
         saveFileDialog.Filter = "ZIP files|*.zip|All files (*.*)|*.*";
         saveFileDialog.RestoreDirectory = true;

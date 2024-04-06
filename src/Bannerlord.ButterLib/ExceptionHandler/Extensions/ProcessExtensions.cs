@@ -76,7 +76,7 @@ internal static class ProcessExtensions
         public string szExeFile;
     };
 
-#if !NETSTANDARD2_0
+#if NET472
     [HostProtection(SecurityAction.LinkDemand, MayLeakOnAbort = true)]
 #endif
     [SuppressUnmanagedCodeSecurity]

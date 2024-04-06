@@ -53,7 +53,7 @@ internal static class CreatorShared
 
     public static Stream GetScreenshot()
     {
-#if !NETSTANDARD2_0
+#if NET472 || (NET6_0 && WINDOWS)
         try
         {
             var tempBmp = Path.Combine(Path.GetTempPath(), $"{Path.GetRandomFileName()}.bmp");

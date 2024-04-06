@@ -190,7 +190,7 @@ public sealed partial class ButterLibSubModule : MBSubModuleBase
             sb.AppendLine(report);
             sb.AppendLine();
             sb.AppendLine(new TextObject(SMessageContinue).ToString());
-#if !NETSTANDARD2_0
+#if NET472 || (NET6_0 && WINDOWS)
             switch (System.Windows.Forms.MessageBox.Show(sb.ToString(), new TextObject(SWarningTitle).ToString(), System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Warning, System.Windows.Forms.MessageBoxDefaultButton.Button1, (System.Windows.Forms.MessageBoxOptions) 0x40000))
             {
                 case System.Windows.Forms.DialogResult.Yes:

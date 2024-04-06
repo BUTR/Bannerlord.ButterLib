@@ -3,9 +3,10 @@ using Bannerlord.ButterLib.ExceptionHandler.Extensions;
 using Bannerlord.ButterLib.ExceptionHandler.Utils;
 using Bannerlord.ButterLib.Logger;
 
+using BUTR.CrashReport;
 using BUTR.CrashReport.Bannerlord;
 using BUTR.CrashReport.Models;
-using BUTR.CrashReport.Renderer;
+using BUTR.CrashReport.Renderer.ImGui;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -17,6 +18,10 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
+
+#if NET472 || (NET6_0 && WINDOWS)
+using BUTR.CrashReport.Renderer.WinForms;
+#endif
 
 namespace Bannerlord.ButterLib.ExceptionHandler;
 
@@ -46,18 +51,29 @@ public static class ExceptionReporter
         var filter = new StacktraceFilter(BEWPatch.FinalizerMethod);
         var helper = new CrashReportInfoHelper();
         var harmonyProvider = new HarmonyProvider();
-        var crashReportRendererUtilities = new CrashReportRendererUtilities();
+        var crashReportRendererUtilities = new CrashReportRendererUtilitiesImGui();
 
+        var crashReport = CrashReportInfo.Create(exception, metadata, filter, helper, helper, helper, harmonyProvider);
+        var crashReportModel = CrashReportInfo.ToModel(crashReport, helper, helper, helper, helper, helper, helper);
         var logSources = GetLogSources().ToArray();
         try
         {
-            CrashReportWindow.ShowAndWait(exception, logSources, metadata,
-                helper, filter, helper, helper, helper, harmonyProvider, helper, helper, crashReportRendererUtilities);
+            CrashReportImGui.ShowAndWait(crashReportModel, logSources, crashReportRendererUtilities);
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            Console.WriteLine(e);
-            throw;
+            try
+            {
+#if NET472 || (NET6_0 && WINDOWS)
+
+                var forms = new CrashReportWinForms(crashReportModel, logSources, crashReportRendererUtilities);
+                forms.Show();
+#endif
+            }
+            catch (Exception ex2)
+            {
+                throw new AggregateException(ex, ex2);
+            }
         }
     }
 
