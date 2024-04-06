@@ -19,7 +19,7 @@ using System.Windows.Forms;
 
 namespace Bannerlord.ButterLib.ExceptionHandler.Utils;
 
-internal sealed class CrashReportRendererUtilitiesImGui : global::BUTR.CrashReport.Renderer.ImGui.ICrashReportRendererUtilities
+internal sealed class CrashReportRendererUtilities : global::BUTR.CrashReport.Renderer.ImGui.ICrashReportRendererUtilities
 #if NET472 || (NET6_0 && WINDOWS)
     , global::BUTR.CrashReport.Renderer.WinForms.ICrashReportRendererUtilities
 #endif
@@ -65,34 +65,48 @@ internal sealed class CrashReportRendererUtilitiesImGui : global::BUTR.CrashRepo
             CrashUploaderStatus.ResponseStreamIsNull => (false, $"Status: {result.Status}"),
             CrashUploaderStatus.WrongStatusCode => (false, $"Status: {result.Status}\nStatusCode: {result.StatusCode}"),
             CrashUploaderStatus.FailedWithException => (false, $"Status: {result.Status}\nException: {result.Exception}"),
+            _ => (false, $"Unknown error"),
         };
     }
 
     public IEnumerable<string> GetNativeLibrariesFolderPath()
     {
-        var modulePath = ModuleInfoHelper.GetModulePath(typeof(CrashReportRendererUtilitiesImGui))!;
+        var modulePath = ModuleInfoHelper.GetModulePath(typeof(CrashReportRendererUtilities))!;
         yield return Path.Combine(modulePath, "bin", TaleWorlds.Library.Common.ConfigName);
     }
 
-    public async void Upload(CrashReportModel crashReport, ICollection<LogSource> logSources)
+    public void Upload(CrashReportModel crashReport, ICollection<LogSource> logSources)
     {
 #if NET472 || (NET6_0 && WINDOWS)
-        var result = await UploadInternal(crashReport, logSources);
-        if (result.Item1)
+        try
         {
-            MessageBox.Show($"""
-                             Report available at
-                             {result.Item2}
-                             The url was copied to the clipboard!
-                             """, "Success!");
+            Task.Run(async () =>
+            {
+                var result = await UploadInternal(crashReport, logSources).ConfigureAwait(false);
+                if (result.Item1)
+                {
+                    await SetClipboardTextAsync(result.Item2).ConfigureAwait(false);
+                    MessageBox.Show($"""
+                                     Report available at
+                                     {result.Item2}
+                                     The url was copied to the clipboard!
+                                     """, "Success!");
+                }
+                else
+                {
+                    MessageBox.Show($"""
+                                     The crash uploader could not upload the report!
+                                     Please report this to the mod developers!
+                                     {result.Item2}
+                                     """, "Error!");
+                }
+            }).ConfigureAwait(false).GetAwaiter().GetResult();
+
         }
-        else
+        catch (Exception e)
         {
-            MessageBox.Show($"""
-                             The crash uploader could not upload the report!
-                             Please report this to the mod developers!
-                             {result.Item2}
-                             """, "Error!");
+            Console.WriteLine(e);
+            throw;
         }
 #endif
     }
@@ -104,13 +118,15 @@ internal sealed class CrashReportRendererUtilitiesImGui : global::BUTR.CrashRepo
     }
 #endif
 
-    async void global::BUTR.CrashReport.Renderer.ImGui.ICrashReportRendererUtilities.CopyAsHtml(CrashReportModel crashReport, ICollection<LogSource> logSources)
+    void global::BUTR.CrashReport.Renderer.ImGui.ICrashReportRendererUtilities.CopyAsHtml(CrashReportModel crashReport, ICollection<LogSource> logSources)
     {
 #if NET472 || (NET6_0 && WINDOWS)
-        var reportAsHtml = CrashReportHtml.Build(crashReport, logSources);
-
-        if (!await SetClipboardTextAsync(reportAsHtml))
-            MessageBox.Show("Failed to copy the HTML content to the clipboard!", "Error!");
+        Task.Run(async () =>
+        {
+            var reportAsHtml = CrashReportHtml.Build(crashReport, logSources);
+            if (!await SetClipboardTextAsync(reportAsHtml).ConfigureAwait(false))
+                MessageBox.Show("Failed to copy the HTML content to the clipboard!", "Error!");
+        }).ConfigureAwait(false).GetAwaiter().GetResult();
 #endif
     }
 

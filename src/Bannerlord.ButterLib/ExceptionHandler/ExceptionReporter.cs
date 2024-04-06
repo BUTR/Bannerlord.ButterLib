@@ -51,7 +51,7 @@ public static class ExceptionReporter
         var filter = new StacktraceFilter(BEWPatch.FinalizerMethod);
         var helper = new CrashReportInfoHelper();
         var harmonyProvider = new HarmonyProvider();
-        var crashReportRendererUtilities = new CrashReportRendererUtilitiesImGui();
+        var crashReportRendererUtilities = new CrashReportRendererUtilities();
 
         var crashReport = CrashReportInfo.Create(exception, metadata, filter, helper, helper, helper, harmonyProvider);
         var crashReportModel = CrashReportInfo.ToModel(crashReport, helper, helper, helper, helper, helper, helper);

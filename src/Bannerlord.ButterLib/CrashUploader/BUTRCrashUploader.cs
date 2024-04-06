@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Reflection;
@@ -15,7 +16,7 @@ namespace Bannerlord.ButterLib.CrashUploader;
 
 internal class BUTRCrashUploader : ICrashUploader
 {
-    public sealed record CrashReportUploadBody(CrashReportModel CrashReport, IEnumerable<LogSource> LogSources);
+    private sealed record CrashReportUploadBody(CrashReportModel CrashReport, IEnumerable<LogSource> LogSources);
 
     public async Task<CrashUploaderResult> UploadAsync(CrashReportModel crashReportModel, IEnumerable<LogSource> logSources)
     {
@@ -26,17 +27,17 @@ internal class BUTRCrashUploader : ICrashUploader
             if (uploadUrlAttr is null)
                 return CrashUploaderResult.MetadataNotFound();
 
-            // Do not send a minidump
             var data = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(new CrashReportUploadBody(crashReportModel, logSources)));
 
             var httpWebRequest = WebRequest.CreateHttp(uploadUrlAttr.Value);
             httpWebRequest.Method = "POST";
             httpWebRequest.ContentType = "application/json";
-            httpWebRequest.ContentLength = data.Length;
             httpWebRequest.UserAgent = $"ButterLib CrashUploader v{assembly.GetName().Version}";
+            httpWebRequest.Headers.Add("Content-Encoding", "gzip,deflate");
 
-            using var requestStream = await httpWebRequest.GetRequestStreamAsync().ConfigureAwait(false);
-            await requestStream.WriteAsync(data, 0, data.Length).ConfigureAwait(false);
+            using var writeStream = await httpWebRequest.GetRequestStreamAsync().ConfigureAwait(false);
+            using (var gzip = new GZipStream(writeStream, CompressionMode.Compress, true))
+                await gzip.WriteAsync(data, 0, data.Length);
 
             using var response = await httpWebRequest.GetResponseAsync().ConfigureAwait(false);
             if (response is not HttpWebResponse httpWebResponse)
