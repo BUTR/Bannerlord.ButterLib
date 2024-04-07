@@ -4,32 +4,31 @@ using NUnit.Framework;
 
 using System;
 
-namespace Bannerlord.ButterLib.Tests
+namespace Bannerlord.ButterLib.Tests;
+
+public class AlphanumComparatorFastTests
 {
-    public class AlphanumComparatorFastTests
+    [Test]
+    public void Test()
     {
-        [Test]
-        public void Test()
+        var input = new[]
         {
-            var input = new[]
-            {
-                "100F",
-                "50F",
-                "SR100",
-                "SR9"
-            };
+            "100F",
+            "50F",
+            "SR100",
+            "SR9"
+        };
 
-            Array.Sort(input, new AlphanumComparatorFast());
+        Array.Sort(input, new AlphanumComparatorFast());
 
-            var result = new[]
-            {
-                "50F",
-                "100F",
-                "SR9",
-                "SR100"
-            };
+        var result = new[]
+        {
+            "50F",
+            "100F",
+            "SR9",
+            "SR100"
+        };
 
-            Assert.AreEqual(result, input);
-        }
+        Assert.AreEqual(result, input);
     }
 }

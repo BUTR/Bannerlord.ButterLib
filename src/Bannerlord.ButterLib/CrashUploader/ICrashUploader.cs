@@ -1,11 +1,11 @@
-﻿using Bannerlord.ButterLib.ExceptionHandler;
+﻿using BUTR.CrashReport.Models;
 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Bannerlord.ButterLib.CrashUploader
+namespace Bannerlord.ButterLib.CrashUploader;
+
+internal interface ICrashUploader
 {
-    internal interface ICrashUploader
-    {
-        Task<CrashUploaderResult> UploadAsync(CrashReport crashReport);
-    }
+    Task<CrashUploaderResult> UploadAsync(CrashReportModel crashReportModel, IEnumerable<LogSource> logSources);
 }

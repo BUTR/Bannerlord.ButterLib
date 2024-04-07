@@ -27,255 +27,218 @@ using TaleWorlds.MountAndBlade;
 
 using Path = System.IO.Path;
 
-namespace Bannerlord.ButterLib
+namespace Bannerlord.ButterLib;
+
+/// <summary>
+/// Main SubModule. Performs initialization of all 3 stages.
+/// </summary>
+public sealed partial class ButterLibSubModule : MBSubModuleBase
 {
-    /// <summary>
-    /// Main SubModule. Performs initialization of all 3 stages.
-    /// </summary>
-    public sealed partial class ButterLibSubModule : MBSubModuleBase
+    // We can't rely on EN since the game assumes that the default locale is always English
+    private const string SWarningTitle =
+        @"{=BguqytVG3q}Warning from Bannerlord.ButterLib!";
+    private const string SMessageContinue =
+        @"{=eXs6FLm5DP}It's strongly recommended to terminate the game now. Do you wish to terminate it?";
+
+    internal event Action<float>? OnApplicationTickEvent;
+
+    private ILogger Logger { get; set; } = default!;
+    private bool DelayedServiceCreation { get; set; }
+    private bool ServiceRegistrationWasCalled { get; set; }
+    private bool OnBeforeInitialModuleScreenSetAsRootWasCalled { get; set; }
+
+    private TextWriterTraceListener? TextWriterTraceListener { get; set; }
+
+    public ButterLibSubModule()
     {
-        // We can't rely on EN since the game assumes that the default locale is always English
-        private const string SWarningTitle =
-@"{=BguqytVG3q}Warning from Bannerlord.ButterLib!";
-        private const string SMessageContinue =
-@"{=eXs6FLm5DP}It's strongly recommended to terminate the game now. Do you wish to terminate it?";
+        Instance = this;
 
-        internal event Action<float>? OnApplicationTickEvent;
+        ValidateLoadOrder();
+    }
 
-        private ILogger Logger { get; set; } = default!;
-        private bool DelayedServiceCreation { get; set; }
-        private bool ServiceRegistrationWasCalled { get; set; }
-        private bool OnBeforeInitialModuleScreenSetAsRootWasCalled { get; set; }
+    public void OnServiceRegistration()
+    {
+        ServiceRegistrationWasCalled = true;
 
-        private TextWriterTraceListener? TextWriterTraceListener { get; set; }
+        CanBeConfigured = false;
 
-        public ButterLibSubModule()
+        Services = new ServiceCollection();
+        Services.AddOptions();
+        Services.Configure<ButterLibOptions>(o =>
         {
-            Instance = this;
+            var defaultJsonOptions = new JsonButterLibOptionsModel();
+            o.MinLogLevel = defaultJsonOptions.MinLogLevel;
+        });
 
-            ValidateLoadOrder();
+        foreach (var action in BeforeInitialization)
+            action?.Invoke(Services);
+
+        this.AddDefaultSerilogLogger();
+        this.AddSerilogLoggerProvider("butterlib.txt", new[] { "Bannerlord.ButterLib.*" });
+        this.AddSerilogLoggerProvider("trace.txt", new[] { "System.Diagnostics.Logger.*" });
+        //this.AddSteamWriterLogger("harmony.txt", out var harmonyStreamWriter);
+        //HarmonyLib.FileLog.LogWriter = harmonyStreamWriter;
+
+        Services.AddSubSystem<DelayedSubModuleSubSystem>();
+        Services.AddSubSystem<ExceptionHandlerSubSystem>();
+        Services.AddSubSystem<CrashUploaderSubSystem>();
+        Services.AddSubSystem<SubModuleWrappers2SubSystem>();
+
+        Services.AddSingleton<ICrashUploader, BUTRCrashUploader>();
+    }
+
+    protected override void OnSubModuleLoad()
+    {
+        base.OnSubModuleLoad();
+
+        IServiceProvider serviceProvider;
+
+        if (!ServiceRegistrationWasCalled)
+        {
+            OnServiceRegistration();
+            DelayedServiceCreation = true;
+            serviceProvider = this.GetTempServiceProvider()!;
+        }
+        else
+        {
+            serviceProvider = this.GetServiceProvider()!;
         }
 
-        public void OnServiceRegistration()
+        Logger = serviceProvider.GetRequiredService<ILogger<ButterLibSubModule>>();
+        Logger.LogTrace("OnSubModuleLoad: Logging started...");
+
+        if (!DelayedServiceCreation)
+            InitializeServices();
+
+        ExceptionHandlerSubSystem.Instance?.Enable();
+        CrashUploaderSubSystem.Instance?.Enable();
+
+        Trace.Listeners.Add(TextWriterTraceListener = new TextWriterTraceListener(new StreamWriter(new MemoryStream(), Encoding.UTF8, 1024, true)));
+        Trace.AutoFlush = true;
+        Logger.LogTrace("Added System.Diagnostics.Trace temporary listener");
+
+        Logger.LogTrace("OnSubModuleLoad: Done");
+    }
+
+    protected override void OnSubModuleUnloaded()
+    {
+        base.OnSubModuleUnloaded();
+        Logger.LogTrace("OnSubModuleUnloaded: Started...");
+
+        Instance = null!;
+
+        Logger.LogTrace("OnSubModuleUnloaded: Done");
+    }
+
+    protected override void OnBeforeInitialModuleScreenSetAsRoot()
+    {
+        base.OnBeforeInitialModuleScreenSetAsRoot();
+        Logger.LogTrace("OnBeforeInitialModuleScreenSetAsRoot: Started...");
+
+        if (!OnBeforeInitialModuleScreenSetAsRootWasCalled)
         {
-            ServiceRegistrationWasCalled = true;
+            OnBeforeInitialModuleScreenSetAsRootWasCalled = true;
 
-            CanBeConfigured = false;
-
-            Services = new ServiceCollection();
-            Services.AddOptions();
-            Services.Configure<ButterLibOptions>(o =>
+            if (DelayedServiceCreation)
             {
-                var defaultJsonOptions = new JsonButterLibOptionsModel();
-                o.MinLogLevel = defaultJsonOptions.MinLogLevel;
-            });
-
-            foreach (var action in BeforeInitialization)
-                action?.Invoke(Services);
-
-            this.AddDefaultSerilogLogger();
-            this.AddSerilogLoggerProvider("butterlib.txt", new[] { "Bannerlord.ButterLib.*" });
-            this.AddSerilogLoggerProvider("trace.txt", new[] { "System.Diagnostics.Logger.*" });
-            //this.AddSteamWriterLogger("harmony.txt", out var harmonyStreamWriter);
-            //HarmonyLib.FileLog.LogWriter = harmonyStreamWriter;
-
-            Services.AddSubSystem<DelayedSubModuleSubSystem>();
-            Services.AddSubSystem<ExceptionHandlerSubSystem>();
-            Services.AddSubSystem<CrashUploaderSubSystem>();
-            Services.AddSubSystem<SubModuleWrappers2SubSystem>();
-
-            Services.AddSingleton<ICrashUploader, BUTRCrashUploader>();
-        }
-
-        protected override void OnSubModuleLoad()
-        {
-            base.OnSubModuleLoad();
-
-            PerformMigration001();
-
-            IServiceProvider serviceProvider;
-
-            if (!ServiceRegistrationWasCalled)
-            {
-                OnServiceRegistration();
-                DelayedServiceCreation = true;
-                serviceProvider = this.GetTempServiceProvider()!;
-            }
-            else
-            {
-                serviceProvider = this.GetServiceProvider()!;
-            }
-
-            Logger = serviceProvider.GetRequiredService<ILogger<ButterLibSubModule>>();
-            Logger.LogTrace("OnSubModuleLoad: Logging started...");
-
-            if (!DelayedServiceCreation)
                 InitializeServices();
-
-            ExceptionHandlerSubSystem.Instance?.Enable();
-            CrashUploaderSubSystem.Instance?.Enable();
-
-            Trace.Listeners.Add(TextWriterTraceListener = new TextWriterTraceListener(new StreamWriter(new MemoryStream(), Encoding.UTF8, 1024, true)));
-            Trace.AutoFlush = true;
-            Logger.LogTrace("Added System.Diagnostics.Trace temporary listener");
-
-            Logger.LogTrace("OnSubModuleLoad: Done");
-        }
-
-        protected override void OnSubModuleUnloaded()
-        {
-            base.OnSubModuleUnloaded();
-            Logger.LogTrace("OnSubModuleUnloaded: Started...");
-
-            Instance = null!;
-
-            Logger.LogTrace("OnSubModuleUnloaded: Done");
-        }
-
-        protected override void OnBeforeInitialModuleScreenSetAsRoot()
-        {
-            base.OnBeforeInitialModuleScreenSetAsRoot();
-            Logger.LogTrace("OnBeforeInitialModuleScreenSetAsRoot: Started...");
-
-            if (!OnBeforeInitialModuleScreenSetAsRootWasCalled)
-            {
-                OnBeforeInitialModuleScreenSetAsRootWasCalled = true;
-
-                if (DelayedServiceCreation)
-                {
-                    InitializeServices();
-                }
             }
-
-            DynamicAPIProvider.Initialize();
-
-            Logger.LogTrace("OnBeforeInitialModuleScreenSetAsRoot: Done");
         }
 
-        protected override void OnApplicationTick(float dt) => OnApplicationTickEvent?.Invoke(dt);
+        DynamicAPIProvider.Initialize();
 
-        protected override void OnGameStart(Game game, IGameStarter gameStarterObject)
+        Logger.LogTrace("OnBeforeInitialModuleScreenSetAsRoot: Done");
+    }
+
+    protected override void OnApplicationTick(float dt) => OnApplicationTickEvent?.Invoke(dt);
+
+    protected override void OnGameStart(Game game, IGameStarter gameStarterObject)
+    {
+        base.OnGameStart(game, gameStarterObject);
+        Logger.LogTrace("OnGameStart: Started");
+
+        GameScope = ServiceProvider.CreateScope();
+        Logger.LogInformation("Created GameScope");
+
+        Logger.LogTrace("OnGameStart: Done");
+    }
+
+    public override void OnGameEnd(Game game)
+    {
+        base.OnGameEnd(game);
+        Logger.LogTrace("OnGameEnd: Started");
+
+        GameScope?.Dispose();
+        GameScope = null;
+
+        if (game.GameType is Campaign)
         {
-            base.OnGameStart(game, gameStarterObject);
-            Logger.LogTrace("OnGameStart: Started");
-
-            GameScope = ServiceProvider.CreateScope();
-            Logger.LogInformation("Created GameScope");
-
-            Logger.LogTrace("OnGameStart: Done");
+            MBObjectBaseExtensions.OnGameEnd();
         }
 
-        public override void OnGameEnd(Game game)
+        Logger.LogTrace("OnGameEnd: Done");
+    }
+
+    private static void ValidateLoadOrder()
+    {
+        var loadedModules = ModuleInfoHelper.GetLoadedModules().ToList();
+        if (loadedModules.Count == 0) return;
+
+        var sb = new StringBuilder();
+        if (!ModuleInfoHelper.ValidateLoadOrder(typeof(ButterLibSubModule), out var report))
         {
-            base.OnGameEnd(game);
-            Logger.LogTrace("OnGameEnd: Started");
-
-            GameScope?.Dispose();
-            GameScope = null;
-
-            if (game.GameType is Campaign)
+            sb.AppendLine(report);
+            sb.AppendLine();
+            sb.AppendLine(new TextObject(SMessageContinue).ToString());
+#if NET472 || (NET6_0 && WINDOWS)
+            switch (System.Windows.Forms.MessageBox.Show(sb.ToString(), new TextObject(SWarningTitle).ToString(), System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Warning, System.Windows.Forms.MessageBoxDefaultButton.Button1, (System.Windows.Forms.MessageBoxOptions) 0x40000))
             {
-                MBObjectBaseExtensions.OnGameEnd();
+                case System.Windows.Forms.DialogResult.Yes:
+                    Environment.Exit(1);
+                    break;
             }
-
-            Logger.LogTrace("OnGameEnd: Done");
-        }
-
-        private static void ValidateLoadOrder()
-        {
-            var loadedModules = ModuleInfoHelper.GetLoadedModules().ToList();
-            if (loadedModules.Count == 0) return;
-
-            var sb = new StringBuilder();
-            if (!ModuleInfoHelper.ValidateLoadOrder(typeof(ButterLibSubModule), out var report))
-            {
-                sb.AppendLine(report);
-                sb.AppendLine();
-                sb.AppendLine(new TextObject(SMessageContinue).ToString());
-#if !NETSTANDARD2_0
-
-                switch (System.Windows.Forms.MessageBox.Show(sb.ToString(), new TextObject(SWarningTitle).ToString(), System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Warning, System.Windows.Forms.MessageBoxDefaultButton.Button1, (System.Windows.Forms.MessageBoxOptions) 0x40000))
-                {
-                    case System.Windows.Forms.DialogResult.Yes:
-                        Environment.Exit(1);
-                        break;
-                }
 #endif
-            }
         }
+    }
 
-        private void InitializeServices()
+    private void InitializeServices()
+    {
+        if (Services is not null)
         {
-            if (Services is not null)
+            GlobalServiceProvider = Services.BuildServiceProvider();
+            Logger.LogTrace("Created GlobalServiceProvider");
+            Services = null!;
+            Logger.LogTrace("Set Services to null");
+
+            Logger = this.GetServiceProvider().GetRequiredService<ILogger<ButterLibSubModule>>();
+            Logger.LogTrace("Assigned new _logger from GlobalServiceProvider");
+
+            var logger = this.GetServiceProvider().GetRequiredService<ILogger<LoggerTraceListener>>();
+            Trace.Listeners.Add(new LoggerTraceListener(logger));
+            Logger.LogTrace("Added System.Diagnostics.Trace main listener");
+
+            if (TextWriterTraceListener is not null)
             {
-                GlobalServiceProvider = Services.BuildServiceProvider();
-                Logger.LogTrace("Created GlobalServiceProvider");
-                Services = null!;
-                Logger.LogTrace("Set Services to null");
-
-                Logger = this.GetServiceProvider().GetRequiredService<ILogger<ButterLibSubModule>>();
-                Logger.LogTrace("Assigned new _logger from GlobalServiceProvider");
-
-                var logger = this.GetServiceProvider().GetRequiredService<ILogger<LoggerTraceListener>>();
-                Trace.Listeners.Add(new LoggerTraceListener(logger));
-                Logger.LogTrace("Added System.Diagnostics.Trace main listener");
-
-                if (TextWriterTraceListener is not null)
+                try
                 {
-                    try
+                    Trace.Flush(); // In case AutoFlush was set to false
+                    Trace.Listeners.Remove(TextWriterTraceListener);
+                    if (TextWriterTraceListener.Writer is StreamWriter { BaseStream: MemoryStream ms })
                     {
-                        Trace.Flush(); // In case AutoFlush was set to false
-                        Trace.Listeners.Remove(TextWriterTraceListener);
-                        if (TextWriterTraceListener.Writer is StreamWriter { BaseStream: MemoryStream ms })
+                        ms.Seek(0, SeekOrigin.Begin);
+                        using var reader = new StreamReader(ms, Encoding.UTF8, true, 1024, true);
+                        while (reader.Peek() >= 0)
                         {
-                            ms.Seek(0, SeekOrigin.Begin);
-                            using var reader = new StreamReader(ms, Encoding.UTF8, true, 1024, true);
-                            while (reader.Peek() >= 0)
-                            {
-                                Trace.WriteLine(reader.ReadLine());
-                            }
-                            Logger.LogTrace("Flushed logs from the System.Diagnostics.Trace temp listener");
+                            Trace.WriteLine(reader.ReadLine());
                         }
-                    }
-                    finally
-                    {
-                        TextWriterTraceListener.Dispose();
+                        Logger.LogTrace("Flushed logs from the System.Diagnostics.Trace temp listener");
                     }
                 }
-            }
-        }
-
-        private static void PerformMigration001()
-        {
-            try
-            {
-                var configPath = PlatformFileHelperPCExtended.GetDirectoryFullPath(EngineFilePaths.ConfigsPath);
-                if (string.IsNullOrEmpty(configPath)) return;
-
-                var oldConfigPath = Path.GetFullPath("Configs");
-                var oldPath = Path.Combine(oldConfigPath, "ModLogs");
-                var newPath = Path.Combine(configPath, "ModLogs");
-                if (Directory.Exists(oldPath) && Directory.Exists(newPath))
+                finally
                 {
-                    foreach (var filePath in Directory.GetFiles(oldPath))
-                    {
-                        var fileName = Path.GetFileName(filePath);
-                        var newFilePath = Path.Combine(newPath, fileName);
-                        try
-                        {
-                            File.Copy(filePath, newFilePath, true);
-                            File.Delete(filePath);
-                        }
-                        catch (Exception) { }
-                    }
-
-                    if (Directory.GetFiles(oldPath) is { Length: 0 } && Directory.GetDirectories(oldPath) is { Length: 0 })
-                        Directory.Delete(oldPath, true);
-                    if (Directory.GetFiles(oldConfigPath) is { Length: 0 } && Directory.GetDirectories(oldConfigPath) is { Length: 0 })
-                        Directory.Delete(oldConfigPath, true);
+                    TextWriterTraceListener.Dispose();
                 }
             }
-            catch (Exception) { }
         }
     }
 }

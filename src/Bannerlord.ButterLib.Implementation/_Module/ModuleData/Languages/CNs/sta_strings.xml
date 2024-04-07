@@ -17,8 +17,8 @@
     <string id="B7bfrDNzIk" text="调试启动时禁用"/>
     <string id="r3ktQzFMRz" text="调试启动时，禁用异常处理程序。"/>
 
-    <string id="jorWb502pD" text="捕捉自动生成的代码异常。（低性能）&#10;（禁用）"/>
-    <string id="ji1brrsEZz" text="捕捉每个 本机 -&gt; 托管 的调用。应该能捕捉每一个没有正常捕捉到的异常。可能会稍微降低整体性能。"/>
+    <string id="jorWb502pD" text="捕捉自动生成的代码异常。（低性能）（禁用）"/>
+    <string id="ji1brrsEZz" text="捕捉每个 本机-&gt;托管 的调用。应该能捕捉每一个没有正常捕捉到的异常。可能会稍微降低整体性能。"/>
 
     <string id="ZD69h3IpF5" text="使用原版崩溃处理程序。"/>
     <string id="o0DgSNv5V1" text="使用新的 Watchdog 崩溃处理程序时，禁用 ButterLib 的和 BEW 的崩溃处理程序。如果不确定，不要启用。"/>

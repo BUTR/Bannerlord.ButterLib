@@ -2,8 +2,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net472;netcoreapp3.1</TargetFrameworks>
-    <LangVersion>10.0</LangVersion>
+    <TargetFrameworks>net472;net6.0-windows</TargetFrameworks>
+    <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <Platform>x64</Platform>
     <BuildForWindows>false</BuildForWindows>
@@ -13,12 +13,13 @@
     <DefineConstants>$(DefineConstants);$(GameVersionConstant);X64</DefineConstants>
 
     <AssemblyName>$(MSBuildProjectName).$(GameVersion)</AssemblyName>
+    <SkipDependencies>false</SkipDependencies>
   </PropertyGroup>
 
   <PropertyGroup Condition="$(TargetFramework) == 'net472'">
     <BuildForWindows>true</BuildForWindows>
   </PropertyGroup>
-  <PropertyGroup Condition="$(TargetFramework) == 'netcoreapp3.1'">
+  <PropertyGroup Condition="$(TargetFramework) == 'net6.0-windows'">
     <BuildForWindowsStore>true</BuildForWindowsStore>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <EnableWindowsTargeting>true</EnableWindowsTargeting>
@@ -43,21 +44,48 @@
     <PackageReference Include="Bannerlord.ReferenceAssemblies.Native" Version="$(GameVersion).*-*" PrivateAssets="all" />
 
     <PackageReference Include="IsExternalInit" Version="1.0.3" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
-
-    <!-- AsmResolver.DotNet.Dynamic force pulls System.Runtime.CompilerSerices.Unsafe v6, downgrade it -->
-    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.5.3" />
   </ItemGroup>
   <!--NuGet References-->
+
+  <!--
+  <ItemGroup>
+      <Reference Include="$(GameFolder)\bin\Win64_Shipping_Client\Newtonsoft.Json.dll">
+          <HintPath>%(Identity)</HintPath>
+          <Private>False</Private>
+      </Reference>
+      <Reference Include="$(GameFolder)\bin\Win64_Shipping_Client\TaleWorlds.*.dll" Exclude="$(GameFolder)\bin\Win64_Shipping_Client\TaleWorlds.Native.dll">
+          <HintPath>%(Identity)</HintPath>
+          <Private>False</Private>
+      </Reference>
+      <Reference Include="$(GameFolder)\Modules\Native\bin\Win64_Shipping_Client\*.dll">
+          <HintPath>%(Identity)</HintPath>
+          <Private>False</Private>
+      </Reference>
+  </ItemGroup>
+  -->
+  
+  <!-- Distribute the native dependencies -->
+  <ItemGroup>
+    <PackageReference Include="BUTR.CrashReport.Renderer.ImGui" Version="$(CrashReportVersion)" PrivateAssets="all" IncludeAssets="none" GeneratePathProperty="true" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Bannerlord.ButterLib\Bannerlord.ButterLib.csproj" />
   </ItemGroup>
-
+  
   <!--InternalsVisibleTo-->
   <ItemGroup>
     <InternalsVisibleTo Include="Bannerlord.ButterLib.Tests" />
     <InternalsVisibleTo Include="Bannerlord.ButterLib.Implementation.Tests" />
   </ItemGroup>
   <!--InternalsVisibleTo-->
+  
+  <Target Name="CopyNativeDependencies" BeforeTargets="BeforeBuild">
+    <ItemGroup>
+      <NativeFilesToCopy Include="$(PkgBUTR_CrashReport_Renderer_ImGui)\runtimes\win-x64\native\*.dll" />
+    </ItemGroup>
+    <Copy SourceFiles="@(NativeFilesToCopy)" DestinationFolder="$(ProjectDir)\_Module\bin\Win64_Shipping_Client" />
+    <Copy SourceFiles="@(NativeFilesToCopy)" DestinationFolder="$(ProjectDir)\_Module\bin\Gaming.Desktop.x64_Shipping_Client" />
+  </Target>
 
 </Project>

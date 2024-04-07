@@ -1,13 +1,12 @@
-﻿namespace Bannerlord.ButterLib.CrashUploader
+﻿namespace Bannerlord.ButterLib.CrashUploader;
+
+internal enum CrashUploaderStatus
 {
-    internal enum CrashUploaderStatus
-    {
-        Success,
-        MetadataNotFound,
-        ResponseIsNotHttpWebResponse,
-        WrongStatusCode,
-        ResponseStreamIsNull,
-        FailedWithException,
-        UrlIsNullOrEmpty,
-    }
+    Success,
+    MetadataNotFound,
+    ResponseIsNotHttpWebResponse,
+    WrongStatusCode,
+    ResponseStreamIsNull,
+    FailedWithException,
+    UrlIsNullOrEmpty,
 }

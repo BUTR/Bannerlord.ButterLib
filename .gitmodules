@@ -1,4 +1,0 @@
-[submodule "src/Ben.Demystifier"]
-	path = src/Ben.Demystifier
-	url = https://github.com/BUTR/Ben.Demystifier
-	branch = main

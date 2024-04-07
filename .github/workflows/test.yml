@@ -43,8 +43,8 @@ jobs:
         github-token: ${{secrets.GITHUB_TOKEN}}
         steam-login: ${{secrets.STEAM_LOGIN}}
         steam-password: ${{secrets.STEAM_PASSWORD}}
-        stable-version: ${{secrets.SYNCED_GAME_STABLE_VERSION}}
-        beta-version: ${{secrets.SYNCED_GAME_BETA_VERSION}}
+        stable-version: ${{vars.GAME_VERSION_STABLE}}
+        beta-version: ${{vars.GAME_VERSION_BETA}}
         stable-directory: 'bannerlord-stable'
         beta-directory: 'bannerlord-beta'
         steam-depotid: '261551 261552'
@@ -62,8 +62,8 @@ jobs:
           dotnet test tests/Bannerlord.ButterLib.Implementation.Tests/Bannerlord.ButterLib.Implementation.Tests.csproj --configuration Beta_Debug -p:BetaVersion=$beta_version -p:GameFolder="$PWD/bannerlord-beta";
           dotnet test tests/Bannerlord.ButterLib.Implementation.Tests/Bannerlord.ButterLib.Implementation.Tests.csproj --configuration Beta_Release -p:BetaVersion=$beta_version -p:GameFolder="$PWD/bannerlord-beta";
       env:
-        STABLE_VERSION: ${{secrets.SYNCED_GAME_STABLE_VERSION}}
-        BETA_VERSION: ${{secrets.SYNCED_GAME_BETA_VERSION}}
+        STABLE_VERSION: ${{vars.GAME_VERSION_STABLE}}
+        BETA_VERSION: ${{vars.GAME_VERSION_BETA}}
       shell: pwsh
 
     - name: Test Coverage
@@ -77,7 +77,7 @@ jobs:
       shell: pwsh
 
     - name: ReportGenerator
-      uses: danielpalme/ReportGenerator-GitHub-Action@5.1.26
+      uses: danielpalme/ReportGenerator-GitHub-Action@5.2.4
       with:
         reports: 'coverage_butterlib_stable_debug.xml;coverage_butterlib_stable_release.xml;coverage_butterlib_impl_stable_debug.xml;coverage_butterlib_impl_stable_release.xml;coverage_butterlib_impl_beta_debug.xml;coverage_butterlib_impl_beta_release.xml;'
         targetdir: 'coveragereport'
@@ -86,13 +86,13 @@ jobs:
         tag: '${{ github.run_number }}_${{ github.run_id }}' # Optional tag or build version.
 
     - name: Upload ReportGenerator to GitHub
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: coverage-report
         path: coveragereport
 
     - name: Upload ReportGenerator to CodeCov
-      uses: codecov/codecov-action@v3.1.4
+      uses: codecov/codecov-action@v4.2.0
       with:
         token: ${{secrets.CODECOV_TOKEN}}
         file: coveragereport/Cobertura.xml

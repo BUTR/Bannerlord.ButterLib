@@ -3,8 +3,9 @@
 
   <!--Development Variables-->
   <PropertyGroup>
+    <BaseGameVersion>1.0.0</BaseGameVersion>
     <!--Module Version-->
-    <Version>2.8.16</Version>
+    <Version>2.9.0</Version>
     <!--Harmony Version-->
     <HarmonyVersion>2.2.2</HarmonyVersion>
     <HarmonyExtensionsVersion>3.2.0.77</HarmonyExtensionsVersion>
@@ -15,8 +16,11 @@
     <ExtensionVersion>2.0.0</ExtensionVersion>
     <!--BuildResources Version-->
     <BuildResourcesVersion>1.1.0.104</BuildResourcesVersion>
-    <BUTRSharedVersion>3.0.0.137</BUTRSharedVersion>
-    <BUTRModuleManagerVersion>5.0.209</BUTRModuleManagerVersion>
+    <BUTRSharedVersion>3.0.0.138</BUTRSharedVersion>
+    <BUTRModuleManagerVersion>5.0.221</BUTRModuleManagerVersion>
+    <CrashReportVersion>13.0.0.61</CrashReportVersion>
+    <GLFWVersion>3.3.9.2</GLFWVersion>
+    <ImGuiVersion>1.90.1.1</ImGuiVersion>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -25,21 +29,21 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
-    <PackageReference Include="Serilog" Version="3.0.1" />
-    <PackageReference Include="Serilog.Extensions.Logging" Version="3.1.0" />
-    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="$(ExtensionVersion)" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="$(ExtensionVersion)" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="$(ExtensionVersion)" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="$(ExtensionVersion)" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="$(ExtensionVersion)" />
-    <PackageReference Include="Microsoft.Extensions.Primitives" Version="$(ExtensionVersion)" />
-    <PackageReference Include="System.Memory" Version="4.5.4" />
-    <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />
-    <PackageReference Include="System.Reflection.Metadata" Version="1.8.1" />
+    <PackageReference Condition="$(SkipDependencies) == 'false'" Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
+    <PackageReference Condition="$(SkipDependencies) == 'false'" Include="Serilog" Version="3.0.1" />
+    <PackageReference Condition="$(SkipDependencies) == 'false'" Include="Serilog.Extensions.Logging" Version="3.1.0" />
+    <PackageReference Condition="$(SkipDependencies) == 'false'" Include="Serilog.Sinks.File" Version="5.0.0" />
+    <PackageReference Condition="$(SkipDependencies) == 'false'" Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="$(ExtensionVersion)" />
+    <PackageReference Condition="$(SkipDependencies) == 'false'" Include="Microsoft.Extensions.DependencyInjection" Version="$(ExtensionVersion)" />
+    <PackageReference Condition="$(SkipDependencies) == 'false'" Include="Microsoft.Extensions.Logging.Abstractions" Version="$(ExtensionVersion)" />
+    <PackageReference Condition="$(SkipDependencies) == 'false'" Include="Microsoft.Extensions.Logging" Version="$(ExtensionVersion)" />
+    <PackageReference Condition="$(SkipDependencies) == 'false'" Include="Microsoft.Extensions.Options" Version="$(ExtensionVersion)" />
+    <PackageReference Condition="$(SkipDependencies) == 'false'" Include="Microsoft.Extensions.Primitives" Version="$(ExtensionVersion)" />
+    <PackageReference Condition="$(SkipDependencies) == 'false'" Include="System.Memory" Version="4.5.4" />
+    <PackageReference Condition="$(SkipDependencies) == 'false'" Include="System.Numerics.Vectors" Version="4.5.0" />
+    <PackageReference Condition="$(SkipDependencies) == 'false'" Include="System.Reflection.Metadata" Version="1.8.1" />
   </ItemGroup>
-  <ItemGroup Condition="$(TargetFramework) == 'netcoreapp3.1'">
+  <ItemGroup Condition="$(TargetFramework) == 'net6'">
     <FrameworkReference Include="Microsoft.AspNetCore.App"  />
   </ItemGroup>
   
@@ -129,7 +133,7 @@
   </PropertyGroup>
   <!--SorceLink-->
   <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All"/>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All"/>
   </ItemGroup>
   <!--CI Builds-->
   <ItemGroup Condition="$(TargetFramework) == 'net472' AND $(OS) != 'Windows_NT'">
