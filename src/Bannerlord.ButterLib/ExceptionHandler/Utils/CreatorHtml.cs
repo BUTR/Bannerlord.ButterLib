@@ -77,7 +77,7 @@ internal static class CreatorHtml
     {
 #if NET472 || (NET6_0 && WINDOWS)
         using var compressedBase64Stream = new MemoryStream();
-        
+
         using (var base64Stream = new CryptoStream(compressedBase64Stream, new ToBase64Transform(), CryptoStreamMode.Write, true))
         using (var compressorStream = new GZipStream(base64Stream, CompressionLevel.Optimal, true))
         using (var streamWriter = new StreamWriter(compressorStream, Encoding.UTF8, 1024, true))
