@@ -14,6 +14,11 @@
     <SkipDependencies>false</SkipDependencies>
   </PropertyGroup>
 
+  <PropertyGroup Condition="$(TargetFramework) == 'net6.0-windows'">
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+  </PropertyGroup>
+
   <!--NuGet Package-->
   <PropertyGroup>
     <PackageId>Bannerlord.ButterLib</PackageId>
