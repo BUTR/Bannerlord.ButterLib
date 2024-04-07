@@ -66,8 +66,7 @@
   
   <!-- Distribute the native dependencies -->
   <ItemGroup>
-    <PackageReference Include="Ultz.Native.GLFW" Version="$(GLFWVersion)" PrivateAssets="all" IncludeAssets="none" GeneratePathProperty="true" />
-    <PackageReference Include="ImGui.NET" Version="$(ImGuiVersion)" PrivateAssets="all" IncludeAssets="none" GeneratePathProperty="true" />
+    <PackageReference Include="BUTR.CrashReport.Renderer.ImGui" Version="$(CrashReportVersion)" PrivateAssets="all" IncludeAssets="none" GeneratePathProperty="true" />
   </ItemGroup>
 
   <ItemGroup>
@@ -82,10 +81,11 @@
   <!--InternalsVisibleTo-->
   
   <Target Name="CopyNativeDependencies" BeforeTargets="BeforeBuild">
-    <Copy SourceFiles="$(PkgUltz_Native_GLFW)\runtimes\win-x64\native\glfw3.dll" DestinationFolder="$(ProjectDir)\_Module\bin\Win64_Shipping_Client" />
-    <Copy SourceFiles="$(PkgImGui_NET)\runtimes\win-x64\native\cimgui.dll" DestinationFolder="$(ProjectDir)\_Module\bin\Win64_Shipping_Client" />
-    <Copy SourceFiles="$(PkgUltz_Native_GLFW)\runtimes\win-x64\native\glfw3.dll" DestinationFolder="$(ProjectDir)\_Module\bin\Gaming.Desktop.x64_Shipping_Client" />
-    <Copy SourceFiles="$(PkgImGui_NET)\runtimes\win-x64\native\cimgui.dll" DestinationFolder="$(ProjectDir)\_Module\bin\Gaming.Desktop.x64_Shipping_Client" />
+    <ItemGroup>
+      <NativeFilesToCopy Include="$(PkgBUTR_CrashReport_Renderer_ImGui)\runtimes\win-x64\native\*.dll" />
+    </ItemGroup>
+    <Copy SourceFiles="@(NativeFilesToCopy)" DestinationFolder="$(ProjectDir)\_Module\bin\Win64_Shipping_Client" />
+    <Copy SourceFiles="@(NativeFilesToCopy)" DestinationFolder="$(ProjectDir)\_Module\bin\Gaming.Desktop.x64_Shipping_Client" />
   </Target>
 
 </Project>
