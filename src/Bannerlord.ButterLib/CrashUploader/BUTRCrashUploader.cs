@@ -22,8 +22,7 @@ internal class BUTRCrashUploader : ICrashUploader
     {
         try
         {
-            var assembly = Assembly.GetExecutingAssembly();
-            var uploadUrlAttr = assembly.GetCustomAttributes<AssemblyMetadataAttribute>().FirstOrDefault(a => a.Key == "BUTRUploadUrl");
+            var uploadUrlAttr = typeof(BUTRCrashUploader).Assembly.GetCustomAttributes<AssemblyMetadataAttribute>().FirstOrDefault(a => a.Key == "BUTRUploadUrl");
             if (uploadUrlAttr is null)
                 return CrashUploaderResult.MetadataNotFound();
 
@@ -32,7 +31,7 @@ internal class BUTRCrashUploader : ICrashUploader
             var httpWebRequest = WebRequest.CreateHttp(uploadUrlAttr.Value);
             httpWebRequest.Method = "POST";
             httpWebRequest.ContentType = "application/json";
-            httpWebRequest.UserAgent = $"ButterLib CrashUploader v{assembly.GetName().Version}";
+            httpWebRequest.UserAgent = $"ButterLib CrashUploader v{typeof(BUTRCrashUploader).Assembly.GetName().Version}";
             httpWebRequest.Headers.Add("Content-Encoding", "gzip,deflate");
 
             using var writeStream = await httpWebRequest.GetRequestStreamAsync().ConfigureAwait(false);
@@ -43,7 +42,7 @@ internal class BUTRCrashUploader : ICrashUploader
             if (response is not HttpWebResponse httpWebResponse)
                 return CrashUploaderResult.ResponseIsNotHttpWebResponse();
 
-            if (httpWebResponse.StatusCode is not HttpStatusCode.OK or HttpStatusCode.Created)
+            if (httpWebResponse.StatusCode is not HttpStatusCode.OK and not HttpStatusCode.Created)
                 return CrashUploaderResult.WrongStatusCode(httpWebResponse.StatusCode.ToString());
 
             using var stream = response.GetResponseStream();
