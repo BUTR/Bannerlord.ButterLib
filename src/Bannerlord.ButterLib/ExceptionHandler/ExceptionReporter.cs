@@ -67,7 +67,7 @@ public static class ExceptionReporter
 #if NET472 || (NET6_0 && WINDOWS)
 
                 var forms = new CrashReportWinForms(crashReportModel, logSources, crashReportRendererUtilities);
-                forms.Show();
+                forms.ShowDialog();
 #endif
             }
             catch (Exception ex2)

@@ -3,12 +3,11 @@
 
   <PropertyGroup>
     <TargetFrameworks>net472;net6.0-windows;netstandard2.0</TargetFrameworks>
+    <Platforms>x64</Platforms>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
-    <Platform>x64</Platform>
-    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-
     <BUTRUploadUrl>$(BANNERLORD_BUTR_UPLOAD_URL)</BUTRUploadUrl>
     <DefineConstants>$(DefineConstants);BANNERLORDBUTRSHARED_BUTTERLIB;X64</DefineConstants>
     <SkipDependencies>false</SkipDependencies>
@@ -28,8 +27,6 @@
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIcon>Butter.png</PackageIcon>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Platforms>x64</Platforms>
   </PropertyGroup>
   <ItemGroup>
     <None Include="../../resources/Butter.png" Pack="true" PackagePath="" />
@@ -83,14 +80,14 @@
   -->
 
   <ItemGroup Condition="$(TargetFramework) == 'net472'">
-    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression" PrivateAssets="all" />
   </ItemGroup>
 
   <!--Windows Forms-->
   <ItemGroup Condition="$(TargetFramework) == 'net472'">
     <Reference Include="System.Windows.Forms" PrivateAssets="all" />
   </ItemGroup>
-  <ItemGroup Condition="$(TargetFramework) == 'net6'">
+  <ItemGroup Condition="$(TargetFramework) == 'net6.0-windows'">
     <FrameworkReference Include="Microsoft.WindowsDesktop.App" PrivateAssets="all" />
   </ItemGroup>
   <!--Windows Forms-->
