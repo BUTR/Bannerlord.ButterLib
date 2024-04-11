@@ -33,6 +33,7 @@ internal class BUTRCrashUploader : ICrashUploader
             httpWebRequest.ContentType = "application/json";
             httpWebRequest.UserAgent = $"ButterLib CrashUploader v{typeof(BUTRCrashUploader).Assembly.GetName().Version}";
             httpWebRequest.Headers.Add("Content-Encoding", "gzip,deflate");
+            httpWebRequest.Headers.Add("CrashReportVersion", crashReportModel.Version.ToString());
 
             using var writeStream = await httpWebRequest.GetRequestStreamAsync().ConfigureAwait(false);
             using (var gzip = new GZipStream(writeStream, CompressionMode.Compress, true))
