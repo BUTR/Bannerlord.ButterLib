@@ -8,7 +8,7 @@
   <ModuleCategory value="Singleplayer" />
   <ModuleType value="Community"/>
   <Url value="https://www.nexusmods.com/mountandblade2bannerlord/mods/2018" />
-  <UpdateInfo value="NexusMods:2018" />
+  <UpdateInfo value="NexusMods:2018;GitHub:BUTR/Bannerlord.ButterLib" />
   <DependedModules>
     <!-- Uncomment when doing ExtensionVersion > 2.0.0
     <DependedModule Id="BLSE.AssemblyResolver" />

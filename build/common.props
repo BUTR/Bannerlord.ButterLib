@@ -5,7 +5,7 @@
   <PropertyGroup>
     <BaseGameVersion>1.0.0</BaseGameVersion>
     <!--Module Version-->
-    <Version>2.9.6</Version>
+    <Version>2.9.7</Version>
     <!--Harmony Version-->
     <HarmonyVersion>2.2.2</HarmonyVersion>
     <HarmonyExtensionsVersion>3.2.0.77</HarmonyExtensionsVersion>
@@ -17,8 +17,8 @@
     <!--BuildResources Version-->
     <BuildResourcesVersion>1.1.0.104</BuildResourcesVersion>
     <BUTRSharedVersion>3.0.0.138</BUTRSharedVersion>
-    <BUTRModuleManagerVersion>5.0.221</BUTRModuleManagerVersion>
-    <CrashReportVersion>13.0.0.78</CrashReportVersion>
+    <BUTRModuleManagerVersion>5.0.222</BUTRModuleManagerVersion>
+    <CrashReportVersion>13.0.0.81</CrashReportVersion>
   </PropertyGroup>
 
   <PropertyGroup>
