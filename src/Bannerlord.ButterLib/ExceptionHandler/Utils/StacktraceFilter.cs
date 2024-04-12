@@ -28,7 +28,7 @@ internal class StacktraceFilter : IStacktraceFilter
                 {
                     continue;
                 }
-                
+
                 if (stacktraceEntry.Method.DeclaringType == typeof(SubModuleWrappers2.MBSubModuleBaseWrapper))
                 {
                     continue;
@@ -89,12 +89,12 @@ internal class StacktraceFilter : IStacktraceFilter
             {
                 continue;
             }
-            
+
             if (patch.LoaderPluginInfo?.Id == "BLSE.ExceptionInterceptor")
             {
                 continue;
             }
-            
+
             if (patch.ModuleInfo?.Id == "Bannerlord.Harmony")
             {
                 if (patch.Method.DeclaringType?.FullName == "Bannerlord.Harmony.SubModule")
@@ -105,7 +105,7 @@ internal class StacktraceFilter : IStacktraceFilter
                     }
                 }
             }
-            
+
             yield return patch;
         }
     }
