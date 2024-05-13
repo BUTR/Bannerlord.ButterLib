@@ -77,6 +77,13 @@ public abstract class DistanceMatrix<T> : DistanceMatrix where T : MBObjectBase
     /// </value>
     public abstract Dictionary<(T Object1, T Object2), float> AsTypedDictionary { get; }
 
+    /// <summary>Objectified distance matrix representation for nearest neighbours processing</summary>
+    /// <value>
+    /// A dictionary of the <typeparamref name="T"/> object type as a key
+    /// and a values are represented by a <see cref="T:System.Collections.Generic.SortedSet`1"/> containing tuples of all other objects and the corresponding distances in a form of floating point numbers.
+    /// </value>
+    public abstract Dictionary<T, SortedSet<(T OtherObject, float Distance)>> AsFlatenedDictionary { get; }
+
     /// <summary>Gets calculated distance between specified type <typeparamref name="T"/> objects.</summary>
     /// <param name="object1">The first of the objects between which it is necessary to determine the distance.</param>
     /// <param name="object2">The second of the objects between which it is necessary to determine the distance.</param>
