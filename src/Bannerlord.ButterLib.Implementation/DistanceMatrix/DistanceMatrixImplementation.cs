@@ -153,7 +153,7 @@ internal sealed class DistanceMatrixImplementation<T> : DistanceMatrix<T> where 
 
         if (typeof(Settlement).IsAssignableFrom(typeof(T)))
         {
-            bool considerVillages = DistanceMatrixSubSystem.Instance!.ConsiderVillages;
+            bool considerVillages = DistanceMatrixSubSystem.Instance?.ConsiderVillages ?? true;
             var settlements = Settlement.All.Where(s => s.IsFortification || (considerVillages && s.IsVillage)).ToList();
             _cachedMapping = settlements.ToDictionary(key => key.Id, value => value as MBObjectBase);
 
