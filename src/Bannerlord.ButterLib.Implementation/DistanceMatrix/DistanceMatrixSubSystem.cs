@@ -42,8 +42,8 @@ internal class DistanceMatrixSubSystem : ISubSystem, ISubSystemSettings<Distance
     public IReadOnlyCollection<SubSystemSettingsDeclaration<DistanceMatrixSubSystem>> Declarations { get; } = new SubSystemSettingsDeclaration<DistanceMatrixSubSystem>[]
     {
         new SubSystemSettingsPropertyBool<DistanceMatrixSubSystem>(
-            "{=} Consider Villages",
-            "{=} Allow villages to be used for built-in distance matrix calculations. Negatively affects performance.",
+            "{=MSJe8ih4yp}Consider Villages",
+            "{=kvR54SiOFn}Allow villages to be used for built-in distance matrix calculations. May negatively affect performance.",
             x => x.ConsiderVillages),
     };
 }
