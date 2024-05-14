@@ -76,18 +76,18 @@ internal sealed class DistanceMatrixImplementation<T> : DistanceMatrix<T> where 
     }
 
     /// <inheritdoc/>
-    public override IEnumerable<(T OtherObject, float Distance)> GetNearestNeighbors(T inquiredObject, int count) => GetNearestNeighbors(inquiredObject, count, IsNotNaN());
+    public override IEnumerable<(T OtherObject, float Distance)> GetNearestNeighbours(T inquiredObject, int count) => GetNearestNeighbours(inquiredObject, count, IsNotNaN());
 
     /// <inheritdoc/>
-    public override IEnumerable<(T OtherObject, float Distance)> GetNearestNeighbors(T inquiredObject, int count, Func<(T OtherObject, float Distance), bool> searchPredicate) =>
+    public override IEnumerable<(T OtherObject, float Distance)> GetNearestNeighbours(T inquiredObject, int count, Func<(T OtherObject, float Distance), bool> searchPredicate) =>
         _flatenedDictionary.TryGetValue(inquiredObject, out var nearestNeighbors) ? nearestNeighbors.Where(searchPredicate).Take(count) : [];
 
     /// <inheritdoc/>
-    public override IEnumerable<(T OtherObject, float Distance)> GetNearestNeighborsNormalized(T inquiredObject, int count, float scaleMin = 0f, float scaleMax = 100f) =>
-        GetNearestNeighborsNormalized(inquiredObject, count, IsNotNaN(), scaleMin, scaleMax);
+    public override IEnumerable<(T OtherObject, float Distance)> GetNearestNeighboursNormalized(T inquiredObject, int count, float scaleMin = 0f, float scaleMax = 100f) =>
+        GetNearestNeighboursNormalized(inquiredObject, count, IsNotNaN(), scaleMin, scaleMax);
 
     /// <inheritdoc/>
-    public override IEnumerable<(T OtherObject, float Distance)> GetNearestNeighborsNormalized(T inquiredObject, int count, Func<(T OtherObject, float Distance), bool> searchPredicate, float scaleMin = 0f, float scaleMax = 100f)
+    public override IEnumerable<(T OtherObject, float Distance)> GetNearestNeighboursNormalized(T inquiredObject, int count, Func<(T OtherObject, float Distance), bool> searchPredicate, float scaleMin = 0f, float scaleMax = 100f)
     {
         if (_flatenedDictionary.TryGetValue(inquiredObject, out var nearestNeighbors))
         {

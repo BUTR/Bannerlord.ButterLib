@@ -108,7 +108,7 @@ public abstract class DistanceMatrix<T> : DistanceMatrix where T : MBObjectBase
     /// <param name="inquiredObject">Object to search nearest neighbours for.</param>
     /// <param name="count">Number of neighbours to be returned.</param>
     /// <returns></returns>
-    public abstract IEnumerable<(T OtherObject, float Distance)> GetNearestNeighbors(T inquiredObject, int count);
+    public abstract IEnumerable<(T OtherObject, float Distance)> GetNearestNeighbours(T inquiredObject, int count);
 
     /// <summary>
     /// Search for nearest neighbours of the specified type <typeparamref name="T"/> object
@@ -119,7 +119,7 @@ public abstract class DistanceMatrix<T> : DistanceMatrix where T : MBObjectBase
     /// <param name="count">Number of neighbours to be returned.</param>
     /// <param name="searchPredicate">A search predicate to filter through neighbours before returning nearest ones that qualify.</param>
     /// <returns></returns>
-    public abstract IEnumerable<(T OtherObject, float Distance)> GetNearestNeighbors(T inquiredObject, int count, Func<(T OtherObject, float Distance), bool> searchPredicate);
+    public abstract IEnumerable<(T OtherObject, float Distance)> GetNearestNeighbours(T inquiredObject, int count, Func<(T OtherObject, float Distance), bool> searchPredicate);
 
     /// <summary>
     /// Search for nearest neighbours of the specified type <typeparamref name="T"/> object
@@ -132,7 +132,7 @@ public abstract class DistanceMatrix<T> : DistanceMatrix where T : MBObjectBase
     /// <param name="scaleMin">Minimum normalized value.</param>
     /// <param name="scaleMax">Maximum normalized value.</param>
     /// <returns></returns>
-    public abstract IEnumerable<(T OtherObject, float Distance)> GetNearestNeighborsNormalized(T inquiredObject, int count, float scaleMin = 0f, float scaleMax = 100f);
+    public abstract IEnumerable<(T OtherObject, float Distance)> GetNearestNeighboursNormalized(T inquiredObject, int count, float scaleMin = 0f, float scaleMax = 100f);
 
     /// <summary>
     /// Search for nearest neighbours of the specified type <typeparamref name="T"/> object
@@ -146,5 +146,5 @@ public abstract class DistanceMatrix<T> : DistanceMatrix where T : MBObjectBase
     /// <param name="scaleMin">Minimum normalized value.</param>
     /// <param name="scaleMax">Maximum normalized value.</param>
     /// <returns></returns>
-    public abstract IEnumerable<(T OtherObject, float Distance)> GetNearestNeighborsNormalized(T inquiredObject, int count, Func<(T OtherObject, float Distance), bool> searchPredicate, float scaleMin = 0f, float scaleMax = 100f);
+    public abstract IEnumerable<(T OtherObject, float Distance)> GetNearestNeighboursNormalized(T inquiredObject, int count, Func<(T OtherObject, float Distance), bool> searchPredicate, float scaleMin = 0f, float scaleMax = 100f);
 }

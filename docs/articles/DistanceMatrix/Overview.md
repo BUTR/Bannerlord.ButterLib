@@ -3,7 +3,7 @@ Distance Matrix is a subsystem that provides a means for handling distances betw
 Additionally, there are built-in implementations for `Settlement`, `Clan`, and `Kingdom` types, along with a behavior to keep the distances updated.
 
 ## Usage
-Use [``DistanceMatrix``](xref:Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix) class to work with your custom distance matrix.
+Use [``DistanceMatrix<T>``](xref:Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix-1) class to work with your custom distance matrix.
 Use [``CampaignExtensions``](xref:Bannerlord.ButterLib.Common.Extensions.CampaignExtensions) to access the built-in implementations.
 
 If you plan to use built-in implementations and behavior, don't forget to enable the SubSystem in your `SubModule` class:
@@ -20,11 +20,11 @@ Example usage of built-in `DistanceMatrix` for `Clan` type:
 var clanDistanceMatrix = Campaign.Current.GetDefaultClanDistanceMatrix();
 
 var playerClan = Clan.PlayerClan;
-var playerNeighbors = clanDistanceMatrix.GetNearestNeighbors(playerClan, 10);
+var playerNeighbours = clanDistanceMatrix.GetNearestNeighbours(playerClan, 10);
 
 Clan inquiredClan = Clan.All.FirstOrDefault(clan => clan.Fiefs.Count > 0 && Clan.All.Any(x => x.Fiefs.Count > 0 && clan.MapFaction.IsAtWarWith(x.MapFaction)));
-var unfriendlyNeighbors = clanDistanceMatrix.GetNearestNeighbors(inquiredObject: inquiredClan, 20, x => !float.IsNaN(x.Distance) && x.OtherObject != inquiredClan && x.OtherObject.MapFaction.IsAtWarWith(inquiredClan.MapFaction)).ToList();
-var unfriendlyNeighborsN = clanDistanceMatrix.GetNearestNeighborsNormalized(inquiredObject: inquiredClan, 20, x => !float.IsNaN(x.Distance) && x.OtherObject != inquiredClan && x.OtherObject.MapFaction.IsAtWarWith(inquiredClan.MapFaction)).ToList();
+var unfriendlyNeighbours = clanDistanceMatrix.GetNearestNeighbours(inquiredObject: inquiredClan, 20, x => !float.IsNaN(x.Distance) && x.OtherObject != inquiredClan && x.OtherObject.MapFaction.IsAtWarWith(inquiredClan.MapFaction)).ToList();
+var unfriendlyNeighboursN = clanDistanceMatrix.GetNearestNeighboursNormalized(inquiredObject: inquiredClan, 20, x => !float.IsNaN(x.Distance) && x.OtherObject != inquiredClan && x.OtherObject.MapFaction.IsAtWarWith(inquiredClan.MapFaction)).ToList();
 ```
 
 Example usage of Distance Matrix with custom selector and distance calculator:
