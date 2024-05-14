@@ -1,8 +1,8 @@
 # MBSubModuleBase extended
-Introduces an interface to use in your [``MBSubModuleBase``](xref:TaleWorlds.MountAndBlade.MBSubModuleBase)-derived class, that provides new SubModule events for additional control over crucial parts of game and campaign loading or unloading.
+Introduces an interface to use in your [``MBSubModuleBase``](https://apidoc.bannerlord.com/v/1.2.7/class_tale_worlds_1_1_mount_and_blade_1_1_m_b_sub_module_base.html)-derived class, that provides new SubModule events for additional control over crucial parts of game and campaign loading or unloading.
 
 ## Usage
-To access additional events you should derive your submodule from [``MBSubModuleBaseEx``](xref:Bannerlord.ButterLib.MBSubModuleBaseExtended.MBSubModuleBaseEx) instead of [``MBSubModuleBase``](xref:TaleWorlds.MountAndBlade.MBSubModuleBase).
+To access additional events you should derive your submodule from [``MBSubModuleBaseEx``](xref:Bannerlord.ButterLib.MBSubModuleBaseExtended.MBSubModuleBaseEx) instead of [``MBSubModuleBase``](https://apidoc.bannerlord.com/v/1.2.7/class_tale_worlds_1_1_mount_and_blade_1_1_m_b_sub_module_base.html).
 ```csharp
 public class SubModule : MBSubModuleBaseEx
 {

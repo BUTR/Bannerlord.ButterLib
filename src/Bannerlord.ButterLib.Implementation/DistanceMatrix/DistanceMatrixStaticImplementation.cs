@@ -18,15 +18,15 @@ namespace Bannerlord.ButterLib.Implementation.DistanceMatrix;
 /// </summary>
 internal sealed class DistanceMatrixStaticImplementation : IDistanceMatrixStatic
 {
-    private record WeightedDistance(float Distance, float Weight);
-    private record DistanceMatrixResultUnpaired(MBGUID OwnerId1, MBGUID OwnerId2, float Distance, float Weight);
+    public record OwnersDistancePaired(ulong Owners, float Distance, float Weight);
+    private record OwnersDistanceUnpaired(MBGUID OwnerId1, MBGUID OwnerId2, float Distance, float Weight);
 
     /// <inheritdoc/>
     public DistanceMatrix<T> Create<T>() where T : MBObjectBase => new DistanceMatrixImplementation<T>();
 
     /// <inheritdoc/>
-    public DistanceMatrix<T> Create<T>(Func<IEnumerable<T>> customListGetter, Func<T, T, float> customDistanceCalculator) where T : MBObjectBase =>
-        new DistanceMatrixImplementation<T>(customListGetter, customDistanceCalculator);
+    public DistanceMatrix<T> Create<T>(Func<IEnumerable<T>> customListGetter, Func<T, T, object[]?, float> customDistanceCalculator, object[]? distanceCalculatorArgs = null) where T : MBObjectBase =>
+        new DistanceMatrixImplementation<T>(customListGetter, customDistanceCalculator, distanceCalculatorArgs);
 
     /// <inheritdoc/>
     public float CalculateDistanceBetweenHeroes(Hero hero1, Hero hero2)
@@ -46,13 +46,14 @@ internal sealed class DistanceMatrixStaticImplementation : IDistanceMatrixStatic
     }
 
     /// <inheritdoc/>
-    public float CalculateDistanceBetweenClans(Clan clan1, Clan clan2, IEnumerable<DistanceMatrixResult> settlementOwnersPairedList)
+    public float CalculateDistanceBetweenClans(Clan clan1, Clan clan2, Dictionary<ulong, WeightedDistance> settlementOwnersPairedList)
     {
         var pair = clan1.Id > clan2.Id ? ElegantPairHelper.Pair(clan2.Id, clan1.Id) : ElegantPairHelper.Pair(clan1.Id, clan2.Id);
-        var settlementDistances = settlementOwnersPairedList
-            .Where(tuple => tuple.Owners == pair && !float.IsNaN(tuple.Distance))
-            .Select(x => new WeightedDistance(x.Distance, x.Weight)).ToList();
-        return GetWeightedMeanDistance(settlementDistances);
+        if (settlementOwnersPairedList.TryGetValue(pair, out var weightedDistance))
+        {
+            return (1 + weightedDistance.Distance) / (1 + weightedDistance.Weight);
+        }
+        return float.NaN;
     }
 
     /// <inheritdoc/>
@@ -70,15 +71,18 @@ internal sealed class DistanceMatrixStaticImplementation : IDistanceMatrixStatic
     }
 
     /// <inheritdoc/>
-    public List<DistanceMatrixResult> GetSettlementOwnersPairedList(DistanceMatrix<Settlement> settlementDistanceMatrix)
+    public Dictionary<ulong, WeightedDistance> GetSettlementOwnersPairedList(DistanceMatrix<Settlement> settlementDistanceMatrix)
     {
-        static DistanceMatrixResultUnpaired FirstSelector(KeyValuePair<(Settlement Object1, Settlement Object2), float> kvp) =>
+        static OwnersDistanceUnpaired FirstSelector(KeyValuePair<(Settlement Object1, Settlement Object2), float> kvp) =>
             new(OwnerId1: kvp.Key.Object1.OwnerClan.Id, OwnerId2: kvp.Key.Object2.OwnerClan.Id, Distance: kvp.Value, Weight: GetSettlementWeight(kvp.Key.Object1) + GetSettlementWeight(kvp.Key.Object2));
 
-        static DistanceMatrixResult SecondSelector(DistanceMatrixResultUnpaired x) =>
+        static OwnersDistancePaired SecondSelector(OwnersDistanceUnpaired x) =>
             new(x.OwnerId1 > x.OwnerId2 ? ElegantPairHelper.Pair(x.OwnerId2, x.OwnerId1) : ElegantPairHelper.Pair(x.OwnerId1, x.OwnerId2), x.Distance, x.Weight);
 
-        return settlementDistanceMatrix.AsTypedDictionary.Select(FirstSelector).Select(SecondSelector).ToList();
+        return settlementDistanceMatrix.AsTypedDictionary
+            .Select(FirstSelector).Select(SecondSelector).GroupBy(g => g.Owners)
+            .Select(g => new OwnersDistancePaired(g.Key, g.Sum(x => x.Distance * x.Weight), g.Sum(x => x.Weight)))
+            .ToDictionary(key => key.Owners, value => new WeightedDistance(value.Distance, value.Weight));
     }
 
     private static (MobileParty? mobileParty, Settlement? settlement) GetMapPosition(Hero hero) =>

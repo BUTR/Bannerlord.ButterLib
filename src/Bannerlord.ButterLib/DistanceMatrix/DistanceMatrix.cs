@@ -44,9 +44,10 @@ public abstract class DistanceMatrix
     /// <param name="customDistanceCalculator">
     /// A delegate to the method that will be used to calculate the distance between two given type <typeparamref name="T"/> objects.
     /// </param>
+    /// <param name="distanceCalculatorArgs">Optional array of arguments that will be passed to the calculation method.</param>
     /// <exception cref="T:System.ArgumentException"></exception>
-    public static DistanceMatrix<T>? Create<T>(Func<IEnumerable<T>> customListGetter, Func<T, T, float> customDistanceCalculator) where T : MBObjectBase =>
-        StaticInstance?.Create(customListGetter, customDistanceCalculator);
+    public static DistanceMatrix<T>? Create<T>(Func<IEnumerable<T>> customListGetter, Func<T, T, object[]?, float> customDistanceCalculator, object[]? distanceCalculatorArgs) where T : MBObjectBase =>
+        StaticInstance?.Create(customListGetter, customDistanceCalculator, distanceCalculatorArgs);
 
     /// <summary>Calculates distance between two given <see cref="Hero"/> objects.</summary>
     /// <param name="hero1">The first of the heroes to calculate distance between.</param>
@@ -70,7 +71,7 @@ public abstract class DistanceMatrix
     /// or <see cref="float.NaN" /> if distance could not be calculated (usually when clan has no fiefs).
     /// </returns>
     /// <remarks>Calculation is based on the average distance between clans fiefs weighted by the fief type.</remarks>
-    public static float? CalculateDistanceBetweenClans(Clan clan1, Clan clan2, IEnumerable<DistanceMatrixResult> settlementOwnersPairedList)
+    public static float? CalculateDistanceBetweenClans(Clan clan1, Clan clan2, Dictionary<ulong, WeightedDistance> settlementOwnersPairedList)
         => StaticInstance?.CalculateDistanceBetweenClans(clan1, clan2, settlementOwnersPairedList);
 
     /// <summary>Calculates distance between two given <see cref="Kingdom"/> objects.</summary>
@@ -99,6 +100,6 @@ public abstract class DistanceMatrix
     /// <see cref="CalculateDistanceBetweenClans"/>
     /// method with required list argument.
     /// </remarks>
-    public static List<DistanceMatrixResult>? GetSettlementOwnersPairedList(DistanceMatrix<Settlement> settlementDistanceMatrix)
+    public static Dictionary<ulong, WeightedDistance>? GetSettlementOwnersPairedList(DistanceMatrix<Settlement> settlementDistanceMatrix)
         => StaticInstance?.GetSettlementOwnersPairedList(settlementDistanceMatrix);
 }

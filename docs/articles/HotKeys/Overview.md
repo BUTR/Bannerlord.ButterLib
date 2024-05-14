@@ -1,6 +1,6 @@
 # HotKeys
 
-The `HotKeyManager` type and associated views and functionality inside of Bannerlord is incredibly convoluted to work with, there are lots of gotchas and having conflicts between different mods registering hotkeys with the same ID's or mod names is almost a certainty, so this simple wrapper around it was created that handles the finer details and handles input polling so the entire thing is event based.
+The ``HotKeyManager`` type and associated views and functionality inside of Bannerlord is incredibly convoluted to work with, there are lots of gotchas and having conflicts between different mods registering hotkeys with the same ID's or mod names is almost a certainty, so this simple wrapper around it was created that handles the finer details and handles input polling so the entire thing is event based.
 
 ## Usage
 

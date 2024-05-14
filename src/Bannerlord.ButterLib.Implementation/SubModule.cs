@@ -1,6 +1,8 @@
 ﻿using Bannerlord.ButterLib.Common.Extensions;
 using Bannerlord.ButterLib.DistanceMatrix;
+using Bannerlord.ButterLib.Extensions;
 using Bannerlord.ButterLib.HotKeys;
+using Bannerlord.ButterLib.Implementation.Common.Extensions;
 using Bannerlord.ButterLib.Implementation.DistanceMatrix;
 using Bannerlord.ButterLib.Implementation.HotKeys;
 using Bannerlord.ButterLib.Implementation.Logging;
@@ -35,6 +37,7 @@ public sealed class SubModule : MBSubModuleBase
         {
             services.AddScoped(typeof(DistanceMatrix<>), typeof(DistanceMatrixImplementation<>));
             services.AddSingleton<IDistanceMatrixStatic, DistanceMatrixStaticImplementation>();
+            services.AddSingleton<ICampaignExtensions, CampaignExtensionsImplementation>();
 
             services.AddScoped<IMBObjectExtensionDataStore, MBObjectExtensionDataStore>();
             services.AddScoped<IMBObjectFinder, MBObjectFinder>();

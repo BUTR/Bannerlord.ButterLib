@@ -2,7 +2,7 @@
 > This SubSystem is obsolete!
 >
 
-[``AssembliVerifier``](xref:Bannerlord.ButterLib.Assemblies.AssemblyVerifier) gives the ability to pre-load an assembly and check if it's compatible with the game by calling [``Assembly.GetTypes()``](xref:System.Reflection.Assembly.GetTypes)
+``AssemblyVerifier`` used to give the ability to pre-load an assembly and check if it's compatible with the game by calling [``Assembly.GetTypes()``](xref:System.Reflection.Assembly.GetTypes). This feature is obsolete and no longer supported.
 ```csharp
 string dependencyPath;
 string assemblyPath;

@@ -71,16 +71,20 @@
 Extension library for Mount & Blade II: Bannerlord.
 
 ## Highlighted features:
-* [CampaignIdentifier](https://butr.github.io/Bannerlord.ButterLib/articles/CampaignIdentifier/Overview.html) - Associates unique string ID with every campaign based on the initial character.  
-* [DistanceMatrix](https://butr.github.io/Bannerlord.ButterLib/articles/DistanceMatrix/Overview.html) - A generic class that pairs given objects of type MBObject and for each pair calculates the distance between the objects that formed it.  
-* [DelayedSubModule](https://butr.github.io/Bannerlord.ButterLib/articles/DelayedSubModule/Overview.html) - Execute code after specific SubModule method.  
-* [SubModuleWrappers](https://butr.github.io/Bannerlord.ButterLib/articles/SubModuleWrappers/Overview.html) - Wraps MBSubModulebase for easier calling of protected internal metods. 
+* [DelayedSubModule](https://butr.github.io/Bannerlord.ButterLib/articles/DelayedSubModule/Overview.html) - Execute code after specific SubModule method.
+* [DistanceMatrix](https://butr.github.io/Bannerlord.ButterLib/articles/DistanceMatrix/Overview.html) - Developer tools to calculate and use distances between different objects in the game.
+* [HotKeys](https://butterlib.butr.link/articles/HotKeys/Overview.html) - Event based wrapper around game's HotKey management.
+* [MBSubModuleBaseEx](https://butterlib.butr.link/articles/MBSubModuleBaseExtended/Overview.html) - Additional control over crucial parts of game and campaign loading or unloading.
 * [SaveSystem](https://butr.github.io/Bannerlord.ButterLib/articles/SaveSystem/Overview.html) - Provides helper methods for the game's save system.
-* [AccessTools2](https://butr.github.io/Bannerlord.ButterLib/api/Bannerlord.ButterLib.Common.Helpers.AccessTools2.html) - Adds delegate related functions.  
-* [SymbolExtensions2](https://butr.github.io/Bannerlord.ButterLib/api/Bannerlord.ButterLib.Common.Helpers.SymbolExtensions2.html) - More lambda functions. 
-* [AlphanumComparatorFast](https://butr.github.io/Bannerlord.ButterLib/api/Bannerlord.ButterLib.Common.Helpers.AlphanumComparatorFast.html) - Alphanumeric sort. This sorting algorithm logically handles numbers in strings.  
+* [SubModuleWrappers](https://butr.github.io/Bannerlord.ButterLib/articles/SubModuleWrappers/Overview.html) - Wraps MBSubModulebase for easier calling of protected internal metods.
+* [DependencyInjection](https://butterlib.butr.link/articles/Optional/DependencyInjection/Overview.html) - Tools to work with ButterLib subsystems and services.
+* [Logging]([https://butterlib.butr.link/articles/Optional/DependencyInjection/Overview.html](https://butterlib.butr.link/articles/Optional/Logging/Overview.html)) - Access to Serilog logging through ILogger Interface.
 
 Check the [/Articles](https://butr.github.io/Bannerlord.ButterLib/articles/index.html) section in the documentation to see all available features!
+
+### Outdated features:
+* [AssemblyVerifier]([https://butr.github.io/Bannerlord.ButterLib/articles/CampaignIdentifier/Overview.html](https://butterlib.butr.link/articles/AssemblyVerifier/Overview.html)) - Basic assembly compatibility checks.
+* [CampaignIdentifier](https://butr.github.io/Bannerlord.ButterLib/articles/CampaignIdentifier/Overview.html) - Associates unique string ID with every campaign based on the initial character.  
 
 ## Installation
 ### Players

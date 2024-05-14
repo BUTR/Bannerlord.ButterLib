@@ -34,8 +34,9 @@ internal interface IDistanceMatrixStatic
     /// <param name="customDistanceCalculator">
     /// A delegate to the method that will be used to calculate the distance between two given type <typeparamref name="T"/> objects.
     /// </param>
+    /// <param name="distanceCalculatorArgs">Optional array of arguments that will be passed to the calculation method.</param>
     /// <exception cref="T:System.ArgumentException"></exception>
-    DistanceMatrix<T> Create<T>(Func<IEnumerable<T>> customListGetter, Func<T, T, float> customDistanceCalculator) where T : MBObjectBase;
+    DistanceMatrix<T> Create<T>(Func<IEnumerable<T>> customListGetter, Func<T, T, object[]?, float> customDistanceCalculator, object[]? distanceCalculatorArgs) where T : MBObjectBase;
 
     /// <summary>Calculates distance between two given <see cref="Hero"/> objects.</summary>
     /// <param name="hero1">The first of the heroes to calculate distance between.</param>
@@ -58,7 +59,7 @@ internal interface IDistanceMatrixStatic
     /// or <see cref="float.NaN" /> if distance could not be calculated.
     /// </returns>
     /// <remarks>Calculation is based on the average distance between clans fiefs weighted by the fief type.</remarks>
-    float CalculateDistanceBetweenClans(Clan clan1, Clan clan2, IEnumerable<DistanceMatrixResult> settlementOwnersPairedList);
+    float CalculateDistanceBetweenClans(Clan clan1, Clan clan2, Dictionary<ulong, WeightedDistance> settlementOwnersPairedList);
 
     /// <summary>Calculates distance between two given <see cref="Kingdom"/> objects.</summary>
     /// <param name="kingdom1">First of the kingdoms to calculate distance between.</param>
@@ -82,8 +83,8 @@ internal interface IDistanceMatrixStatic
     /// </returns>
     /// <remarks>
     /// This method could be used to supply
-    /// <see cref="DistanceMatrix{T}.CalculateDistanceBetweenClans(Clan, Clan, IEnumerable{DistanceMatrixResult})"/>
+    /// <see cref="CalculateDistanceBetweenClans"/>
     /// method with required list argument.
     /// </remarks>
-    List<DistanceMatrixResult> GetSettlementOwnersPairedList(DistanceMatrix<Settlement> settlementDistanceMatrix);
+    Dictionary<ulong, WeightedDistance> GetSettlementOwnersPairedList(DistanceMatrix<Settlement> settlementDistanceMatrix);
 }

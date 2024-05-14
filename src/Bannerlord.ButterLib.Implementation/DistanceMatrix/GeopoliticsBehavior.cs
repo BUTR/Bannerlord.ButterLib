@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-using TaleWorlds.CampaignSystem;
+﻿using TaleWorlds.CampaignSystem;
 using TaleWorlds.CampaignSystem.Actions;
 using TaleWorlds.CampaignSystem.Settlements;
 
@@ -43,41 +41,16 @@ internal sealed class GeopoliticsBehavior : CampaignBehaviorBase
 
     private void UpdateOnSettlementOwnerChanged(Settlement settlement, bool openToClaim, Hero newOwner, Hero oldOwner, Hero capturerHero, ChangeOwnerOfSettlementAction.ChangeOwnerOfSettlementDetail detail)
     {
-        var lst = ButterLib.DistanceMatrix.DistanceMatrix.GetSettlementOwnersPairedList(SettlementDistanceMatrix!);
-        if (lst is null)
-            return;
+        var oldOwnerClan = oldOwner.Clan;
+        var newOwnerClan = newOwner.Clan;
 
-        if ((newOwner.Clan is not null || oldOwner.Clan is not null) && newOwner.Clan != oldOwner.Clan)
+        if ((newOwnerClan is not null || oldOwnerClan is not null) && newOwnerClan != oldOwnerClan)
         {
-            var clans = Clan.All.Where(c => c.IsInitialized && c.Fiefs.Any()).ToList();
-
-            if (oldOwner.Clan is not null)
+            ClanDistanceMatrix = new DistanceMatrixImplementation<Clan>();
+            if (newOwnerClan?.Kingdom != oldOwnerClan?.Kingdom)
             {
-                foreach (var clan in clans)
-                {
-                    if (clan != oldOwner.Clan)
-                    {
-                        var distance = ButterLib.DistanceMatrix.DistanceMatrix.CalculateDistanceBetweenClans(oldOwner.Clan, clan, lst);
-                        ClanDistanceMatrix!.SetDistance(oldOwner.Clan, clan, distance.GetValueOrDefault());
-                    }
-                }
+                KingdomDistanceMatrix = new DistanceMatrixImplementation<Kingdom>();
             }
-            if (newOwner.Clan is not null)
-            {
-                foreach (var clan in clans)
-                {
-                    if (clan != newOwner.Clan)
-                    {
-                        var distance = ButterLib.DistanceMatrix.DistanceMatrix.CalculateDistanceBetweenClans(newOwner.Clan, clan, lst);
-                        ClanDistanceMatrix!.SetDistance(newOwner.Clan, clan, distance.GetValueOrDefault());
-                    }
-                }
-            }
-        }
-
-        if ((newOwner.Clan?.Kingdom is not null || oldOwner.Clan?.Kingdom is not null) && newOwner.Clan?.Kingdom != oldOwner.Clan?.Kingdom)
-        {
-            KingdomDistanceMatrix = new DistanceMatrixImplementation<Kingdom>();
         }
     }
 

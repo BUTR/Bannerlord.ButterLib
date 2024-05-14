@@ -1,10 +1,11 @@
 ﻿using Bannerlord.ButterLib.SubSystems;
+using Bannerlord.ButterLib.SubSystems.Settings;
 
-using System;
+using System.Collections.Generic;
 
 namespace Bannerlord.ButterLib.Implementation.DistanceMatrix;
 
-internal class DistanceMatrixSubSystem : ISubSystem
+internal class DistanceMatrixSubSystem : ISubSystem, ISubSystemSettings<DistanceMatrixSubSystem>
 {
     public static DistanceMatrixSubSystem? Instance { get; private set; }
 
@@ -15,6 +16,7 @@ internal class DistanceMatrixSubSystem : ISubSystem
     public bool CanBeDisabled => true;
     public bool CanBeSwitchedAtRuntime => false;
     internal bool GameInitialized { get; set; } = false;
+    public bool ConsiderVillages { get; set; } = true;
 
     public DistanceMatrixSubSystem()
     {
@@ -36,4 +38,12 @@ internal class DistanceMatrixSubSystem : ISubSystem
 
         IsEnabled = false;
     }
+
+    public IReadOnlyCollection<SubSystemSettingsDeclaration<DistanceMatrixSubSystem>> Declarations { get; } = new SubSystemSettingsDeclaration<DistanceMatrixSubSystem>[]
+    {
+        new SubSystemSettingsPropertyBool<DistanceMatrixSubSystem>(
+            "{=MSJe8ih4yp}Consider Villages",
+            "{=kvR54SiOFn}Allow villages to be used for built-in distance matrix calculations. May negatively affect performance.",
+            x => x.ConsiderVillages),
+    };
 }
