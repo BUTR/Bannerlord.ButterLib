@@ -1,6 +1,5 @@
+# Save System
 [``SaveSystem``](xref:Bannerlord.ButterLib.SaveSystem) provides wrappers and extensions to the game's save system.
-
-# SyncDataAsJson
 
 ## The Old Way
 
