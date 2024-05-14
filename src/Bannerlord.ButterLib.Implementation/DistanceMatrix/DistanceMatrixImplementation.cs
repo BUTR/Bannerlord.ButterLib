@@ -64,7 +64,7 @@ internal sealed class DistanceMatrixImplementation<T> : DistanceMatrix<T> where 
     {
         _distanceMatrix[object1.Id > object2.Id ? ElegantPairHelper.Pair(object2.Id, object1.Id) : ElegantPairHelper.Pair(object1.Id, object2.Id)] = distance;
         _typedDistanceMatrix[object1.Id > object2.Id ? (object2, object1) : (object1, object2)] = distance;
-        
+
         _flatenedDictionary[object1].RemoveWhere(x => x.OtherObject == object2);
         _flatenedDictionary[object1].Add((object2, distance));
         _flatenedDictionary[object2].RemoveWhere(x => x.OtherObject == object1);
@@ -122,7 +122,7 @@ internal sealed class DistanceMatrixImplementation<T> : DistanceMatrix<T> where 
                     key => ElegantPairHelper.Pair(key.X.Id, key.Y.Id),
                     value => Campaign.Current.Models.MapDistanceModel.GetDistance(value.X, value.Y));
         }
-        
+
         if (typeof(Clan).IsAssignableFrom(typeof(T)))
         {
             var clans = Clan.All.Where(c => !c.IsEliminated && c.Fiefs.Any()).ToList();
@@ -165,7 +165,7 @@ internal sealed class DistanceMatrixImplementation<T> : DistanceMatrix<T> where 
         keyList.ForEach(key =>
         {
             var valueList = list.Where(kvp => kvp.Key.Object1 == key || kvp.Key.Object2 == key).Select(kvp => (OtherObject: kvp.Key.Object1 == key ? kvp.Key.Object2 : kvp.Key.Object1, Distance: kvp.Value)).Distinct().ToList();
-             SortedSet<(T OtherObject, float Distance)> valueSet = new(valueList, new TupleComparer());
+            SortedSet<(T OtherObject, float Distance)> valueSet = new(valueList, new TupleComparer());
             result.Add(key, valueSet);
         });
         return result;
