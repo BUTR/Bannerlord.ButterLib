@@ -80,12 +80,11 @@ Extension library for Mount & Blade II: Bannerlord.
 * [DependencyInjection](https://butterlib.butr.link/articles/Optional/DependencyInjection/Overview.html) - Tools to work with ButterLib subsystems and services.
 * [Logging]([https://butterlib.butr.link/articles/Optional/DependencyInjection/Overview.html](https://butterlib.butr.link/articles/Optional/Logging/Overview.html)) - Access to Serilog logging through ILogger Interface.
 
-## Outdated features:
+Check the [/Articles](https://butr.github.io/Bannerlord.ButterLib/articles/index.html) section in the documentation to see all available features!
+
+### Outdated features:
 * [AssemblyVerifier]([https://butr.github.io/Bannerlord.ButterLib/articles/CampaignIdentifier/Overview.html](https://butterlib.butr.link/articles/AssemblyVerifier/Overview.html)) - Basic assembly compatibility checks.
 * [CampaignIdentifier](https://butr.github.io/Bannerlord.ButterLib/articles/CampaignIdentifier/Overview.html) - Associates unique string ID with every campaign based on the initial character.  
-
-## Documentation
-Check the [/Articles](https://butr.github.io/Bannerlord.ButterLib/articles/index.html) section in the documentation to see all available features!
 
 ## Installation
 ### Players
