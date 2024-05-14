@@ -1,12 +1,12 @@
 # Distance Matrix
-Distance Matrix is a subsystem that provides a means for handling distances between various `MBObjectBase` objects in the game. You can use it to create your own implementations for the types you need.
-Additionally, there are built-in implementations for `Settlement`, `Clan`, and `Kingdom` types, along with a behavior to keep the distances updated.
+Distance Matrix is a subsystem that provides a means for handling distances between various ``MBObjectBase`` objects in the game. You can use it to create your own implementations for the types you need.
+Additionally, there are built-in implementations for ``Settlement``, ``Clan``, and ``Kingdom`` types, along with a behavior to keep the distances updated.
 
 ## Usage
 Use [``DistanceMatrix<T>``](xref:Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix-1) class to work with your custom distance matrix.
 Use [``CampaignExtensions``](xref:Bannerlord.ButterLib.Common.Extensions.CampaignExtensions) to access the built-in implementations.
 
-If you plan to use built-in implementations and behavior, don't forget to enable the SubSystem in your `SubModule` class:
+If you plan to use built-in implementations and behavior, don't forget to enable the SubSystem in your ``SubModule`` class:
 ```csharp
 if (this.GetServiceProvider() is { } serviceProvider)
 {

@@ -12,7 +12,7 @@ namespace Bannerlord.ButterLib.Common.Extensions;
 /// returning additional information, provided by the ButterLib.
 /// </summary>
 /// <remarks>
-/// Contains easy accessible getters for the current CampaignId
+/// Contains easy accessible distance matrices for the settlements, clans and kingdoms.
 /// </remarks>
 public static partial class CampaignExtensions
 {
