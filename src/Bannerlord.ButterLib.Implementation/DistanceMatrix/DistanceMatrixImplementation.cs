@@ -40,7 +40,7 @@ internal sealed class DistanceMatrixImplementation<T> : DistanceMatrix<T> where 
         _distanceCalculator = null;
         _distanceMatrix = CalculateDistanceMatrix();
         _typedDistanceMatrix = GetTypedDistanceMatrix();
-        _flatenedDictionary = GetFlatenedDictionary();
+        _flatenedDictionary = new();//GetFlatenedDictionary();
     }
 
     /// <inheritdoc/>
@@ -50,7 +50,7 @@ internal sealed class DistanceMatrixImplementation<T> : DistanceMatrix<T> where 
         _distanceCalculator = customDistanceCalculator;
         _distanceMatrix = CalculateDistanceMatrix();
         _typedDistanceMatrix = GetTypedDistanceMatrix();
-        _flatenedDictionary = GetFlatenedDictionary();
+        _flatenedDictionary = new();//GetFlatenedDictionary();
     }
 
     //Public methods
@@ -136,7 +136,7 @@ internal sealed class DistanceMatrixImplementation<T> : DistanceMatrix<T> where 
                 .Where(tuple => tuple.X.Id < tuple.Y.Id)
                 .ToDictionary(
                     key => ElegantPairHelper.Pair(key.X.Id, key.Y.Id),
-                    value => CalculateDistanceBetweenClans(value.X, value.Y, lst ?? Enumerable.Empty<DistanceMatrixResult>()).GetValueOrDefault());
+                    value => CalculateDistanceBetweenClans(value.X, value.Y, lst!).GetValueOrDefault());
         }
 
         if (typeof(Kingdom).IsAssignableFrom(typeof(T)))

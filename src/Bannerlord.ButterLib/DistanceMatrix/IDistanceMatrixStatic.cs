@@ -58,7 +58,7 @@ internal interface IDistanceMatrixStatic
     /// or <see cref="float.NaN" /> if distance could not be calculated.
     /// </returns>
     /// <remarks>Calculation is based on the average distance between clans fiefs weighted by the fief type.</remarks>
-    float CalculateDistanceBetweenClans(Clan clan1, Clan clan2, IEnumerable<DistanceMatrixResult> settlementOwnersPairedList);
+    float CalculateDistanceBetweenClans(Clan clan1, Clan clan2, Dictionary<ulong, WeightedDistance> settlementOwnersPairedList);
 
     /// <summary>Calculates distance between two given <see cref="Kingdom"/> objects.</summary>
     /// <param name="kingdom1">First of the kingdoms to calculate distance between.</param>
@@ -85,5 +85,7 @@ internal interface IDistanceMatrixStatic
     /// <see cref="DistanceMatrix{T}.CalculateDistanceBetweenClans(Clan, Clan, IEnumerable{DistanceMatrixResult})"/>
     /// method with required list argument.
     /// </remarks>
-    List<DistanceMatrixResult> GetSettlementOwnersPairedList(DistanceMatrix<Settlement> settlementDistanceMatrix);
+    Dictionary<ulong, WeightedDistance> GetSettlementOwnersPairedList(DistanceMatrix<Settlement> settlementDistanceMatrix);
 }
+
+public record WeightedDistance(float Distance, float Weight);

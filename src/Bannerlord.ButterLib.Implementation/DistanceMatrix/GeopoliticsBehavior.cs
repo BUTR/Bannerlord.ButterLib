@@ -49,7 +49,7 @@ internal sealed class GeopoliticsBehavior : CampaignBehaviorBase
 
         if ((newOwner.Clan is not null || oldOwner.Clan is not null) && newOwner.Clan != oldOwner.Clan)
         {
-            var clans = Clan.All.Where(c => c.IsInitialized && c.Fiefs.Any()).ToList();
+            var clans = Clan.All.Where(c => !c.IsEliminated && c.Fiefs.Any()).ToList();
 
             if (oldOwner.Clan is not null)
             {
