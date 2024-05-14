@@ -76,9 +76,6 @@ Extension library for Mount & Blade II: Bannerlord.
 * [DelayedSubModule](https://butr.github.io/Bannerlord.ButterLib/articles/DelayedSubModule/Overview.html) - Execute code after specific SubModule method.  
 * [SubModuleWrappers](https://butr.github.io/Bannerlord.ButterLib/articles/SubModuleWrappers/Overview.html) - Wraps MBSubModulebase for easier calling of protected internal metods. 
 * [SaveSystem](https://butr.github.io/Bannerlord.ButterLib/articles/SaveSystem/Overview.html) - Provides helper methods for the game's save system.
-* [AccessTools2](https://butr.github.io/Bannerlord.ButterLib/api/Bannerlord.ButterLib.Common.Helpers.AccessTools2.html) - Adds delegate related functions.  
-* [SymbolExtensions2](https://butr.github.io/Bannerlord.ButterLib/api/Bannerlord.ButterLib.Common.Helpers.SymbolExtensions2.html) - More lambda functions. 
-* [AlphanumComparatorFast](https://butr.github.io/Bannerlord.ButterLib/api/Bannerlord.ButterLib.Common.Helpers.AlphanumComparatorFast.html) - Alphanumeric sort. This sorting algorithm logically handles numbers in strings.  
 
 Check the [/Articles](https://butr.github.io/Bannerlord.ButterLib/articles/index.html) section in the documentation to see all available features!
 
