@@ -44,9 +44,10 @@ public abstract class DistanceMatrix
     /// <param name="customDistanceCalculator">
     /// A delegate to the method that will be used to calculate the distance between two given type <typeparamref name="T"/> objects.
     /// </param>
+    /// <param name="distanceCalculatorArgs">Optional array of arguments that will be passed to the calculation method.</param>
     /// <exception cref="T:System.ArgumentException"></exception>
-    public static DistanceMatrix<T>? Create<T>(Func<IEnumerable<T>> customListGetter, Func<T, T, float> customDistanceCalculator) where T : MBObjectBase =>
-        StaticInstance?.Create(customListGetter, customDistanceCalculator);
+    public static DistanceMatrix<T>? Create<T>(Func<IEnumerable<T>> customListGetter, Func<T, T, object[]?, float> customDistanceCalculator, object[]? distanceCalculatorArgs) where T : MBObjectBase =>
+        StaticInstance?.Create(customListGetter, customDistanceCalculator, distanceCalculatorArgs);
 
     /// <summary>Calculates distance between two given <see cref="Hero"/> objects.</summary>
     /// <param name="hero1">The first of the heroes to calculate distance between.</param>

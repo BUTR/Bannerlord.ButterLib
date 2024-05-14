@@ -2,7 +2,9 @@
 > This SubSystem is obsolete!
 >
 
-[``CampaignIdentifier``](xref:Bannerlord.ButterLib.CampaignIdentifier) associates unique string ID with every campaign basing on the initial character.
+CampaignIdentifier used to associate unique string ID with every campaign basing on the initial character.
+This feature is obsolete and no longer supported.
+
 ```csharp
 // Get current campaign ID
 string campaignID = Camapaign.Current.GetCampaignId();

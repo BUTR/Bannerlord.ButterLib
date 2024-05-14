@@ -34,8 +34,9 @@ internal interface IDistanceMatrixStatic
     /// <param name="customDistanceCalculator">
     /// A delegate to the method that will be used to calculate the distance between two given type <typeparamref name="T"/> objects.
     /// </param>
+    /// <param name="distanceCalculatorArgs">Optional array of arguments that will be passed to the calculation method.</param>
     /// <exception cref="T:System.ArgumentException"></exception>
-    DistanceMatrix<T> Create<T>(Func<IEnumerable<T>> customListGetter, Func<T, T, float> customDistanceCalculator) where T : MBObjectBase;
+    DistanceMatrix<T> Create<T>(Func<IEnumerable<T>> customListGetter, Func<T, T, object[]?, float> customDistanceCalculator, object[]? distanceCalculatorArgs) where T : MBObjectBase;
 
     /// <summary>Calculates distance between two given <see cref="Hero"/> objects.</summary>
     /// <param name="hero1">The first of the heroes to calculate distance between.</param>
@@ -82,10 +83,8 @@ internal interface IDistanceMatrixStatic
     /// </returns>
     /// <remarks>
     /// This method could be used to supply
-    /// <see cref="DistanceMatrix{T}.CalculateDistanceBetweenClans(Clan, Clan, IEnumerable{DistanceMatrixResult})"/>
+    /// <see cref="CalculateDistanceBetweenClans"/>
     /// method with required list argument.
     /// </remarks>
     Dictionary<ulong, WeightedDistance> GetSettlementOwnersPairedList(DistanceMatrix<Settlement> settlementDistanceMatrix);
 }
-
-public record WeightedDistance(float Distance, float Weight);

@@ -20,16 +20,16 @@ internal sealed class DistanceMatrixImplementation<T> : DistanceMatrix<T> where 
     private readonly Dictionary<T, SortedSet<(T OtherObject, float Distance)>> _flatenedDictionary;
 
     private readonly Func<IEnumerable<T>>? _entityListGetter;
-    private readonly Func<T, T, float>? _distanceCalculator;
+    private readonly Func<T, T, object[]?, float>? _distanceCalculator;
+    private readonly object[]? _distanceCalculatorArgs;
     private Dictionary<MBGUID, MBObjectBase> _cachedMapping = new();
 
     //properties
     /// <inheritdoc/>
     public override Dictionary<ulong, float> AsDictionary => _distanceMatrix;
-
     /// <inheritdoc/>
     public override Dictionary<(T Object1, T Object2), float> AsTypedDictionary => _typedDistanceMatrix;
-
+    /// <inheritdoc/>
     public override Dictionary<T, SortedSet<(T OtherObject, float Distance)>> AsFlatenedDictionary => _flatenedDictionary;
 
     //Constructors
@@ -38,19 +38,23 @@ internal sealed class DistanceMatrixImplementation<T> : DistanceMatrix<T> where 
     {
         _entityListGetter = null;
         _distanceCalculator = null;
+        _distanceCalculatorArgs = null;
+
         _distanceMatrix = CalculateDistanceMatrix();
         _typedDistanceMatrix = GetTypedDistanceMatrix();
-        _flatenedDictionary = new();//GetFlatenedDictionary();
+        _flatenedDictionary = GetFlatenedDictionary();
     }
 
     /// <inheritdoc/>
-    public DistanceMatrixImplementation(Func<IEnumerable<T>> customListGetter, Func<T, T, float> customDistanceCalculator)
+    public DistanceMatrixImplementation(Func<IEnumerable<T>> customListGetter, Func<T, T, object[]?, float> customDistanceCalculator, object[]? distanceCalculatorArgs = null)
     {
         _entityListGetter = customListGetter;
         _distanceCalculator = customDistanceCalculator;
+        _distanceCalculatorArgs = distanceCalculatorArgs;
+
         _distanceMatrix = CalculateDistanceMatrix();
         _typedDistanceMatrix = GetTypedDistanceMatrix();
-        _flatenedDictionary = new();//GetFlatenedDictionary();
+        _flatenedDictionary = GetFlatenedDictionary();
     }
 
     //Public methods
@@ -64,14 +68,54 @@ internal sealed class DistanceMatrixImplementation<T> : DistanceMatrix<T> where 
     {
         _distanceMatrix[object1.Id > object2.Id ? ElegantPairHelper.Pair(object2.Id, object1.Id) : ElegantPairHelper.Pair(object1.Id, object2.Id)] = distance;
         _typedDistanceMatrix[object1.Id > object2.Id ? (object2, object1) : (object1, object2)] = distance;
-        
+
         _flatenedDictionary[object1].RemoveWhere(x => x.OtherObject == object2);
         _flatenedDictionary[object1].Add((object2, distance));
         _flatenedDictionary[object2].RemoveWhere(x => x.OtherObject == object1);
         _flatenedDictionary[object2].Add((object1, distance));
     }
 
+    /// <inheritdoc/>
+    public override IEnumerable<(T OtherObject, float Distance)> GetNearestNeighbors(T inquiredObject, int count) => GetNearestNeighbors(inquiredObject, count, IsNotNaN());
+
+    /// <inheritdoc/>
+    public override IEnumerable<(T OtherObject, float Distance)> GetNearestNeighbors(T inquiredObject, int count, Func<(T OtherObject, float Distance), bool> searchPredicate) =>
+        _flatenedDictionary.TryGetValue(inquiredObject, out var nearestNeighbors) ? nearestNeighbors.Where(searchPredicate).Take(count) : [];
+
+    /// <inheritdoc/>
+    public override IEnumerable<(T OtherObject, float Distance)> GetNearestNeighborsNormalized(T inquiredObject, int count, float scaleMin = 0f, float scaleMax = 100f) =>
+        GetNearestNeighborsNormalized(inquiredObject, count, IsNotNaN(), scaleMin, scaleMax);
+
+    /// <inheritdoc/>
+    public override IEnumerable<(T OtherObject, float Distance)> GetNearestNeighborsNormalized(T inquiredObject, int count, Func<(T OtherObject, float Distance), bool> searchPredicate, float scaleMin = 0f, float scaleMax = 100f)
+    {
+        if (_flatenedDictionary.TryGetValue(inquiredObject, out var nearestNeighbors))
+        {
+            var sourceList = nearestNeighbors.Where(searchPredicate).ToList();
+            GetRanges(scaleMin, scaleMax, sourceList, out var value, out var scale);
+            return sourceList.Select(i => (i.OtherObject, Distance: float.IsNaN(i.Distance) ? scale.Min : value.Range == 0f ? scale.Max : (scale.Range * (i.Distance - value.Min) / value.Range) + scale.Min)).Take(count);
+        }
+        return [];
+    }
+
     //Private methods
+
+    private static Func<(T OtherObject, float Distance), bool> IsNotNaN() => x => !float.IsNaN(x.Distance);
+
+    private static void GetRanges(float scaleMin, float scaleMax, ICollection<(T OtherObject, float Distance)> nearestNeighbors, out (float Min, float Max, float Range) value, out (float Min, float Max, float Range) scale)
+    {
+        var numericList = nearestNeighbors.Where(IsNotNaN()).Select(x => x.Distance).ToList();
+
+        value = numericList.Count > 0
+            ? numericList.GroupBy(g => 1).Select(g =>
+            {
+                float minValue = g.Min(x => x);
+                float maxValue = g.Max(x => x);
+                return (Min: minValue, Max: maxValue, Range: maxValue - minValue);
+            }).FirstOrDefault()
+            : (Min: float.NaN, Max: float.NaN, Range: float.NaN);
+        scale = (Min: scaleMin, Max: scaleMax, Range: scaleMax - scaleMin);
+    }
 
     private T GetObject(MBGUID id) => _cachedMapping.TryGetValue(id, out var obj) && obj is T objT
         ? objT
@@ -81,9 +125,6 @@ internal sealed class DistanceMatrixImplementation<T> : DistanceMatrix<T> where 
     /// <exception cref="T:System.ArgumentException"></exception>
     private Dictionary<ulong, float> CalculateDistanceMatrix()
     {
-        if (Campaign.Current?.GetCampaignBehavior<GeopoliticsBehavior>() is null)
-            return new Dictionary<ulong, float>();
-
         if (_entityListGetter is not null && _distanceCalculator is not null)
         {
             var entities = _entityListGetter().ToList();
@@ -94,13 +135,12 @@ internal sealed class DistanceMatrixImplementation<T> : DistanceMatrix<T> where 
                 .Where(tuple => tuple.X.Id < tuple.Y.Id)
                 .ToDictionary(
                     key => ElegantPairHelper.Pair(key.X.Id, key.Y.Id),
-                    value => _distanceCalculator(value.X, value.Y));
+                    value => _distanceCalculator(value.X, value.Y, _distanceCalculatorArgs));
         }
 
         if (typeof(Hero).IsAssignableFrom(typeof(T)))
         {
-            var activeHeroes = Hero.AllAliveHeroes
-                .Where(h => !h.IsNotSpawned && !h.IsDisabled && !h.IsDead && !h.IsChild && !h.IsNotable).ToList();
+            var activeHeroes = Hero.AllAliveHeroes.Where(h => !h.IsNotSpawned && !h.IsDisabled && !h.IsDead && !h.IsChild && !h.IsNotable).ToList();
             _cachedMapping = activeHeroes.ToDictionary(key => key.Id, value => value as MBObjectBase);
 
             return activeHeroes
@@ -113,8 +153,10 @@ internal sealed class DistanceMatrixImplementation<T> : DistanceMatrix<T> where 
 
         if (typeof(Settlement).IsAssignableFrom(typeof(T)))
         {
-            var settlements = Settlement.All.Where(s => s.IsFortification || s.IsVillage).ToList();
+            bool considerVillages = DistanceMatrixSubSystem.Instance!.ConsiderVillages;
+            var settlements = Settlement.All.Where(s => s.IsFortification || (considerVillages && s.IsVillage)).ToList();
             _cachedMapping = settlements.ToDictionary(key => key.Id, value => value as MBObjectBase);
+
             return settlements
                 .SelectMany(_ => settlements, (X, Y) => (X, Y))
                 .Where(tuple => tuple.X.Id < tuple.Y.Id)
@@ -122,10 +164,10 @@ internal sealed class DistanceMatrixImplementation<T> : DistanceMatrix<T> where 
                     key => ElegantPairHelper.Pair(key.X.Id, key.Y.Id),
                     value => Campaign.Current.Models.MapDistanceModel.GetDistance(value.X, value.Y));
         }
-        
+
         if (typeof(Clan).IsAssignableFrom(typeof(T)))
         {
-            var clans = Clan.All.Where(c => !c.IsEliminated && c.Fiefs.Any()).ToList();
+            var clans = Clan.All.Where(c => !c.IsEliminated && !c.IsBanditFaction).ToList();
             _cachedMapping = clans.ToDictionary(key => key.Id, value => value as MBObjectBase);
 
             var settlementDistanceMatrix = Campaign.Current.GetCampaignBehavior<GeopoliticsBehavior>().SettlementDistanceMatrix ?? new DistanceMatrixImplementation<Settlement>();
@@ -141,7 +183,7 @@ internal sealed class DistanceMatrixImplementation<T> : DistanceMatrix<T> where 
 
         if (typeof(Kingdom).IsAssignableFrom(typeof(T)))
         {
-            var kingdoms = Kingdom.All.Where(k => !k.IsEliminated && k.Fiefs.Any()).ToList();
+            var kingdoms = Kingdom.All.Where(k => !k.IsEliminated).ToList();
             _cachedMapping = kingdoms.ToDictionary(key => key.Id, value => value as MBObjectBase);
 
             var claDistanceMatrix = Campaign.Current.GetCampaignBehavior<GeopoliticsBehavior>().ClanDistanceMatrix ?? new DistanceMatrixImplementation<Clan>();
@@ -161,11 +203,12 @@ internal sealed class DistanceMatrixImplementation<T> : DistanceMatrix<T> where 
     {
         var list = _typedDistanceMatrix.ToList();
         var keyList = list.SelectMany(kvp => new[] { kvp.Key.Object1, kvp.Key.Object2 }).Distinct().ToList();
+
         var result = new Dictionary<T, SortedSet<(T OtherObject, float Distance)>>();
         keyList.ForEach(key =>
         {
             var valueList = list.Where(kvp => kvp.Key.Object1 == key || kvp.Key.Object2 == key).Select(kvp => (OtherObject: kvp.Key.Object1 == key ? kvp.Key.Object2 : kvp.Key.Object1, Distance: kvp.Value)).Distinct().ToList();
-             SortedSet<(T OtherObject, float Distance)> valueSet = new(valueList, new TupleComparer());
+            SortedSet<(T OtherObject, float Distance)> valueSet = new(valueList, new TupleComparer());
             result.Add(key, valueSet);
         });
         return result;
@@ -175,7 +218,8 @@ internal sealed class DistanceMatrixImplementation<T> : DistanceMatrix<T> where 
     {
         public int Compare((T OtherObject, float Distance) x, (T OtherObject, float Distance) y)
         {
-            return Comparer<float>.Default.Compare(x.Distance, y.Distance);
+            int distanceComparison = Comparer<float>.Default.Compare(x.Distance, y.Distance);
+            return distanceComparison == 0 ? Comparer<uint>.Default.Compare(x.OtherObject.Id.InternalValue, y.OtherObject.Id.InternalValue) : distanceComparison;
         }
     }
 }
