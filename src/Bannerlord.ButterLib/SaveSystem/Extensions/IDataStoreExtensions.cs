@@ -86,7 +86,7 @@ public static class IDataStoreExtensions
                 var jsonDataChunks = Array.Empty<string>();
                 if (dataStore.SyncData(key, ref jsonDataChunks))
                 {
-                    var (format, jsonData) = JsonConvert.DeserializeObject<JsonData?>(ChunksToString(jsonDataChunks ?? Array.Empty<string>())) ?? new(-1, string.Empty);
+                    var (format, jsonData) = JsonConvert.DeserializeObject<JsonData?>(ChunksToString(jsonDataChunks ?? [])) ?? new(-1, string.Empty);
                     data = format switch
                     {
                         2 => Deserialize<T>(jsonData, serializer),

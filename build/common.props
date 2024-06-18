@@ -5,7 +5,7 @@
   <PropertyGroup>
     <BaseGameVersion>1.0.0</BaseGameVersion>
     <!--Module Version-->
-    <Version>2.9.8</Version>
+    <Version>2.9.9</Version>
     <!--Harmony Version-->
     <HarmonyVersion>2.2.2</HarmonyVersion>
     <HarmonyExtensionsVersion>3.2.0.77</HarmonyExtensionsVersion>

@@ -81,8 +81,10 @@ internal sealed class ModulePatch
             }
             else
             {
-                codes.InsertRange(finallyIndex + 1, new CodeInstruction[] { new CodeInstruction(opcode: OpCodes.Ldarg_0),
-                                                                                new CodeInstruction(opcode: OpCodes.Call, operand: miDelayedScreenAsRootEventCaller) });
+                codes.InsertRange(finallyIndex + 1, new CodeInstruction[] { 
+                    new CodeInstruction(opcode: OpCodes.Ldarg_0),
+                    new CodeInstruction(opcode: OpCodes.Call, operand: miDelayedScreenAsRootEventCaller)
+                });
                 codes[finallyIndex + 1].MoveLabelsFrom(codes[finallyIndex + 3]);
             }
 

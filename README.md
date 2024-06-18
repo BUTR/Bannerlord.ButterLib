@@ -78,12 +78,12 @@ Extension library for Mount & Blade II: Bannerlord.
 * [SaveSystem](https://butr.github.io/Bannerlord.ButterLib/articles/SaveSystem/Overview.html) - Provides helper methods for the game's save system.
 * [SubModuleWrappers](https://butr.github.io/Bannerlord.ButterLib/articles/SubModuleWrappers/Overview.html) - Wraps MBSubModulebase for easier calling of protected internal metods.
 * [DependencyInjection](https://butterlib.butr.link/articles/Optional/DependencyInjection/Overview.html) - Tools to work with ButterLib subsystems and services.
-* [Logging]([https://butterlib.butr.link/articles/Optional/DependencyInjection/Overview.html](https://butterlib.butr.link/articles/Optional/Logging/Overview.html)) - Access to Serilog logging through ILogger Interface.
+* [Logging](https://butterlib.butr.link/articles/Optional/Logging/Overview.html) - Access to Serilog logging through ILogger Interface.
 
 Check the [/Articles](https://butr.github.io/Bannerlord.ButterLib/articles/index.html) section in the documentation to see all available features!
 
 ### Outdated features:
-* [AssemblyVerifier]([https://butr.github.io/Bannerlord.ButterLib/articles/CampaignIdentifier/Overview.html](https://butterlib.butr.link/articles/AssemblyVerifier/Overview.html)) - Basic assembly compatibility checks.
+* [AssemblyVerifier](https://butterlib.butr.link/articles/AssemblyVerifier/Overview.html) - Basic assembly compatibility checks.
 * [CampaignIdentifier](https://butr.github.io/Bannerlord.ButterLib/articles/CampaignIdentifier/Overview.html) - Associates unique string ID with every campaign based on the initial character.  
 
 ## Installation

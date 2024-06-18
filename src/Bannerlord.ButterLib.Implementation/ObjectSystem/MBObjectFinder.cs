@@ -16,23 +16,34 @@ namespace Bannerlord.ButterLib.Implementation.ObjectSystem;
 
 internal class MBObjectFinder : IMBObjectFinder
 {
-    private static readonly AccessTools.FieldRef<CampaignObjectManager, object[]>? CampaignObjectTypeObjects =
+    private static readonly AccessTools.FieldRef<CampaignObjectManager, object?[]>? CampaignObjectTypeObjects =
         AccessTools2.FieldRefAccess<CampaignObjectManager, object[]>("_objects");
     private static readonly Type? ICampaignObjectTypeType =
-        AccessTools2.TypeByName("TaleWorlds.CampaignSystem.CampaignObjectManager.ICampaignObjectType");
+        AccessTools2.TypeByName("TaleWorlds.CampaignSystem.CampaignObjectManager+ICampaignObjectType");
     private static readonly MethodInfo? ObjectClassGetter =
         AccessTools2.PropertyGetter(ICampaignObjectTypeType!, "ObjectClass");
 
     private static MBObjectBase? FindCampaignObjectManager(MBGUID id, Type type)
     {
-        foreach (var cot in CampaignObjectTypeObjects?.Invoke(Campaign.Current.CampaignObjectManager) ?? Array.Empty<object>())
+        // Not sure this piece if code ever worked, but keeping it just in case of edgecases
+        foreach (var cot in CampaignObjectTypeObjects?.Invoke(Campaign.Current.CampaignObjectManager) ?? [])
         {
-            if (type == ObjectClassGetter?.Invoke(cot, Array.Empty<object>()) as Type && cot is IEnumerable<MBObjectBase> en && en.FirstOrDefault(o => o.Id == id) is { } result)
+            if (cot is null) continue;
+            
+            if (ObjectClassGetter?.Invoke(cot, []) is Type objType && objType == type && cot is IEnumerable<MBObjectBase> en && en.FirstOrDefault(o => o.Id == id) is { } result)
             {
                 return result;
             }
         }
-        return null;
+
+        try
+        {
+            return MBObjectManager.Instance.GetObject(id);
+        }
+        catch (Exception)
+        {
+            return null;
+        }
     }
 
     public MBObjectBase? Find(MBGUID id, Type? type = null)
