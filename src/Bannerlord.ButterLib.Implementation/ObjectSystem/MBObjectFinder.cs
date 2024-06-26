@@ -29,7 +29,7 @@ internal class MBObjectFinder : IMBObjectFinder
         foreach (var cot in CampaignObjectTypeObjects?.Invoke(Campaign.Current.CampaignObjectManager) ?? [])
         {
             if (cot is null) continue;
-            
+
             if (ObjectClassGetter?.Invoke(cot, []) is Type objType && objType == type && cot is IEnumerable<MBObjectBase> en && en.FirstOrDefault(o => o.Id == id) is { } result)
             {
                 return result;
