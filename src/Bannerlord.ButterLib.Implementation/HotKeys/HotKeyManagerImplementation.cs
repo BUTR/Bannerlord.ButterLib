@@ -51,9 +51,9 @@ internal sealed class HotKeyManagerImplementation : HotKeyManager
 
         var hotKeyCategoryContainer = new HotKeyCategoryContainer(_modName, _categoryName, _instanceHotKeys);
 
-#if v100 || v101 || v102 || v103 || v110 || v111 || v112 || v113 || v114 || v115
-            TWHotKeyManager.RegisterInitialContexts(new[] { hotKeyCategoryContainer }, true);
-#elif v120 || v121 || v122 || v123 || v124 || v125 || v126 || v127 || v128 || v129
+#if v100 || v101 || v102 || v103 || v110 || v111 || v112 || v113 || v114 || v115 || v116
+        TWHotKeyManager.RegisterInitialContexts(new[] { hotKeyCategoryContainer }, true);
+#elif v120 || v121 || v122 || v123 || v124 || v125 || v126 || v127 || v128 || v129 || v1210
         TWHotKeyManager.RegisterInitialContexts(TWHotKeyManager.GetAllCategories().ToList().Concat(new[] { hotKeyCategoryContainer }), true);
 #else
 #error DEFINE
