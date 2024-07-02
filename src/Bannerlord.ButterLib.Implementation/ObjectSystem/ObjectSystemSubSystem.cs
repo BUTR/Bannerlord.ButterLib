@@ -25,6 +25,7 @@ internal class ObjectSystemSubSystem : ISubSystem
 
     public void Enable()
     {
+        if (IsEnabled) return;
         IsEnabled = true;
 
         CampaignBehaviorManagerPatch.Enable(_harmony);
@@ -32,6 +33,7 @@ internal class ObjectSystemSubSystem : ISubSystem
 
     public void Disable()
     {
+        if (!IsEnabled) return;
         IsEnabled = false;
 
         CampaignBehaviorManagerPatch.Disable(_harmony);

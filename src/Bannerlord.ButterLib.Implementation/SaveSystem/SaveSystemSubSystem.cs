@@ -29,6 +29,7 @@ This might alter the save file, disabling the feature might render the save file
 
     public void Enable()
     {
+        if (IsEnabled) return;
         IsEnabled = true;
 
         BehaviourNamePatch.Enable(_harmony); // Fixes possible collision with save names
@@ -38,6 +39,7 @@ This might alter the save file, disabling the feature might render the save file
 
     public void Disable()
     {
+        if (!IsEnabled) return;
         IsEnabled = false;
 
         BehaviourNamePatch.Disable(_harmony);

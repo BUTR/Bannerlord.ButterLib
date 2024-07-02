@@ -33,6 +33,7 @@ internal sealed class HotKeySubSystem : ISubSystem
 
     public void Enable()
     {
+        if (IsEnabled) return;
         IsEnabled = true;
 
         if (ButterLibSubModule.Instance is { } instance)
@@ -43,6 +44,7 @@ internal sealed class HotKeySubSystem : ISubSystem
 
     public void Disable()
     {
+        if (!IsEnabled) return;
         IsEnabled = false;
 
         if (ButterLibSubModule.Instance is { } instance)

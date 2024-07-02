@@ -73,6 +73,7 @@ internal sealed class ExceptionHandlerSubSystem : ISubSystem, ISubSystemSettings
 
     public void Enable()
     {
+        if (IsEnabled) return;
         IsEnabled = true;
 
         if (!BEWPatch.IsDebuggerAttached())
@@ -87,6 +88,7 @@ internal sealed class ExceptionHandlerSubSystem : ISubSystem, ISubSystemSettings
 
     public void Disable()
     {
+        if (!IsEnabled) return;
         IsEnabled = false;
 
         UnsubscribeToUnhandledException();
