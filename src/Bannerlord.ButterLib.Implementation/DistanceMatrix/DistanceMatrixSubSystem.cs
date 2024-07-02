@@ -25,16 +25,18 @@ internal class DistanceMatrixSubSystem : ISubSystem, ISubSystemSettings<Distance
 
     public void Enable()
     {
-        if (GameInitialized)
-            return;
+        if (IsEnabled) return;
+
+        if (GameInitialized) return;
 
         IsEnabled = true;
     }
 
     public void Disable()
     {
-        if (GameInitialized)
-            return;
+        if (!IsEnabled) return;
+
+        if (GameInitialized) return;
 
         IsEnabled = false;
     }

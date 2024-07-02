@@ -21,11 +21,13 @@ internal sealed class CrashUploaderSubSystem : ISubSystem
 
     public void Enable()
     {
+        if (IsEnabled) return;
         IsEnabled = true;
     }
 
     public void Disable()
     {
+        if (!IsEnabled) return;
         IsEnabled = false;
     }
 }

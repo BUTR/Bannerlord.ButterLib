@@ -1,4 +1,8 @@
 ---------------------------------------------------------------------------------------------------
+Version: 2.9.10
+Game Versions: v1.0.x,v1.1.x,v1.2.x
+* Fixed double key press issue
+---------------------------------------------------------------------------------------------------
 Version: 2.9.9
 Game Versions: v1.0.x,v1.1.x,v1.2.x
 * Fixed SyncAsJson not serializing game types

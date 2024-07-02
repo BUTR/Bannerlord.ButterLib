@@ -29,6 +29,7 @@ internal class MBSubModuleBaseExSubSystem : ISubSystem
     }
     public void Enable()
     {
+        if (IsEnabled) return;
         IsEnabled = true;
 
         ModulePatch.Enable(_harmony);
@@ -40,7 +41,9 @@ internal class MBSubModuleBaseExSubSystem : ISubSystem
     }
     public void Disable()
     {
+        if (!IsEnabled) return;
         IsEnabled = false;
+
         ModulePatch.Disable(_harmony);
         MBGameManagerPatch.Disable(_harmony);
         // Think about DelayedSubModuleManager.Unregister
