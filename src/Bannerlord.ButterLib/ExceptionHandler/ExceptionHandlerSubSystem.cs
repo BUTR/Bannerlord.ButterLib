@@ -78,6 +78,8 @@ internal sealed class ExceptionHandlerSubSystem : ISubSystem, ISubSystemSettings
 
         if (!BEWPatch.IsDebuggerAttached())
             SubscribeToUnhandledException();
+        else if (Instance?.DisableWhenDebuggerIsAttached == true)
+            return;
 
         if (!_wasButrLoaderInterceptorCalled)
         {
