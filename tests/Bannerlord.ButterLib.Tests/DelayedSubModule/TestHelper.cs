@@ -11,14 +11,14 @@ internal static class TestHelper
 {
     public static readonly Type? ModuleInfoType = AccessTools2.TypeByName("TaleWorlds.ModuleManager.ModuleInfo");
 
-    private static ModuleInfoExtendedWithMetadata? _moduleInfoCaller;
-    public static ModuleInfoExtendedWithMetadata ModuleInfoCaller
+    private static ModuleInfoExtendedHelper? _moduleInfoCaller;
+    public static ModuleInfoExtendedHelper ModuleInfoCaller
     {
         get
         {
             if (_moduleInfoCaller is null)
             {
-                _moduleInfoCaller = new ModuleInfoExtendedWithMetadata(new ModuleInfoExtended(), false, "");
+                _moduleInfoCaller = new ModuleInfoExtendedHelper(new ModuleInfoExtended(), false, "");
                 AccessTools2.Property("Bannerlord.ModuleManager.ModuleInfoExtended:Id")?.SetValue(_moduleInfoCaller, nameof(TestSubModuleCaller));
                 AccessTools2.Property("Bannerlord.ModuleManager.ModuleInfoExtended:Name")?.SetValue(_moduleInfoCaller, nameof(TestSubModuleCaller));
             }
@@ -27,14 +27,14 @@ internal static class TestHelper
         }
     }
 
-    private static ModuleInfoExtendedWithMetadata? _moduleInfoTarget;
-    public static ModuleInfoExtendedWithMetadata ModuleInfoTarget
+    private static ModuleInfoExtendedHelper? _moduleInfoTarget;
+    public static ModuleInfoExtendedHelper ModuleInfoTarget
     {
         get
         {
             if (_moduleInfoTarget is null)
             {
-                _moduleInfoTarget = new ModuleInfoExtendedWithMetadata(new ModuleInfoExtended(), false, "");
+                _moduleInfoTarget = new ModuleInfoExtendedHelper(new ModuleInfoExtended(), false, "");
                 AccessTools2.Property("Bannerlord.ModuleManager.ModuleInfoExtended:Id")?.SetValue(_moduleInfoTarget, nameof(TestSubModuleTarget));
                 AccessTools2.Property("Bannerlord.ModuleManager.ModuleInfoExtended:Name")?.SetValue(_moduleInfoTarget, nameof(TestSubModuleTarget));
             }

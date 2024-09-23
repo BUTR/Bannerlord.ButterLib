@@ -15,7 +15,7 @@ namespace Bannerlord.ButterLib.Tests.DelayedSubModule;
 public class DelayedSubModuleTest
 {
     [MethodImpl(MethodImplOptions.NoInlining)]
-    private static bool MockedGetModuleInfo(Type type, ref ModuleInfoExtendedWithMetadata? __result)
+    private static bool MockedGetModuleInfo(Type type, ref ModuleInfoExtendedHelper? __result)
     {
         if (type == typeof(TestSubModuleCaller))
         {
@@ -44,9 +44,9 @@ public class DelayedSubModuleTest
     public void SubscribeBeforeTargetLoad_Test()
     {
         [MethodImpl(MethodImplOptions.NoInlining)]
-        static bool MockedGetLoadedModules(ref IEnumerable<ModuleInfoExtendedWithMetadata> __result)
+        static bool MockedGetLoadedModules(ref IEnumerable<ModuleInfoExtendedHelper> __result)
         {
-            __result = new List<ModuleInfoExtendedWithMetadata> { TestHelper.ModuleInfoCaller, TestHelper.ModuleInfoTarget };
+            __result = new List<ModuleInfoExtendedHelper> { TestHelper.ModuleInfoCaller, TestHelper.ModuleInfoTarget };
             return false;
         }
 
@@ -66,9 +66,9 @@ public class DelayedSubModuleTest
     public void SubscribeBeforeTargetLoad_CallTargetManually_Test()
     {
         [MethodImpl(MethodImplOptions.NoInlining)]
-        static bool MockedGetLoadedModules(ref IEnumerable<ModuleInfoExtendedWithMetadata> __result)
+        static bool MockedGetLoadedModules(ref IEnumerable<ModuleInfoExtendedHelper> __result)
         {
-            __result = new List<ModuleInfoExtendedWithMetadata> { TestHelper.ModuleInfoCaller, TestHelper.ModuleInfoTarget };
+            __result = new List<ModuleInfoExtendedHelper> { TestHelper.ModuleInfoCaller, TestHelper.ModuleInfoTarget };
             return false;
         }
 
@@ -93,9 +93,9 @@ public class DelayedSubModuleTest
     public void SubscribeAfterTargetLoad_Test()
     {
         [MethodImpl(MethodImplOptions.NoInlining)]
-        static bool MockedGetLoadedModules(ref IEnumerable<ModuleInfoExtendedWithMetadata> __result)
+        static bool MockedGetLoadedModules(ref IEnumerable<ModuleInfoExtendedHelper> __result)
         {
-            __result = new List<ModuleInfoExtendedWithMetadata> { TestHelper.ModuleInfoTarget, TestHelper.ModuleInfoCaller };
+            __result = new List<ModuleInfoExtendedHelper> { TestHelper.ModuleInfoTarget, TestHelper.ModuleInfoCaller };
             return false;
         }
 
