@@ -92,7 +92,8 @@ jobs:
         path: coveragereport
 
     - name: Upload ReportGenerator to CodeCov
-      uses: codecov/codecov-action@v4.5.0
+      uses: codecov/codecov-action@v4
+      continue-on-error: true
       with:
         token: ${{secrets.CODECOV_TOKEN}}
         file: coveragereport/Cobertura.xml
