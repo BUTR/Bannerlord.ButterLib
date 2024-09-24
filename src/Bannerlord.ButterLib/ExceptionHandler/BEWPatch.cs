@@ -65,9 +65,6 @@ internal sealed class BEWPatch
     {
         if (__exception is not null)
         {
-            if (ExceptionHandlerSubSystem.Instance?.DisableWhenDebuggerIsAttached == true && IsDebuggerAttached())
-                return;
-
             ExceptionReporter.Show(__exception);
         }
     }
