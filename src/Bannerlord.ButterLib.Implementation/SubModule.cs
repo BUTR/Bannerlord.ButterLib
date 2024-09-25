@@ -70,6 +70,7 @@ public sealed class SubModule : MBSubModuleBase
         Logger.LogInformation("Wrapping DebugManager of type {Type} with DebugManagerWrapper", Debug.DebugManager.GetType());
         Debug.DebugManager = new DebugManagerWrapper(Debug.DebugManager, serviceProvider.GetRequiredService<ILoggerFactory>());
 
+        DistanceMatrixSubSystem.Instance?.Enable();
         HotKeySubSystem.Instance?.Enable();
         MBSubModuleBaseExSubSystem.Instance?.Enable();
         SaveSystemSubSystem.Instance?.Enable();

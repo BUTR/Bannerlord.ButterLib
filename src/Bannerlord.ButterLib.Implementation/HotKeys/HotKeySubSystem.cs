@@ -5,6 +5,7 @@
  */
 
 using Bannerlord.ButterLib.Implementation.HotKeys.Patches;
+using Bannerlord.ButterLib.Options;
 using Bannerlord.ButterLib.SubSystems;
 
 using HarmonyLib;
@@ -26,6 +27,8 @@ internal sealed class HotKeySubSystem : ISubSystem
 
     private readonly Harmony _harmony = new("Bannerlord.ButterLib.HotKeySystem");
 
+    private bool _wasInitialized;
+
     public HotKeySubSystem()
     {
         Instance = this;
@@ -33,6 +36,13 @@ internal sealed class HotKeySubSystem : ISubSystem
 
     public void Enable()
     {
+        if (!_wasInitialized)
+        {
+            _wasInitialized = true;
+            var isEnabledViaSettings = SettingsProvider.PopulateSubSystemSettings(this) ?? true;
+            if (!isEnabledViaSettings) return;
+        }
+
         if (IsEnabled) return;
         IsEnabled = true;
 

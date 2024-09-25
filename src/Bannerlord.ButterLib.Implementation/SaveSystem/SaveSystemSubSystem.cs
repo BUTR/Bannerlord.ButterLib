@@ -1,4 +1,5 @@
 ﻿using Bannerlord.ButterLib.Implementation.SaveSystem.Patches;
+using Bannerlord.ButterLib.Options;
 using Bannerlord.ButterLib.SubSystems;
 
 using HarmonyLib;
@@ -22,6 +23,8 @@ This might alter the save file, disabling the feature might render the save file
 
     private readonly Harmony _harmony = new("Bannerlord.ButterLib.SaveSystem");
 
+    private bool _wasInitialized;
+
     public SaveSystemSubSystem()
     {
         Instance = this;
@@ -29,6 +32,13 @@ This might alter the save file, disabling the feature might render the save file
 
     public void Enable()
     {
+        if (!_wasInitialized)
+        {
+            _wasInitialized = true;
+            var isEnabledViaSettings = SettingsProvider.PopulateSubSystemSettings(this) ?? true;
+            if (!isEnabledViaSettings) return;
+        }
+
         if (IsEnabled) return;
         IsEnabled = true;
 

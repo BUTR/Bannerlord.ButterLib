@@ -1,4 +1,5 @@
 ﻿using Bannerlord.BLSE;
+using Bannerlord.ButterLib.Options;
 using Bannerlord.ButterLib.SubSystems;
 using Bannerlord.ButterLib.SubSystems.Settings;
 
@@ -37,33 +38,38 @@ internal sealed class ExceptionHandlerSubSystem : ISubSystem, ISubSystemSettings
         get => _disableWhenDebuggerIsAttached;
         private set
         {
-            if (_disableWhenDebuggerIsAttached != value)
-            {
-                _disableWhenDebuggerIsAttached = value;
+            if (_disableWhenDebuggerIsAttached == value) return;
 
-                if (BEWPatch.IsDebuggerAttached())
+            _disableWhenDebuggerIsAttached = value;
+
+            if (BEWPatch.IsDebuggerAttached())
+            {
+                if (_disableWhenDebuggerIsAttached)
                 {
-                    if (_disableWhenDebuggerIsAttached)
-                        UnsubscribeToUnhandledException();
-                    else
-                        SubscribeToUnhandledException();
+                    Disable();
                 }
                 else
                 {
                     SubscribeToUnhandledException();
                 }
             }
+            else
+            {
+                SubscribeToUnhandledException();
+            }
         }
     }
 
+    private bool _wasInitialized;
+
     /// <inheritdoc />
-    public IReadOnlyCollection<SubSystemSettingsDeclaration<ExceptionHandlerSubSystem>> Declarations { get; } = new SubSystemSettingsDeclaration<ExceptionHandlerSubSystem>[]
-    {
+    public IReadOnlyCollection<SubSystemSettingsDeclaration<ExceptionHandlerSubSystem>> Declarations { get; } =
+    [
         new SubSystemSettingsPropertyBool<ExceptionHandlerSubSystem>(
             "{=B7bfrDNzIk} Disable when Debugger is Attached",
             "{=r3ktQzFMRz} Stops the Exception Handler when a debugger is attached.",
             x => x.DisableWhenDebuggerIsAttached),
-    };
+    ];
 
 
     public ExceptionHandlerSubSystem()
@@ -73,12 +79,19 @@ internal sealed class ExceptionHandlerSubSystem : ISubSystem, ISubSystemSettings
 
     public void Enable()
     {
+        if (!_wasInitialized)
+        {
+            _wasInitialized = true;
+            var isEnabledViaSettings = SettingsProvider.PopulateSubSystemSettings(this) ?? true;
+            if (!isEnabledViaSettings) return;
+        }
+
         if (IsEnabled) return;
         IsEnabled = true;
 
         if (!BEWPatch.IsDebuggerAttached())
             SubscribeToUnhandledException();
-        else if (Instance?.DisableWhenDebuggerIsAttached == true)
+        else if (_disableWhenDebuggerIsAttached)
             return;
 
         if (!_wasButrLoaderInterceptorCalled)

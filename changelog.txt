@@ -3,7 +3,7 @@ Version: 2.9.11
 Game Versions: v1.0.x,v1.1.x,v1.2.x
 * Updated Crash Reporter to v14
 * OS Type/Version and loaded Native Modules are now saved in the crash report
-* Fixed methods not being debuggable when Debugger is attached by Cephas369
+* Fixed methods not being debuggable when Debugger is attached (Thanks Cephas369)
 ---------------------------------------------------------------------------------------------------
 Version: 2.9.10
 Game Versions: v1.0.x,v1.1.x,v1.2.x
