@@ -1,4 +1,5 @@
-﻿using Bannerlord.ButterLib.SubSystems;
+﻿using Bannerlord.ButterLib.Options;
+using Bannerlord.ButterLib.SubSystems;
 
 namespace Bannerlord.ButterLib.CrashUploader;
 
@@ -13,6 +14,7 @@ internal sealed class CrashUploaderSubSystem : ISubSystem
     public bool CanBeDisabled => true;
     public bool CanBeSwitchedAtRuntime => true;
 
+    private bool _wasInitialized;
 
     public CrashUploaderSubSystem()
     {
@@ -21,6 +23,13 @@ internal sealed class CrashUploaderSubSystem : ISubSystem
 
     public void Enable()
     {
+        if (!_wasInitialized)
+        {
+            _wasInitialized = true;
+            var isEnabledViaSettings = SettingsProvider.PopulateSubSystemSettings(this) ?? true;
+            if (!isEnabledViaSettings) return;
+        }
+
         if (IsEnabled) return;
         IsEnabled = true;
     }

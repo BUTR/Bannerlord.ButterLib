@@ -4,7 +4,6 @@ using Bannerlord.ButterLib.CrashUploader;
 using Bannerlord.ButterLib.DelayedSubModule;
 using Bannerlord.ButterLib.DynamicAPI;
 using Bannerlord.ButterLib.ExceptionHandler;
-using Bannerlord.ButterLib.Extensions;
 using Bannerlord.ButterLib.ObjectSystem.Extensions;
 using Bannerlord.ButterLib.Options;
 using Bannerlord.ButterLib.SubModuleWrappers2;
@@ -21,11 +20,8 @@ using System.Text;
 
 using TaleWorlds.CampaignSystem;
 using TaleWorlds.Core;
-using TaleWorlds.Engine;
 using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
-
-using Path = System.IO.Path;
 
 namespace Bannerlord.ButterLib;
 
@@ -66,7 +62,7 @@ public sealed partial class ButterLibSubModule : MBSubModuleBase
         Services.AddOptions();
         Services.Configure<ButterLibOptions>(o =>
         {
-            var defaultJsonOptions = new JsonButterLibOptionsModel();
+            var defaultJsonOptions = SettingsProvider.GetSettings();
             o.MinLogLevel = defaultJsonOptions.MinLogLevel;
         });
 
@@ -74,8 +70,8 @@ public sealed partial class ButterLibSubModule : MBSubModuleBase
             action?.Invoke(Services);
 
         this.AddDefaultSerilogLogger();
-        this.AddSerilogLoggerProvider("butterlib.txt", new[] { "Bannerlord.ButterLib.*" });
-        this.AddSerilogLoggerProvider("trace.txt", new[] { "System.Diagnostics.Logger.*" });
+        this.AddSerilogLoggerProvider("butterlib.txt", ["Bannerlord.ButterLib.*"]);
+        this.AddSerilogLoggerProvider("trace.txt", ["System.Diagnostics.Logger.*"]);
         //this.AddSteamWriterLogger("harmony.txt", out var harmonyStreamWriter);
         //HarmonyLib.FileLog.LogWriter = harmonyStreamWriter;
 
@@ -110,6 +106,8 @@ public sealed partial class ButterLibSubModule : MBSubModuleBase
         if (!DelayedServiceCreation)
             InitializeServices();
 
+        DelayedSubModuleSubSystem.Instance?.Enable();
+        SubModuleWrappers2SubSystem.Instance?.Enable();
         ExceptionHandlerSubSystem.Instance?.Enable();
         CrashUploaderSubSystem.Instance?.Enable();
 

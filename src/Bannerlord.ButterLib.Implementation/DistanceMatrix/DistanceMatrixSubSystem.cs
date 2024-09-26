@@ -1,4 +1,5 @@
-﻿using Bannerlord.ButterLib.SubSystems;
+﻿using Bannerlord.ButterLib.Options;
+using Bannerlord.ButterLib.SubSystems;
 using Bannerlord.ButterLib.SubSystems.Settings;
 
 using System.Collections.Generic;
@@ -18,6 +19,8 @@ internal class DistanceMatrixSubSystem : ISubSystem, ISubSystemSettings<Distance
     internal bool GameInitialized { get; set; } = false;
     public bool ConsiderVillages { get; set; } = true;
 
+    private bool _wasInitialized;
+
     public DistanceMatrixSubSystem()
     {
         Instance = this;
@@ -25,6 +28,13 @@ internal class DistanceMatrixSubSystem : ISubSystem, ISubSystemSettings<Distance
 
     public void Enable()
     {
+        if (!_wasInitialized)
+        {
+            _wasInitialized = true;
+            var isEnabledViaSettings = SettingsProvider.PopulateSubSystemSettings(this) ?? true;
+            if (!isEnabledViaSettings) return;
+        }
+
         if (IsEnabled) return;
 
         if (GameInitialized) return;

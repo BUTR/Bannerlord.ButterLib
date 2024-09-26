@@ -1,4 +1,5 @@
 ﻿using Bannerlord.ButterLib.Implementation.MBSubModuleBaseExtended.Patches;
+using Bannerlord.ButterLib.Options;
 using Bannerlord.ButterLib.SubSystems;
 
 using HarmonyLib;
@@ -23,12 +24,21 @@ internal class MBSubModuleBaseExSubSystem : ISubSystem
 
     private readonly Harmony _harmony = new("Bannerlord.ButterLib.MBSubModuleBaseEx");
 
+    private bool _wasInitialized;
+
     public MBSubModuleBaseExSubSystem()
     {
         Instance = this;
     }
     public void Enable()
     {
+        if (!_wasInitialized)
+        {
+            _wasInitialized = true;
+            var isEnabledViaSettings = SettingsProvider.PopulateSubSystemSettings(this) ?? true;
+            if (!isEnabledViaSettings) return;
+        }
+
         if (IsEnabled) return;
         IsEnabled = true;
 
