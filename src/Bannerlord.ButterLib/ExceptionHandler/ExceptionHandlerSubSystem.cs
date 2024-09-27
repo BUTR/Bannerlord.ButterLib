@@ -94,6 +94,9 @@ internal sealed class ExceptionHandlerSubSystem : ISubSystem, ISubSystemSettings
         else if (_disableWhenDebuggerIsAttached)
             return;
 
+        // What should we do if BLSE is present, but the we disabled the exception handler there
+        // but DisableWhenDebuggerIsAttached is false?
+        // Right now it still will have the exception handler disabled, since BLSE's settings take precedence.
         if (!_wasButrLoaderInterceptorCalled)
         {
             BEWPatch.Enable(Harmony);
