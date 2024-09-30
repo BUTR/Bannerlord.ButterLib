@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 2.9.13
+Game Versions: v1.0.x,v1.1.x,v1.2.x
+* Better Wine detection
+* Fixed Launcher line on HTML crash report
+---------------------------------------------------------------------------------------------------
 Version: 2.9.12
 Game Versions: v1.0.x,v1.1.x,v1.2.x
 * Added OS info in the Crash Report renders
