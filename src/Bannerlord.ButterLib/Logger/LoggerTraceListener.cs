@@ -17,34 +17,47 @@ internal class LoggerTraceListener : TraceListener
     // BLSE fixes that, but we might revert to string handling before BLSE is mandatory
     private static ParseResult? Parse(ReadOnlySpan<char> str)
     {
-        if (str.IndexOf(':') is var logLevelIdx && logLevelIdx == -1)
-            return null;
-
-        var sourceLogLevel = str.Slice(0, logLevelIdx);
-        var eventIdMessage = str.Slice(logLevelIdx + 1);
-
-        if (sourceLogLevel.LastIndexOf(' ') is var sourceIdx && sourceIdx == -1)
-            return null;
-        var process = sourceLogLevel.Slice(0, sourceIdx);
-        var logLevelStr = sourceLogLevel.Slice(sourceIdx + 1);
-
-        if (!Enum.TryParse<TraceEventType>(logLevelStr.ToString(), out var logLevel))
-            return null;
-
-        var eventIdIdx = eventIdMessage.IndexOf(':');
-        if (eventIdIdx == -1)
-            return null;
-        if (!int.TryParse(eventIdMessage.Slice(0, eventIdIdx).ToString(), out var eventId))
-            return null;
-        var message = eventIdMessage.Slice(eventIdIdx + 2);
-
-        return new ParseResult
+        try
         {
-            Process = process.ToString(),
-            Level = logLevel,
-            EventId = eventId,
-            Message = message.ToString()
-        };
+            if (str.IndexOf(':') is var logLevelIdx && logLevelIdx == -1)
+                return null;
+
+            var sourceLogLevel = str.Slice(0, logLevelIdx);
+            var eventIdMessage = str.Slice(logLevelIdx + 1);
+
+            if (sourceLogLevel.LastIndexOf(' ') is var sourceIdx && sourceIdx == -1)
+                return null;
+            var process = sourceLogLevel.Slice(0, sourceIdx);
+            var logLevelStr = sourceLogLevel.Slice(sourceIdx + 1);
+
+            if (!Enum.TryParse<TraceEventType>(logLevelStr.ToString(), out var logLevel))
+                return null;
+
+            var eventIdIdx = eventIdMessage.IndexOf(':');
+            if (eventIdIdx == -1)
+                return null;
+            if (!int.TryParse(eventIdMessage.Slice(0, eventIdIdx).ToString(), out var eventId))
+                return null;
+            var message = eventIdMessage.Slice(eventIdIdx + 2);
+
+            return new ParseResult
+            {
+                Process = process.ToString(),
+                Level = logLevel,
+                EventId = eventId,
+                Message = message.ToString()
+            };
+        }
+        catch (Exception e)
+        {
+            return new ParseResult
+            {
+                Process = "UNKNOWN",
+                Level = TraceEventType.Error,
+                EventId = 0,
+                Message = $"Failed to parse log message: {str.ToString()}! Please report this issue to the ButterLib developers! Exception: {e}"
+            };
+        }
     }
 
 
