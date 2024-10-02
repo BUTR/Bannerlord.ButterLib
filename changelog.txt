@@ -1,4 +1,9 @@
 ---------------------------------------------------------------------------------------------------
+Version: 2.9.14
+Game Versions: v1.0.x,v1.1.x,v1.2.x
+* Fixed a possible crash related to trace logging
+* Updated crash reports path anonymization
+---------------------------------------------------------------------------------------------------
 Version: 2.9.13
 Game Versions: v1.0.x,v1.1.x,v1.2.x
 * Better Wine detection
