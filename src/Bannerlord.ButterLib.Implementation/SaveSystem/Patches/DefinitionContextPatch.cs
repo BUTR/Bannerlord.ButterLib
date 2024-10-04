@@ -55,12 +55,12 @@ internal sealed class DefinitionContextPatch
     private delegate bool IsContainerDelegate(Type type);
 
     private static readonly IsContainerDelegate? IsContainer =
-        AccessTools2.GetDelegate<IsContainerDelegate>("TaleWorlds.SaveSystem.TypeExtensions:IsContainer", new[] { typeof(Type) });
+        AccessTools2.GetDelegate<IsContainerDelegate>("TaleWorlds.SaveSystem.TypeExtensions:IsContainer", [typeof(Type)]);
 
     private static MethodInfo? TargetTypeMethod(string name) => AccessTools2.Method($"TaleWorlds.SaveSystem.Definition.DefinitionContext:{name}");
 
-    private static readonly Patch[] Patches = new Patch[]
-    {
+    private static readonly Patch[] Patches =
+    [
         new PrefixPatch(nameof(AddBasicTypeDefinitionPrefix),     TargetTypeMethod("AddBasicTypeDefinition")),
         new PrefixPatch(nameof(AddClassDefinitionPrefix),         TargetTypeMethod("AddClassDefinition")),
         new PrefixPatch(nameof(AddContainerDefinitionPrefix),     TargetTypeMethod("AddContainerDefinition")),
@@ -70,8 +70,8 @@ internal sealed class DefinitionContextPatch
         new PrefixPatch(nameof(AddInterfaceDefinitionPrefix),     TargetTypeMethod("AddInterfaceDefinition")),
         new PrefixPatch(nameof(AddRootClassDefinitionPrefix),     TargetTypeMethod("AddRootClassDefinition")),
         new PrefixPatch(nameof(AddStructDefinitionPrefix),        TargetTypeMethod("AddStructDefinition")),
-        new ConstructContainerDefinitionPrefixPatch(),
-    };
+        new ConstructContainerDefinitionPrefixPatch()
+    ];
 
     // PATCH METHODS
 

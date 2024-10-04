@@ -125,7 +125,7 @@ public sealed class ImplementationLoaderSubModule : MBSubModuleBaseListWrapper
             catch (Exception e) when (e is ReflectionTypeLoadException)
             {
                 logger?.LogError(e, "Implementation {Name} is not compatible with the current game!", Path.GetFileName(a.Location));
-                return Enumerable.Empty<Type>();
+                return [];
             }
 
         }).ToList();

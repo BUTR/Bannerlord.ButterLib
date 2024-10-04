@@ -17,13 +17,13 @@ namespace Bannerlord.ButterLib.Implementation.HotKeys;
 
 internal sealed class HotKeyManagerImplementation : HotKeyManager
 {
-    internal static readonly List<HotKeyCategoryContainer> GlobalContainerStorage = new();
-    internal static readonly List<HotKeyBase> GlobalHotKeyStorage = new();
+    internal static readonly List<HotKeyCategoryContainer> GlobalContainerStorage = [];
+    internal static readonly List<HotKeyBase> GlobalHotKeyStorage = [];
 
     private int _currentId = 0; // To prevent collision with the game
     private readonly string _modName;
     private readonly string _categoryName;
-    private readonly List<HotKeyBase> _instanceHotKeys = new();
+    private readonly List<HotKeyBase> _instanceHotKeys = [];
 
     internal HotKeyManagerImplementation(string modName, string categoryName = "")
     {
@@ -54,7 +54,7 @@ internal sealed class HotKeyManagerImplementation : HotKeyManager
 #if v100 || v101 || v102 || v103 || v110 || v111 || v112 || v113 || v114 || v115 || v116
         TWHotKeyManager.RegisterInitialContexts(new[] { hotKeyCategoryContainer }, true);
 #elif v120 || v121 || v122 || v123 || v124 || v125 || v126 || v127 || v128 || v129 || v1210 || v1211
-        TWHotKeyManager.RegisterInitialContexts(TWHotKeyManager.GetAllCategories().ToList().Concat(new[] { hotKeyCategoryContainer }), true);
+        TWHotKeyManager.RegisterInitialContexts(TWHotKeyManager.GetAllCategories().ToList().Concat([hotKeyCategoryContainer]), true);
 #else
 #error DEFINE
 #endif

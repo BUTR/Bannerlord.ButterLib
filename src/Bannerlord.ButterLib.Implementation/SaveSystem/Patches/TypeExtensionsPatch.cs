@@ -51,7 +51,7 @@ internal sealed class TypeExtensionsPatch
     }
 
     private static readonly Type? TargetType = AccessTools2.TypeByName("TaleWorlds.SaveSystem.TypeExtensions");
-    private static readonly Type[] TargetMethodParams = { typeof(Type), typeof(ContainerType).MakeByRefType() };
+    private static readonly Type[] TargetMethodParams = [typeof(Type), typeof(ContainerType).MakeByRefType()];
     private static readonly MethodInfo? TargetMethod = AccessTools2.Method(TargetType!, "IsContainer", TargetMethodParams);
     private static readonly MethodInfo? PatchMethod = SymbolExtensions2.GetMethodInfo((Type x, ContainerType y, bool z) => IsContainerPrefix(x, out y, ref z));
 

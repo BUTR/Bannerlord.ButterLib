@@ -53,35 +53,35 @@ public static class ExceptionReporter
         var harmonyProvider = new HarmonyProvider();
         var crashReportRendererUtilities = new CrashReportRendererUtilities();
 
-        var crashReport = CrashReportInfo.Create(exception, metadata, filter, helper, helper, helper, harmonyProvider);
-        var crashReportModel = CrashReportInfo.ToModel(crashReport, helper, helper, helper, helper, helper, helper);
-        var logSources = GetLogSources().ToArray();
-        try
-        {
-            CrashReportImGui.ShowAndWait(crashReportModel, logSources, crashReportRendererUtilities);
-        }
-        catch (Exception ex)
-        {
+            var crashReport = CrashReportInfo.Create(exception, metadata, filter, helper, helper, helper, harmonyProvider);
+            var crashReportModel = CrashReportInfo.ToModel(crashReport, helper, helper, helper, helper, helper, helper);
+            var logSources = GetLogSources().ToArray();
             try
             {
+                CrashReportImGui.ShowAndWait(crashReportModel, logSources, crashReportRendererUtilities);
+            }
+            catch (Exception ex)
+            {
+                try
+                {
 #if NET472 || (NET6_0 && WINDOWS)
 
-                var forms = new CrashReportWinForms(crashReportModel, logSources, crashReportRendererUtilities);
-                forms.ShowDialog();
+                    var forms = new CrashReportWinForms(crashReportModel, logSources, crashReportRendererUtilities);
+                    forms.ShowDialog();
 #endif
-            }
-            catch (Exception ex2)
-            {
-                throw new AggregateException(ex, ex2);
+                }
+                catch (Exception ex2)
+                {
+                    throw new AggregateException(ex, ex2);
+                }
             }
         }
-    }
 
     private static IEnumerable<LogSource> GetLogSources()
     {
         var now = DateTimeOffset.Now;
 
-        foreach (var logSource in ButterLibSubModule.ServiceProvider?.GetService<IEnumerable<ILogSource>>() ?? Enumerable.Empty<ILogSource>())
+        foreach (var logSource in ButterLibSubModule.ServiceProvider?.GetService<IEnumerable<ILogSource>>() ?? [])
         {
             switch (logSource)
             {
