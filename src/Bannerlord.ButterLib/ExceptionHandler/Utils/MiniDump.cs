@@ -13,12 +13,6 @@ internal static class MiniDump
 {
     internal static class DbgHelpNativeMethods
     {
-#if X64
-        private const int CONTEXT_SIZE = 1232;
-#else
-        private const int CONTEXT_SIZE = 716;
-#endif
-
         [DllImport("dbghelp.dll", CallingConvention = CallingConvention.Winapi, SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool MiniDumpWriteDump(IntPtr hProcess, uint ProcessId, SafeHandle hFile, MINIDUMP_TYPE DumpType,
@@ -27,7 +21,7 @@ internal static class MiniDump
             ref readonly MINIDUMP_CALLBACK_INFORMATION CallbackParam);
 
         [Flags]
-        public enum MINIDUMP_TYPE : int
+        public enum MINIDUMP_TYPE
         {
             MiniDumpNormal = 0x00000000,
             MiniDumpWithDataSegs = 0x00000001,
@@ -79,13 +73,6 @@ internal static class MiniDump
         }
 
         [StructLayout(LayoutKind.Sequential, Pack = 4)]
-        public struct EXCEPTION_POINTERS
-        {
-            public IntPtr ExceptionRecord;
-            public byte[] ContextRecord;
-        }
-
-        [StructLayout(LayoutKind.Sequential, Pack = 4)]
         public struct MINIDUMP_EXCEPTION_INFORMATION
         {
             public uint ThreadId;
@@ -94,64 +81,20 @@ internal static class MiniDump
             public bool ClientPointers;
         }
 
-        public enum MINIDUMP_STREAM_TYPE : uint
-        {
-            UnusedStream = 0,
-            ReservedStream0 = 1,
-            ReservedStream1 = 2,
-            ThreadListStream = 3,
-            ModuleListStream = 4,
-            MemoryListStream = 5,
-            ExceptionStream = 6,
-            SystemInfoStream = 7,
-            ThreadExListStream = 8,
-            Memory64ListStream = 9,
-            CommentStreamA = 10,
-            CommentStreamW = 11,
-            HandleDataStream = 12,
-            FunctionTableStream = 13,
-            UnloadedModuleListStream = 14,
-            MiscInfoStream = 15,
-            MemoryInfoListStream = 16,
-            ThreadInfoListStream = 17,
-            HandleOperationListStream = 18,
-            LastReservedStream = 0xffff
-        }
-
-        [StructLayout(LayoutKind.Sequential, Pack = 4)]
         public struct MINIDUMP_USER_STREAM
         {
-            public MINIDUMP_STREAM_TYPE Type;
+            public uint Type;
             public uint BufferSize;
             public IntPtr Buffer;
         }
 
-        [StructLayout(LayoutKind.Sequential, Pack = 4)]
         public struct MINIDUMP_USER_STREAM_INFORMATION
         {
-            public MINIDUMP_USER_STREAM_INFORMATION(params MINIDUMP_USER_STREAM[] streams)
-            {
-                UserStreamCount = (uint) streams.Length;
-                int sizeOfStream = Marshal.SizeOf(typeof(MINIDUMP_USER_STREAM));
-                UserStreamArray = Marshal.AllocHGlobal((int) (UserStreamCount * sizeOfStream));
-                for (int i = 0; i < streams.Length; ++i)
-                {
-                    Marshal.StructureToPtr(streams[i], UserStreamArray + (i * sizeOfStream), false);
-                }
-            }
-
-            public void Delete()
-            {
-                Marshal.FreeHGlobal(UserStreamArray);
-                UserStreamCount = 0;
-                UserStreamArray = IntPtr.Zero;
-            }
-
             public uint UserStreamCount;
-            public IntPtr UserStreamArray;
+            public MINIDUMP_USER_STREAM[] UserStreamArray;
         }
 
-        public enum MINIDUMP_CALLBACK_TYPE : uint
+        public enum MINIDUMP_CALLBACK_TYPE
         {
             ModuleCallback,
             ThreadCallback,
@@ -170,8 +113,7 @@ internal static class MiniDump
             ReadMemoryFailureCallback,
             SecondaryFlagsCallback
         }
-
-        [StructLayout(LayoutKind.Sequential, Pack = 4)]
+        
         public struct VS_FIXEDFILEINFO
         {
             public uint dwSignature;
@@ -189,29 +131,33 @@ internal static class MiniDump
             public uint dwFileDateLS;
         }
 
-        [StructLayout(LayoutKind.Sequential, Pack = 4)]
         public struct MINIDUMP_THREAD_CALLBACK
         {
             public uint ThreadId;
             public IntPtr ThreadHandle;
-            public unsafe fixed byte Context[CONTEXT_SIZE];
-            public uint SizeOfContext;
-            public ulong StackBase;
-            public ulong StackEnd;
+            public uint Pad;
+            //public CONTEXT Context;
+            //public uint SizeOfContext;
+            //public ulong StackBase;
+            //public ulong StackEnd;
         }
 
-        [StructLayout(LayoutKind.Sequential, Pack = 4)]
         public struct MINIDUMP_THREAD_EX_CALLBACK
         {
-            public MINIDUMP_THREAD_CALLBACK BasePart;
-            public ulong BackingStoreBase;
-            public ulong BackingStoreEnd;
+            public uint ThreadId;
+            public IntPtr ThreadHandle;
+            public uint Pad;
+            //public CONTEXT Context;
+            //public uint SizeOfContext;
+            //public ulong StackBase;
+            //public ulong StackEnd;
+            //public ulong BackingStoreBase;
+            //public ulong BackingStoreEnd;
         }
 
-        [StructLayout(LayoutKind.Sequential, Pack = 4)]
         public struct MINIDUMP_MODULE_CALLBACK
         {
-            public IntPtr FullPath; // This is a PCWSTR
+            public IntPtr FullPath;
             public ulong BaseOfImage;
             public uint SizeOfImage;
             public uint CheckSum;
@@ -228,41 +174,44 @@ internal static class MiniDump
             public uint ThreadId;
         }
 
-        [StructLayout(LayoutKind.Sequential, Pack = 4)]
         public struct MINIDUMP_INCLUDE_MODULE_CALLBACK
         {
             public ulong BaseOfImage;
         }
-
-        [StructLayout(LayoutKind.Explicit)]
+        
+        public struct MINIDUMP_IO_CALLBACK
+        {
+            public IntPtr Handle;
+            public ulong Offset;
+            public IntPtr Buffer;
+            public uint BufferBytes;
+        }
+        
         public struct MINIDUMP_CALLBACK_INPUT
         {
-#if X64
-            const int CallbackTypeOffset = 4 + 8;
-#else
-            const int CallbackTypeOffset = 4 + 4;
-#endif
-            const int UnionOffset = CallbackTypeOffset + 4;
-
-            [FieldOffset(0)]
+            [StructLayout(LayoutKind.Explicit)]
+            public struct UNION
+            {
+                [FieldOffset(0)]
+                public int Status; // HRESULT
+                [FieldOffset(0)]
+                public MINIDUMP_THREAD_CALLBACK Thread;
+                [FieldOffset(0)]
+                public MINIDUMP_THREAD_EX_CALLBACK ThreadEx;
+                [FieldOffset(0)]
+                public MINIDUMP_MODULE_CALLBACK Module;
+                [FieldOffset(0)]
+                public MINIDUMP_INCLUDE_THREAD_CALLBACK IncludeThread;
+                [FieldOffset(0)]
+                public MINIDUMP_INCLUDE_MODULE_CALLBACK IncludeModule;
+                [FieldOffset(0)]
+                public MINIDUMP_IO_CALLBACK Io;
+            }
+            
             public uint ProcessId;
-            [FieldOffset(4)]
             public IntPtr ProcessHandle;
-            [FieldOffset(CallbackTypeOffset)]
             public MINIDUMP_CALLBACK_TYPE CallbackType;
-
-            [FieldOffset(UnionOffset)]
-            public int Status; // HRESULT
-            [FieldOffset(UnionOffset)]
-            public MINIDUMP_THREAD_CALLBACK Thread;
-            [FieldOffset(UnionOffset)]
-            public MINIDUMP_THREAD_EX_CALLBACK ThreadEx;
-            [FieldOffset(UnionOffset)]
-            public MINIDUMP_MODULE_CALLBACK Module;
-            [FieldOffset(UnionOffset)]
-            public MINIDUMP_INCLUDE_THREAD_CALLBACK IncludeThread;
-            [FieldOffset(UnionOffset)]
-            public MINIDUMP_INCLUDE_MODULE_CALLBACK IncludeModule;
+            public UNION Union;
         }
 
         [Flags]
@@ -371,7 +320,7 @@ internal static class MiniDump
             case MINIDUMP_CALLBACK_TYPE.IncludeThreadCallback:
             {
                 var info = Marshal.PtrToStructure<Info>(CallbackParam);
-                return CallbackInput.IncludeThread.ThreadId == info.ThreadId;
+                return CallbackInput.Union.IncludeThread.ThreadId == info.ThreadId;
             }
             case MINIDUMP_CALLBACK_TYPE.ModuleCallback:
             {

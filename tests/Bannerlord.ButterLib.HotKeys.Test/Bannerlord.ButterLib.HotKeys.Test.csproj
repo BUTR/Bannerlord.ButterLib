@@ -5,7 +5,6 @@
     <TargetFramework>net472</TargetFramework>
     <LangVersion>9.0</LangVersion>
     <Nullable>enable</Nullable>
-    <Platforms>x64</Platforms>
 
     <Configurations>Stable_Debug;Stable_Release;Beta_Debug;Beta_Release</Configurations>
     <DefineConstants>$(DefineConstants);$(GameVersionConstant)</DefineConstants>
