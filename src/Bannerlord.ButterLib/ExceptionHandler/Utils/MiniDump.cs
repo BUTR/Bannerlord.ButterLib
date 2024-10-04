@@ -83,15 +83,19 @@ internal static class MiniDump
 
         public struct MINIDUMP_USER_STREAM
         {
+#pragma warning disable CS0649 // Field is never assigned to, and will always have its default value
             public uint Type;
             public uint BufferSize;
             public IntPtr Buffer;
+#pragma warning restore CS0649 // Field is never assigned to, and will always have its default value
         }
 
         public struct MINIDUMP_USER_STREAM_INFORMATION
         {
+#pragma warning disable CS0649 // Field is never assigned to, and will always have its default value
             public uint UserStreamCount;
             public MINIDUMP_USER_STREAM[] UserStreamArray;
+#pragma warning restore CS0649 // Field is never assigned to, and will always have its default value
         }
 
         public enum MINIDUMP_CALLBACK_TYPE
@@ -116,6 +120,7 @@ internal static class MiniDump
         
         public struct VS_FIXEDFILEINFO
         {
+#pragma warning disable CS0649 // Field is never assigned to, and will always have its default value
             public uint dwSignature;
             public uint dwStrucVersion;
             public uint dwFileVersionMS;
@@ -129,10 +134,12 @@ internal static class MiniDump
             public uint dwFileSubtype;
             public uint dwFileDateMS;
             public uint dwFileDateLS;
+#pragma warning restore CS0649 // Field is never assigned to, and will always have its default value
         }
 
         public struct MINIDUMP_THREAD_CALLBACK
         {
+#pragma warning disable CS0649 // Field is never assigned to, and will always have its default value
             public uint ThreadId;
             public IntPtr ThreadHandle;
             public uint Pad;
@@ -140,10 +147,12 @@ internal static class MiniDump
             //public uint SizeOfContext;
             //public ulong StackBase;
             //public ulong StackEnd;
+#pragma warning restore CS0649 // Field is never assigned to, and will always have its default value
         }
 
         public struct MINIDUMP_THREAD_EX_CALLBACK
         {
+#pragma warning disable CS0649 // Field is never assigned to, and will always have its default value
             public uint ThreadId;
             public IntPtr ThreadHandle;
             public uint Pad;
@@ -153,10 +162,12 @@ internal static class MiniDump
             //public ulong StackEnd;
             //public ulong BackingStoreBase;
             //public ulong BackingStoreEnd;
+#pragma warning restore CS0649 // Field is never assigned to, and will always have its default value
         }
 
         public struct MINIDUMP_MODULE_CALLBACK
         {
+#pragma warning disable CS0649 // Field is never assigned to, and will always have its default value
             public IntPtr FullPath;
             public ulong BaseOfImage;
             public uint SizeOfImage;
@@ -167,24 +178,31 @@ internal static class MiniDump
             public uint SizeOfCvRecord;
             public IntPtr MiscRecord;
             public uint SizeOfMiscRecord;
+#pragma warning restore CS0649 // Field is never assigned to, and will always have its default value
         }
 
         public struct MINIDUMP_INCLUDE_THREAD_CALLBACK
         {
+#pragma warning disable CS0649 // Field is never assigned to, and will always have its default value
             public uint ThreadId;
+#pragma warning restore CS0649 // Field is never assigned to, and will always have its default value
         }
 
         public struct MINIDUMP_INCLUDE_MODULE_CALLBACK
         {
+#pragma warning disable CS0649 // Field is never assigned to, and will always have its default value
             public ulong BaseOfImage;
+#pragma warning restore CS0649 // Field is never assigned to, and will always have its default value
         }
         
         public struct MINIDUMP_IO_CALLBACK
         {
+#pragma warning disable CS0649 // Field is never assigned to, and will always have its default value
             public IntPtr Handle;
             public ulong Offset;
             public IntPtr Buffer;
             public uint BufferBytes;
+#pragma warning restore CS0649 // Field is never assigned to, and will always have its default value
         }
         
         public struct MINIDUMP_CALLBACK_INPUT
@@ -208,10 +226,12 @@ internal static class MiniDump
                 public MINIDUMP_IO_CALLBACK Io;
             }
             
+#pragma warning disable CS0649 // Field is never assigned to, and will always have its default value
             public uint ProcessId;
             public IntPtr ProcessHandle;
             public MINIDUMP_CALLBACK_TYPE CallbackType;
             public UNION Union;
+#pragma warning restore CS0649 // Field is never assigned to, and will always have its default value
         }
 
         [Flags]
@@ -306,7 +326,7 @@ internal static class MiniDump
                 return true;
             }
         }
-        catch (Exception) { }
+        catch (Exception) { /* ignore */ }
 
         dataStream = null;
         return false;
@@ -366,10 +386,7 @@ internal static class MiniDump
 #endif
             ClientPointers = true,
         };
-        var userStream = new MINIDUMP_USER_STREAM_INFORMATION
-        {
-
-        };
+        var userStream = new MINIDUMP_USER_STREAM_INFORMATION();
         var infoPtr = Marshal.AllocHGlobal(Marshal.SizeOf<Info>());
         Marshal.StructureToPtr(new Info
         {

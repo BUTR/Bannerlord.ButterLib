@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.ExceptionServices;
 using System.Security;
+using JetBrains.Annotations;
 
 namespace Bannerlord.ButterLib.ExceptionHandler;
 
@@ -147,6 +148,7 @@ internal sealed class ExceptionHandlerSubSystem : ISubSystem, ISubSystemSettings
     }
 
     // BLSE Duck typed method
+    [UsedImplicitly]
     private static void OnInitializeSubModulesPrefix()
     {
         _wasButrLoaderInterceptorCalled = true;

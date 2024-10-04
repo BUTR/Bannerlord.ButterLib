@@ -1,4 +1,8 @@
 ---------------------------------------------------------------------------------------------------
+Version: 2.9.16
+Game Versions: v1.0.x,v1.1.x,v1.2.x
+* Some crashes were not intercepted without BLSE
+---------------------------------------------------------------------------------------------------
 Version: 2.9.15
 Game Versions: v1.0.x,v1.1.x,v1.2.x
 * Fixed a regression that prevented crash reports from being shown

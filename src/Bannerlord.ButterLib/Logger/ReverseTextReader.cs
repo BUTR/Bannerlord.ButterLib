@@ -76,7 +76,7 @@ internal sealed class ReverseTextReader : IEnumerable<string>
         // Make a new buffer but append the previous leftovers
         var buffer = new byte[count + _leftoverBuffer.Length];
         // Read the next buffer
-        _stream.Read(buffer, 0, count);
+        _ = _stream.Read(buffer, 0, count);
         // Move the position of the stream back
         _stream.Position = newPosition;
         // And copy in the leftovers from the last buffer
