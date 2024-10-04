@@ -1,4 +1,8 @@
 ---------------------------------------------------------------------------------------------------
+Version: 2.9.17
+Game Versions: v1.0.x,v1.1.x,v1.2.x
+* Crash reports were not correctly identifying game assemblies, better path data
+---------------------------------------------------------------------------------------------------
 Version: 2.9.16
 Game Versions: v1.0.x,v1.1.x,v1.2.x
 * Some crashes were not intercepted without BLSE
