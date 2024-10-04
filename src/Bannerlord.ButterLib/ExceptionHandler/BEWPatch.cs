@@ -86,21 +86,22 @@ internal sealed class BEWPatch
             transpiler: AccessTools2.Method(typeof(BEWPatch), nameof(BlankTranspiler)));
         // ScreenManager.Tick
         harmony.TryPatch(
-            AccessTools2.Method("ManagedCallbacks.EngineCallbacksGenerated.ScreenManager_Tick"),
+            AccessTools2.Method("ManagedCallbacks.EngineCallbacksGenerated:ScreenManager_Tick") ??
+            AccessTools2.Method("ManagedCallbacks.EngineCallbacksGenerated:EngineScreenManager_Tick"),
             transpiler: AccessTools2.Method(typeof(BEWPatch), nameof(BlankTranspiler)));
         // ManagedScriptHolder.TickComponents
         harmony.TryPatch(
-            AccessTools2.Method("ManagedCallbacks.EngineCallbacksGenerated.ManagedScriptHolder_TickComponents"),
+            AccessTools2.Method("ManagedCallbacks.EngineCallbacksGenerated:ManagedScriptHolder_TickComponents"),
             transpiler: AccessTools2.Method(typeof(BEWPatch), nameof(BlankTranspiler)));
         // Mission.Tick
         harmony.TryPatch(
-            AccessTools2.Method("TaleWorlds.MountAndBlade.MissionState.FinishMissionLoading"),
+            AccessTools2.Method("TaleWorlds.MountAndBlade.MissionState:FinishMissionLoading"),
             transpiler: AccessTools2.Method(typeof(BEWPatch), nameof(BlankTranspiler)));
         harmony.TryPatch(
-            AccessTools2.Method("TaleWorlds.MountAndBlade.MissionState.TickMissionAux"),
+            AccessTools2.Method("TaleWorlds.MountAndBlade.MissionState:TickMissionAux"),
             transpiler: AccessTools2.Method(typeof(BEWPatch), nameof(BlankTranspiler)));
         harmony.TryPatch(
-            AccessTools2.Method("TaleWorlds.MountAndBlade.MissionState.TickMission"),
+            AccessTools2.Method("TaleWorlds.MountAndBlade.MissionState:TickMission"),
             transpiler: AccessTools2.Method(typeof(BEWPatch), nameof(BlankTranspiler)));
     }
 

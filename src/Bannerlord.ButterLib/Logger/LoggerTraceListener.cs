@@ -7,10 +7,10 @@ internal class LoggerTraceListener : TraceListener
 {
     private record ParseResult
     {
-        public string Process { get; init; } = default!;
-        public TraceEventType Level { get; init; } = default!;
-        public int EventId { get; init; } = default!;
-        public string Message { get; init; } = default!;
+        public required string Process { get; init; }
+        public required TraceEventType Level { get; init; }
+        public required int EventId { get; init; }
+        public required string Message { get; init; }
     }
 
     // There are some cases when System.Numerics.Vectors is not found
