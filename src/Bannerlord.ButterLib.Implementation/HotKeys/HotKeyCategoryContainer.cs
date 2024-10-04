@@ -24,15 +24,15 @@ internal sealed class HotKeyCategoryContainer : GameKeyContext
     public HotKeyCategoryContainer(string categoryId, string categoryName, IEnumerable<HotKeyBase> keys) : base(categoryId, ListCapacity)
     {
         var keyCategoryName = Module.CurrentModule.GlobalTextManager.AddGameText("str_key_category_name");
-        keyCategoryName.AddVariationWithId(categoryId, new TextObject(categoryName), new List<GameTextManager.ChoiceTag>());
+        keyCategoryName.AddVariationWithId(categoryId, new TextObject(categoryName), []);
 
         var keyName = Module.CurrentModule.GlobalTextManager.AddGameText("str_key_name");
         var keyDesc = Module.CurrentModule.GlobalTextManager.AddGameText("str_key_description");
         foreach (var key in keys)
         {
             var variationId = $"{categoryId}_{(GameKeyDefinition) key.Id}";
-            keyName.AddVariationWithId(variationId, new TextObject(key.DisplayName), new List<GameTextManager.ChoiceTag>());
-            keyDesc.AddVariationWithId(variationId, new TextObject(key.Description), new List<GameTextManager.ChoiceTag>());
+            keyName.AddVariationWithId(variationId, new TextObject(key.DisplayName), []);
+            keyDesc.AddVariationWithId(variationId, new TextObject(key.Description), []);
             RegisterGameKey(new GameKey(key.Id, key.Uid, categoryId, key.DefaultKey, key.Category));
         }
     }

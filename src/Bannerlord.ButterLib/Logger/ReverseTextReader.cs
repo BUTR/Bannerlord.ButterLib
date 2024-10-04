@@ -44,7 +44,7 @@ internal sealed class ReverseTextReader : IEnumerable<string>
             throw new InvalidOperationException("The specified stream needs to support reading to be read backwards.");
         // Set the current position to the end of the file
         _stream.Position = _stream.Length;
-        _leftoverBuffer = Array.Empty<byte>();
+        _leftoverBuffer = [];
     }
 
     #endregion

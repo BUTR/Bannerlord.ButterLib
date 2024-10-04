@@ -11,7 +11,7 @@ public class TaleWorldsContractResolverBase : DefaultContractResolver
 {
     protected delegate bool IsContainerDelegate(Type type);
     protected static readonly IsContainerDelegate? _isContainerDelegate =
-        AccessTools2.GetDelegate<IsContainerDelegate>("TaleWorlds.SaveSystem.TypeExtensions:IsContainer", new[] { typeof(Type) });
+        AccessTools2.GetDelegate<IsContainerDelegate>("TaleWorlds.SaveSystem.TypeExtensions:IsContainer", [typeof(Type)]);
 
     protected static bool IsContainerFallback(Type type)
     {

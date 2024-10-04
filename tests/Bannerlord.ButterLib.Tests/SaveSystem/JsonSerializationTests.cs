@@ -89,7 +89,7 @@ public class JsonSerializationTests
                 }
                 catch (Exception)
                 {
-                    return Enumerable.Empty<Type>();
+                    return [];
                 }
             })
             .ToList();
@@ -158,7 +158,7 @@ public class JsonSerializationTests
                 }
                 catch (Exception)
                 {
-                    return Enumerable.Empty<Type>();
+                    return [];
                 }
             })
             .ToList();

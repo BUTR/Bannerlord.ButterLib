@@ -24,16 +24,16 @@ public static class DynamicAPIProvider
 
     private delegate object DynamicAPIObjectActivator();
 
-    private static readonly HashSet<string> PossibleClassNames = new()
-    {
+    private static readonly HashSet<string> PossibleClassNames =
+    [
         "Bannerlord.ButterLib.DynamicAPI.DynamicAPIClassAttribute",
-        "Bannerlord.DynamicAPI.DynamicAPIClassAttribute",
-    };
-    private static readonly HashSet<string> PossibleMethodNames = new()
-    {
+        "Bannerlord.DynamicAPI.DynamicAPIClassAttribute"
+    ];
+    private static readonly HashSet<string> PossibleMethodNames =
+    [
         "Bannerlord.ButterLib.DynamicAPI.DynamicAPIMethodAttribute",
-        "Bannerlord.DynamicAPI.DynamicAPIMethodAttribute",
-    };
+        "Bannerlord.DynamicAPI.DynamicAPIMethodAttribute"
+    ];
 
     private static readonly ConcurrentDictionary<string, DynamicAPIObjectActivator?> CachedActivators = new();
     internal static Dictionary<string, Type>? APIClasses;
@@ -104,7 +104,7 @@ public static class DynamicAPIProvider
                 }
                 catch (Exception)
                 {
-                    return Enumerable.Empty<TypeWithAttribute?>();
+                    return [];
                 }
             })
             .OfType<TypeWithAttribute>()

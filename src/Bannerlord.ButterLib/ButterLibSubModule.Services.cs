@@ -10,7 +10,7 @@ namespace Bannerlord.ButterLib;
 public sealed partial class ButterLibSubModule
 {
     public static bool CanBeConfigured { get; private set; } = true;
-    private static List<Action<IServiceCollection>> BeforeInitialization { get; } = new();
+    private static List<Action<IServiceCollection>> BeforeInitialization { get; } = [];
 
     /// <summary>
     /// The only way to inject your stuff before ButterLib will start it's initialization

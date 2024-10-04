@@ -61,7 +61,7 @@ public class DependencyInjectionTests
     [MethodImpl(MethodImplOptions.NoInlining)]
     private static bool MockedGetModuleNames(ref string[] __result)
     {
-        __result = Array.Empty<string>();
+        __result = [];
         return false;
     }
 

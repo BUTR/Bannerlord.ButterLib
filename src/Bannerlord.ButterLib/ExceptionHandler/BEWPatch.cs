@@ -49,9 +49,9 @@ internal sealed class BEWPatch
         public static ExceptionIdentifier FromException(Exception e) => new(e.GetType(), e.StackTrace, e.Message);
     }
 
-    internal static readonly HashSet<ExceptionIdentifier> SuppressedExceptions = new();
+    internal static readonly HashSet<ExceptionIdentifier> SuppressedExceptions = [];
 
-    private static readonly string[] BEW = { "org.calradia.admiralnelson.betterexceptionwindow" };
+    private static readonly string[] BEW = ["org.calradia.admiralnelson.betterexceptionwindow"];
 
 
     private static readonly MethodInfo? ManagedApplicationTickMethod = AccessTools2.Method("TaleWorlds.DotNet.Managed:ApplicationTick");

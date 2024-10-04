@@ -18,9 +18,9 @@ public static class LoggerExtensions
     private class LogValuesFormatter
     {
         private const string NullValue = "(null)";
-        private static readonly object[] EmptyArray = Array.Empty<object>();
+        private static readonly object[] EmptyArray = [];
         private readonly string _format;
-        private readonly List<string> _valueNames = new();
+        private readonly List<string> _valueNames = [];
 
         public LogValuesFormatter(string format)
         {

@@ -68,14 +68,20 @@ internal sealed class MBGameManagerPatch
         {
             case "OnGameStart":
                 miToSearchFor = miMBSubModuleBaseOnGameStartEvent!;
-                ciToAdd = new CodeInstruction[] { new(opcode: OpCodes.Ldarg_1),
-                                                      new(opcode: OpCodes.Ldarg_2),
-                                                      new(opcode: OpCodes.Call, operand: miDelayedOnGameStartEventCaller) };
+                ciToAdd =
+                [
+                    new(opcode: OpCodes.Ldarg_1),
+                    new(opcode: OpCodes.Ldarg_2),
+                    new(opcode: OpCodes.Call, operand: miDelayedOnGameStartEventCaller)
+                ];
                 break;
             case "OnGameEnd":
                 miToSearchFor = miMBSubModuleBaseOnGameEndEvent!;
-                ciToAdd = new CodeInstruction[] { new(opcode: OpCodes.Ldarg_1),
-                                                      new(opcode: OpCodes.Call, operand: miDelayedOnGameEndEventCaller) };
+                ciToAdd =
+                [
+                    new(opcode: OpCodes.Ldarg_1),
+                    new(opcode: OpCodes.Call, operand: miDelayedOnGameEndEventCaller)
+                ];
                 break;
             default:
                 _log.LogError("Error while applying Harmony transpiler for {Method} - unexpected target method!", originalMethodName);

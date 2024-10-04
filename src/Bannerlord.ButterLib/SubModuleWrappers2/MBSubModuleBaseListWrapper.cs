@@ -12,7 +12,7 @@ namespace Bannerlord.ButterLib.SubModuleWrappers2;
 /// </summary>
 public class MBSubModuleBaseListWrapper : MBSubModuleBase
 {
-    protected readonly List<MBSubModuleBaseWrapper> _subModules = new();
+    protected readonly List<MBSubModuleBaseWrapper> _subModules = [];
     public IReadOnlyList<MBSubModuleBaseWrapper> SubModules => _subModules.AsReadOnly();
 
     public new virtual void OnSubModuleLoad()
