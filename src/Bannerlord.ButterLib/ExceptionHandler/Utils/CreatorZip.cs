@@ -1,4 +1,4 @@
-using BUTR.CrashReport.Models;
+﻿using BUTR.CrashReport.Models;
 using BUTR.CrashReport.Renderer.Zip;
 
 using Newtonsoft.Json;

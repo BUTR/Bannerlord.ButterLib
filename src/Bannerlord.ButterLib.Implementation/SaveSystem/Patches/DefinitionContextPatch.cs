@@ -61,15 +61,15 @@ internal sealed class DefinitionContextPatch
 
     private static readonly Patch[] Patches =
     [
-        new PrefixPatch(nameof(AddBasicTypeDefinitionPrefix),     TargetTypeMethod("AddBasicTypeDefinition")),
-        new PrefixPatch(nameof(AddClassDefinitionPrefix),         TargetTypeMethod("AddClassDefinition")),
-        new PrefixPatch(nameof(AddContainerDefinitionPrefix),     TargetTypeMethod("AddContainerDefinition")),
-        new PrefixPatch(nameof(AddEnumDefinitionPrefix),          TargetTypeMethod("AddEnumDefinition")),
-        new PrefixPatch(nameof(AddGenericClassDefinitionPrefix),  TargetTypeMethod("AddGenericClassDefinition")),
+        new PrefixPatch(nameof(AddBasicTypeDefinitionPrefix), TargetTypeMethod("AddBasicTypeDefinition")),
+        new PrefixPatch(nameof(AddClassDefinitionPrefix), TargetTypeMethod("AddClassDefinition")),
+        new PrefixPatch(nameof(AddContainerDefinitionPrefix), TargetTypeMethod("AddContainerDefinition")),
+        new PrefixPatch(nameof(AddEnumDefinitionPrefix), TargetTypeMethod("AddEnumDefinition")),
+        new PrefixPatch(nameof(AddGenericClassDefinitionPrefix), TargetTypeMethod("AddGenericClassDefinition")),
         new PrefixPatch(nameof(AddGenericStructDefinitionPrefix), TargetTypeMethod("AddGenericStructDefinition")),
-        new PrefixPatch(nameof(AddInterfaceDefinitionPrefix),     TargetTypeMethod("AddInterfaceDefinition")),
-        new PrefixPatch(nameof(AddRootClassDefinitionPrefix),     TargetTypeMethod("AddRootClassDefinition")),
-        new PrefixPatch(nameof(AddStructDefinitionPrefix),        TargetTypeMethod("AddStructDefinition")),
+        new PrefixPatch(nameof(AddInterfaceDefinitionPrefix), TargetTypeMethod("AddInterfaceDefinition")),
+        new PrefixPatch(nameof(AddRootClassDefinitionPrefix), TargetTypeMethod("AddRootClassDefinition")),
+        new PrefixPatch(nameof(AddStructDefinitionPrefix), TargetTypeMethod("AddStructDefinition")),
         new ConstructContainerDefinitionPrefixPatch()
     ];
 

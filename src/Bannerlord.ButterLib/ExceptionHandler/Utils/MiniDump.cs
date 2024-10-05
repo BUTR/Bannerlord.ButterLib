@@ -117,7 +117,7 @@ internal static class MiniDump
             ReadMemoryFailureCallback,
             SecondaryFlagsCallback
         }
-        
+
         public struct VS_FIXEDFILEINFO
         {
 #pragma warning disable CS0649 // Field is never assigned to, and will always have its default value
@@ -194,7 +194,7 @@ internal static class MiniDump
             public ulong BaseOfImage;
 #pragma warning restore CS0649 // Field is never assigned to, and will always have its default value
         }
-        
+
         public struct MINIDUMP_IO_CALLBACK
         {
 #pragma warning disable CS0649 // Field is never assigned to, and will always have its default value
@@ -204,7 +204,7 @@ internal static class MiniDump
             public uint BufferBytes;
 #pragma warning restore CS0649 // Field is never assigned to, and will always have its default value
         }
-        
+
         public struct MINIDUMP_CALLBACK_INPUT
         {
             [StructLayout(LayoutKind.Explicit)]
@@ -225,7 +225,7 @@ internal static class MiniDump
                 [FieldOffset(0)]
                 public MINIDUMP_IO_CALLBACK Io;
             }
-            
+
 #pragma warning disable CS0649 // Field is never assigned to, and will always have its default value
             public uint ProcessId;
             public IntPtr ProcessHandle;
