@@ -28,15 +28,15 @@ namespace Bannerlord.ButterLib.ExceptionHandler;
 [BLSEExceptionHandler]
 public static class ExceptionReporter
 {
+    private const string ExceptionWasShownMarker = "ButterLibExceptionWasShown";
+
     private static void OnException(Exception exception) => Show(exception);
 
     public static void Show(Exception exception)
     {
-        if (BEWPatch.SuppressedExceptions.Contains(BEWPatch.ExceptionIdentifier.FromException(exception)))
-        {
-            BEWPatch.SuppressedExceptions.Remove(BEWPatch.ExceptionIdentifier.FromException(exception));
+        if (exception.Data.Contains(ExceptionWasShownMarker) && exception.Data[ExceptionWasShownMarker] is true)
             return;
-        }
+        exception.Data[ExceptionWasShownMarker] = true;
 
         var metadata = new Dictionary<string, string>
         {

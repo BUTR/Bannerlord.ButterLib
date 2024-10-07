@@ -1,4 +1,8 @@
 ---------------------------------------------------------------------------------------------------
+Version: 2.9.18
+Game Versions: v1.0.x,v1.1.x,v1.2.x
+* Removed Crash Report duplicates being shown after closing
+---------------------------------------------------------------------------------------------------
 Version: 2.9.17
 Game Versions: v1.0.x,v1.1.x,v1.2.x
 * Crash reports were not correctly identifying game assemblies, better path data
