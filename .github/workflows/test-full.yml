@@ -21,6 +21,7 @@ on:
       - 'src/**'
       - 'tests/**'
       - 'build/**'
+  workflow_dispatch:
 
 env:
   # Disable the .NET logo in the console output.

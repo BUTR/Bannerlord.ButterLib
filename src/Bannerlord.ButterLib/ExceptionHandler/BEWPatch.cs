@@ -44,13 +44,6 @@ internal sealed class BEWPatch
         return _cachedDebuggerAttached;
     }
 
-    internal record ExceptionIdentifier(Type Type, string? StackTrace, string Message)
-    {
-        public static ExceptionIdentifier FromException(Exception e) => new(e.GetType(), e.StackTrace, e.Message);
-    }
-
-    internal static readonly HashSet<ExceptionIdentifier> SuppressedExceptions = [];
-
     private static readonly string[] BEW = ["org.calradia.admiralnelson.betterexceptionwindow"];
 
 
@@ -63,13 +56,13 @@ internal sealed class BEWPatch
 
     private static void Finalizer(Exception? __exception)
     {
-        if (__exception is not null)
-        {
-            if (ExceptionHandlerSubSystem.Instance?.DisableWhenDebuggerIsAttached == true && IsDebuggerAttached())
-                return;
+        if (__exception is null)
+            return;
 
-            ExceptionReporter.Show(__exception);
-        }
+        if (ExceptionHandlerSubSystem.Instance?.DisableWhenDebuggerIsAttached == true && IsDebuggerAttached())
+            return;
+
+        ExceptionReporter.Show(__exception);
     }
 
     internal static void Enable(Harmony harmony)

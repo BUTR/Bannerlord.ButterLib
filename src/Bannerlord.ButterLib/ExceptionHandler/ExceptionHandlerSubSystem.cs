@@ -6,12 +6,13 @@ using Bannerlord.ButterLib.SubSystems.Settings;
 using HarmonyLib;
 using HarmonyLib.BUTR.Extensions;
 
+using JetBrains.Annotations;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.ExceptionServices;
 using System.Security;
-using JetBrains.Annotations;
 
 namespace Bannerlord.ButterLib.ExceptionHandler;
 

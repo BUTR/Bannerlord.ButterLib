@@ -51,6 +51,7 @@ jobs:
         steam-depotid: '261551 261552'
 
     - name: Test
+      timeout-minutes: 10
       run: >-
           $stable_version=$env:STABLE_VERSION;
           $stable_version=$stable_version.substring(1);
@@ -68,6 +69,7 @@ jobs:
       shell: pwsh
 
     - name: Test Coverage
+      timeout-minutes: 10
       run: >-
           opencover/OpenCover.Console.exe -register -target:"dotnet.exe" -targetargs:"test tests/Bannerlord.ButterLib.Tests/Bannerlord.ButterLib.Tests.csproj --configuration Debug --no-build" -filter:"${{env.TEST_FILTERS}}" -excludebyattribute:"*.ExcludeFromCodeCoverage*" -output:coverage_butterlib_stable_debug.xml -mergebyhash;
           opencover/OpenCover.Console.exe -register -target:"dotnet.exe" -targetargs:"test tests/Bannerlord.ButterLib.Tests/Bannerlord.ButterLib.Tests.csproj --configuration Release --no-build" -filter:"${{env.TEST_FILTERS}}" -excludebyattribute:"*.ExcludeFromCodeCoverage*" -output:coverage_butterlib_stable_release.xml -mergebyhash;
