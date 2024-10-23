@@ -26,8 +26,6 @@
 
     <string id="Ox6uK8fZWs" text="Distance Matrix" />
     <string id="WQ4r2n0mYj" text="Mod Developer feature! Provides helpers to calculate distance between objects on map." />
-    <string id="MSJe8ih4yp" text="Consider Villages" />
-    <string id="kvR54SiOFn" text="Allow villages to be used for built-in distance matrix calculations. May negatively affect performance." />
     <string id="jvV6QDc7AJ" text="Hot Keys" />
     <string id="wNNYwgUeus" text="Mod Developer feature! Provides a better way for mods to create hotkeys" />
     <string id="JGylAT3SrB" text="MBSubModuleBase Extended" />
@@ -44,6 +42,5 @@
     <string id="UreeIeLQYS" text="Captures game crashes and creates reports out of them." />
     <string id="NkAAB8EEu2" text="SubModule Wrappers" />
     <string id="izmKJPjkjN" text="Mod Developer feature! A wrapper for MBSubModuleBase based on Harmony patches." />
-
   </strings>
 </base>
