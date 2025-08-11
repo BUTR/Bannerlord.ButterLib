@@ -80,7 +80,7 @@ jobs:
       shell: pwsh
 
     - name: ReportGenerator
-      uses: danielpalme/ReportGenerator-GitHub-Action@5.4.3
+      uses: danielpalme/ReportGenerator-GitHub-Action@5.4.12
       with:
         reports: 'coverage_butterlib_stable_debug.xml;coverage_butterlib_stable_release.xml;coverage_butterlib_impl_stable_debug.xml;coverage_butterlib_impl_stable_release.xml;coverage_butterlib_impl_beta_debug.xml;coverage_butterlib_impl_beta_release.xml;'
         targetdir: 'coveragereport'
