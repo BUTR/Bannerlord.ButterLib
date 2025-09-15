@@ -110,18 +110,33 @@ internal sealed class ModulePatch
     [MethodImpl(MethodImplOptions.NoInlining)]
     private static void FinalizeSubModulesPostfix(TWModule __instance)
     {
+#if v130
+        foreach (var submodule in __instance.CollectSubModules().OfType<IMBSubModuleBaseEx>())
+        {
+            submodule.OnAllSubModulesUnLoaded();
+        }
+#else
         foreach (var submodule in __instance.SubModules.OfType<IMBSubModuleBaseEx>())
         {
             submodule.OnAllSubModulesUnLoaded();
         }
+#endif
+
     }
 
     [MethodImpl(MethodImplOptions.NoInlining)]
     private static void DelayedScreenAsRootEvent(TWModule instance)
     {
+#if v130
+        foreach (var submodule in instance.CollectSubModules().OfType<IMBSubModuleBaseEx>())
+        {
+            submodule.OnBeforeInitialModuleScreenSetAsRootDelayed();
+        }
+#else
         foreach (var submodule in instance.SubModules.OfType<IMBSubModuleBaseEx>())
         {
             submodule.OnBeforeInitialModuleScreenSetAsRootDelayed();
         }
+#endif
     }
 }

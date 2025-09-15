@@ -34,6 +34,17 @@ internal sealed class DistanceMatrixStaticImplementation : IDistanceMatrixStatic
         var (mobileParty1, settlement1) = GetMapPosition(hero1);
         var (mobileParty2, settlement2) = GetMapPosition(hero2);
 
+#if v130
+        return settlement1 is not null && settlement2 is not null
+            ? Campaign.Current.Models.MapDistanceModel.GetDistance(settlement1, settlement2, false, false, MobileParty.NavigationType.Default)
+            : mobileParty1 is not null && mobileParty2 is not null
+                ? Campaign.Current.Models.MapDistanceModel.GetDistance(mobileParty1, mobileParty2, MobileParty.NavigationType.Default, float.MaxValue, out var distance, out var landRatio) ? distance : float.NaN
+                : settlement1 is not null && mobileParty2 is not null
+                    ? Campaign.Current.Models.MapDistanceModel.GetDistance(mobileParty2, settlement1, false, MobileParty.NavigationType.Default, out landRatio)
+                    : mobileParty1 is not null && settlement2 is not null
+                        ? Campaign.Current.Models.MapDistanceModel.GetDistance(mobileParty1, settlement2, false, MobileParty.NavigationType.Default, out landRatio)
+                        : float.NaN;
+#else
         return settlement1 is not null && settlement2 is not null
             ? Campaign.Current.Models.MapDistanceModel.GetDistance(settlement1, settlement2)
             : mobileParty1 is not null && mobileParty2 is not null
@@ -43,6 +54,7 @@ internal sealed class DistanceMatrixStaticImplementation : IDistanceMatrixStatic
                     : mobileParty1 is not null && settlement2 is not null
                         ? Campaign.Current.Models.MapDistanceModel.GetDistance(mobileParty1, settlement2)
                         : float.NaN;
+#endif
     }
 
     /// <inheritdoc/>
