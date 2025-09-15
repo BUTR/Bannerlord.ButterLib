@@ -140,18 +140,32 @@ internal sealed class MBGameManagerPatch
     [MethodImpl(MethodImplOptions.NoInlining)]
     private static void DelayedOnGameStartEvent(Game game, IGameStarter gameStarter)
     {
+#if v130
+        foreach (var submodule in Module.CurrentModule.CollectSubModules().OfType<IMBSubModuleBaseEx>())
+        {
+            submodule.OnGameStartDelayed(game, gameStarter);
+        }
+#else
         foreach (var submodule in Module.CurrentModule.SubModules.OfType<IMBSubModuleBaseEx>())
         {
             submodule.OnGameStartDelayed(game, gameStarter);
         }
+#endif
     }
 
     [MethodImpl(MethodImplOptions.NoInlining)]
     private static void DelayedOnGameEndEvent(Game game)
     {
+#if v130
+        foreach (var submodule in Module.CurrentModule.CollectSubModules().OfType<IMBSubModuleBaseEx>())
+        {
+            submodule.OnGameEndDelayed(game);
+        }
+#else
         foreach (var submodule in Module.CurrentModule.SubModules.OfType<IMBSubModuleBaseEx>())
         {
             submodule.OnGameEndDelayed(game);
         }
+#endif
     }
 }
