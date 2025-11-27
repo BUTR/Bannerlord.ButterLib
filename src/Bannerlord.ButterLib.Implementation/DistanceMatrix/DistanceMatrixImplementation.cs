@@ -158,20 +158,22 @@ internal sealed class DistanceMatrixImplementation<T> : DistanceMatrix<T> where 
             var settlements = Settlement.All.Where(s => s.IsFortification || (considerVillages && s.IsVillage)).ToList();
             _cachedMapping = settlements.ToDictionary(key => key.Id, value => value as MBObjectBase);
 
-#if v130
+#if v134
             return settlements
                 .SelectMany(_ => settlements, (X, Y) => (X, Y))
                 .Where(tuple => tuple.X.Id < tuple.Y.Id)
                 .ToDictionary(
                     key => ElegantPairHelper.Pair(key.X.Id, key.Y.Id),
                     value => Campaign.Current.Models.MapDistanceModel.GetDistance(value.X, value.Y, false, false, MobileParty.NavigationType.Default));
-#else
+#elif v100 || v101 || v102 || v103 || v110 || v111 || v112 || v113 || v114 || v115 || v116 || v120 || v121 || v122 || v123 || v124 || v125 || v126 || v127 || v128 || v129 || v1210 || v1211 || v1212
             return settlements
                 .SelectMany(_ => settlements, (X, Y) => (X, Y))
                 .Where(tuple => tuple.X.Id < tuple.Y.Id)
                 .ToDictionary(
                     key => ElegantPairHelper.Pair(key.X.Id, key.Y.Id),
                     value => Campaign.Current.Models.MapDistanceModel.GetDistance(value.X, value.Y));
+#else
+#error DEFINE
 #endif
         }
 
