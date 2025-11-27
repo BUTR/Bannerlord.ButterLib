@@ -158,7 +158,7 @@ internal sealed class DistanceMatrixImplementation<T> : DistanceMatrix<T> where 
             var settlements = Settlement.All.Where(s => s.IsFortification || (considerVillages && s.IsVillage)).ToList();
             _cachedMapping = settlements.ToDictionary(key => key.Id, value => value as MBObjectBase);
 
-#if v130
+#if v134
             return settlements
                 .SelectMany(_ => settlements, (X, Y) => (X, Y))
                 .Where(tuple => tuple.X.Id < tuple.Y.Id)
