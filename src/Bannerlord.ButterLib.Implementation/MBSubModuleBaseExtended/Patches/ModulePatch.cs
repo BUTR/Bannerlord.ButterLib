@@ -110,7 +110,7 @@ internal sealed class ModulePatch
     [MethodImpl(MethodImplOptions.NoInlining)]
     private static void FinalizeSubModulesPostfix(TWModule __instance)
     {
-#if v134
+#if v134 || v135 || v136
         foreach (var submodule in __instance.CollectSubModules().OfType<IMBSubModuleBaseEx>())
         {
             submodule.OnAllSubModulesUnLoaded();
@@ -127,7 +127,7 @@ internal sealed class ModulePatch
     [MethodImpl(MethodImplOptions.NoInlining)]
     private static void DelayedScreenAsRootEvent(TWModule instance)
     {
-#if v134
+#if v134 || v135 || v136
         foreach (var submodule in instance.CollectSubModules().OfType<IMBSubModuleBaseEx>())
         {
             submodule.OnBeforeInitialModuleScreenSetAsRootDelayed();
