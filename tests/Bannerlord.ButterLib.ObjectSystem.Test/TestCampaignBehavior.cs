@@ -232,7 +232,7 @@ namespace Bannerlord.ButterLib.ObjectSystem.Test
                 CustomEnum = (ElectionCandidate) (h.Id.InternalValue % 3 + 1);
                 Position = h.PartyBelongedTo is null
                     ? new Position2D { x = 6969f, y = -6969f }
-#if v134
+#if v134 || v135 || v136
                     : new Position2D { x = h.PartyBelongedTo.Position.X, y = h.PartyBelongedTo.Position.Y };
 #else
                     : new Position2D { x = h.PartyBelongedTo.Position2D.X, y = h.PartyBelongedTo.Position2D.Y };
