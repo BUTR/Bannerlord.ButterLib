@@ -1,5 +1,7 @@
 ﻿using HarmonyLib.BUTR.Extensions;
 
+using System.Collections.Generic;
+
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 
@@ -37,6 +39,18 @@ public class MBSubModuleBaseWrapper : MBSubModuleBase
     private delegate void OnInitialStateDelegate();
     private delegate void AfterAsyncTickTickDelegate(float dt);
 
+    // Added in v1.2.0
+    private delegate void OnNetworkTickDelegate(float dt);
+
+    // Added in v1.3.0
+    private delegate void OnNewModuleLoadDelegate();
+    private delegate void RegisterSubModuleTypesDelegate();
+    private delegate void InitializeSubModuleGameObjectsDelegate(Game game);
+    private delegate void OnAfterGameLoadedDelegate(Game game);
+    private delegate void OnBeforeGameStartDelegate(MBGameManager mbGameManager, List<string> disabledModules);
+    private delegate void OnSubModuleActivatedDelegate();
+    private delegate void OnSubModuleDeactivatedDelegate();
+
 
     private OnSubModuleLoadDelegate? OnSubModuleLoadInstance { get; }
     private OnSubModuleUnloadedDelegate? OnSubModuleUnloadedInstance { get; }
@@ -63,6 +77,18 @@ public class MBSubModuleBaseWrapper : MBSubModuleBase
     private OnMissionBehaviourInitializeDelegate? OnMissionBehaviourInitializeInstance { get; }
     private OnInitialStateDelegate? OnInitialStateInstance { get; }
     private AfterAsyncTickTickDelegate? AfterAsyncTickTickInstance { get; }
+
+    // Added in v1.2.0
+    private OnNetworkTickDelegate? OnNetworkTickInstance { get; }
+
+    // Added in v1.3.0
+    private OnNewModuleLoadDelegate? OnNewModuleLoadInstance { get; }
+    private RegisterSubModuleTypesDelegate? RegisterSubModuleTypesInstance { get; }
+    private InitializeSubModuleGameObjectsDelegate? InitializeSubModuleGameObjectsInstance { get; }
+    private OnAfterGameLoadedDelegate? OnAfterGameLoadedInstance { get; }
+    private OnBeforeGameStartDelegate? OnBeforeGameStartInstance { get; }
+    private OnSubModuleActivatedDelegate? OnSubModuleActivatedInstance { get; }
+    private OnSubModuleDeactivatedDelegate? OnSubModuleDeactivatedInstance { get; }
 
 
     public MBSubModuleBase SubModule { get; }
@@ -96,6 +122,18 @@ public class MBSubModuleBaseWrapper : MBSubModuleBase
         OnMissionBehaviourInitializeInstance = AccessTools2.GetDelegate<OnMissionBehaviourInitializeDelegate, MBSubModuleBase>(subModule, nameof(OnMissionBehaviorInitialize));
         OnInitialStateInstance = AccessTools2.GetDelegate<OnInitialStateDelegate, MBSubModuleBase>(subModule, nameof(OnInitialState));
         AfterAsyncTickTickInstance = AccessTools2.GetDelegate<AfterAsyncTickTickDelegate, MBSubModuleBase>(subModule, nameof(AfterAsyncTickTick));
+
+        // Added in v1.2.0
+        OnNetworkTickInstance = AccessTools2.GetDelegate<OnNetworkTickDelegate, MBSubModuleBase>(subModule, nameof(OnNetworkTick), logErrorInTrace: false);
+
+        // Added in v1.3.0
+        OnNewModuleLoadInstance = AccessTools2.GetDelegate<OnNewModuleLoadDelegate, MBSubModuleBase>(subModule, nameof(OnNewModuleLoad), logErrorInTrace: false);
+        RegisterSubModuleTypesInstance = AccessTools2.GetDelegate<RegisterSubModuleTypesDelegate, MBSubModuleBase>(subModule, nameof(RegisterSubModuleTypes), logErrorInTrace: false);
+        InitializeSubModuleGameObjectsInstance = AccessTools2.GetDelegate<InitializeSubModuleGameObjectsDelegate, MBSubModuleBase>(subModule, nameof(InitializeSubModuleGameObjects), logErrorInTrace: false);
+        OnAfterGameLoadedInstance = AccessTools2.GetDelegate<OnAfterGameLoadedDelegate, MBSubModuleBase>(subModule, nameof(OnAfterGameLoaded), logErrorInTrace: false);
+        OnBeforeGameStartInstance = AccessTools2.GetDelegate<OnBeforeGameStartDelegate, MBSubModuleBase>(subModule, nameof(OnBeforeGameStart), logErrorInTrace: false);
+        OnSubModuleActivatedInstance = AccessTools2.GetDelegate<OnSubModuleActivatedDelegate, MBSubModuleBase>(subModule, nameof(OnSubModuleActivated), logErrorInTrace: false);
+        OnSubModuleDeactivatedInstance = AccessTools2.GetDelegate<OnSubModuleDeactivatedDelegate, MBSubModuleBase>(subModule, nameof(OnSubModuleDeactivated), logErrorInTrace: false);
     }
 
     public new virtual void OnSubModuleLoad() => OnSubModuleLoadInstance?.Invoke();
@@ -123,5 +161,17 @@ public class MBSubModuleBaseWrapper : MBSubModuleBase
     public new virtual void OnConfigChanged() => OnConfigChangedInstance?.Invoke();
     public new virtual void OnInitialState() => OnInitialStateInstance?.Invoke();
     public new virtual void AfterAsyncTickTick(float dt) => AfterAsyncTickTickInstance?.Invoke(dt);
+
+    // Added in v1.2.0
+    public new virtual void OnNetworkTick(float dt) => OnNetworkTickInstance?.Invoke(dt);
+
+    // Added in v1.3.0
+    public new virtual void OnNewModuleLoad() => OnNewModuleLoadInstance?.Invoke();
+    public new virtual void RegisterSubModuleTypes() => RegisterSubModuleTypesInstance?.Invoke();
+    public new virtual void InitializeSubModuleGameObjects(Game game) => InitializeSubModuleGameObjectsInstance?.Invoke(game);
+    public new virtual void OnAfterGameLoaded(Game game) => OnAfterGameLoadedInstance?.Invoke(game);
+    public new virtual void OnBeforeGameStart(MBGameManager mbGameManager, List<string> disabledModules) => OnBeforeGameStartInstance?.Invoke(mbGameManager, disabledModules);
+    public new virtual void OnSubModuleActivated() => OnSubModuleActivatedInstance?.Invoke();
+    public new virtual void OnSubModuleDeactivated() => OnSubModuleDeactivatedInstance?.Invoke();
 }
 #pragma warning restore CS0109 // ReSharper restore VirtualMemberNeverOverridden.Global
