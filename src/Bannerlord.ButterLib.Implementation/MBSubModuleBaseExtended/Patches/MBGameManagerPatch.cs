@@ -140,7 +140,7 @@ internal sealed class MBGameManagerPatch
     [MethodImpl(MethodImplOptions.NoInlining)]
     private static void DelayedOnGameStartEvent(Game game, IGameStarter gameStarter)
     {
-#if v134 || v135 || v136
+#if v134 || v135 || v136 || v137 || v138 || v139
         foreach (var submodule in Module.CurrentModule.CollectSubModules().OfType<IMBSubModuleBaseEx>())
         {
             submodule.OnGameStartDelayed(game, gameStarter);
@@ -156,7 +156,7 @@ internal sealed class MBGameManagerPatch
     [MethodImpl(MethodImplOptions.NoInlining)]
     private static void DelayedOnGameEndEvent(Game game)
     {
-#if v134 || v135 || v136
+#if v134 || v135 || v136 || v137 || v138 || v139
         foreach (var submodule in Module.CurrentModule.CollectSubModules().OfType<IMBSubModuleBaseEx>())
         {
             submodule.OnGameEndDelayed(game);
