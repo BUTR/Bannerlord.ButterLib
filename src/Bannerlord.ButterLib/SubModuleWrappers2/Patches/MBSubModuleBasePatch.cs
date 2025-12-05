@@ -1,6 +1,8 @@
 ﻿using HarmonyLib;
 using HarmonyLib.BUTR.Extensions;
 
+using System.Collections.Generic;
+
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 
@@ -285,82 +287,209 @@ internal sealed class MBSubModuleBasePatch
         }
     }
 
+    // Added in v1.2.0
+    private static void OnNetworkTickPostfix(MBSubModuleBase __instance, float dt)
+    {
+        switch (__instance)
+        {
+            case MBSubModuleBaseWrapper wrapper:
+                wrapper.OnNetworkTick(dt);
+                break;
+            case MBSubModuleBaseListWrapper listWrapper:
+                listWrapper.OnNetworkTick(dt);
+                break;
+        }
+    }
+
+    // Added in v1.3.0
+    private static void OnNewModuleLoadPostfix(MBSubModuleBase __instance)
+    {
+        switch (__instance)
+        {
+            case MBSubModuleBaseWrapper wrapper:
+                wrapper.OnNewModuleLoad();
+                break;
+            case MBSubModuleBaseListWrapper listWrapper:
+                listWrapper.OnNewModuleLoad();
+                break;
+        }
+    }
+    private static void RegisterSubModuleTypesPostfix(MBSubModuleBase __instance)
+    {
+        switch (__instance)
+        {
+            case MBSubModuleBaseWrapper wrapper:
+                wrapper.RegisterSubModuleTypes();
+                break;
+            case MBSubModuleBaseListWrapper listWrapper:
+                listWrapper.RegisterSubModuleTypes();
+                break;
+        }
+    }
+    private static void InitializeSubModuleGameObjectsPostfix(MBSubModuleBase __instance, Game game)
+    {
+        switch (__instance)
+        {
+            case MBSubModuleBaseWrapper wrapper:
+                wrapper.InitializeSubModuleGameObjects(game);
+                break;
+            case MBSubModuleBaseListWrapper listWrapper:
+                listWrapper.InitializeSubModuleGameObjects(game);
+                break;
+        }
+    }
+    private static void OnAfterGameLoadedPostfix(MBSubModuleBase __instance, Game game)
+    {
+        switch (__instance)
+        {
+            case MBSubModuleBaseWrapper wrapper:
+                wrapper.OnAfterGameLoaded(game);
+                break;
+            case MBSubModuleBaseListWrapper listWrapper:
+                listWrapper.OnAfterGameLoaded(game);
+                break;
+        }
+    }
+    private static void OnBeforeGameStartPostfix(MBSubModuleBase __instance, MBGameManager mbGameManager, List<string> disabledModules)
+    {
+        switch (__instance)
+        {
+            case MBSubModuleBaseWrapper wrapper:
+                wrapper.OnBeforeGameStart(mbGameManager, disabledModules);
+                break;
+            case MBSubModuleBaseListWrapper listWrapper:
+                listWrapper.OnBeforeGameStart(mbGameManager, disabledModules);
+                break;
+        }
+    }
+    private static void OnSubModuleActivatedPostfix(MBSubModuleBase __instance)
+    {
+        switch (__instance)
+        {
+            case MBSubModuleBaseWrapper wrapper:
+                wrapper.OnSubModuleActivated();
+                break;
+            case MBSubModuleBaseListWrapper listWrapper:
+                listWrapper.OnSubModuleActivated();
+                break;
+        }
+    }
+    private static void OnSubModuleDeactivatedPostfix(MBSubModuleBase __instance)
+    {
+        switch (__instance)
+        {
+            case MBSubModuleBaseWrapper wrapper:
+                wrapper.OnSubModuleDeactivated();
+                break;
+            case MBSubModuleBaseListWrapper listWrapper:
+                listWrapper.OnSubModuleDeactivated();
+                break;
+        }
+    }
+
     internal static bool Enable(Harmony harmony)
     {
 #pragma warning disable format // @formatter:off
             return true
                 & harmony.TryPatch(
-                    AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnSubModuleLoad"),
-                    postfix: SymbolExtensions2.GetMethodInfo((MBSubModuleBase x) => OnSubModuleLoadPostfix(x)))
+                    AccessTools2.Method(typeof(MBSubModuleBase), nameof(MBSubModuleBaseWrapper.OnSubModuleLoad)),
+                    postfix: AccessTools2.Method(typeof(MBSubModuleBasePatch), nameof(OnSubModuleLoadPostfix)))
                 & harmony.TryPatch(
-                    AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnSubModuleUnloaded"),
-                    postfix: SymbolExtensions2.GetMethodInfo((MBSubModuleBase x) => OnSubModuleUnloadedPostfix(x)))
+                    AccessTools2.Method(typeof(MBSubModuleBase), nameof(MBSubModuleBaseWrapper.OnSubModuleUnloaded)),
+                    postfix: AccessTools2.Method(typeof(MBSubModuleBasePatch), nameof(OnSubModuleUnloadedPostfix)))
                 & harmony.TryPatch(
-                    AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnApplicationTick"),
-                    postfix: SymbolExtensions2.GetMethodInfo((MBSubModuleBase x, float y) => OnApplicationTickPostfix(x, ref y)))
+                    AccessTools2.Method(typeof(MBSubModuleBase), nameof(MBSubModuleBaseWrapper.OnApplicationTick)),
+                    postfix: AccessTools2.Method(typeof(MBSubModuleBasePatch), nameof(OnApplicationTickPostfix)))
                 & harmony.TryPatch(
-                    AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnBeforeInitialModuleScreenSetAsRoot"),
-                    postfix: SymbolExtensions2.GetMethodInfo((MBSubModuleBase x) => OnBeforeInitialModuleScreenSetAsRootPostfix(x)))
+                    AccessTools2.Method(typeof(MBSubModuleBase), nameof(MBSubModuleBaseWrapper.OnBeforeInitialModuleScreenSetAsRoot)),
+                    postfix: AccessTools2.Method(typeof(MBSubModuleBasePatch), nameof(OnBeforeInitialModuleScreenSetAsRootPostfix)))
                 & harmony.TryPatch(
-                    AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnGameStart"),
-                    postfix: SymbolExtensions2.GetMethodInfo((MBSubModuleBase x, Game y, IGameStarter z) => OnGameStartPostfix(x, y, z)))
+                    AccessTools2.Method(typeof(MBSubModuleBase), nameof(MBSubModuleBaseWrapper.OnGameStart)),
+                    postfix: AccessTools2.Method(typeof(MBSubModuleBasePatch), nameof(OnGameStartPostfix)))
                 & harmony.TryPatch(
-                    AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:InitializeGameStarter"),
-                    postfix: SymbolExtensions2.GetMethodInfo((MBSubModuleBase x, Game y, IGameStarter z) => InitializeGameStarterPostfix(x, y, z)))
-
-                // TODO: Won't work
-                & harmony.TryPatch(
-                    AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnServiceRegistration", logErrorInTrace: false),
-                    postfix: SymbolExtensions2.GetMethodInfo((MBSubModuleBase x) => OnServiceRegistrationPostfix(x)))
+                    AccessTools2.Method(typeof(MBSubModuleBase), nameof(MBSubModuleBaseWrapper.InitializeGameStarter)),
+                    postfix: AccessTools2.Method(typeof(MBSubModuleBasePatch), nameof(InitializeGameStarterPostfix)))
 
                 & harmony.TryPatch(
-                    AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:DoLoading"),
-                    postfix: SymbolExtensions2.GetMethodInfo((MBSubModuleBase x, bool y, Game z) => DoLoadingPostfix(x, ref y, z)))
+                    AccessTools2.Method(typeof(MBSubModuleBase), nameof(MBSubModuleBaseWrapper.OnServiceRegistration), logErrorInTrace: false),
+                    postfix: AccessTools2.Method(typeof(MBSubModuleBasePatch), nameof(OnServiceRegistrationPostfix), logErrorInTrace: false))
+
                 & harmony.TryPatch(
-                    AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnGameLoaded"),
-                    postfix: SymbolExtensions2.GetMethodInfo((MBSubModuleBase x, Game y, object z) => OnGameLoadedPostfix(x, y, z)))
+                    AccessTools2.Method(typeof(MBSubModuleBase), nameof(MBSubModuleBaseWrapper.DoLoading)),
+                    postfix: AccessTools2.Method(typeof(MBSubModuleBasePatch), nameof(DoLoadingPostfix)))
                 & harmony.TryPatch(
-                    AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnCampaignStart"),
-                    postfix: SymbolExtensions2.GetMethodInfo((MBSubModuleBase x, Game y, object z) => OnCampaignStartPostfix(x, y, z)))
+                    AccessTools2.Method(typeof(MBSubModuleBase), nameof(MBSubModuleBaseWrapper.OnGameLoaded)),
+                    postfix: AccessTools2.Method(typeof(MBSubModuleBasePatch), nameof(OnGameLoadedPostfix)))
                 & harmony.TryPatch(
-                    AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:BeginGameStart"),
-                    postfix: SymbolExtensions2.GetMethodInfo((MBSubModuleBase x, Game y) => BeginGameStartPostfix(x, y)))
+                    AccessTools2.Method(typeof(MBSubModuleBase), nameof(MBSubModuleBaseWrapper.OnCampaignStart)),
+                    postfix: AccessTools2.Method(typeof(MBSubModuleBasePatch), nameof(OnCampaignStartPostfix)))
                 & harmony.TryPatch(
-                    AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnGameEnd"),
-                    postfix: SymbolExtensions2.GetMethodInfo((MBSubModuleBase x, Game y) => OnGameEndPostfix(x, y)))
+                    AccessTools2.Method(typeof(MBSubModuleBase), nameof(MBSubModuleBaseWrapper.BeginGameStart)),
+                    postfix: AccessTools2.Method(typeof(MBSubModuleBasePatch), nameof(BeginGameStartPostfix)))
                 & harmony.TryPatch(
-                    AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnGameInitializationFinished"),
-                    postfix: SymbolExtensions2.GetMethodInfo((MBSubModuleBase x, Game y) => OnGameInitializationFinishedPostfix(x, y)))
+                    AccessTools2.Method(typeof(MBSubModuleBase), nameof(MBSubModuleBaseWrapper.OnGameEnd)),
+                    postfix: AccessTools2.Method(typeof(MBSubModuleBasePatch), nameof(OnGameEndPostfix)))
                 & harmony.TryPatch(
-                    AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnBeforeMissionBehaviorInitialize"),
-                    postfix: SymbolExtensions2.GetMethodInfo((MBSubModuleBase x, Mission y) => OnBeforeMissionBehaviourInitializePostfix(x, y)))
+                    AccessTools2.Method(typeof(MBSubModuleBase), nameof(MBSubModuleBaseWrapper.OnGameInitializationFinished)),
+                    postfix: AccessTools2.Method(typeof(MBSubModuleBasePatch), nameof(OnGameInitializationFinishedPostfix)))
                 & harmony.TryPatch(
-                    AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnMissionBehaviorInitialize"),
-                    postfix: SymbolExtensions2.GetMethodInfo((MBSubModuleBase x, Mission y) => OnMissionBehaviourInitializePostfix(x, y)))
+                    AccessTools2.Method(typeof(MBSubModuleBase), nameof(MBSubModuleBaseWrapper.OnBeforeMissionBehaviorInitialize)),
+                    postfix: AccessTools2.Method(typeof(MBSubModuleBasePatch), nameof(OnBeforeMissionBehaviourInitializePostfix)))
                 & harmony.TryPatch(
-                    AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnMultiplayerGameStart"),
-                    postfix: SymbolExtensions2.GetMethodInfo((MBSubModuleBase x, Game y, object z) => OnMultiplayerGameStartPostfix(x, y, z)))
+                    AccessTools2.Method(typeof(MBSubModuleBase), nameof(MBSubModuleBaseWrapper.OnMissionBehaviorInitialize)),
+                    postfix: AccessTools2.Method(typeof(MBSubModuleBasePatch), nameof(OnMissionBehaviourInitializePostfix)))
                 & harmony.TryPatch(
-                    AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnNewGameCreated"),
-                    postfix: SymbolExtensions2.GetMethodInfo((MBSubModuleBase x, Game y, object z) => OnNewGameCreatedPostfix(x, y, z)))
+                    AccessTools2.Method(typeof(MBSubModuleBase), nameof(MBSubModuleBaseWrapper.OnMultiplayerGameStart)),
+                    postfix: AccessTools2.Method(typeof(MBSubModuleBasePatch), nameof(OnMultiplayerGameStartPostfix)))
                 & harmony.TryPatch(
-                    AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:RegisterSubModuleObjects"),
-                    postfix: SymbolExtensions2.GetMethodInfo((MBSubModuleBase x, bool y) => RegisterSubModuleObjectsPostfix(x, y)))
+                    AccessTools2.Method(typeof(MBSubModuleBase), nameof(MBSubModuleBaseWrapper.OnNewGameCreated)),
+                    postfix: AccessTools2.Method(typeof(MBSubModuleBasePatch), nameof(OnNewGameCreatedPostfix)))
                 & harmony.TryPatch(
-                    AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:AfterRegisterSubModuleObjects"),
-                    postfix: SymbolExtensions2.GetMethodInfo((MBSubModuleBase x, bool y) => AfterRegisterSubModuleObjectsPostfix(x, y)))
+                    AccessTools2.Method(typeof(MBSubModuleBase), nameof(MBSubModuleBaseWrapper.RegisterSubModuleObjects)),
+                    postfix: AccessTools2.Method(typeof(MBSubModuleBasePatch), nameof(RegisterSubModuleObjectsPostfix)))
                 & harmony.TryPatch(
-                    AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnAfterGameInitializationFinished"),
-                    postfix: SymbolExtensions2.GetMethodInfo((MBSubModuleBase x, Game y, object z) => OnAfterGameInitializationFinishedPostfix(x, y, z)))
+                    AccessTools2.Method(typeof(MBSubModuleBase), nameof(MBSubModuleBaseWrapper.AfterRegisterSubModuleObjects)),
+                    postfix: AccessTools2.Method(typeof(MBSubModuleBasePatch), nameof(AfterRegisterSubModuleObjectsPostfix)))
                 & harmony.TryPatch(
-                    AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnConfigChanged"),
-                    postfix: SymbolExtensions2.GetMethodInfo((MBSubModuleBase x) => OnConfigChangedPostfix(x)))
+                    AccessTools2.Method(typeof(MBSubModuleBase), nameof(MBSubModuleBaseWrapper.OnAfterGameInitializationFinished)),
+                    postfix: AccessTools2.Method(typeof(MBSubModuleBasePatch), nameof(OnAfterGameInitializationFinishedPostfix)))
                 & harmony.TryPatch(
-                    AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:OnInitialState"),
-                    postfix: SymbolExtensions2.GetMethodInfo((MBSubModuleBase x) => OnInitialStatePostfix(x)))
+                    AccessTools2.Method(typeof(MBSubModuleBase), nameof(MBSubModuleBaseWrapper.OnConfigChanged)),
+                    postfix: AccessTools2.Method(typeof(MBSubModuleBasePatch), nameof(OnConfigChangedPostfix)))
                 & harmony.TryPatch(
-                    AccessTools2.Method("TaleWorlds.MountAndBlade.MBSubModuleBase:AfterAsyncTickTick"),
-                    postfix: SymbolExtensions2.GetMethodInfo((MBSubModuleBase x, float y) => AfterAsyncTickTickPostfix(x, y)));
+                    AccessTools2.Method(typeof(MBSubModuleBase), nameof(MBSubModuleBaseWrapper.OnInitialState)),
+                    postfix: AccessTools2.Method(typeof(MBSubModuleBasePatch), nameof(OnInitialStatePostfix)))
+                & harmony.TryPatch(
+                    AccessTools2.Method(typeof(MBSubModuleBase), nameof(MBSubModuleBaseWrapper.AfterAsyncTickTick)),
+                    postfix: AccessTools2.Method(typeof(MBSubModuleBasePatch), nameof(AfterAsyncTickTickPostfix)))
+
+                // Added in v1.2.0
+                & harmony.TryPatch(
+                    AccessTools2.Method(typeof(MBSubModuleBase), nameof(MBSubModuleBaseWrapper.OnNetworkTick), logErrorInTrace: false),
+                    postfix: AccessTools2.Method(typeof(MBSubModuleBasePatch), nameof(OnNetworkTickPostfix), logErrorInTrace: false))
+
+                // Added in v1.3.0
+                & harmony.TryPatch(
+                    AccessTools2.Method(typeof(MBSubModuleBase), nameof(MBSubModuleBaseWrapper.OnNewModuleLoad), logErrorInTrace: false),
+                    postfix: AccessTools2.Method(typeof(MBSubModuleBasePatch), nameof(OnNewModuleLoadPostfix), logErrorInTrace: false))
+                & harmony.TryPatch(
+                    AccessTools2.Method(typeof(MBSubModuleBase), nameof(MBSubModuleBaseWrapper.RegisterSubModuleTypes), logErrorInTrace: false),
+                    postfix: AccessTools2.Method(typeof(MBSubModuleBasePatch), nameof(RegisterSubModuleTypesPostfix), logErrorInTrace: false))
+                & harmony.TryPatch(
+                    AccessTools2.Method(typeof(MBSubModuleBase), nameof(MBSubModuleBaseWrapper.InitializeSubModuleGameObjects), logErrorInTrace: false),
+                    postfix: AccessTools2.Method(typeof(MBSubModuleBasePatch), nameof(InitializeSubModuleGameObjectsPostfix), logErrorInTrace: false))
+                & harmony.TryPatch(
+                    AccessTools2.Method(typeof(MBSubModuleBase), nameof(MBSubModuleBaseWrapper.OnAfterGameLoaded), logErrorInTrace: false),
+                    postfix: AccessTools2.Method(typeof(MBSubModuleBasePatch), nameof(OnAfterGameLoadedPostfix), logErrorInTrace: false))
+                & harmony.TryPatch(
+                    AccessTools2.Method(typeof(MBSubModuleBase), nameof(MBSubModuleBaseWrapper.OnBeforeGameStart), logErrorInTrace: false),
+                    postfix: AccessTools2.Method(typeof(MBSubModuleBasePatch), nameof(OnBeforeGameStartPostfix), logErrorInTrace: false))
+                & harmony.TryPatch(
+                    AccessTools2.Method(typeof(MBSubModuleBase), nameof(MBSubModuleBaseWrapper.OnSubModuleActivated), logErrorInTrace: false),
+                    postfix: AccessTools2.Method(typeof(MBSubModuleBasePatch), nameof(OnSubModuleActivatedPostfix), logErrorInTrace: false))
+                & harmony.TryPatch(
+                    AccessTools2.Method(typeof(MBSubModuleBase), nameof(MBSubModuleBaseWrapper.OnSubModuleDeactivated), logErrorInTrace: false),
+                    postfix: AccessTools2.Method(typeof(MBSubModuleBasePatch), nameof(OnSubModuleDeactivatedPostfix), logErrorInTrace: false));
 #pragma warning restore format // @formatter:on
     }
 }

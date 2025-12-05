@@ -12,7 +12,7 @@ namespace Bannerlord.ButterLib.SubModuleWrappers2;
 /// </summary>
 public class MBSubModuleBaseListWrapper : MBSubModuleBase
 {
-    protected readonly List<MBSubModuleBaseWrapper> _subModules = [];
+    protected readonly List<MBSubModuleBaseWrapper> _subModules = new();
     public IReadOnlyList<MBSubModuleBaseWrapper> SubModules => _subModules.AsReadOnly();
 
     public new virtual void OnSubModuleLoad()
@@ -25,15 +25,15 @@ public class MBSubModuleBaseListWrapper : MBSubModuleBase
         foreach (var subModule in SubModules)
             subModule.OnSubModuleUnloaded();
     }
-    public new virtual void OnApplicationTick(float dt)
-    {
-        foreach (var subModule in SubModules)
-            subModule.OnApplicationTick(dt);
-    }
     public new virtual void OnBeforeInitialModuleScreenSetAsRoot()
     {
         foreach (var subModule in SubModules)
             subModule.OnBeforeInitialModuleScreenSetAsRoot();
+    }
+    public new virtual void OnApplicationTick(float dt)
+    {
+        foreach (var subModule in SubModules)
+            subModule.OnApplicationTick(dt);
     }
     public new virtual void OnGameStart(Game game, IGameStarter gameStarterObject)
     {
@@ -131,6 +131,50 @@ public class MBSubModuleBaseListWrapper : MBSubModuleBase
     {
         foreach (var subModule in SubModules)
             subModule.AfterAsyncTickTick(dt);
+    }
+
+    // Added in v1.2.0
+    public new virtual void OnNetworkTick(float dt)
+    {
+        foreach (var subModule in SubModules)
+            subModule.OnNetworkTick(dt);
+    }
+
+    // Added in v1.3.0
+    public new virtual void OnNewModuleLoad()
+    {
+        foreach (var subModule in SubModules)
+            subModule.OnNewModuleLoad();
+    }
+    public new virtual void RegisterSubModuleTypes()
+    {
+        foreach (var subModule in SubModules)
+            subModule.RegisterSubModuleTypes();
+    }
+    public new virtual void InitializeSubModuleGameObjects(Game game)
+    {
+        foreach (var subModule in SubModules)
+            subModule.InitializeSubModuleGameObjects(game);
+    }
+    public new virtual void OnAfterGameLoaded(Game game)
+    {
+        foreach (var subModule in SubModules)
+            subModule.OnAfterGameLoaded(game);
+    }
+    public new virtual void OnBeforeGameStart(MBGameManager mbGameManager, List<string> disabledModules)
+    {
+        foreach (var subModule in SubModules)
+            subModule.OnBeforeGameStart(mbGameManager, disabledModules);
+    }
+    public new virtual void OnSubModuleActivated()
+    {
+        foreach (var subModule in SubModules)
+            subModule.OnSubModuleActivated();
+    }
+    public new virtual void OnSubModuleDeactivated()
+    {
+        foreach (var subModule in SubModules)
+            subModule.OnSubModuleDeactivated();
     }
 }
 #pragma warning restore CS0109 // ReSharper restore VirtualMemberNeverOverridden.Global
