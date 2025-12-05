@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class MbEventExtensions | ButterLib Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class MbEventExtensions | ButterLib Documentation ">
+      
+      <meta name="description" content="Extension class of the  class and its generic variations.">
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/BUTR/Bannerlord.ButterLib/new/dev/apiSpec/new?filename=Bannerlord_ButterLib_Common_Extensions_MbEventExtensions.md&amp;value=---%0Auid%3A%20Bannerlord.ButterLib.Common.Extensions.MbEventExtensions%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/BUTR48.svg" alt="ButterLib">
+            ButterLib
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="Bannerlord.ButterLib.Common.Extensions.MbEventExtensions">
+
+
+
+  <h1 id="Bannerlord_ButterLib_Common_Extensions_MbEventExtensions" data-uid="Bannerlord.ButterLib.Common.Extensions.MbEventExtensions" class="text-break">
+Class MbEventExtensions  <a class="header-action link-secondary" title="View source" href="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/src/Bannerlord.ButterLib/Extensions/MbEventExtensions.cs/#L13"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Bannerlord.html">Bannerlord</a>.<a class="xref" href="Bannerlord.ButterLib.html">ButterLib</a>.<a class="xref" href="Bannerlord.ButterLib.Common.html">Common</a>.<a class="xref" href="Bannerlord.ButterLib.Common.Extensions.html">Extensions</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Bannerlord.ButterLib.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Extension class of the <span class="xref">TaleWorlds.CampaignSystem.MbEvent</span> class and its generic variations.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static class MbEventExtensions</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">MbEventExtensions</span></div>
+    </dd>
+  </dl>
+
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+  <h2 id="Bannerlord_ButterLib_Common_Extensions_MbEventExtensions_remarks">Remarks</h2>
+  <div class="markdown level0 remarks"><p>For some reason TW hid &quot;Invoke&quot; methods of the MbEvent classes with number of generic arguments greater than one.
+This extension class corrects said misconception.</p>
+</div>
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="Bannerlord_ButterLib_Common_Extensions_MbEventExtensions_Invoke_" data-uid="Bannerlord.ButterLib.Common.Extensions.MbEventExtensions.Invoke*"></a>
+
+  <h3 id="Bannerlord_ButterLib_Common_Extensions_MbEventExtensions_Invoke__2_TaleWorlds_CampaignSystem_MbEvent___0___1____0___1_" data-uid="Bannerlord.ButterLib.Common.Extensions.MbEventExtensions.Invoke``2(TaleWorlds.CampaignSystem.MbEvent{``0,``1},``0,``1)">
+  Invoke&lt;T1, T2&gt;(MbEvent&lt;T1, T2&gt;, T1, T2)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/src/Bannerlord.ButterLib/Extensions/MbEventExtensions.cs/#L99"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Invokes all the listeners to the specified <span class="xref">TaleWorlds.CampaignSystem.MbEvent&lt;T1, T2&gt;</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Invoke&lt;T1, T2&gt;(this MbEvent&lt;T1, T2&gt; instance, T1 arg1, T2 arg2)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>instance</code> <a class="xref" href="https://butr.github.io/Bannerlord.ReferenceAssemblies.Documentation/api/core/TaleWorlds.CampaignSystem.MbEvent-2.html">MbEvent</a>&lt;T1, T2&gt;</dt>
+    <dd><p>An instance of <span class="xref">TaleWorlds.CampaignSystem.MbEvent&lt;T1, T2&gt;</span> to call &quot;Invoke&quot; against.</p>
+</dd>
+    <dt><code>arg1</code> <span class="xref">T1</span></dt>
+    <dd><p>Fist argument of the event.</p>
+</dd>
+    <dt><code>arg2</code> <span class="xref">T2</span></dt>
+    <dd><p>Second argument of the event.</p>
+</dd>
+  </dl>
+
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T1</code></dt>
+    <dd><p>The type of the first event argument.</p>
+</dd>
+    <dt><code>T2</code></dt>
+    <dd><p>The type of the second event argument.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+  <h4 class="section" id="Bannerlord_ButterLib_Common_Extensions_MbEventExtensions_Invoke__2_TaleWorlds_CampaignSystem_MbEvent___0___1____0___1__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>This is accomplished by calling a delegate on the private method called &quot;Invoke&quot; of the <span class="xref">TaleWorlds.CampaignSystem.MbEvent&lt;T1, T2&gt;</span>,
+which guarantees fast and native execution.</p>
+</div>
+
+
+
+
+  <a id="Bannerlord_ButterLib_Common_Extensions_MbEventExtensions_Invoke_" data-uid="Bannerlord.ButterLib.Common.Extensions.MbEventExtensions.Invoke*"></a>
+
+  <h3 id="Bannerlord_ButterLib_Common_Extensions_MbEventExtensions_Invoke__3_TaleWorlds_CampaignSystem_MbEvent___0___1___2____0___1___2_" data-uid="Bannerlord.ButterLib.Common.Extensions.MbEventExtensions.Invoke``3(TaleWorlds.CampaignSystem.MbEvent{``0,``1,``2},``0,``1,``2)">
+  Invoke&lt;T1, T2, T3&gt;(MbEvent&lt;T1, T2, T3&gt;, T1, T2, T3)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/src/Bannerlord.ButterLib/Extensions/MbEventExtensions.cs/#L116"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Invokes all the listeners to the specified <span class="xref">TaleWorlds.CampaignSystem.MbEvent&lt;T1, T2, T3&gt;</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Invoke&lt;T1, T2, T3&gt;(this MbEvent&lt;T1, T2, T3&gt; instance, T1 arg1, T2 arg2, T3 arg3)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>instance</code> <a class="xref" href="https://butr.github.io/Bannerlord.ReferenceAssemblies.Documentation/api/core/TaleWorlds.CampaignSystem.MbEvent-3.html">MbEvent</a>&lt;T1, T2, T3&gt;</dt>
+    <dd><p>An instance of <span class="xref">TaleWorlds.CampaignSystem.MbEvent&lt;T1, T2, T3&gt;</span> to call &quot;Invoke&quot; against.</p>
+</dd>
+    <dt><code>arg1</code> <span class="xref">T1</span></dt>
+    <dd><p>Fist argument of the event.</p>
+</dd>
+    <dt><code>arg2</code> <span class="xref">T2</span></dt>
+    <dd><p>Second argument of the event.</p>
+</dd>
+    <dt><code>arg3</code> <span class="xref">T3</span></dt>
+    <dd><p>Third argument of the event.</p>
+</dd>
+  </dl>
+
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T1</code></dt>
+    <dd><p>The type of the first event argument.</p>
+</dd>
+    <dt><code>T2</code></dt>
+    <dd><p>The type of the second event argument.</p>
+</dd>
+    <dt><code>T3</code></dt>
+    <dd><p>The type of the third event argument.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+  <h4 class="section" id="Bannerlord_ButterLib_Common_Extensions_MbEventExtensions_Invoke__3_TaleWorlds_CampaignSystem_MbEvent___0___1___2____0___1___2__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>This is accomplished by calling a delegate on the private method called &quot;Invoke&quot; of the <span class="xref">TaleWorlds.CampaignSystem.MbEvent&lt;T1, T2, T3&gt;</span>,
+which guarantees fast and native execution.</p>
+</div>
+
+
+
+
+  <a id="Bannerlord_ButterLib_Common_Extensions_MbEventExtensions_Invoke_" data-uid="Bannerlord.ButterLib.Common.Extensions.MbEventExtensions.Invoke*"></a>
+
+  <h3 id="Bannerlord_ButterLib_Common_Extensions_MbEventExtensions_Invoke__4_TaleWorlds_CampaignSystem_MbEvent___0___1___2___3____0___1___2___3_" data-uid="Bannerlord.ButterLib.Common.Extensions.MbEventExtensions.Invoke``4(TaleWorlds.CampaignSystem.MbEvent{``0,``1,``2,``3},``0,``1,``2,``3)">
+  Invoke&lt;T1, T2, T3, T4&gt;(MbEvent&lt;T1, T2, T3, T4&gt;, T1, T2, T3, T4)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/src/Bannerlord.ButterLib/Extensions/MbEventExtensions.cs/#L135"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Invokes all the listeners to the specified <span class="xref">TaleWorlds.CampaignSystem.MbEvent&lt;T1, T2, T3, T4&gt;</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Invoke&lt;T1, T2, T3, T4&gt;(this MbEvent&lt;T1, T2, T3, T4&gt; instance, T1 arg1, T2 arg2, T3 arg3, T4 arg4)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>instance</code> <a class="xref" href="https://butr.github.io/Bannerlord.ReferenceAssemblies.Documentation/api/core/TaleWorlds.CampaignSystem.MbEvent-4.html">MbEvent</a>&lt;T1, T2, T3, T4&gt;</dt>
+    <dd><p>An instance of <span class="xref">TaleWorlds.CampaignSystem.MbEvent&lt;T1, T2, T3, T4&gt;</span> to call &quot;Invoke&quot; against.</p>
+</dd>
+    <dt><code>arg1</code> <span class="xref">T1</span></dt>
+    <dd><p>Fist argument of the event.</p>
+</dd>
+    <dt><code>arg2</code> <span class="xref">T2</span></dt>
+    <dd><p>Second argument of the event.</p>
+</dd>
+    <dt><code>arg3</code> <span class="xref">T3</span></dt>
+    <dd><p>Third argument of the event.</p>
+</dd>
+    <dt><code>arg4</code> <span class="xref">T4</span></dt>
+    <dd><p>Fourth argument of the event.</p>
+</dd>
+  </dl>
+
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T1</code></dt>
+    <dd><p>The type of the first event argument.</p>
+</dd>
+    <dt><code>T2</code></dt>
+    <dd><p>The type of the second event argument.</p>
+</dd>
+    <dt><code>T3</code></dt>
+    <dd><p>The type of the third event argument.</p>
+</dd>
+    <dt><code>T4</code></dt>
+    <dd><p>The type of the fourth event argument.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+  <h4 class="section" id="Bannerlord_ButterLib_Common_Extensions_MbEventExtensions_Invoke__4_TaleWorlds_CampaignSystem_MbEvent___0___1___2___3____0___1___2___3__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>This is accomplished by calling a delegate on the private method called &quot;Invoke&quot; of the <span class="xref">TaleWorlds.CampaignSystem.MbEvent&lt;T1, T2, T3, T4&gt;</span>,
+which guarantees fast and native execution.</p>
+</div>
+
+
+
+
+  <a id="Bannerlord_ButterLib_Common_Extensions_MbEventExtensions_Invoke_" data-uid="Bannerlord.ButterLib.Common.Extensions.MbEventExtensions.Invoke*"></a>
+
+  <h3 id="Bannerlord_ButterLib_Common_Extensions_MbEventExtensions_Invoke__5_TaleWorlds_CampaignSystem_MbEvent___0___1___2___3___4____0___1___2___3___4_" data-uid="Bannerlord.ButterLib.Common.Extensions.MbEventExtensions.Invoke``5(TaleWorlds.CampaignSystem.MbEvent{``0,``1,``2,``3,``4},``0,``1,``2,``3,``4)">
+  Invoke&lt;T1, T2, T3, T4, T5&gt;(MbEvent&lt;T1, T2, T3, T4, T5&gt;, T1, T2, T3, T4, T5)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/src/Bannerlord.ButterLib/Extensions/MbEventExtensions.cs/#L156"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Invokes all the listeners to the specified <span class="xref">TaleWorlds.CampaignSystem.MbEvent&lt;T1, T2, T3, T4, T5&gt;</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Invoke&lt;T1, T2, T3, T4, T5&gt;(this MbEvent&lt;T1, T2, T3, T4, T5&gt; instance, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>instance</code> <a class="xref" href="https://butr.github.io/Bannerlord.ReferenceAssemblies.Documentation/api/core/TaleWorlds.CampaignSystem.MbEvent-5.html">MbEvent</a>&lt;T1, T2, T3, T4, T5&gt;</dt>
+    <dd><p>An instance of <span class="xref">TaleWorlds.CampaignSystem.MbEvent&lt;T1, T2, T3, T4, T5&gt;</span> to call &quot;Invoke&quot; against.</p>
+</dd>
+    <dt><code>arg1</code> <span class="xref">T1</span></dt>
+    <dd><p>Fist argument of the event.</p>
+</dd>
+    <dt><code>arg2</code> <span class="xref">T2</span></dt>
+    <dd><p>Second argument of the event.</p>
+</dd>
+    <dt><code>arg3</code> <span class="xref">T3</span></dt>
+    <dd><p>Third argument of the event.</p>
+</dd>
+    <dt><code>arg4</code> <span class="xref">T4</span></dt>
+    <dd><p>Fourth argument of the event.</p>
+</dd>
+    <dt><code>arg5</code> <span class="xref">T5</span></dt>
+    <dd><p>Fifth argument of the event.</p>
+</dd>
+  </dl>
+
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T1</code></dt>
+    <dd><p>The type of the first event argument.</p>
+</dd>
+    <dt><code>T2</code></dt>
+    <dd><p>The type of the second event argument.</p>
+</dd>
+    <dt><code>T3</code></dt>
+    <dd><p>The type of the third event argument.</p>
+</dd>
+    <dt><code>T4</code></dt>
+    <dd><p>The type of the fourth event argument.</p>
+</dd>
+    <dt><code>T5</code></dt>
+    <dd><p>The type of the fifth event argument.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+  <h4 class="section" id="Bannerlord_ButterLib_Common_Extensions_MbEventExtensions_Invoke__5_TaleWorlds_CampaignSystem_MbEvent___0___1___2___3___4____0___1___2___3___4__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>This is accomplished by calling a delegate on the private method called &quot;Invoke&quot; of the <span class="xref">TaleWorlds.CampaignSystem.MbEvent&lt;T1, T2, T3, T4, T5&gt;</span>,
+which guarantees fast and native execution.</p>
+</div>
+
+
+
+
+  <a id="Bannerlord_ButterLib_Common_Extensions_MbEventExtensions_Invoke_" data-uid="Bannerlord.ButterLib.Common.Extensions.MbEventExtensions.Invoke*"></a>
+
+  <h3 id="Bannerlord_ButterLib_Common_Extensions_MbEventExtensions_Invoke__6_TaleWorlds_CampaignSystem_MbEvent___0___1___2___3___4___5____0___1___2___3___4___5_" data-uid="Bannerlord.ButterLib.Common.Extensions.MbEventExtensions.Invoke``6(TaleWorlds.CampaignSystem.MbEvent{``0,``1,``2,``3,``4,``5},``0,``1,``2,``3,``4,``5)">
+  Invoke&lt;T1, T2, T3, T4, T5, T6&gt;(MbEvent&lt;T1, T2, T3, T4, T5, T6&gt;, T1, T2, T3, T4, T5, T6)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/src/Bannerlord.ButterLib/Extensions/MbEventExtensions.cs/#L179"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Invokes all the listeners to the specified <span class="xref">TaleWorlds.CampaignSystem.MbEvent&lt;T1, T2, T3, T4, T5, T6&gt;</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void Invoke&lt;T1, T2, T3, T4, T5, T6&gt;(this MbEvent&lt;T1, T2, T3, T4, T5, T6&gt; instance, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>instance</code> <a class="xref" href="https://butr.github.io/Bannerlord.ReferenceAssemblies.Documentation/api/core/TaleWorlds.CampaignSystem.MbEvent-6.html">MbEvent</a>&lt;T1, T2, T3, T4, T5, T6&gt;</dt>
+    <dd><p>An instance of <span class="xref">TaleWorlds.CampaignSystem.MbEvent&lt;T1, T2, T3, T4, T5, T6&gt;</span> to call &quot;Invoke&quot; against.</p>
+</dd>
+    <dt><code>arg1</code> <span class="xref">T1</span></dt>
+    <dd><p>Fist argument of the event.</p>
+</dd>
+    <dt><code>arg2</code> <span class="xref">T2</span></dt>
+    <dd><p>Second argument of the event.</p>
+</dd>
+    <dt><code>arg3</code> <span class="xref">T3</span></dt>
+    <dd><p>Third argument of the event.</p>
+</dd>
+    <dt><code>arg4</code> <span class="xref">T4</span></dt>
+    <dd><p>Fourth argument of the event.</p>
+</dd>
+    <dt><code>arg5</code> <span class="xref">T5</span></dt>
+    <dd><p>Fifth argument of the event.</p>
+</dd>
+    <dt><code>arg6</code> <span class="xref">T6</span></dt>
+    <dd><p>Sixth argument of the event.</p>
+</dd>
+  </dl>
+
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T1</code></dt>
+    <dd><p>The type of the first event argument.</p>
+</dd>
+    <dt><code>T2</code></dt>
+    <dd><p>The type of the second event argument.</p>
+</dd>
+    <dt><code>T3</code></dt>
+    <dd><p>The type of the third event argument.</p>
+</dd>
+    <dt><code>T4</code></dt>
+    <dd><p>The type of the fourth event argument.</p>
+</dd>
+    <dt><code>T5</code></dt>
+    <dd><p>The type of the fifth event argument.</p>
+</dd>
+    <dt><code>T6</code></dt>
+    <dd><p>The type of the sixth event argument.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+  <h4 class="section" id="Bannerlord_ButterLib_Common_Extensions_MbEventExtensions_Invoke__6_TaleWorlds_CampaignSystem_MbEvent___0___1___2___3___4___5____0___1___2___3___4___5__remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>This is accomplished by calling a delegate on the private method called &quot;Invoke&quot; of the <span class="xref">TaleWorlds.CampaignSystem.MbEvent&lt;T1, T2, T3, T4, T5, T6&gt;</span>,
+which guarantees fast and native execution.</p>
+</div>
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/src/Bannerlord.ButterLib/Extensions/MbEventExtensions.cs/#L13" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © 2020-2024 Bannerlord's Unofficial Tools & Resources
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>HotKeys | ButterLib Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="HotKeys | ButterLib Documentation ">
+      
+      
+      <link rel="icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="../../toc.html">
+      <meta name="docfx:tocrel" content="../toc.html">
+      
+      <meta name="docfx:rel" content="../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/docs/articles/HotKeys/Overview.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../images/BUTR48.svg" alt="ButterLib">
+            ButterLib
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="hotkeys">HotKeys</h1>
+
+<p>The <code>HotKeyManager</code> type and associated views and functionality inside of Bannerlord is incredibly convoluted to work with, there are lots of gotchas and having conflicts between different mods registering hotkeys with the same ID's or mod names is almost a certainty, so this simple wrapper around it was created that handles the finer details and handles input polling so the entire thing is event based.</p>
+<h2 id="usage">Usage</h2>
+<pre><code class="lang-csharp">public class MySubModule : MBSubModuleBase
+{
+    private bool _campaignIsStarted;
+    protected override void OnBeforeInitialModuleScreenSetAsRoot()
+    {
+        // Create a new HotKeyManager for your mod.
+        var hkm = HotKeyManager.Create(&quot;MyMod&quot;);
+        // Add your HotKeyBase derived class to the manager.
+        // You can add as many hotkeys as you'd like before building them up.
+        // You can also use `hkm.Add(new TestKey(SomeExampleArgument))` if you'd like to have a non-default constructor.
+        var rslt = hkm.Add&lt;TestKey1&gt;();
+        // var rslt = hkm.Add&lt;TestKey2&gt;();
+        // It's not necessary to supply a predicate, it's just a convenience.
+        // You can also manually set IsEnabled to more simply enable/disable a keys functionality.
+        rslt.Predicate = () =&gt; _campaignIsStarted;
+        // Subscribe to each of the events on the hotkey at any time.
+        rslt.OnReleasedEvent += () =&gt;
+            InformationManager.DisplayMessage(new InformationMessage(&quot;Test Key Released!&quot;, Colors.Magenta));
+        // Call this to build up all the hotkeys you added.
+        hkm.Build();
+    }
+
+    protected override void OnGameStart(Game game, IGameStarter gameStarterObject)
+    {
+        // An example just to demonstrate functionality.
+        if (game.GameType is Campaign) _campaignIsStarted = true;
+    }
+}
+
+public class TestKey1 : HotKeyBase
+{
+    protected override string DisplayName { get; }
+    protected override string Description { get; }
+    protected override InputKey DefaultKey { get; }
+    protected override string Category { get; }
+
+    public TestKey1() : base(nameof(TestKey1))
+    {
+        DisplayName = &quot;My Test Key&quot;;
+        Description = &quot;This is a test key.&quot;;
+        DefaultKey = InputKey.Comma;
+        Category = HotKeyManager.Categories[HotKeyCategory.CampaignMap];
+    }
+
+    protected override void OnReleased()
+    {
+        // You can also override methods relating to keypresses within the key itself.
+    }
+}
+public class TestKey2 : HotKeyBase
+{
+    public TestKey2() : base(nameof(TestKey2), &quot;My Test Key&quot;, &quot;This is a test key.&quot;, InputKey.Comma, HotKeyManager.Categories[HotKeyCategory.CampaignMap]) { }
+
+    protected override void OnReleased()
+    {
+        // You can also override methods relating to keypresses within the key itself.
+    }
+}
+</code></pre>
+<h1 id="credit">Credit</h1>
+<p>Original code taken from <a href="https://github.com/sirdoombox/BannerLib/tree/d721fb572f33a702ab7b724b866fe06d86d60d1a/BannerLib.Input">BannerLib</a> by <a href="https://github.com/sirdoombox">sirdoombox</a>.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/docs/articles/HotKeys/Overview.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © 2020-2024 Bannerlord's Unofficial Tools & Resources
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
