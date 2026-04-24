@@ -53,7 +53,7 @@ internal sealed class HotKeyManagerImplementation : HotKeyManager
 
 #if v100 || v101 || v102 || v103 || v110 || v111 || v112 || v113 || v114 || v115 || v116
         TWHotKeyManager.RegisterInitialContexts(new[] { hotKeyCategoryContainer }, true);
-#elif v120 || v121 || v122 || v123 || v124 || v125 || v126 || v127 || v128 || v129 || v1210 || v1211 || v1212 || v134 || v135 || v136 || v137 || v138 || v139
+#elif v120 || v121 || v122 || v123 || v124 || v125 || v126 || v127 || v128 || v129 || v1210 || v1211 || v1212 || v134 || v135 || v136 || v137 || v138 || v139 || v1310 || v1311 || v1312 || v1313 || v1314 || v1315 || v140 || v141
         TWHotKeyManager.RegisterInitialContexts(TWHotKeyManager.GetAllCategories().ToList().Concat([hotKeyCategoryContainer]), true);
 #else
 #error DEFINE

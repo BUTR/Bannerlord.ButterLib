@@ -31,8 +31,9 @@ internal class BUTRCrashUploader : ICrashUploader
             var httpWebRequest = WebRequest.CreateHttp(uploadUrlAttr.Value);
             httpWebRequest.Method = "POST";
             httpWebRequest.ContentType = "application/json";
-            httpWebRequest.UserAgent = $"ButterLib CrashUploader v{typeof(BUTRCrashUploader).Assembly.GetName().Version}";
+            httpWebRequest.UserAgent = $"ButterLib v{typeof(BUTRCrashUploader).Assembly.GetName().Version}";
             httpWebRequest.Headers.Add("Content-Encoding", "gzip,deflate");
+            httpWebRequest.Headers.Add("Tenant", "1");
             httpWebRequest.Headers.Add("CrashReportVersion", crashReportModel.Version.ToString());
 
             using var writeStream = await httpWebRequest.GetRequestStreamAsync().ConfigureAwait(false);
