@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Save System | ButterLib Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Save System | ButterLib Documentation ">
+      
+      
+      <link rel="icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="../../toc.html">
+      <meta name="docfx:tocrel" content="../toc.html">
+      
+      <meta name="docfx:rel" content="../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/docs/articles/SaveSystem/Overview.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../images/BUTR48.svg" alt="ButterLib">
+            ButterLib
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="save-system">Save System</h1>
+
+<p><a class="xref" href="../../api/Bannerlord.ButterLib.SaveSystem.html"><code>SaveSystem</code></a> provides wrappers and extensions to the game's save system.</p>
+<h2 id="the-old-way">The Old Way</h2>
+<p>To sync your custom data to savegames, you need to define a <a href="https://apidoc.bannerlord.com/v/1.2.7/class_tale_worlds_1_1_campaign_system_1_1_campaign_behavior_base.html"><code>CampaignBehaviorBase</code></a> and override its <a href="https://apidoc.bannerlord.com/v/1.2.7/class_tale_worlds_1_1_campaign_system_1_1_campaign_behavior_base.html#a05ec45ba9a8707a6048fa5ba129fb438"><code>SyncData(IDataStore dataStore)</code></a> method. From there, you'd make one or more calls to <a href="https://apidoc.bannerlord.com/v/1.2.7/interface_tale_worlds_1_1_campaign_system_1_1_i_data_store.html#a8f476030a56cf3423bd9e2912c4e5802"><code>dataStore.SyncData&lt;T&gt;(string key, ref T myObject)</code></a> to actually synchronize the data to the savegame.</p>
+<p>This seems dandy right up until you realize that it's actually quite a pain in practice, because in many cases, <a href="https://apidoc.bannerlord.com/v/1.2.7/interface_tale_worlds_1_1_campaign_system_1_1_i_data_store.html#a8f476030a56cf3423bd9e2912c4e5802"><code>SyncData&lt;T&gt;</code></a> will not only fail to work correctly with some standard types (e.g., simple containers like <a href="xref:xref:System.Collections.Generic.Dictionary"><code>Dictionary&lt;string, string&gt;</code></a> but also the game's implementation will often force the save files to depend upon your mod being loaded — not to mention the need to define your own <code>SaveableTypeDefiner</code> and pick arbitrary unique &quot;base IDs&quot; for your mod just to get anything done. If the save file ends up depending upon your mod being loaded, then your users are unnecessarily screwed when they disable it.</p>
+<p>In short, the old way is a pretty decent try, but it falls short on safely removing your mod from a savegame in all cases, the general amount of error-prone configuration required, too many of your wasted hours trying to synchronize data types that should obviously be handled by default but simply aren't, and wasted time marshalling things like <code>MBGUID</code>s back to object references.</p>
+<h2 id="the-new-way-syncdataasjson">The New Way: SyncDataAsJson</h2>
+<p>We've developed a drop-in replacement for the aforementioned <a href="https://apidoc.bannerlord.com/v/1.2.7/interface_tale_worlds_1_1_campaign_system_1_1_i_data_store.html#a8f476030a56cf3423bd9e2912c4e5802"><code>SyncData&lt;T&gt;</code></a>: <a class="xref" href="../../api/Bannerlord.ButterLib.SaveSystem.Extensions.IDataStoreExtensions.html#collapsible-Bannerlord_ButterLib_SaveSystem_Extensions_IDataStoreExtensions_SyncDataAsJson__1_TaleWorlds_CampaignSystem_IDataStore_System_String___0__Newtonsoft_Json_JsonSerializerSettings_"><code>SyncDataAsJson&lt;T&gt;</code></a>. It doesn't suffer from any of the aforementioned issues, and as an extension method of <a href="https://apidoc.bannerlord.com/v/1.2.7/interface_tale_worlds_1_1_campaign_system_1_1_i_data_store.html"><code>IDataStore</code></a>, you use it exactly like you would've used <a href="https://apidoc.bannerlord.com/v/1.2.7/interface_tale_worlds_1_1_campaign_system_1_1_i_data_store.html#a8f476030a56cf3423bd9e2912c4e5802"><code>SyncData&lt;T&gt;</code></a>. However, your custom data is now, behind the scenes, serialized by ButterLib into a simple <code>string</code> (or similar primitive type).</p>
+<p><a class="xref" href="../../api/Bannerlord.ButterLib.SaveSystem.Extensions.IDataStoreExtensions.html#collapsible-Bannerlord_ButterLib_SaveSystem_Extensions_IDataStoreExtensions_SyncDataAsJson__1_TaleWorlds_CampaignSystem_IDataStore_System_String___0__Newtonsoft_Json_JsonSerializerSettings_"><code>SyncDataAsJson&lt;T&gt;</code></a> doing its own serialization to a primitive type behind the scenes means:</p>
+<ul>
+<li><p>Your mod will never save custom data that prevents the game from loading properly when your mod is disabled</p>
+</li>
+<li><p>You will never need to define another <code>SaveableTypeDefiner</code></p>
+</li>
+<li><p>Far more standard types, especially involving standard containers, will be handled automatically, and in the off chance that they aren't, you (and we) have the power to add custom type serializers.</p>
+</li>
+<li><p>You will never again need to manually save <code>MBGUID</code> values or manually restore them to <a href="https://apidoc.bannerlord.com/v/1.2.7/class_tale_worlds_1_1_object_system_1_1_m_b_object_base.html"><code>MBObjectBase</code></a>-derived object references in order to properly save, say, a <a href="https://apidoc.bannerlord.com/v/1.2.7/class_tale_worlds_1_1_campaign_system_1_1_clan.html"><code>Clan</code></a> reference again.</p>
+</li>
+</ul>
+<p>The serialization engine, <a href="https://github.com/JamesNK/Newtonsoft.Json"><code>Newtonsoft.Json</code></a>, in order to allow <a class="xref" href="../../api/Bannerlord.ButterLib.SaveSystem.Extensions.IDataStoreExtensions.html#collapsible-Bannerlord_ButterLib_SaveSystem_Extensions_IDataStoreExtensions_SyncDataAsJson__1_TaleWorlds_CampaignSystem_IDataStore_System_String___0__Newtonsoft_Json_JsonSerializerSettings_"><code>SyncDataAsJson&lt;T&gt;</code></a> to operate as a drop-in replacement for the old method, has been outfit with a <a class="xref" href="../../api/Bannerlord.ButterLib.SaveSystem.TaleWorldsContractResolver.html">custom contract resolver</a> and a number of special type converters.</p>
+<p>The engine's custom contract resolver will only serialize data tagged with the TaleWorlds <code>SaveableField</code> or <code>SaveableProperty</code> attributes. Likewise, custom types intended for serialization must still use the <code>SaveableClass</code> or <code>SaveableStruct</code> attributes. Note that the ID numbers required by these attributes are an artifact of the old system and don't actually matter to <a class="xref" href="../../api/Bannerlord.ButterLib.SaveSystem.Extensions.IDataStoreExtensions.html#collapsible-Bannerlord_ButterLib_SaveSystem_Extensions_IDataStoreExtensions_SyncDataAsJson__1_TaleWorlds_CampaignSystem_IDataStore_System_String___0__Newtonsoft_Json_JsonSerializerSettings_"><code>SyncDataAsJson&lt;T&gt;</code></a>, but you're advised to fill them out like normal for new types in the event that you need to go back to <a href="https://apidoc.bannerlord.com/v/1.2.7/interface_tale_worlds_1_1_campaign_system_1_1_i_data_store.html#a8f476030a56cf3423bd9e2912c4e5802"><code>SyncData&lt;T&gt;</code></a> for some reason.</p>
+<p>An example usage follows. Remember, the only thing that's really changed here is using <a class="xref" href="../../api/Bannerlord.ButterLib.SaveSystem.Extensions.IDataStoreExtensions.html#collapsible-Bannerlord_ButterLib_SaveSystem_Extensions_IDataStoreExtensions_SyncDataAsJson__1_TaleWorlds_CampaignSystem_IDataStore_System_String___0__Newtonsoft_Json_JsonSerializerSettings_"><code>SyncDataAsJson&lt;T&gt;</code></a> instead of <a href="https://apidoc.bannerlord.com/v/1.2.7/interface_tale_worlds_1_1_campaign_system_1_1_i_data_store.html#a8f476030a56cf3423bd9e2912c4e5802"><code>SyncData&lt;T&gt;</code></a>.</p>
+<pre><code class="lang-csharp">using Bannerlord.ButterLib.SaveSystem.Extensions;
+
+public class CustomBehavior : CampaignBehaviorBase
+{
+    public override void SyncData(IDataStore dataStore)
+    {
+        dataStore.SyncDataAsJson(&quot;KeyForMyClass&quot;, ref _myClassObj);
+        // ... perhaps more SyncDataAsJson calls for other data ...
+    }
+
+    [Serializable] // If the struct/class has the Serializable attribute`SaveableField and SaveableProperty will be ignored
+    public MyStruct
+    {
+        public int X;
+        public int Y;
+        public int Z;
+    }
+
+    private MyClass // Why private? Just to point out that access levels aren't an issue.
+    {
+        public int _unsavedField = 42;
+
+        [SaveableField(1)]
+        public Dictionary&lt;Hero, int&gt; _heroButterGiftAmounts = new Dictionary&lt;Hero, int&gt;();
+
+        [SaveableProperty(2)]
+        public string Name { get; set; } = &quot;The Butter Lord&quot;;
+    }
+
+    private MyClass _myClassObj = new MyClass();
+
+    // ... other campaign behavior code to, presumably, give a lot of butter away everyday
+}
+</code></pre>
+<p>This extension is the next step in the evolution of best practices and just plain less frustrating practices for the synchronization of your mod's custom data to savegames.</p>
+<h3 id="notes">Notes:</h3>
+<ul>
+<li><p>Built-in <a href="https://apidoc.bannerlord.com/v/1.2.7/class_tale_worlds_1_1_object_system_1_1_m_b_object_base.html"><code>MBObjectBase</code></a>-derived types (e.g., <a href="https://apidoc.bannerlord.com/v/1.2.7/class_tale_worlds_1_1_campaign_system_1_1_hero.html"><code>Hero</code></a> or <a href="https://apidoc.bannerlord.com/v/1.2.7/class_tale_worlds_1_1_campaign_system_1_1_settlements_1_1_town.html"><code>Town</code></a>) have a <a class="xref" href="../../api/Bannerlord.ButterLib.SaveSystem.MBObjectBaseConverter.html">custom converter</a>. They are serialized as their <a class="xref" href="https://butr.github.io/Bannerlord.ReferenceAssemblies.Documentation/api/core/TaleWorlds.ObjectSystem.MBObjectBase.html#collapsible-TaleWorlds_ObjectSystem_MBObjectBase_Id"><code>Id</code></a> property. <a href="https://apidoc.bannerlord.com/v/1.2.7/class_tale_worlds_1_1_object_system_1_1_m_b_object_manager.html"><code>MBObjectManager</code></a> is used to resolve these numeric IDs to the correct, live game object references at deserialization time.</p>
+</li>
+<li><p>Custom <a href="https://apidoc.bannerlord.com/v/1.2.7/class_tale_worlds_1_1_object_system_1_1_m_b_object_base.html"><code>MBObjectBase</code></a> types are not serialized (i.e., custom types derived from <a href="https://apidoc.bannerlord.com/v/1.2.7/class_tale_worlds_1_1_object_system_1_1_m_b_object_base.html"><code>MBObjectBase</code></a> that aren't registered with the game's official object manager). While we do not know if such types even exist, we consider this to be non-ideal and intend to fix it in the future for completeness. One of the proposed solutions is to have our own registry of such custom objects and to resolve them from it — basically a custom <a href="https://apidoc.bannerlord.com/v/1.2.7/class_tale_worlds_1_1_object_system_1_1_m_b_object_manager.html"><code>MBObjectManager</code></a>.</p>
+</li>
+</ul>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/docs/articles/SaveSystem/Overview.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © 2020-2024 Bannerlord's Unofficial Tools & Resources
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
