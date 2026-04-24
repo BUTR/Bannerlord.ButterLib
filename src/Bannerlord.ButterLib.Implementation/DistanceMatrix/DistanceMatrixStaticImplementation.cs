@@ -34,7 +34,7 @@ internal sealed class DistanceMatrixStaticImplementation : IDistanceMatrixStatic
         var (mobileParty1, settlement1) = GetMapPosition(hero1);
         var (mobileParty2, settlement2) = GetMapPosition(hero2);
 
-#if v134 || v135 || v136 || v137 || v138 || v139
+#if v134 || v135 || v136 || v137 || v138 || v139 || v1310 || v1311 || v1312 || v1313 || v1314 || v1315 || v140 || v141
         return settlement1 is not null && settlement2 is not null
             ? Campaign.Current.Models.MapDistanceModel.GetDistance(settlement1, settlement2, false, false, MobileParty.NavigationType.Default)
             : mobileParty1 is not null && mobileParty2 is not null
