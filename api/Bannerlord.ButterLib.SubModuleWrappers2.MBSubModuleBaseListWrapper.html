@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class MBSubModuleBaseListWrapper | ButterLib Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class MBSubModuleBaseListWrapper | ButterLib Documentation ">
+      
+      <meta name="description" content="Wraps several  so when the game calls any method, it will be passed to its children.">
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/BUTR/Bannerlord.ButterLib/new/dev/apiSpec/new?filename=Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper.md&amp;value=---%0Auid%3A%20Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../images/BUTR48.svg" alt="ButterLib">
+            ButterLib
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper">
+
+
+
+  <h1 id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper" class="text-break">
+Class MBSubModuleBaseListWrapper  <a class="header-action link-secondary" title="View source" href="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/src/Bannerlord.ButterLib/SubModuleWrappers2/MBSubModuleBaseListWrapper.cs/#L13"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Bannerlord.html">Bannerlord</a>.<a class="xref" href="Bannerlord.ButterLib.html">ButterLib</a>.<a class="xref" href="Bannerlord.ButterLib.SubModuleWrappers2.html">SubModuleWrappers2</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Bannerlord.ButterLib.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Wraps several <a class="xref" href="https://butr.github.io/Bannerlord.ReferenceAssemblies.Documentation/api/core/TaleWorlds.MountAndBlade.MBSubModuleBase.html">MBSubModuleBase</a> so when the game calls any method, it
+will be passed to its children.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class MBSubModuleBaseListWrapper : MBSubModuleBase</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="https://butr.github.io/Bannerlord.ReferenceAssemblies.Documentation/api/core/TaleWorlds.MountAndBlade.MBSubModuleBase.html">MBSubModuleBase</a></div>
+      <div><span class="xref">MBSubModuleBaseListWrapper</span></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist derived">
+    <dt>Derived</dt>
+    <dd>
+      <div><a class="xref" href="Bannerlord.ButterLib.ImplementationLoaderSubModule.html">ImplementationLoaderSubModule</a></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+  </dd></dl>
+
+  <dl class="typelist extensionMethods">
+    <dt>Extension Methods</dt>
+    <dd>
+  <div>
+      <a class="xref" href="Bannerlord.ButterLib.Common.Extensions.DependencyInjectionExtensions.html#Bannerlord_ButterLib_Common_Extensions_DependencyInjectionExtensions_AddSerilogLoggerProvider_TaleWorlds_MountAndBlade_MBSubModuleBase_System_String_System_Collections_Generic_IEnumerable_System_Reflection_Assembly__">DependencyInjectionExtensions.AddSerilogLoggerProvider(MBSubModuleBase, string, IEnumerable&lt;Assembly&gt;)</a>
+  </div>
+  <div>
+      <a class="xref" href="Bannerlord.ButterLib.Common.Extensions.DependencyInjectionExtensions.html#Bannerlord_ButterLib_Common_Extensions_DependencyInjectionExtensions_AddSerilogLoggerProvider_TaleWorlds_MountAndBlade_MBSubModuleBase_System_String_System_Collections_Generic_IEnumerable_System_String__System_Action_Serilog_LoggerConfiguration__">DependencyInjectionExtensions.AddSerilogLoggerProvider(MBSubModuleBase, string, IEnumerable&lt;string&gt;?, Action&lt;LoggerConfiguration&gt;?)</a>
+  </div>
+  <div>
+      <a class="xref" href="Bannerlord.ButterLib.Common.Extensions.DependencyInjectionExtensions.html#Bannerlord_ButterLib_Common_Extensions_DependencyInjectionExtensions_GetServiceProvider_TaleWorlds_MountAndBlade_MBSubModuleBase_">DependencyInjectionExtensions.GetServiceProvider(MBSubModuleBase)</a>
+  </div>
+  <div>
+      <a class="xref" href="Bannerlord.ButterLib.Common.Extensions.DependencyInjectionExtensions.html#Bannerlord_ButterLib_Common_Extensions_DependencyInjectionExtensions_GetServices_TaleWorlds_MountAndBlade_MBSubModuleBase_">DependencyInjectionExtensions.GetServices(MBSubModuleBase)</a>
+  </div>
+  <div>
+      <a class="xref" href="Bannerlord.ButterLib.Common.Extensions.DependencyInjectionExtensions.html#Bannerlord_ButterLib_Common_Extensions_DependencyInjectionExtensions_GetTempServiceProvider_TaleWorlds_MountAndBlade_MBSubModuleBase_">DependencyInjectionExtensions.GetTempServiceProvider(MBSubModuleBase)</a>
+  </div>
+  </dd></dl>
+
+
+
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper__subModules" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper._subModules">
+  _subModules
+  <a class="header-action link-secondary" title="View source" href="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/src/Bannerlord.ButterLib/SubModuleWrappers2/MBSubModuleBaseListWrapper.cs/#L15"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected readonly List&lt;MBSubModuleBaseWrapper&gt; _subModules</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseWrapper.html">MBSubModuleBaseWrapper</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_SubModules_" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.SubModules*"></a>
+
+  <h3 id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_SubModules" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.SubModules">
+  SubModules
+  <a class="header-action link-secondary" title="View source" href="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/src/Bannerlord.ButterLib/SubModuleWrappers2/MBSubModuleBaseListWrapper.cs/#L16"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IReadOnlyList&lt;MBSubModuleBaseWrapper&gt; SubModules { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseWrapper.html">MBSubModuleBaseWrapper</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_AfterAsyncTickTick_" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.AfterAsyncTickTick*"></a>
+
+  <h3 id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_AfterAsyncTickTick_System_Single_" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.AfterAsyncTickTick(System.Single)">
+  AfterAsyncTickTick(float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/src/Bannerlord.ButterLib/SubModuleWrappers2/MBSubModuleBaseListWrapper.cs/#L130"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void AfterAsyncTickTick(float dt)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dt</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_AfterRegisterSubModuleObjects_" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.AfterRegisterSubModuleObjects*"></a>
+
+  <h3 id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_AfterRegisterSubModuleObjects_System_Boolean_" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.AfterRegisterSubModuleObjects(System.Boolean)">
+  AfterRegisterSubModuleObjects(bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/src/Bannerlord.ButterLib/SubModuleWrappers2/MBSubModuleBaseListWrapper.cs/#L109"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void AfterRegisterSubModuleObjects(bool isSavedCampaign)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>isSavedCampaign</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_BeginGameStart_" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.BeginGameStart*"></a>
+
+  <h3 id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_BeginGameStart_TaleWorlds_Core_Game_" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.BeginGameStart(TaleWorlds.Core.Game)">
+  BeginGameStart(Game)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/src/Bannerlord.ButterLib/SubModuleWrappers2/MBSubModuleBaseListWrapper.cs/#L69"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void BeginGameStart(Game game)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>game</code> <a class="xref" href="https://butr.github.io/Bannerlord.ReferenceAssemblies.Documentation/api/core/TaleWorlds.Core.Game.html">Game</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_DoLoading_" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.DoLoading*"></a>
+
+  <h3 id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_DoLoading_TaleWorlds_Core_Game_" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.DoLoading(TaleWorlds.Core.Game)">
+  DoLoading(Game)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/src/Bannerlord.ButterLib/SubModuleWrappers2/MBSubModuleBaseListWrapper.cs/#L55"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual bool DoLoading(Game game)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>game</code> <a class="xref" href="https://butr.github.io/Bannerlord.ReferenceAssemblies.Documentation/api/core/TaleWorlds.Core.Game.html">Game</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_InitializeGameStarter_" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.InitializeGameStarter*"></a>
+
+  <h3 id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_InitializeGameStarter_TaleWorlds_Core_Game_TaleWorlds_Core_IGameStarter_" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.InitializeGameStarter(TaleWorlds.Core.Game,TaleWorlds.Core.IGameStarter)">
+  InitializeGameStarter(Game, IGameStarter)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/src/Bannerlord.ButterLib/SubModuleWrappers2/MBSubModuleBaseListWrapper.cs/#L43"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void InitializeGameStarter(Game game, IGameStarter starterObject)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>game</code> <a class="xref" href="https://butr.github.io/Bannerlord.ReferenceAssemblies.Documentation/api/core/TaleWorlds.Core.Game.html">Game</a></dt>
+    <dd></dd>
+    <dt><code>starterObject</code> <a class="xref" href="https://butr.github.io/Bannerlord.ReferenceAssemblies.Documentation/api/core/TaleWorlds.Core.IGameStarter.html">IGameStarter</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_InitializeSubModuleGameObjects_" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.InitializeSubModuleGameObjects*"></a>
+
+  <h3 id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_InitializeSubModuleGameObjects_TaleWorlds_Core_Game_" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.InitializeSubModuleGameObjects(TaleWorlds.Core.Game)">
+  InitializeSubModuleGameObjects(Game)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/src/Bannerlord.ButterLib/SubModuleWrappers2/MBSubModuleBaseListWrapper.cs/#L154"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void InitializeSubModuleGameObjects(Game game)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>game</code> <a class="xref" href="https://butr.github.io/Bannerlord.ReferenceAssemblies.Documentation/api/core/TaleWorlds.Core.Game.html">Game</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_OnAfterGameInitializationFinished_" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.OnAfterGameInitializationFinished*"></a>
+
+  <h3 id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_OnAfterGameInitializationFinished_TaleWorlds_Core_Game_System_Object_" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.OnAfterGameInitializationFinished(TaleWorlds.Core.Game,System.Object)">
+  OnAfterGameInitializationFinished(Game, object)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/src/Bannerlord.ButterLib/SubModuleWrappers2/MBSubModuleBaseListWrapper.cs/#L114"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnAfterGameInitializationFinished(Game game, object starterObject)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>game</code> <a class="xref" href="https://butr.github.io/Bannerlord.ReferenceAssemblies.Documentation/api/core/TaleWorlds.Core.Game.html">Game</a></dt>
+    <dd></dd>
+    <dt><code>starterObject</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_OnAfterGameLoaded_" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.OnAfterGameLoaded*"></a>
+
+  <h3 id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_OnAfterGameLoaded_TaleWorlds_Core_Game_" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.OnAfterGameLoaded(TaleWorlds.Core.Game)">
+  OnAfterGameLoaded(Game)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/src/Bannerlord.ButterLib/SubModuleWrappers2/MBSubModuleBaseListWrapper.cs/#L159"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnAfterGameLoaded(Game game)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>game</code> <a class="xref" href="https://butr.github.io/Bannerlord.ReferenceAssemblies.Documentation/api/core/TaleWorlds.Core.Game.html">Game</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_OnApplicationTick_" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.OnApplicationTick*"></a>
+
+  <h3 id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_OnApplicationTick_System_Single_" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.OnApplicationTick(System.Single)">
+  OnApplicationTick(float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/src/Bannerlord.ButterLib/SubModuleWrappers2/MBSubModuleBaseListWrapper.cs/#L33"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnApplicationTick(float dt)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dt</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_OnBeforeGameStart_" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.OnBeforeGameStart*"></a>
+
+  <h3 id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_OnBeforeGameStart_TaleWorlds_MountAndBlade_MBGameManager_System_Collections_Generic_List_System_String__" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.OnBeforeGameStart(TaleWorlds.MountAndBlade.MBGameManager,System.Collections.Generic.List{System.String})">
+  OnBeforeGameStart(MBGameManager, List&lt;string&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/src/Bannerlord.ButterLib/SubModuleWrappers2/MBSubModuleBaseListWrapper.cs/#L164"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnBeforeGameStart(MBGameManager mbGameManager, List&lt;string&gt; disabledModules)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>mbGameManager</code> <a class="xref" href="https://butr.github.io/Bannerlord.ReferenceAssemblies.Documentation/api/core/TaleWorlds.MountAndBlade.MBGameManager.html">MBGameManager</a></dt>
+    <dd></dd>
+    <dt><code>disabledModules</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_OnBeforeInitialModuleScreenSetAsRoot_" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.OnBeforeInitialModuleScreenSetAsRoot*"></a>
+
+  <h3 id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_OnBeforeInitialModuleScreenSetAsRoot" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.OnBeforeInitialModuleScreenSetAsRoot">
+  OnBeforeInitialModuleScreenSetAsRoot()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/src/Bannerlord.ButterLib/SubModuleWrappers2/MBSubModuleBaseListWrapper.cs/#L28"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnBeforeInitialModuleScreenSetAsRoot()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_OnBeforeMissionBehaviorInitialize_" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.OnBeforeMissionBehaviorInitialize*"></a>
+
+  <h3 id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_OnBeforeMissionBehaviorInitialize_TaleWorlds_MountAndBlade_Mission_" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.OnBeforeMissionBehaviorInitialize(TaleWorlds.MountAndBlade.Mission)">
+  OnBeforeMissionBehaviorInitialize(Mission)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/src/Bannerlord.ButterLib/SubModuleWrappers2/MBSubModuleBaseListWrapper.cs/#L84"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnBeforeMissionBehaviorInitialize(Mission mission)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>mission</code> <a class="xref" href="https://butr.github.io/Bannerlord.ReferenceAssemblies.Documentation/api/core/TaleWorlds.MountAndBlade.Mission.html">Mission</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_OnCampaignStart_" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.OnCampaignStart*"></a>
+
+  <h3 id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_OnCampaignStart_TaleWorlds_Core_Game_System_Object_" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.OnCampaignStart(TaleWorlds.Core.Game,System.Object)">
+  OnCampaignStart(Game, object)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/src/Bannerlord.ButterLib/SubModuleWrappers2/MBSubModuleBaseListWrapper.cs/#L64"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnCampaignStart(Game game, object starterObject)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>game</code> <a class="xref" href="https://butr.github.io/Bannerlord.ReferenceAssemblies.Documentation/api/core/TaleWorlds.Core.Game.html">Game</a></dt>
+    <dd></dd>
+    <dt><code>starterObject</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_OnConfigChanged_" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.OnConfigChanged*"></a>
+
+  <h3 id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_OnConfigChanged" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.OnConfigChanged">
+  OnConfigChanged()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/src/Bannerlord.ButterLib/SubModuleWrappers2/MBSubModuleBaseListWrapper.cs/#L119"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnConfigChanged()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_OnGameEnd_" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.OnGameEnd*"></a>
+
+  <h3 id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_OnGameEnd_TaleWorlds_Core_Game_" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.OnGameEnd(TaleWorlds.Core.Game)">
+  OnGameEnd(Game)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/src/Bannerlord.ButterLib/SubModuleWrappers2/MBSubModuleBaseListWrapper.cs/#L74"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnGameEnd(Game game)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>game</code> <a class="xref" href="https://butr.github.io/Bannerlord.ReferenceAssemblies.Documentation/api/core/TaleWorlds.Core.Game.html">Game</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_OnGameInitializationFinished_" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.OnGameInitializationFinished*"></a>
+
+  <h3 id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_OnGameInitializationFinished_TaleWorlds_Core_Game_" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.OnGameInitializationFinished(TaleWorlds.Core.Game)">
+  OnGameInitializationFinished(Game)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/src/Bannerlord.ButterLib/SubModuleWrappers2/MBSubModuleBaseListWrapper.cs/#L79"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnGameInitializationFinished(Game game)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>game</code> <a class="xref" href="https://butr.github.io/Bannerlord.ReferenceAssemblies.Documentation/api/core/TaleWorlds.Core.Game.html">Game</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_OnGameLoaded_" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.OnGameLoaded*"></a>
+
+  <h3 id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_OnGameLoaded_TaleWorlds_Core_Game_System_Object_" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.OnGameLoaded(TaleWorlds.Core.Game,System.Object)">
+  OnGameLoaded(Game, object)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/src/Bannerlord.ButterLib/SubModuleWrappers2/MBSubModuleBaseListWrapper.cs/#L59"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnGameLoaded(Game game, object initializerObject)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>game</code> <a class="xref" href="https://butr.github.io/Bannerlord.ReferenceAssemblies.Documentation/api/core/TaleWorlds.Core.Game.html">Game</a></dt>
+    <dd></dd>
+    <dt><code>initializerObject</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_OnGameStart_" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.OnGameStart*"></a>
+
+  <h3 id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_OnGameStart_TaleWorlds_Core_Game_TaleWorlds_Core_IGameStarter_" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.OnGameStart(TaleWorlds.Core.Game,TaleWorlds.Core.IGameStarter)">
+  OnGameStart(Game, IGameStarter)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/src/Bannerlord.ButterLib/SubModuleWrappers2/MBSubModuleBaseListWrapper.cs/#L38"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnGameStart(Game game, IGameStarter gameStarterObject)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>game</code> <a class="xref" href="https://butr.github.io/Bannerlord.ReferenceAssemblies.Documentation/api/core/TaleWorlds.Core.Game.html">Game</a></dt>
+    <dd></dd>
+    <dt><code>gameStarterObject</code> <a class="xref" href="https://butr.github.io/Bannerlord.ReferenceAssemblies.Documentation/api/core/TaleWorlds.Core.IGameStarter.html">IGameStarter</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_OnInitialState_" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.OnInitialState*"></a>
+
+  <h3 id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_OnInitialState" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.OnInitialState">
+  OnInitialState()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/src/Bannerlord.ButterLib/SubModuleWrappers2/MBSubModuleBaseListWrapper.cs/#L124"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnInitialState()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_OnMissionBehaviorInitialize_" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.OnMissionBehaviorInitialize*"></a>
+
+  <h3 id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_OnMissionBehaviorInitialize_TaleWorlds_MountAndBlade_Mission_" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.OnMissionBehaviorInitialize(TaleWorlds.MountAndBlade.Mission)">
+  OnMissionBehaviorInitialize(Mission)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/src/Bannerlord.ButterLib/SubModuleWrappers2/MBSubModuleBaseListWrapper.cs/#L89"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnMissionBehaviorInitialize(Mission mission)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>mission</code> <a class="xref" href="https://butr.github.io/Bannerlord.ReferenceAssemblies.Documentation/api/core/TaleWorlds.MountAndBlade.Mission.html">Mission</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_OnMultiplayerGameStart_" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.OnMultiplayerGameStart*"></a>
+
+  <h3 id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_OnMultiplayerGameStart_TaleWorlds_Core_Game_System_Object_" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.OnMultiplayerGameStart(TaleWorlds.Core.Game,System.Object)">
+  OnMultiplayerGameStart(Game, object)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/src/Bannerlord.ButterLib/SubModuleWrappers2/MBSubModuleBaseListWrapper.cs/#L94"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnMultiplayerGameStart(Game game, object starterObject)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>game</code> <a class="xref" href="https://butr.github.io/Bannerlord.ReferenceAssemblies.Documentation/api/core/TaleWorlds.Core.Game.html">Game</a></dt>
+    <dd></dd>
+    <dt><code>starterObject</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_OnNetworkTick_" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.OnNetworkTick*"></a>
+
+  <h3 id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_OnNetworkTick_System_Single_" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.OnNetworkTick(System.Single)">
+  OnNetworkTick(float)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/src/Bannerlord.ButterLib/SubModuleWrappers2/MBSubModuleBaseListWrapper.cs/#L137"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnNetworkTick(float dt)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>dt</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.single">float</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_OnNewGameCreated_" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.OnNewGameCreated*"></a>
+
+  <h3 id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_OnNewGameCreated_TaleWorlds_Core_Game_System_Object_" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.OnNewGameCreated(TaleWorlds.Core.Game,System.Object)">
+  OnNewGameCreated(Game, object)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/src/Bannerlord.ButterLib/SubModuleWrappers2/MBSubModuleBaseListWrapper.cs/#L99"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnNewGameCreated(Game game, object initializerObject)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>game</code> <a class="xref" href="https://butr.github.io/Bannerlord.ReferenceAssemblies.Documentation/api/core/TaleWorlds.Core.Game.html">Game</a></dt>
+    <dd></dd>
+    <dt><code>initializerObject</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_OnNewModuleLoad_" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.OnNewModuleLoad*"></a>
+
+  <h3 id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_OnNewModuleLoad" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.OnNewModuleLoad">
+  OnNewModuleLoad()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/src/Bannerlord.ButterLib/SubModuleWrappers2/MBSubModuleBaseListWrapper.cs/#L144"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnNewModuleLoad()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_OnServiceRegistration_" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.OnServiceRegistration*"></a>
+
+  <h3 id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_OnServiceRegistration" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.OnServiceRegistration">
+  OnServiceRegistration()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/src/Bannerlord.ButterLib/SubModuleWrappers2/MBSubModuleBaseListWrapper.cs/#L49"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnServiceRegistration()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_OnSubModuleActivated_" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.OnSubModuleActivated*"></a>
+
+  <h3 id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_OnSubModuleActivated" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.OnSubModuleActivated">
+  OnSubModuleActivated()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/src/Bannerlord.ButterLib/SubModuleWrappers2/MBSubModuleBaseListWrapper.cs/#L169"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnSubModuleActivated()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_OnSubModuleDeactivated_" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.OnSubModuleDeactivated*"></a>
+
+  <h3 id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_OnSubModuleDeactivated" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.OnSubModuleDeactivated">
+  OnSubModuleDeactivated()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/src/Bannerlord.ButterLib/SubModuleWrappers2/MBSubModuleBaseListWrapper.cs/#L174"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnSubModuleDeactivated()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_OnSubModuleLoad_" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.OnSubModuleLoad*"></a>
+
+  <h3 id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_OnSubModuleLoad" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.OnSubModuleLoad">
+  OnSubModuleLoad()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/src/Bannerlord.ButterLib/SubModuleWrappers2/MBSubModuleBaseListWrapper.cs/#L18"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnSubModuleLoad()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_OnSubModuleUnloaded_" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.OnSubModuleUnloaded*"></a>
+
+  <h3 id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_OnSubModuleUnloaded" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.OnSubModuleUnloaded">
+  OnSubModuleUnloaded()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/src/Bannerlord.ButterLib/SubModuleWrappers2/MBSubModuleBaseListWrapper.cs/#L23"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void OnSubModuleUnloaded()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_RegisterSubModuleObjects_" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.RegisterSubModuleObjects*"></a>
+
+  <h3 id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_RegisterSubModuleObjects_System_Boolean_" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.RegisterSubModuleObjects(System.Boolean)">
+  RegisterSubModuleObjects(bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/src/Bannerlord.ButterLib/SubModuleWrappers2/MBSubModuleBaseListWrapper.cs/#L104"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void RegisterSubModuleObjects(bool isSavedCampaign)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>isSavedCampaign</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_RegisterSubModuleTypes_" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.RegisterSubModuleTypes*"></a>
+
+  <h3 id="Bannerlord_ButterLib_SubModuleWrappers2_MBSubModuleBaseListWrapper_RegisterSubModuleTypes" data-uid="Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.RegisterSubModuleTypes">
+  RegisterSubModuleTypes()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/src/Bannerlord.ButterLib/SubModuleWrappers2/MBSubModuleBaseListWrapper.cs/#L149"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual void RegisterSubModuleTypes()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/src/Bannerlord.ButterLib/SubModuleWrappers2/MBSubModuleBaseListWrapper.cs/#L13" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © 2020-2024 Bannerlord's Unofficial Tools & Resources
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

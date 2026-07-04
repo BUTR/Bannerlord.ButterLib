@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Distance Matrix | ButterLib Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Distance Matrix | ButterLib Documentation ">
+      
+      
+      <link rel="icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="../../toc.html">
+      <meta name="docfx:tocrel" content="../toc.html">
+      
+      <meta name="docfx:rel" content="../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/docs/articles/DistanceMatrix/Overview.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../images/BUTR48.svg" alt="ButterLib">
+            ButterLib
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+<h1 id="distance-matrix">Distance Matrix</h1>
+
+<p>Distance Matrix is a subsystem that provides a means for handling distances between various <code>MBObjectBase</code> objects in the game. You can use it to create your own implementations for the types you need.
+Additionally, there are built-in implementations for <code>Settlement</code>, <code>Clan</code>, and <code>Kingdom</code> types, along with a behavior to keep the distances updated.</p>
+<h2 id="usage">Usage</h2>
+<p>Use <a href="https://butterlib.butr.link/api/Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix-1.html"><code>DistanceMatrix&lt;T&gt;</code></a> class to work with your custom distance matrix.
+Use <a class="xref" href="../../api/Bannerlord.ButterLib.Common.Extensions.CampaignExtensions.html"><code>CampaignExtensions</code></a> to access the built-in implementations.</p>
+<p>If you plan to use built-in implementations and behavior, don't forget to enable the SubSystem in your <code>SubModule</code> class:</p>
+<pre><code class="lang-csharp">if (this.GetServiceProvider() is { } serviceProvider)
+{
+    var distanceMatrixSubSystem = serviceProvider.GetSubSystem(&quot;Distance Matrix&quot;);
+    distanceMatrixSubSystem?.Enable();
+}
+</code></pre>
+<p>Example usage of built-in <code>DistanceMatrix</code> for <code>Clan</code> type:</p>
+<pre><code class="lang-csharp">var clanDistanceMatrix = Campaign.Current.GetDefaultClanDistanceMatrix();
+
+var playerClan = Clan.PlayerClan;
+var playerNeighbours = clanDistanceMatrix.GetNearestNeighbours(playerClan, 10);
+
+Clan inquiredClan = Clan.All.FirstOrDefault(clan =&gt; clan.Fiefs.Count &gt; 0 &amp;&amp; Clan.All.Any(x =&gt; x.Fiefs.Count &gt; 0 &amp;&amp; clan.MapFaction.IsAtWarWith(x.MapFaction)));
+var unfriendlyNeighbours = clanDistanceMatrix.GetNearestNeighbours(inquiredObject: inquiredClan, 20, x =&gt; !float.IsNaN(x.Distance) &amp;&amp; x.OtherObject != inquiredClan &amp;&amp; x.OtherObject.MapFaction.IsAtWarWith(inquiredClan.MapFaction)).ToList();
+var unfriendlyNeighboursN = clanDistanceMatrix.GetNearestNeighboursNormalized(inquiredObject: inquiredClan, 20, x =&gt; !float.IsNaN(x.Distance) &amp;&amp; x.OtherObject != inquiredClan &amp;&amp; x.OtherObject.MapFaction.IsAtWarWith(inquiredClan.MapFaction)).ToList();
+</code></pre>
+<p>Example usage of Distance Matrix with custom selector and distance calculator:</p>
+<pre><code class="lang-csharp">//Gives same result as Campaign.Current.GetDefaultClanDistanceMatrix();
+//...or Campaign.Current.GetCampaignBehavior&lt;GeopoliticsBehavior&gt;().ClanDistanceMatrix;
+var settlementDistanceMatrix = Campaign.Current.GetCampaignBehavior&lt;GeopoliticsBehavior&gt;().SettlementDistanceMatrix ?? new DistanceMatrixImplementation&lt;Settlement&gt;();
+var clanDistanceMatrix = DistanceMatrix&lt;Clan&gt;.Create(() =&gt; Clan.All.Where(x =&gt; !x.IsEliminated &amp;&amp; !x.IsBanditFaction), (clan, otherClan, args) =&gt;
+{
+    if (args != null &amp;&amp; args.Length == 1 &amp;&amp; args[0] is Dictionary&lt;ulong, WeightedDistance&gt; lst)
+    {
+        return ButterLib.DistanceMatrix.DistanceMatrix.CalculateDistanceBetweenClans(clan, otherClan, lst).GetValueOrDefault();
+    }
+    return float.NaN;
+}, [ButterLib.DistanceMatrix.DistanceMatrix.GetSettlementOwnersPairedList(settlementDistanceMatrix!)!]);
+</code></pre>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/docs/articles/DistanceMatrix/Overview.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © 2020-2024 Bannerlord's Unofficial Tools & Resources
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title> | ButterLib Documentation </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content=" | ButterLib Documentation ">
+      
+      
+      <link rel="icon" href="../../favicon.ico">
+      <link rel="stylesheet" href="../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../public/main.css">
+      <meta name="docfx:navrel" content="../../toc.html">
+      <meta name="docfx:tocrel" content="../toc.html">
+      
+      <meta name="docfx:rel" content="../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/docs/articles/Development/Overview.md/#L1">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../index.html">
+            <img id="logo" class="svg" src="../../images/BUTR48.svg" alt="ButterLib">
+            ButterLib
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="">
+
+<div class="WARNING">
+<h5>Warning</h5>
+<p>This article is an work in progress!</p>
+</div>
+<h3 id="used-terminology">Used Terminology:</h3>
+<ul>
+<li>Game Reference Assemblies -</li>
+<li>Game Stable Version -</li>
+<li>Game Beta Version -</li>
+</ul>
+<h3 id="used-environment-variables">Used Environment Variables:</h3>
+<ul>
+<li><code>GITHUB_ACTIONS</code> - used to indicate that the current environment is a CI.</li>
+<li><code>BANNERLORD_GAME_DIR</code> - path to the Bannerlord game directory.</li>
+</ul>
+<p>There are also two additional game path variables, used in the case when you can setup two game installations - the current Stable game version and the current Beta game version.</p>
+<ul>
+<li><code>BANNERLORD_STABLE_DIR</code> - points to the Stable game installation.</li>
+<li><code>BANNERLORD_BETA_DIR</code> - points to the Beta game installation.</li>
+</ul>
+<p>An example of such case is to buy the game on <code>Steam</code> and <code>GOG</code>. <code>Steam</code> provides a Beta version, while <code>GOG</code> provides the Stable one.</p>
+<h3 id="solution">Solution</h3>
+<p>The solution (<code>Bannerlord.ButterLib.sln</code>) has 4 configurations available.</p>
+<ul>
+<li><code>Stable Debug</code></li>
+<li><code>Stable Release</code></li>
+<li><code>Beta Debug</code></li>
+<li><code>Beta Release</code></li>
+</ul>
+<p>They are used to the full potential if you have set up the additional variables <code>BANNERLORD_STABLE_DIR</code> and <code>BANNERLORD_BETA_DIR</code>.
+Basically, when a <code>Stable</code> configuration is chosen, the modules will be copied after the project build into <code>%Stable Game Path%/Modules</code>.<br>
+Same with <code>Beta</code>, will be copied into <code>%Beta Game Path%/Modules</code>.<br>
+When those variables are not provided, the <code>BANNERLORD_GAME_DIR</code> is used for both. This means that in both configurations the modules will be copied to the same game installations for Stable and Beta game versions.</p>
+<h3 id="supported-game-versionstxt">supported-game-versions.txt</h3>
+<p>This is a TXT file that contains all supported game version by ButterLib currently, in specific order:</p>
+<ul>
+<li>First version entry is the current Beta.</li>
+<li>Second is the current Stable.</li>
+<li>Last is the minimal version supported.</li>
+<li>Everything in-between can be in any order.</li>
+</ul>
+<p>The solution parses the file and uses the version to get the right Game Reference Assemblies to build against.</p>
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/BUTR/Bannerlord.ButterLib/blob/dev/docs/articles/Development/Overview.md/#L1" class="edit-link">Edit this page</a>
+        </div>
+
+        <div class="next-article d-print-none border-top" id="nextArticle"></div>
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          © 2020-2024 Bannerlord's Unofficial Tools & Resources
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

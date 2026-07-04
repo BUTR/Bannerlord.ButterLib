@@ -1,0 +1,1575 @@
+{
+  "source_base_path": "/home/runner/work/Bannerlord.ButterLib/Bannerlord.ButterLib/docs",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "Resource",
+      "output": {
+        "resource": {
+          "relative_path": "index.json"
+        }
+      }
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "CNAME",
+      "output": {
+        "resource": {
+          "relative_path": "CNAME"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BUTR.CrashReport.Bannerlord.HarmonyProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BUTR.CrashReport.Bannerlord.HarmonyProvider.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "BUTR.CrashReport.Bannerlord.HarmonyProvider",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/BUTR.CrashReport.Bannerlord.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/BUTR.CrashReport.Bannerlord.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "BUTR.CrashReport.Bannerlord",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.BLSE.BLSEExceptionHandlerAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.BLSE.BLSEExceptionHandlerAttribute.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.BLSE.BLSEExceptionHandlerAttribute",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.BLSE.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.BLSE.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.BLSE",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.BUTR.Shared.Utils.MBSubModuleBaseSimpleWrapper.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.BUTR.Shared.Utils.MBSubModuleBaseSimpleWrapper.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.BUTR.Shared.Utils.MBSubModuleBaseSimpleWrapper",
+      "Summary": "<p sourcefile=\"api/Bannerlord.BUTR.Shared.Utils.MBSubModuleBaseSimpleWrapper.yml\" sourcestartlinenumber=\"1\">Wraps a <xref href=\"TaleWorlds.MountAndBlade.MBSubModuleBase\" data-throw-if-not-resolved=\"false\"></xref> so protected methods could be called\nwithout a performance hit</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.BUTR.Shared.Utils.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.BUTR.Shared.Utils.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.BUTR.Shared.Utils",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.ButterLibSaveableTypeDefiner.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.ButterLibSaveableTypeDefiner.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.ButterLibSaveableTypeDefiner",
+      "Summary": "<p sourcefile=\"api/Bannerlord.ButterLib.ButterLibSaveableTypeDefiner.yml\" sourcestartlinenumber=\"1\">Base class of ButterLib's saving system.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.ButterLibSubModule.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.ButterLibSubModule.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.ButterLibSubModule",
+      "Summary": "<p sourcefile=\"api/Bannerlord.ButterLib.ButterLibSubModule.yml\" sourcestartlinenumber=\"1\">Main SubModule. Performs initialization of all 3 stages.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Common.Extensions.ApplicationVersionExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Common.Extensions.ApplicationVersionExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.Common.Extensions.ApplicationVersionExtensions",
+      "Summary": "<p sourcefile=\"api/Bannerlord.ButterLib.Common.Extensions.ApplicationVersionExtensions.yml\" sourcestartlinenumber=\"1\">An extension class for the <xref href=\"TaleWorlds.Library.ApplicationVersion\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Common.Extensions.CampaignExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Common.Extensions.CampaignExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.Common.Extensions.CampaignExtensions",
+      "Summary": "<p sourcefile=\"api/Bannerlord.ButterLib.Common.Extensions.CampaignExtensions.yml\" sourcestartlinenumber=\"1\">Helper extension of the <xref href=\"TaleWorlds.CampaignSystem.Campaign\" data-throw-if-not-resolved=\"false\"></xref> class\nreturning additional information, provided by the ButterLib.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Common.Extensions.DependencyInjectionExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Common.Extensions.DependencyInjectionExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.Common.Extensions.DependencyInjectionExtensions",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Common.Extensions.MbEventExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Common.Extensions.MbEventExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.Common.Extensions.MbEventExtensions",
+      "Summary": "<p sourcefile=\"api/Bannerlord.ButterLib.Common.Extensions.MbEventExtensions.yml\" sourcestartlinenumber=\"1\">Extension class of the <xref href=\"TaleWorlds.CampaignSystem.MbEvent%7d\" data-throw-if-not-resolved=\"false\"></xref> class and its generic variations.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Common.Extensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Common.Extensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.Common.Extensions",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Common.Helpers.ApplicationVersionComparer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Common.Helpers.ApplicationVersionComparer.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.Common.Helpers.ApplicationVersionComparer",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Common.Helpers.ElegantPairHelper.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Common.Helpers.ElegantPairHelper.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.Common.Helpers.ElegantPairHelper",
+      "Summary": "<p sourcefile=\"api/Bannerlord.ButterLib.Common.Helpers.ElegantPairHelper.yml\" sourcestartlinenumber=\"1\">Helper class that implements the pairing function created by Matthew Szudzik.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Common.Helpers.LocalizationHelper.PluralForm.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Common.Helpers.LocalizationHelper.PluralForm.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.Common.Helpers.LocalizationHelper.PluralForm",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Common.Helpers.LocalizationHelper.RecursiveCaller.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Common.Helpers.LocalizationHelper.RecursiveCaller.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.Common.Helpers.LocalizationHelper.RecursiveCaller",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Common.Helpers.LocalizationHelper.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Common.Helpers.LocalizationHelper.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.Common.Helpers.LocalizationHelper",
+      "Summary": "<p sourcefile=\"api/Bannerlord.ButterLib.Common.Helpers.LocalizationHelper.yml\" sourcestartlinenumber=\"1\">Helper class used to store numeric variables or complex entities in the <xref href=\"TaleWorlds.Localization.TextObject\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Common.Helpers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Common.Helpers.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.Common.Helpers",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.DelayedSubModule.DelayedSubModuleManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.DelayedSubModule.DelayedSubModuleManager.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.DelayedSubModule.DelayedSubModuleManager",
+      "Summary": "<p sourcefile=\"api/Bannerlord.ButterLib.DelayedSubModule.DelayedSubModuleManager.yml\" sourcestartlinenumber=\"1\">Allows you to inject your own code into the load / unload sequence\nof other modules without specifying them directly as a dependency\nin 'SubModule.xml'.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.DelayedSubModule.SubscriptionEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.DelayedSubModule.SubscriptionEventArgs.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.DelayedSubModule.SubscriptionEventArgs",
+      "Summary": "<p sourcefile=\"api/Bannerlord.ButterLib.DelayedSubModule.SubscriptionEventArgs.yml\" sourcestartlinenumber=\"1\">A container class for the arguments of the events,\nthat are added to the <xref href=\"TaleWorlds.MountAndBlade.MBSubModuleBase\" data-throw-if-not-resolved=\"false\"></xref> public and protected method calls.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.DelayedSubModule.SubscriptionGlobalEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.DelayedSubModule.SubscriptionGlobalEventArgs.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.DelayedSubModule.SubscriptionGlobalEventArgs",
+      "Summary": "<p sourcefile=\"api/Bannerlord.ButterLib.DelayedSubModule.SubscriptionGlobalEventArgs.yml\" sourcestartlinenumber=\"1\">A container class for the arguments of the events,\nthat are added to the <xref href=\"TaleWorlds.MountAndBlade.MBSubModuleBase\" data-throw-if-not-resolved=\"false\"></xref> public and protected method calls.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.DelayedSubModule.SubscriptionType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.DelayedSubModule.SubscriptionType.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.DelayedSubModule.SubscriptionType",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.DelayedSubModule.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.DelayedSubModule.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.DelayedSubModule",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix<T>",
+      "Summary": "<p sourcefile=\"api/Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix-1.yml\" sourcestartlinenumber=\"1\">A generic class that pairs given objects of type <code class=\"typeparamref\">T</code>\nand for each pair calculates the distance between the objects that formed it.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix",
+      "Summary": "<p sourcefile=\"api/Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix.yml\" sourcestartlinenumber=\"1\">An abstract class used in a <xref href=\"Bannerlord.ButterLib.DistanceMatrix.DistanceMatrix%601\" data-throw-if-not-resolved=\"false\"></xref> derived class,\nthat pairs given objects of type T\nand for each pair calculates the distance between the objects that formed it.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.DistanceMatrix.WeightedDistance.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.DistanceMatrix.WeightedDistance.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.DistanceMatrix.WeightedDistance",
+      "Summary": "<p sourcefile=\"api/Bannerlord.ButterLib.DistanceMatrix.WeightedDistance.yml\" sourcestartlinenumber=\"1\">Weighted distance between two objects.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.DistanceMatrix.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.DistanceMatrix.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.DistanceMatrix",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.DynamicAPI.DynamicAPIClassAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.DynamicAPI.DynamicAPIClassAttribute.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.DynamicAPI.DynamicAPIClassAttribute",
+      "Summary": "<p sourcefile=\"api/Bannerlord.ButterLib.DynamicAPI.DynamicAPIClassAttribute.yml\" sourcestartlinenumber=\"1\">Requires a public empty constructor for instance methods</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.DynamicAPI.DynamicAPIInstance.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.DynamicAPI.DynamicAPIInstance.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.DynamicAPI.DynamicAPIInstance",
+      "Summary": "<p sourcefile=\"api/Bannerlord.ButterLib.DynamicAPI.DynamicAPIInstance.yml\" sourcestartlinenumber=\"1\">Represents a wrapper of an object marked with <xref href=\"Bannerlord.ButterLib.DynamicAPI.DynamicAPIClassAttribute\" data-throw-if-not-resolved=\"false\"></xref>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.DynamicAPI.DynamicAPIMethodAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.DynamicAPI.DynamicAPIMethodAttribute.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.DynamicAPI.DynamicAPIMethodAttribute",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.DynamicAPI.DynamicAPIProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.DynamicAPI.DynamicAPIProvider.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.DynamicAPI.DynamicAPIProvider",
+      "Summary": "<p sourcefile=\"api/Bannerlord.ButterLib.DynamicAPI.DynamicAPIProvider.yml\" sourcestartlinenumber=\"1\">Requests will be available on <xref href=\"TaleWorlds.MountAndBlade.MBSubModuleBase.OnBeforeInitialModuleScreenSetAsRoot\" data-throw-if-not-resolved=\"false\"></xref> stage.<br>\nThe reason is, we need to wait for all SubModules to have <xref href=\"TaleWorlds.MountAndBlade.MBSubModuleBase.OnSubModuleLoad\" data-throw-if-not-resolved=\"false\"></xref> executed.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.DynamicAPI.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.DynamicAPI.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.DynamicAPI",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.ExceptionHandler.ExceptionReporter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.ExceptionHandler.ExceptionReporter.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.ExceptionHandler.ExceptionReporter",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.ExceptionHandler.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.ExceptionHandler.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.ExceptionHandler",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Extensions.IInputContextExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Extensions.IInputContextExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.Extensions.IInputContextExtensions",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Extensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Extensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.Extensions",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.HotKeys.HotKeyBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.HotKeys.HotKeyBase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.HotKeys.HotKeyBase",
+      "Summary": "<p sourcefile=\"api/Bannerlord.ButterLib.HotKeys.HotKeyBase.yml\" sourcestartlinenumber=\"1\">Base type for all HotKey definitions to derive from.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.HotKeys.HotKeyCategory.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.HotKeys.HotKeyCategory.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.HotKeys.HotKeyCategory",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.HotKeys.HotKeyManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.HotKeys.HotKeyManager.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.HotKeys.HotKeyManager",
+      "Summary": "<p sourcefile=\"api/Bannerlord.ButterLib.HotKeys.HotKeyManager.yml\" sourcestartlinenumber=\"1\">Describes a single HotKey group to which you can add individual HotKeyManager before building.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.HotKeys.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.HotKeys.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.HotKeys",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.ImplementationLoaderSubModule.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.ImplementationLoaderSubModule.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.ImplementationLoaderSubModule",
+      "Summary": "<p sourcefile=\"api/Bannerlord.ButterLib.ImplementationLoaderSubModule.yml\" sourcestartlinenumber=\"1\">Loads all ButterLib's implementation libraries that are supported by the game.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Logger.Extensions.LoggerExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Logger.Extensions.LoggerExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.Logger.Extensions.LoggerExtensions",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Logger.Extensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Logger.Extensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.Logger.Extensions",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.MBSubModuleBaseExtended.IMBSubModuleBaseEx.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.MBSubModuleBaseExtended.IMBSubModuleBaseEx.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.MBSubModuleBaseExtended.IMBSubModuleBaseEx",
+      "Summary": "<p sourcefile=\"api/Bannerlord.ButterLib.MBSubModuleBaseExtended.IMBSubModuleBaseEx.yml\" sourcestartlinenumber=\"1\">An interface to use in your <xref href=\"TaleWorlds.MountAndBlade.MBSubModuleBase\" data-throw-if-not-resolved=\"false\"></xref>-derived class. Provides new SubModule events.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.MBSubModuleBaseExtended.MBSubModuleBaseEx.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.MBSubModuleBaseExtended.MBSubModuleBaseEx.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.MBSubModuleBaseExtended.MBSubModuleBaseEx",
+      "Summary": "<p sourcefile=\"api/Bannerlord.ButterLib.MBSubModuleBaseExtended.MBSubModuleBaseEx.yml\" sourcestartlinenumber=\"1\">A <xref href=\"TaleWorlds.MountAndBlade.MBSubModuleBase\" data-throw-if-not-resolved=\"false\"></xref>-derived abstract class, that provides new SubModule events.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.MBSubModuleBaseExtended.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.MBSubModuleBaseExtended.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.MBSubModuleBaseExtended",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.ObjectSystem.Extensions.MBObjectBaseExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.ObjectSystem.Extensions.MBObjectBaseExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.ObjectSystem.Extensions.MBObjectBaseExtensions",
+      "Summary": "<p sourcefile=\"api/Bannerlord.ButterLib.ObjectSystem.Extensions.MBObjectBaseExtensions.yml\" sourcestartlinenumber=\"1\"><xref href=\"TaleWorlds.ObjectSystem.MBObjectBase\" data-throw-if-not-resolved=\"false\"></xref> extension methods for Object Extension Data (dynamic variable / flag storage)</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.ObjectSystem.Extensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.ObjectSystem.Extensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.ObjectSystem.Extensions",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.ObjectSystem.IMBObjectFinder.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.ObjectSystem.IMBObjectFinder.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.ObjectSystem.IMBObjectFinder",
+      "Summary": "<p sourcefile=\"api/Bannerlord.ButterLib.ObjectSystem.IMBObjectFinder.yml\" sourcestartlinenumber=\"1\">Finds MBObjectBase objects based on their MBGUID</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.ObjectSystem.IMBObjectKeeper.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.ObjectSystem.IMBObjectKeeper.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.ObjectSystem.IMBObjectKeeper",
+      "Summary": "<p sourcefile=\"api/Bannerlord.ButterLib.ObjectSystem.IMBObjectKeeper.yml\" sourcestartlinenumber=\"1\">Keeps all MBObjectBase references for custom serialization</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.ObjectSystem.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.ObjectSystem.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.ObjectSystem",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Options.ButterLibOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Options.ButterLibOptions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.Options.ButterLibOptions",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.Options.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.Options.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.Options",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SaveSystem.DictionaryToArrayConverter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SaveSystem.DictionaryToArrayConverter.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.SaveSystem.DictionaryToArrayConverter",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SaveSystem.Extensions.IDataStoreExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SaveSystem.Extensions.IDataStoreExtensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.SaveSystem.Extensions.IDataStoreExtensions",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SaveSystem.Extensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SaveSystem.Extensions.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.SaveSystem.Extensions",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SaveSystem.MBGUIDConverter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SaveSystem.MBGUIDConverter.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.SaveSystem.MBGUIDConverter",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SaveSystem.MBObjectBaseConverter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SaveSystem.MBObjectBaseConverter.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.SaveSystem.MBObjectBaseConverter",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SaveSystem.TaleWorldsContractResolver.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SaveSystem.TaleWorldsContractResolver.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.SaveSystem.TaleWorldsContractResolver",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SaveSystem.TaleWorldsContractResolverBase.IsContainerDelegate.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SaveSystem.TaleWorldsContractResolverBase.IsContainerDelegate.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.SaveSystem.TaleWorldsContractResolverBase.IsContainerDelegate",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SaveSystem.TaleWorldsContractResolverBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SaveSystem.TaleWorldsContractResolverBase.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.SaveSystem.TaleWorldsContractResolverBase",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SaveSystem.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SaveSystem.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.SaveSystem",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper",
+      "Summary": "<p sourcefile=\"api/Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseListWrapper.yml\" sourcestartlinenumber=\"1\">Wraps several <xref href=\"TaleWorlds.MountAndBlade.MBSubModuleBase\" data-throw-if-not-resolved=\"false\"></xref> so when the game calls any method, it\nwill be passed to its children.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseWrapper.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseWrapper.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseWrapper",
+      "Summary": "<p sourcefile=\"api/Bannerlord.ButterLib.SubModuleWrappers2.MBSubModuleBaseWrapper.yml\" sourcestartlinenumber=\"1\">Wraps a <xref href=\"TaleWorlds.MountAndBlade.MBSubModuleBase\" data-throw-if-not-resolved=\"false\"></xref> so protected methods could be called\nwithout a performance hit</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SubModuleWrappers2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SubModuleWrappers2.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.SubModuleWrappers2",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SubSystems.ISubSystem.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SubSystems.ISubSystem.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.SubSystems.ISubSystem",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SubSystems.Settings.ISubSystemSettings-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SubSystems.Settings.ISubSystemSettings-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.SubSystems.Settings.ISubSystemSettings<TSubSystem>",
+      "Summary": "<p sourcefile=\"api/Bannerlord.ButterLib.SubSystems.Settings.ISubSystemSettings-1.yml\" sourcestartlinenumber=\"1\">An interface for foreign entities like MCM to get settings of the <code class=\"typeparamref\">TSubSystem</code>.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SubSystems.Settings.SubSystemSettingsDeclaration-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SubSystems.Settings.SubSystemSettingsDeclaration-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.SubSystems.Settings.SubSystemSettingsDeclaration<TSubSystem>",
+      "Summary": "<p sourcefile=\"api/Bannerlord.ButterLib.SubSystems.Settings.SubSystemSettingsDeclaration-1.yml\" sourcestartlinenumber=\"1\">The basic declaration entity.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SubSystems.Settings.SubSystemSettingsProperty-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SubSystems.Settings.SubSystemSettingsProperty-2.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.SubSystems.Settings.SubSystemSettingsProperty<TSubSystem, TProperty>",
+      "Summary": "<p sourcefile=\"api/Bannerlord.ButterLib.SubSystems.Settings.SubSystemSettingsProperty-2.yml\" sourcestartlinenumber=\"1\">A property based declaration.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SubSystems.Settings.SubSystemSettingsPropertyBool-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SubSystems.Settings.SubSystemSettingsPropertyBool-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.SubSystems.Settings.SubSystemSettingsPropertyBool<TSubSystem>",
+      "Summary": "<p sourcefile=\"api/Bannerlord.ButterLib.SubSystems.Settings.SubSystemSettingsPropertyBool-1.yml\" sourcestartlinenumber=\"1\">A property based declaration.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SubSystems.Settings.SubSystemSettingsPropertyDropdown-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SubSystems.Settings.SubSystemSettingsPropertyDropdown-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.SubSystems.Settings.SubSystemSettingsPropertyDropdown<TSubSystem>",
+      "Summary": "<p sourcefile=\"api/Bannerlord.ButterLib.SubSystems.Settings.SubSystemSettingsPropertyDropdown-1.yml\" sourcestartlinenumber=\"1\">A property based declaration.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SubSystems.Settings.SubSystemSettingsPropertyFloat-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SubSystems.Settings.SubSystemSettingsPropertyFloat-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.SubSystems.Settings.SubSystemSettingsPropertyFloat<TSubSystem>",
+      "Summary": "<p sourcefile=\"api/Bannerlord.ButterLib.SubSystems.Settings.SubSystemSettingsPropertyFloat-1.yml\" sourcestartlinenumber=\"1\">A property based declaration.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SubSystems.Settings.SubSystemSettingsPropertyInt-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SubSystems.Settings.SubSystemSettingsPropertyInt-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.SubSystems.Settings.SubSystemSettingsPropertyInt<TSubSystem>",
+      "Summary": "<p sourcefile=\"api/Bannerlord.ButterLib.SubSystems.Settings.SubSystemSettingsPropertyInt-1.yml\" sourcestartlinenumber=\"1\">A property based declaration.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SubSystems.Settings.SubSystemSettingsPropertyText-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SubSystems.Settings.SubSystemSettingsPropertyText-1.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.SubSystems.Settings.SubSystemSettingsPropertyText<TSubSystem>",
+      "Summary": "<p sourcefile=\"api/Bannerlord.ButterLib.SubSystems.Settings.SubSystemSettingsPropertyText-1.yml\" sourcestartlinenumber=\"1\">A property based declaration.</p>\n"
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SubSystems.Settings.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SubSystems.Settings.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.SubSystems.Settings",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.SubSystems.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.SubSystems.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib.SubSystems",
+      "Summary": null
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Bannerlord.ButterLib.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Bannerlord.ButterLib.html"
+        }
+      },
+      "version": "",
+      "Uid": null,
+      "IsMRef": true,
+      "Title": "Bannerlord.ButterLib",
+      "Summary": null
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "api/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/toc.html"
+        },
+        ".json": {
+          "relative_path": "api/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/AssemblyVerifier/Overview.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/AssemblyVerifier/Overview.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "articles/AssemblyVerifier/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "articles/AssemblyVerifier/toc.html"
+        },
+        ".json": {
+          "relative_path": "articles/AssemblyVerifier/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/CampaignIdentifier/Overview.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/CampaignIdentifier/Overview.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "articles/CampaignIdentifier/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "articles/CampaignIdentifier/toc.html"
+        },
+        ".json": {
+          "relative_path": "articles/CampaignIdentifier/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/Common/Extensions/Overview.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/Common/Extensions/Overview.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "articles/Common/Extensions/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "articles/Common/Extensions/toc.html"
+        },
+        ".json": {
+          "relative_path": "articles/Common/Extensions/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/Common/Helpers/Overview.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/Common/Helpers/Overview.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "articles/Common/Helpers/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "articles/Common/Helpers/toc.html"
+        },
+        ".json": {
+          "relative_path": "articles/Common/Helpers/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/Common/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/Common/index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "articles/Common/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "articles/Common/toc.html"
+        },
+        ".json": {
+          "relative_path": "articles/Common/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/DelayedSubModule/Overview.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/DelayedSubModule/Overview.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "articles/DelayedSubModule/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "articles/DelayedSubModule/toc.html"
+        },
+        ".json": {
+          "relative_path": "articles/DelayedSubModule/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/Development/Overview.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/Development/Overview.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "articles/Development/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "articles/Development/toc.html"
+        },
+        ".json": {
+          "relative_path": "articles/Development/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/DistanceMatrix/Overview.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/DistanceMatrix/Overview.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "articles/DistanceMatrix/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "articles/DistanceMatrix/toc.html"
+        },
+        ".json": {
+          "relative_path": "articles/DistanceMatrix/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/HotKeys/Overview.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/HotKeys/Overview.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "articles/HotKeys/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "articles/HotKeys/toc.html"
+        },
+        ".json": {
+          "relative_path": "articles/HotKeys/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/MBSubModuleBaseExtended/Overview.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/MBSubModuleBaseExtended/Overview.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "articles/MBSubModuleBaseExtended/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "articles/MBSubModuleBaseExtended/toc.html"
+        },
+        ".json": {
+          "relative_path": "articles/MBSubModuleBaseExtended/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/Optional/DependencyInjection/Initialization-Stages.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/Optional/DependencyInjection/Initialization-Stages.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/Optional/DependencyInjection/Overview.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/Optional/DependencyInjection/Overview.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/Optional/DependencyInjection/Stage-1.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/Optional/DependencyInjection/Stage-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/Optional/DependencyInjection/Stage-2.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/Optional/DependencyInjection/Stage-2.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/Optional/DependencyInjection/Stage-3.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/Optional/DependencyInjection/Stage-3.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "articles/Optional/DependencyInjection/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "articles/Optional/DependencyInjection/toc.html"
+        },
+        ".json": {
+          "relative_path": "articles/Optional/DependencyInjection/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/Optional/Logging/Overview.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/Optional/Logging/Overview.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "articles/Optional/Logging/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "articles/Optional/Logging/toc.html"
+        },
+        ".json": {
+          "relative_path": "articles/Optional/Logging/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/Optional/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/Optional/index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "articles/Optional/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "articles/Optional/toc.html"
+        },
+        ".json": {
+          "relative_path": "articles/Optional/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/SaveSystem/Overview.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/SaveSystem/Overview.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "articles/SaveSystem/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "articles/SaveSystem/toc.html"
+        },
+        ".json": {
+          "relative_path": "articles/SaveSystem/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/SubModuleWrappers/Overview.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/SubModuleWrappers/Overview.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "articles/SubModuleWrappers/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "articles/SubModuleWrappers/toc.html"
+        },
+        ".json": {
+          "relative_path": "articles/SubModuleWrappers/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "articles/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "articles/toc.html"
+        },
+        ".json": {
+          "relative_path": "articles/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/BUTR48.svg",
+      "output": {
+        "resource": {
+          "relative_path": "images/BUTR48.svg"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html"
+        },
+        ".json": {
+          "relative_path": "toc.json"
+        }
+      },
+      "version": ""
+    }
+  ],
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}
