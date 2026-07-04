@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This file is managed by Weblate; do not edit it manually - changes would be overwritten. Translate at https://weblate.butr.link -->
 <base xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/BUTR/Bannerlord.XmlSchemas/master/ModuleLanguage.xsd">
   <tags>
     <tag language="日本語"/>
@@ -11,18 +12,13 @@
     <string id="UZ8zfvudMs" text="{MODULE} が {REQUIRED_MODULE} より後に読み込まれています!{NL}{MODULE} が先に読み込まれるようなっているかを確認してください!"/>
     <string id="FcR4BXnhx8" text="{MODULE} には {REQUIRED_MODULE} と互いに矛盾するロード順が指定されています!"/>
     <string id="eXs6FLm5DP" text="すぐにゲームを終了することを強く推奨します。すぐに終了しますか?"/>
-
     <string id="JLkq0ZkOSI" text="{START}{?IS_PLURAL} と {?}{\\?}{END}"/>
-
     <string id="B7bfrDNzIk" text="デバッガが作動しているときは無効にする"/>
     <string id="r3ktQzFMRz" text="デバッガを有効にしている場合は、例外ハンドラを停止してください。"/>
-
     <string id="jorWb502pD" text="例外の自動生成 (パフォーマンスが低下します) (DISABLED)"/>
     <string id="ji1brrsEZz" text="Native-&gt;Managed の呼び出しを全て catch します。全ての例外を標準的な方法で受け取るわけではありません。全体的にパフォーマンスが少し低下します。"/>
-
     <string id="ZD69h3IpF5" text="バニラのクラッシュハンドラを使用"/>
     <string id="o0DgSNv5V1" text="Watchdog クラッシュハンドラを使ったButterLib と BEW のクラッシュハンドラを無効にします。この操作に詳しくない場合はオンにしないでください。"/>
-
     <string id="Ox6uK8fZWs" text="距離行列"/>
     <string id="WQ4r2n0mYj" text="(開発者向けの機能) マップ上のオブジェクト間の距離を計算するヘルパーを使用します。"/>
     <string id="jvV6QDc7AJ" text="ホットキー"/>

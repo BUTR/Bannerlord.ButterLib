@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This file is managed by Weblate; do not edit it manually - changes would be overwritten. Translate at https://weblate.butr.link -->
 <base xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/BUTR/Bannerlord.XmlSchemas/master/ModuleLanguage.xsd">
   <tags>
     <tag language="Română"/>
@@ -11,9 +12,7 @@
     <string id="UZ8zfvudMs" text="{MODULE} este încărcat înainte de {REQUIRED_MODULE}!{NL}Asigură-te că {MODULE} este încărcat după el!"/>
     <string id="FcR4BXnhx8" text="{MODULE} are directive de ordine automată reciproc exclusive specificate pentru {REQUIRED_MODULE}!"/>
     <string id="eXs6FLm5DP" text="Este recomandat să închizi jocul acum. Vrei să-l închizi?"/>
-
     <string id="JLkq0ZkOSI" text="{START}{?IS_PLURAL} și {?}{\\?}{END}"/>
-
     <string id="B7bfrDNzIk" text="Dezactivează când depanatorul este atașat"/>
     <string id="r3ktQzFMRz" text="Oprește Excepțiile când un depanator este atașat."/>
   </strings>
