@@ -16,8 +16,8 @@
   <a href="https://butr.github.io/Bannerlord.ButterLib" alt="Documentation">
     <img src="https://img.shields.io/badge/Documentation-%F0%9F%94%8D-blue?style=flat" />
   </a>
-  <a title="Crowdin" target="_blank" href="https://crowdin.com/project/butterlib">
-    <img src="https://badges.crowdin.net/butterlib/localized.svg">
+  <a href="https://translate.butr.link/engage/bannerlord-butterlib/">
+    <img src="https://translate.butr.link/widget/bannerlord-butterlib/svg-badge.svg" alt="Translation status">
   </a>
   </br>
   <a href="https://github.com/BUTR/Bannerlord.ButterLib/actions/workflows/test.yml?query=branch%3Adev">
