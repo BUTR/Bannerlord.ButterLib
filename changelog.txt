@@ -1,4 +1,10 @@
 ---------------------------------------------------------------------------------------------------
+Version: 2.11.0
+Game Versions: v1.0.x,v1.1.x,v1.2.x,v1.3.x,v1.4.x
+* Fixed DistanceMatrix setup issue with custom clans (BLGM) reported by bSolWayward
+* Fixed module finalization issue introduced in v1.3.15 by Poyraxx
+* Fixed v1.4.5 compatibility by hby7921
+---------------------------------------------------------------------------------------------------
 Version: 2.10.4
 Game Versions: v1.0.x,v1.1.x,v1.2.x,v1.3.x,v1.4.x
 * Beta support
