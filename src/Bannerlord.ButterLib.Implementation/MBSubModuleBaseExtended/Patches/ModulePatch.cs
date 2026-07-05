@@ -25,7 +25,10 @@ internal sealed class ModulePatch
 
     private static readonly Type? TargetType = typeof(TWModule);
 
-    private static readonly MethodInfo? miTargetMethodUnLoad = AccessTools2.Method(TargetType, "FinalizeSubModules");
+    // Bannerlord 1.3.15 renamed this method to FinalizeSubModulesBases.
+    private static readonly MethodInfo? miTargetMethodUnLoad =
+        AccessTools2.Method(TargetType, "FinalizeSubModulesBases") ??
+        AccessTools2.Method(TargetType, "FinalizeSubModules");
     private static readonly MethodInfo? miPatchMethodUnLoad = SymbolExtensions2.GetMethodInfo((TWModule x) => FinalizeSubModulesPostfix(x));
 
     private static readonly MethodInfo? miTargetMethodScreenAsRoot = AccessTools2.Method(TargetType, "SetInitialModuleScreenAsRootScreen");
