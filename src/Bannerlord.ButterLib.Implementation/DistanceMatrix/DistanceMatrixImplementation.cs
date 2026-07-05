@@ -101,6 +101,16 @@ internal sealed class DistanceMatrixImplementation<T> : DistanceMatrix<T> where 
 
     //Private methods
 
+    // Objects that were never registered with the MBObjectManager carry the default MBGUID (InternalValue == 0).
+    // Such objects cannot be addressed by this Id-keyed matrix and, when more than one is present, would produce
+    // duplicate keys in the ToDictionary calls below. Filter them out and de-duplicate by Id to stay defensive
+    // against mods that leave unregistered objects in the global lists.
+    private static List<TObject> GetRegisteredDistinct<TObject>(IEnumerable<TObject> source) where TObject : MBObjectBase => source
+        .Where(x => x.Id.InternalValue != 0)
+        .GroupBy(x => x.Id)
+        .Select(g => g.First())
+        .ToList();
+
     private static Func<(T OtherObject, float Distance), bool> IsNotNaN() => x => !float.IsNaN(x.Distance);
 
     private static void GetRanges(float scaleMin, float scaleMax, ICollection<(T OtherObject, float Distance)> nearestNeighbors, out (float Min, float Max, float Range) value, out (float Min, float Max, float Range) scale)
@@ -128,7 +138,7 @@ internal sealed class DistanceMatrixImplementation<T> : DistanceMatrix<T> where 
     {
         if (_entityListGetter is not null && _distanceCalculator is not null)
         {
-            var entities = _entityListGetter().ToList();
+            var entities = GetRegisteredDistinct(_entityListGetter());
             _cachedMapping = entities.ToDictionary(key => key.Id, value => value as MBObjectBase);
 
             return entities
@@ -141,7 +151,7 @@ internal sealed class DistanceMatrixImplementation<T> : DistanceMatrix<T> where 
 
         if (typeof(Hero).IsAssignableFrom(typeof(T)))
         {
-            var activeHeroes = Hero.AllAliveHeroes.Where(h => !h.IsNotSpawned && !h.IsDisabled && !h.IsDead && !h.IsChild && !h.IsNotable).ToList();
+            var activeHeroes = GetRegisteredDistinct(Hero.AllAliveHeroes.Where(h => !h.IsNotSpawned && !h.IsDisabled && !h.IsDead && !h.IsChild && !h.IsNotable));
             _cachedMapping = activeHeroes.ToDictionary(key => key.Id, value => value as MBObjectBase);
 
             return activeHeroes
@@ -155,10 +165,10 @@ internal sealed class DistanceMatrixImplementation<T> : DistanceMatrix<T> where 
         if (typeof(Settlement).IsAssignableFrom(typeof(T)))
         {
             bool considerVillages = DistanceMatrixSubSystem.Instance?.ConsiderVillages ?? true;
-            var settlements = Settlement.All.Where(s => s.IsFortification || (considerVillages && s.IsVillage)).ToList();
+            var settlements = GetRegisteredDistinct(Settlement.All.Where(s => s.IsFortification || (considerVillages && s.IsVillage)));
             _cachedMapping = settlements.ToDictionary(key => key.Id, value => value as MBObjectBase);
 
-#if v134 || v135 || v136 || v137 || v138 || v139 || v1310 || v1311 || v1312 || v1313 || v1314 || v1315 || v140 || v141
+#if v134 || v135 || v136 || v137 || v138 || v139 || v1310 || v1311 || v1312 || v1313 || v1314 || v1315 || v140 || v141 || v142 || v143 || v144 || v145
             return settlements
                 .SelectMany(_ => settlements, (X, Y) => (X, Y))
                 .Where(tuple => tuple.X.Id < tuple.Y.Id)
@@ -179,7 +189,7 @@ internal sealed class DistanceMatrixImplementation<T> : DistanceMatrix<T> where 
 
         if (typeof(Clan).IsAssignableFrom(typeof(T)))
         {
-            var clans = Clan.All.Where(c => !c.IsEliminated && !c.IsBanditFaction).ToList();
+            var clans = GetRegisteredDistinct(Clan.All.Where(c => !c.IsEliminated && !c.IsBanditFaction));
             _cachedMapping = clans.ToDictionary(key => key.Id, value => value as MBObjectBase);
 
             var settlementDistanceMatrix = Campaign.Current.GetCampaignBehavior<GeopoliticsBehavior>().SettlementDistanceMatrix ?? new DistanceMatrixImplementation<Settlement>();
@@ -195,7 +205,7 @@ internal sealed class DistanceMatrixImplementation<T> : DistanceMatrix<T> where 
 
         if (typeof(Kingdom).IsAssignableFrom(typeof(T)))
         {
-            var kingdoms = Kingdom.All.Where(k => !k.IsEliminated).ToList();
+            var kingdoms = GetRegisteredDistinct(Kingdom.All.Where(k => !k.IsEliminated));
             _cachedMapping = kingdoms.ToDictionary(key => key.Id, value => value as MBObjectBase);
 
             var claDistanceMatrix = Campaign.Current.GetCampaignBehavior<GeopoliticsBehavior>().ClanDistanceMatrix ?? new DistanceMatrixImplementation<Clan>();

@@ -25,7 +25,10 @@ internal sealed class ModulePatch
 
     private static readonly Type? TargetType = typeof(TWModule);
 
-    private static readonly MethodInfo? miTargetMethodUnLoad = AccessTools2.Method(TargetType, "FinalizeSubModules");
+    // Bannerlord 1.3.15 renamed this method to FinalizeSubModulesBases.
+    private static readonly MethodInfo? miTargetMethodUnLoad =
+        AccessTools2.Method(TargetType, "FinalizeSubModulesBases") ??
+        AccessTools2.Method(TargetType, "FinalizeSubModules");
     private static readonly MethodInfo? miPatchMethodUnLoad = SymbolExtensions2.GetMethodInfo((TWModule x) => FinalizeSubModulesPostfix(x));
 
     private static readonly MethodInfo? miTargetMethodScreenAsRoot = AccessTools2.Method(TargetType, "SetInitialModuleScreenAsRootScreen");
@@ -110,7 +113,7 @@ internal sealed class ModulePatch
     [MethodImpl(MethodImplOptions.NoInlining)]
     private static void FinalizeSubModulesPostfix(TWModule __instance)
     {
-#if v134 || v135 || v136 || v137 || v138 || v139 || v1310 || v1311 || v1312 || v1313 || v1314 || v1315 || v140 || v141
+#if v134 || v135 || v136 || v137 || v138 || v139 || v1310 || v1311 || v1312 || v1313 || v1314 || v1315 || v140 || v141 || v142 || v143 || v144 || v145
         foreach (var submodule in __instance.CollectSubModules().OfType<IMBSubModuleBaseEx>())
         {
             submodule.OnAllSubModulesUnLoaded();
@@ -127,7 +130,7 @@ internal sealed class ModulePatch
     [MethodImpl(MethodImplOptions.NoInlining)]
     private static void DelayedScreenAsRootEvent(TWModule instance)
     {
-#if v134 || v135 || v136 || v137 || v138 || v139 || v1310 || v1311 || v1312 || v1313 || v1314 || v1315 || v140 || v141
+#if v134 || v135 || v136 || v137 || v138 || v139 || v1310 || v1311 || v1312 || v1313 || v1314 || v1315 || v140 || v141 || v142 || v143 || v144 || v145
         foreach (var submodule in instance.CollectSubModules().OfType<IMBSubModuleBaseEx>())
         {
             submodule.OnBeforeInitialModuleScreenSetAsRootDelayed();

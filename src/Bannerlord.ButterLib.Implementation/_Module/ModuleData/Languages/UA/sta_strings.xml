@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This file is managed by Weblate; do not edit it manually - changes would be overwritten. Translate at https://translate.butr.link -->
 <base xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/BUTR/Bannerlord.XmlSchemas/master/ModuleLanguage.xsd">
   <tags>
     <tag language="Українська"/>
@@ -11,18 +12,13 @@
     <string id="UZ8zfvudMs" text="{MODULE} завантажений після {REQUIRED_MODULE}!{NL}Переконайтеся, що {MODULE} був завантажений до нього!"/>
     <string id="FcR4BXnhx8" text="{MODULE} має взаємовиключні вказівки порядку моду, вказані для {REQUIRED_MODULE}!"/>
     <string id="eXs6FLm5DP" text="Наполегливо рекомендується припинити гру зараз. Чи хочете ви її припинити?"/>
-
     <string id="JLkq0ZkOSI" text="{START}{?IS_PLURAL} та {?}{\\?}{END}"/>
-
     <string id="B7bfrDNzIk" text="Вимкнути, якщо Відлагоджувач встановлений"/>
     <string id="r3ktQzFMRz" text="Зупиняє обробник винятків, коли налагоджувач встановлений."/>
-
     <string id="jorWb502pD" text="Перехопити винятки автоматично створеного коду (низька продуктивність) (ВИМКНЕНО)"/>
     <string id="ji1brrsEZz" text="Спіймати кожен виклик Native-&gt;Managed. Має перехоплювати всі винятки, які не перехоплюються стандартним способом. Може трохи знизити загальну продуктивність."/>
-
     <string id="ZD69h3IpF5" text="Використовувати &quot;ванільний&quot; обробник помилок"/>
     <string id="o0DgSNv5V1" text="Вимикає обробники збоїв ButterLib і BEW за допомогою нового обробника збоїв Watchdog. Не вмикайте, якщо не впевнені."/>
-
     <string id="Ox6uK8fZWs" text="Матриця Відстані"/>
     <string id="WQ4r2n0mYj" text="Функція розробника моду! Надає помічники для розрахунку відстані між об’єктами на мапі."/>
     <string id="jvV6QDc7AJ" text="Гарячі Клавіші"/>
