@@ -168,7 +168,7 @@ internal sealed class DistanceMatrixImplementation<T> : DistanceMatrix<T> where 
             var settlements = GetRegisteredDistinct(Settlement.All.Where(s => s.IsFortification || (considerVillages && s.IsVillage)));
             _cachedMapping = settlements.ToDictionary(key => key.Id, value => value as MBObjectBase);
 
-#if v134 || v135 || v136 || v137 || v138 || v139 || v1310 || v1311 || v1312 || v1313 || v1314 || v1315 || v140 || v141 || v142 || v143 || v144 || v145
+#if v134 || v135 || v136 || v137 || v138 || v139 || v1310 || v1311 || v1312 || v1313 || v1314 || v1315 || v140 || v141 || v142 || v143 || v144 || v145 || v146 || v147
             return settlements
                 .SelectMany(_ => settlements, (X, Y) => (X, Y))
                 .Where(tuple => tuple.X.Id < tuple.Y.Id)
