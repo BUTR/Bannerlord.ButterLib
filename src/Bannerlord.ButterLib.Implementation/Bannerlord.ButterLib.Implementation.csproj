@@ -35,7 +35,8 @@
   <ItemGroup>
     <PackageReference Include="Bannerlord.BuildResources" Version="$(BuildResourcesVersion)" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
 
-    <PackageReference Include="Lib.Harmony" Version="$(HarmonyVersion)" PrivateAssets="all" IncludeAssets="compile" />
+    <!-- Keep Bannerlord.Lib.Harmony intil we upgrade to v2.3.3 or higher -->
+    <PackageReference Include="Bannerlord.Lib.Harmony" Version="$(HarmonyVersion)" PrivateAssets="all" IncludeAssets="compile" />
     <!-- Disable MonoMod.Backports since we don't need it for compilation -->
     <PackageReference Include="MonoMod.Backports" Version="*" PrivateAssets="all" IncludeAssets="none" />
 

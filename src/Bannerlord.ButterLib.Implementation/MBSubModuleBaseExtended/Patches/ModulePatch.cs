@@ -113,7 +113,7 @@ internal sealed class ModulePatch
     [MethodImpl(MethodImplOptions.NoInlining)]
     private static void FinalizeSubModulesPostfix(TWModule __instance)
     {
-#if v134 || v135 || v136 || v137 || v138 || v139 || v1310 || v1311 || v1312 || v1313 || v1314 || v1315 || v140 || v141 || v142 || v143 || v144 || v145 || v146 || v147
+#if v134 || v135 || v136 || v137 || v138 || v139 || v1310 || v1311 || v1312 || v1313 || v1314 || v1315 || v140 || v141 || v142 || v143 || v144 || v145 || v146 || v147 || v148 || v150 || v151
         foreach (var submodule in __instance.CollectSubModules().OfType<IMBSubModuleBaseEx>())
         {
             submodule.OnAllSubModulesUnLoaded();
@@ -130,7 +130,7 @@ internal sealed class ModulePatch
     [MethodImpl(MethodImplOptions.NoInlining)]
     private static void DelayedScreenAsRootEvent(TWModule instance)
     {
-#if v134 || v135 || v136 || v137 || v138 || v139 || v1310 || v1311 || v1312 || v1313 || v1314 || v1315 || v140 || v141 || v142 || v143 || v144 || v145 || v146 || v147
+#if v134 || v135 || v136 || v137 || v138 || v139 || v1310 || v1311 || v1312 || v1313 || v1314 || v1315 || v140 || v141 || v142 || v143 || v144 || v145 || v146 || v147 || v148 || v150 || v151
         foreach (var submodule in instance.CollectSubModules().OfType<IMBSubModuleBaseEx>())
         {
             submodule.OnBeforeInitialModuleScreenSetAsRootDelayed();
