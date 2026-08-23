@@ -113,7 +113,7 @@ internal sealed class DebugManagerWrapper : IDebugManager
     public void EndTelemetryScopeBaseLevelInternal() => OriginalDebugManager.EndTelemetryScopeBaseLevelInternal();
 #endif
 
-#if v134 || v135 || v136 || v137 || v138 || v139 || v1310 || v1311 || v1312 || v1313 || v1314 || v1315 || v140 || v141 || v142 || v143 || v144 || v145 || v146 || v147
+#if v134 || v135 || v136 || v137 || v138 || v139 || v1310 || v1311 || v1312 || v1313 || v1314 || v1315 || v140 || v141 || v142 || v143 || v144 || v145 || v146 || v147 || v148 || v150 || v151
     public void SetDebugVector(Vec3 value)
     {
         OriginalDebugManager.SetDebugVector(value);
