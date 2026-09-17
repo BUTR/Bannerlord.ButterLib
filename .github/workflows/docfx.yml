@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: DocFX Setup
-      uses: butr/actions-docfx-setup@v4
+      uses: butr/actions-docfx-setup@v5
       with:
         github-token: ${{secrets.GITHUB_TOKEN}}
 
@@ -38,13 +38,22 @@ jobs:
     - name: Run DocFX
       run: >-
         Copy-Item "README.md" -Destination "docs/index.md";
-        New-Item -Type dir "docs/images";
-        Copy-Item "resources/BUTR48.svg" -Destination "docs/images/BUTR48.svg";
         docfx docs/docfx.json;
       shell: pwsh
 
+    - name: Post-process xrefmap
+      # Stamp baseUrl so consumers resolve to this site's own domain
+      # rather than the github.io URL the map was fetched from, and drop
+      # fields DocFX never looks up (it binary-searches on uid alone).
+      run: >-
+        sed -i -E
+        -e '1a baseUrl: https://butterlib.butr.link/'
+        -e '/^  (commentId|fullName|nameWithType): /d'
+        docs/_site/xrefmap.yml
+      shell: bash
+
     - name: Deploy DocFX
-      uses: crazy-max/ghaction-github-pages@v4
+      uses: crazy-max/ghaction-github-pages@v5
       with:
         target_branch: gh-pages
         build_dir: docs/_site

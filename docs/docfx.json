@@ -25,7 +25,6 @@
     "dest": "_site",
     "globalMetadata": {
       "_enableSearch": "true",
-      "_appLogoPath": "images/BUTR48.svg",
       "_appName": "ButterLib",
       "_appTitle": "ButterLib Documentation",
       "_appFooter": "© 2020-2024 Bannerlord's Unofficial Tools & Resources"
