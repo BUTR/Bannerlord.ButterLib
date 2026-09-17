@@ -14,7 +14,7 @@
     "xref": [
       "https://learn.microsoft.com/en-us/dotnet/.xrefmap.json",
       "xrefs/Newtonsoft.Json-xrefmap.yml",
-      "https://butr.github.io/Bannerlord.ReferenceAssemblies.Documentation/xrefmap.yml"
+      "xrefs/bannerlord-api-xrefmap.yml"
     ],
     "content": [
       { "files": [ "**/**.{md,yml}" ], "exclude": [ "_site/**", "obj/**" ] }

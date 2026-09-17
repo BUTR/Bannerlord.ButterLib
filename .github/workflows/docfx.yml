@@ -35,6 +35,43 @@ jobs:
       run: dotnet build src/Bannerlord.ButterLib/Bannerlord.ButterLib.csproj;
       shell: pwsh
 
+    - name: Fetch the game API xrefmap for the version we compile against
+      # $(BaseGameVersion), not $(GameVersion): Bannerlord.ButterLib pins its
+      # Bannerlord.ReferenceAssemblies.Core reference to the base API so it loads
+      # across game versions, and that is the API these docs describe.
+      # $(GameVersion) belongs to Bannerlord.ButterLib.Implementation, which
+      # tracks the current game and is not what docfx documents here.
+      #
+      # docfx.json names a fixed path, the same way it already does for the
+      # generated Newtonsoft.Json map, and this step puts the right version's
+      # map there.
+      #
+      # The game docs publish one tree per version under /v/<x.y.z>/, each map
+      # carrying a baseUrl that pins it to that tree. Fetching the versioned map
+      # rather than the site root is what keeps the links honest: the root
+      # follows the current stable game, and would silently re-point every game
+      # type in these docs at an API this build was never compiled against.
+      run: |
+        V=$(dotnet msbuild src/Bannerlord.ButterLib/Bannerlord.ButterLib.csproj -getProperty:BaseGameVersion -nologo | tr -d '[:space:]')
+        case "$V" in
+          [0-9]*.[0-9]*.[0-9]*) ;;
+          *) echo "::error::BaseGameVersion resolved to '$V', which is not X.Y.Z"; exit 1 ;;
+        esac
+
+        # --compressed is required, not an optimisation: the host serves these
+        # with gzip_static always, so without it curl writes compressed bytes
+        # into a file docfx will try to parse as YAML.
+        mkdir -p docs/xrefs
+        curl -fsSL --compressed --max-time 300 "$SITE/v/$V/xrefmap.yml"              -o docs/xrefs/bannerlord-api-xrefmap.yml           || { echo "::error::no API docs published for game $V; see $SITE/versions.json"; exit 1; }
+
+        head -1 docs/xrefs/bannerlord-api-xrefmap.yml | grep -q '^### YamlMime:XRefMap'           || { echo "::error::$SITE/v/$V/xrefmap.yml did not come back as an xrefmap"; exit 1; }
+
+        echo "game $V, $(du -h docs/xrefs/bannerlord-api-xrefmap.yml | cut -f1)"
+        grep -m1 '^baseUrl:' docs/xrefs/bannerlord-api-xrefmap.yml
+      env:
+        SITE: https://bannerlordapi.butr.link
+      shell: bash
+
     - name: Run DocFX
       run: >-
         Copy-Item "README.md" -Destination "docs/index.md";
