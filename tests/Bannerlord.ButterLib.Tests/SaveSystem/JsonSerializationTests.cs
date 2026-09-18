@@ -33,6 +33,15 @@ public class JsonSerializationTests
     private static readonly AccessTools.FieldRef<FlattenedTroopRoster, Dictionary<UniqueTroopDescriptor, FlattenedTroopRosterElement>>? ElementDictionary =
         AccessTools.FieldRefAccess<FlattenedTroopRoster, Dictionary<UniqueTroopDescriptor, FlattenedTroopRosterElement>>("_elementDictionary");
 
+    // TextObject is [Serializable], so it is serialized by Newtonsoft's default member
+    // discovery, which invokes its computed getters (Length, IsLink). Those throw on an
+    // uninitialized instance, so the backing text has to be set first. The field is public
+    // "Value" from v1.2.4 on and non-public before that, so match on type instead of name.
+    private static readonly FieldInfo[] TextObjectStringFields = typeof(TextObject)
+        .GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+        .Where(x => x.FieldType == typeof(string))
+        .ToArray();
+
     [SetUp]
     public void Setup()
     {
@@ -103,7 +112,8 @@ public class JsonSerializationTests
             if (saveableClassInstance is FlattenedTroopRoster flattenedTroopRoster && ElementDictionary is not null)
                 ElementDictionary(flattenedTroopRoster) = new Dictionary<UniqueTroopDescriptor, FlattenedTroopRosterElement>();
             if (saveableClassInstance is TextObject textObject)
-                textObject.Value = "";
+                foreach (var field in TextObjectStringFields)
+                    field.SetValue(textObject, "");
 
             try
             {
@@ -189,7 +199,8 @@ public class JsonSerializationTests
             if (saveableMemberInstance is FlattenedTroopRoster flattenedTroopRoster && ElementDictionary is not null)
                 ElementDictionary(flattenedTroopRoster) = new Dictionary<UniqueTroopDescriptor, FlattenedTroopRosterElement>();
             if (saveableMemberInstance is TextObject textObject)
-                textObject.Value = "";
+                foreach (var field in TextObjectStringFields)
+                    field.SetValue(textObject, "");
 
             try
             {
